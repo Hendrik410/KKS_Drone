@@ -21,11 +21,11 @@ void DroneEngine::arm(){
 	servos->armMotors();
 }
 
-void DroneEngine::disarm() {
+void DroneEngine::disarm() const {
 	servos->disarmMotors();
 }
 
-void DroneEngine::stop() {
+void DroneEngine::stop() const {
 	servos->disarmMotors();
 }
 

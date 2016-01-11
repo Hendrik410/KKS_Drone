@@ -1,6 +1,9 @@
 
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
+#include "ConfigManager.h"
+#include "EEPROM_MemoryAdapter.h"
+#include "MemoryAdapter.h"
 #include "MotorEnums.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
@@ -13,11 +16,14 @@
 #include <Servo/src/Servo.h>
 #include <ESP8266WiFi/src/WiFiUdp.h>
 #include <ESP8266WiFi/src/ESP8266WiFi.h>
-
+#include <EEPROM/EEPROM.h>
 
 #define byte unsigned char
 
 #else
+#include "ConfigManager.h"
+#include "EEPROM_MemoryAdapter.h"
+#include "MemoryAdapter.h"
 #include "MotorEnums.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
@@ -30,6 +36,7 @@
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
 #include <Servo.h>
+#include <EEPROM.h>
 #endif
 
 #define BUILD_VERSION 1
@@ -53,7 +60,7 @@
 const char *ssid = "drone1";
 const char *password = "12345678";
 
-int lastRevision = 0;
+uint32_t lastRevision = 0;
 
 WiFiUDP udpControl;
 byte controlPacketBuffer[PACKET_BUFFER_SIZE];
@@ -105,10 +112,7 @@ byte* generatePacket(byte buffer[], int rev) {
 	buffer[0] = 'F';
 	buffer[1] = 'L';
 	buffer[2] = 'Y';
-	buffer[3] = byte(rev) >> 24;
-	buffer[4] = byte(rev) >> 16;
-	buffer[5] = byte(rev) >> 8;
-	buffer[6] = byte(rev);
+	BinaryHelper::writeUint32(buffer, 3, rev);
 	buffer[7] = 0;
 	return buffer;
 }
@@ -129,7 +133,7 @@ void handleUdpControl() {
 	if(controlPacketBuffer[0] != 'F' || controlPacketBuffer[1] != 'L' || controlPacketBuffer[2] != 'Y')
 		return;
 
-	int revision = BinaryHelper::readInt(controlPacketBuffer, 3);
+	uint32_t revision = BinaryHelper::readUint32(controlPacketBuffer, 3);
 	bool ackRequested = controlPacketBuffer[7] > 0;
 
 	ControlPacketType type = static_cast<ControlPacketType>(controlPacketBuffer[8]);
@@ -157,10 +161,10 @@ void handleUdpControl() {
 				return;
 
 			Serial.println(controlPacketBuffer[25]);
-			int fl = BinaryHelper::readInt(controlPacketBuffer, 9);
-			int fr = BinaryHelper::readInt(controlPacketBuffer, 13);
-			int bl = BinaryHelper::readInt(controlPacketBuffer, 17);
-			int br = BinaryHelper::readInt(controlPacketBuffer, 21);
+			uint16_t fl = BinaryHelper::readUint16(controlPacketBuffer, 9);
+			uint16_t fr = BinaryHelper::readUint16(controlPacketBuffer, 13);
+			uint16_t bl = BinaryHelper::readUint16(controlPacketBuffer, 17);
+			uint16_t br = BinaryHelper::readUint16(controlPacketBuffer, 21);
 
 			bool ignoreNotArmed = controlPacketBuffer[25] > 0;
 
@@ -212,14 +216,14 @@ void handleUdpControl() {
 			buf[8] = GetInfoPacket;
 
 			buf[9] = BUILD_VERSION;
-			BinaryHelper::writeInt(buf, 10, lastRevision);
+			BinaryHelper::writeUint32(buf, 10, lastRevision);
 			
 			buf[14] = engine.isArmed() ? 1 : 0;
 
-			BinaryHelper::writeInt(buf, 15, servos.FL());
-			BinaryHelper::writeInt(buf, 19, servos.FR());
-			BinaryHelper::writeInt(buf, 23, servos.BL());
-			BinaryHelper::writeInt(buf, 27, servos.BR());
+			BinaryHelper::writeUint16(buf, 15, servos.FL());
+			BinaryHelper::writeUint16(buf, 19, servos.FR());
+			BinaryHelper::writeUint16(buf, 23, servos.BL());
+			BinaryHelper::writeUint16(buf, 27, servos.BR());
 
 			udpControl.beginPacket(udpControl.remoteIP(), udpControl.remotePort());
 			udpControl.write(buf, 30);
@@ -328,6 +332,7 @@ void setup() {
 	Wire.begin(SDA, SCL);
 	gyro.init();
 
+	
 	
 
 	digitalWrite(LED_PIN, LOW);

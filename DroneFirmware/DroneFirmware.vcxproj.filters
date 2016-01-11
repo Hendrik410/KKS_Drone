@@ -39,6 +39,15 @@
     <ClInclude Include="MotorEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EEPROM_MemoryAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
@@ -54,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EEPROM_MemoryAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

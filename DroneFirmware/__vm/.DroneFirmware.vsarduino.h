@@ -101,12 +101,17 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <..\DroneFirmware\DroneFirmware.ino>
 #include <..\DroneFirmware\BinaryHelper.cpp>
 #include <..\DroneFirmware\BinaryHelper.h>
+#include <..\DroneFirmware\ConfigManager.cpp>
+#include <..\DroneFirmware\ConfigManager.h>
 #include <..\DroneFirmware\DroneEngine.cpp>
 #include <..\DroneFirmware\DroneEngine.h>
+#include <..\DroneFirmware\EEPROM_MemoryAdapter.cpp>
+#include <..\DroneFirmware\EEPROM_MemoryAdapter.h>
 #include <..\DroneFirmware\Gyro.cpp>
 #include <..\DroneFirmware\Gyro.h>
 #include <..\DroneFirmware\MathHelper.cpp>
 #include <..\DroneFirmware\MathHelper.h>
+#include <..\DroneFirmware\MemoryAdapter.h>
 #include <..\DroneFirmware\MotorEnums.h>
 #include <..\DroneFirmware\ServoManager.cpp>
 #include <..\DroneFirmware\ServoManager.h>
