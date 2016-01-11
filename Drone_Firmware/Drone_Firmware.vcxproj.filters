@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="_core">
+      <UniqueIdentifier>{35f861a3-4501-4060-8d66-2c3d197929d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_core\spiffs">
+      <UniqueIdentifier>{25b94544-c5df-4146-b7d8-481b405cc809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries">
+      <UniqueIdentifier>{e10fcb1c-d1ab-4bb4-be7b-d986f26ecafa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\Servo">
+      <UniqueIdentifier>{6671c7d0-50c0-47c6-821f-6d9d314f146d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\Servo\src">
+      <UniqueIdentifier>{742ab5b3-7d68-4459-a88b-2a1c05e830a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\Servo\src\esp8266">
+      <UniqueIdentifier>{4896f3b0-dd2f-4369-91a0-e6544f3dc843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\Wire">
+      <UniqueIdentifier>{3e070a92-452d-494e-ae1a-80ee10d90f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\ESP8266WiFi">
+      <UniqueIdentifier>{29614f70-9d7b-457b-a533-6912f81f07a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\ESP8266WiFi\src">
+      <UniqueIdentifier>{9ba00266-f5bd-4b80-b796-799822bf5d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\ESP8266WiFi\src\arch">
+      <UniqueIdentifier>{52cc6fe2-f19f-429c-9275-345cb797f556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\ESP8266WiFi\src\include">
+      <UniqueIdentifier>{6d23b658-ba73-4033-86fd-8e0eb4353dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_libraries\ESP8266WiFi\src\lwip">
+      <UniqueIdentifier>{f1926ea8-3540-457c-a408-dceec43eab26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MPU6050.ino" />
+    <None Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\cont.S">
+      <Filter>_core</Filter>
+    </None>
+    <None Include="Drone_Firmware.ino" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="I2Cdev.h.ignore">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Arduino.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\binary.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\cbuf.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Client.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\cont.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\debug.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\eboot_command.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Esp.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\esp8266_peri.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\flash_utils.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\FS.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\FSImpl.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\HardwareSerial.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\i2s.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\interrupts.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\IPAddress.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\md5.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\MD5Builder.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\pgmspace.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Print.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Printable.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Server.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\sigma_delta.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\stdlib_noniso.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Stream.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\StreamString.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\twi.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Udp.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Updater.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\user_config.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\WCharacter.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\wiring_private.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\WString.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs.h">
+      <Filter>_core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_config.h">
+      <Filter>_core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_nucleus.h">
+      <Filter>_core\spiffs</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\variants\generic\pins_arduino.h">
+      <Filter>_core</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\Servo\src\Servo.h">
+      <Filter>_libraries\Servo\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\Servo\src\esp8266\ServoTimers.h">
+      <Filter>_libraries\Servo\src\esp8266</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\Wire\Wire.h">
+      <Filter>_libraries\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\ESP8266WiFi.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\ESP8266WiFiMulti.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiClient.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiClientSecure.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiServer.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiUdp.h">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\arch\cc.h">
+      <Filter>_libraries\ESP8266WiFi\src\arch</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\arch\perf.h">
+      <Filter>_libraries\ESP8266WiFi\src\arch</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\arch\sys_arch.h">
+      <Filter>_libraries\ESP8266WiFi\src\arch</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\ClientContext.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\lwipopts.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\slist.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\ssl.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\UdpContext.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\include\wl_definitions.h">
+      <Filter>_libraries\ESP8266WiFi\src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\api.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\api_msg.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\arch.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\autoip.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\debug.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\def.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\dhcp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\dns.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\err.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\icmp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\igmp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\inet.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\inet_chksum.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\init.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\ip.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\ip_addr.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\ip_frag.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\mem.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\memp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\memp_std.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\mem_manager.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\netbuf.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\netdb.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\netif.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\netifapi.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\opt.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\pbuf.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\raw.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\sio.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\snmp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\snmp_asn1.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\snmp_msg.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\snmp_structs.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\sockets.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\stats.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\sys.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\tcp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\tcpip.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\tcp_impl.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\timers.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\lwip\udp.h">
+      <Filter>_libraries\ESP8266WiFi\src\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.Drone_Firmware.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="I2Cdev.cpp.ignore">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\abi.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\cont_util.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_eboot_command.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_flash_utils.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_i2s.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_main.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_noniso.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_phy.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_postmortem.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_si2c.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_timer.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring_analog.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring_digital.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring_pulse.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring_pwm.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\core_esp8266_wiring_shift.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\debug.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Esp.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\FS.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\HardwareSerial.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\IPAddress.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\libc_replacements.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\MD5Builder.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\pgmspace.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Print.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs_api.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs_hal.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Stream.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\StreamString.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\time.c">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Tone.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\Updater.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\WMath.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\WString.cpp">
+      <Filter>_core</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_cache.c">
+      <Filter>_core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_check.c">
+      <Filter>_core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_gc.c">
+      <Filter>_core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_hydrogen.c">
+      <Filter>_core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\cores\esp8266\spiffs\spiffs_nucleus.c">
+      <Filter>_core\spiffs</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\Servo\src\esp8266\Servo.cpp">
+      <Filter>_libraries\Servo\src\esp8266</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\Wire\Wire.cpp">
+      <Filter>_libraries\Wire</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\ESP8266WiFi.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\ESP8266WiFiMulti.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiClient.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiClientSecure.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiServer.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Hendrik\AppData\Roaming\arduino15\packages\esp8266\hardware\esp8266\2.0.0\libraries\ESP8266WiFi\src\WiFiUdp.cpp">
+      <Filter>_libraries\ESP8266WiFi\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
