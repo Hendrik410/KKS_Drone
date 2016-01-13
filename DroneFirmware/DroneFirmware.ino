@@ -57,8 +57,8 @@
 // #################### Global Variables #####################
 
 /* Set these to your desired credentials. */
-const char *ssid = "drone1";
-const char *password = "12345678";
+const char *ssid = "Kugelmatik";
+const char *password = "123456abc";
 
 uint32_t lastRevision = 0;
 
@@ -301,14 +301,38 @@ void setup() {
 
 
 	if(VERBOSE_SERIAL_PRINT)
-		Serial.println("$ Configuring access point");
-	//setup ap
-	WiFi.softAP(ssid, password);
-	IPAddress myIP = WiFi.softAPIP();
-	if(VERBOSE_SERIAL_PRINT) {
-		Serial.print("AP IP address: ");
-		Serial.println(myIP);
+		Serial.println("$ Configuring network");
+
+
+	WiFi.mode(WIFI_STA);
+	WiFi.begin(ssid, password);
+	int connectStartTime = millis();
+	while(WiFi.waitForConnectResult() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
+		delay(20);
 	}
+
+	if(WiFi.waitForConnectResult() != WL_CONNECTED) {
+		if(VERBOSE_SERIAL_PRINT)
+			Serial.println("$ Access Point not found, creating own ...");
+
+		WiFi.mode(WIFI_AP);
+		//setup ap
+		WiFi.softAP(ssid, password);
+		IPAddress myIP = WiFi.softAPIP();
+		if(VERBOSE_SERIAL_PRINT) {
+			Serial.print("$ AP IP address: ");
+			Serial.println(myIP);
+		}
+	} else {
+		if(VERBOSE_SERIAL_PRINT) {
+			Serial.println("$ Successfully connected to acces point");
+			IPAddress myIP = WiFi.localIP();
+			Serial.print("$ IP Adress: ");
+			Serial.println(myIP);
+		}
+
+	}
+
 
 	//start udp servers
 	udpControl.begin(CONTROL_PORT);

@@ -17,7 +17,7 @@ namespace DroneTest {
                 VerbosePacketSending = true,
                 VerbosePacketReceive = true
             };
-            Drone drone = new Drone(IPAddress.Parse("192.168.4.1"), config);
+            Drone drone = new Drone(IPAddress.Parse("192.168.88.76"), config);
             while(drone.Ping == -1) {
                 drone.SendPing();
                 Thread.Sleep(16);
@@ -28,14 +28,12 @@ namespace DroneTest {
             Console.WriteLine("Press Key to start motors");
             Console.ReadKey(false);
             drone.SendPacket(new PacketResetRevision(), false);
-            drone.SendPacket(new PacketSetRawValues(1000, 1000, 1000, 1000, true), false);
+            drone.SendPacket(new PacketSetRawValues(1200, 1200, 1200, 1200, true), false);
 
             Console.WriteLine("Press Key to stop");
             Console.ReadKey(false);
             drone.SendStop();
-
-            Console.ReadKey(false);
-            drone.SendBlink();
+            
 
             Console.ReadKey(false);
         }

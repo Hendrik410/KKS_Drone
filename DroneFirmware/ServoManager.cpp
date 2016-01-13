@@ -77,8 +77,6 @@ void ServoManager::armMotors() {
 }
 
 void ServoManager::disarmMotors() {
-	if(isArmed()) {
-		setAllServos(servoOffValue);
-		_isArmed = false;
-	}
+	setAllServos(servoOffValue);
+	_isArmed = false;
 }
