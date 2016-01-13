@@ -23,9 +23,10 @@ void * memcpy(void * destination, const void * source, int num);
 class EEPROM_MemoryAdapter : public MemoryAdaptor {
 protected:
 	uint16_t size;
+	uint16_t offset;
 
 public:
-	EEPROM_MemoryAdapter(uint16_t size);
+	EEPROM_MemoryAdapter(uint16_t size, uint16_t offset);
 
 	bool begin() override;
 	bool end() override;

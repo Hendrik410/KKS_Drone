@@ -4,8 +4,9 @@
 
 #include "EEPROM_MemoryAdapter.h"
 
-EEPROM_MemoryAdapter::EEPROM_MemoryAdapter(uint16_t size) {
+EEPROM_MemoryAdapter::EEPROM_MemoryAdapter(uint16_t size, uint16_t offset) {
 	this->size = size;
+	this->offset = offset;
 }
 
 bool EEPROM_MemoryAdapter::begin() {

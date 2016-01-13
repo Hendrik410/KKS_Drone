@@ -15,15 +15,13 @@ void * memcpy(void * destination, const void * source, int num);
 #endif
 
 #include "MemoryAdapter.h"
+#include "Config.h"
 
 class ConfigManager
 {
- protected:
-
-
  public:
-	 bool loadConfig(MemoryAdaptor* memory);
-	 bool saveConfig(MemoryAdaptor* memory);
+	 static Config loadConfig(MemoryAdaptor* memory);
+	 static void saveConfig(MemoryAdaptor* memory, const Config config);
 };
 
 #endif
