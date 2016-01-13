@@ -39,7 +39,7 @@ uint16_t BinaryHelper::readUint16(byte* buf, int offset) {
 	byte valArr[2];
 	memcpy(valArr, &buf[offset], 2);
 	if(swappingNeeded())
-		changeByteOrder(buf, 0, 2);
+		changeByteOrder(valArr, 0, 2);
 	return *reinterpret_cast<uint16_t*>(valArr);
 }
 
@@ -53,7 +53,7 @@ uint32_t BinaryHelper::readUint32(unsigned char* buf, int offset) {
 	byte valArr[4];
 	memcpy(valArr, &buf[offset], 4);
 	if(swappingNeeded())
-		changeByteOrder(buf, 0, 4);
+		changeByteOrder(valArr, 0, 4);
 	return *reinterpret_cast<uint32_t*>(valArr);
 }
 
@@ -69,7 +69,7 @@ uint64_t BinaryHelper::readUint64(unsigned char* buf, int offset) {
 	byte valArr[8];
 	memcpy(valArr, &buf[offset], 8);
 	if(swappingNeeded())
-		changeByteOrder(buf, 0, 8);
+		changeByteOrder(valArr, 0, 8);
 	return *reinterpret_cast<uint64_t*>(valArr);
 }
 
@@ -83,7 +83,7 @@ float BinaryHelper::readFloat(unsigned char* buf, int offset) {
 	byte valArr[4];
 	memcpy(valArr, &buf[offset], 4);
 	if(swappingNeeded())
-		changeByteOrder(buf, 0, 4);
+		changeByteOrder(valArr, 0, 4);
 	return *reinterpret_cast<float*>(valArr);
 }
 
@@ -97,6 +97,6 @@ double BinaryHelper::readDouble(unsigned char* buf, int offset) {
 	byte valArr[8];
 	memcpy(valArr, &buf[offset], 8);
 	if(swappingNeeded())
-		changeByteOrder(buf, 0, 8);
+		changeByteOrder(valArr, 0, 8);
 	return *reinterpret_cast<double*>(valArr);
 }

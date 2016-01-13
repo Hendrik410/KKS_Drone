@@ -26,6 +26,8 @@ class DroneEngine
 	 bool debug_output;
 	 long lastPhysicsCalc;
 	 long lastYawTargetCalc;
+	 long lastMovementUpdate;
+	 long maxMovementUpdate = 200;
 
 	 bool _isArmed;
 

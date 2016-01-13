@@ -14,7 +14,7 @@ namespace DroneLibrary {
         /// <summary>
         /// Gibt den Wert des vorderen linken Motors zurück.
         /// </summary>
-        public int FrontLeft {
+        public ushort FrontLeft {
             get;
             set;
         }
@@ -22,7 +22,7 @@ namespace DroneLibrary {
         /// <summary>
         /// Gibt den Wert des vorderen rechten Motors zurück.
         /// </summary>
-        public int FrontRight {
+        public ushort FrontRight {
             get;
             set;
         }
@@ -30,7 +30,7 @@ namespace DroneLibrary {
         /// <summary>
         /// Gibt den Wert des hinteren linken Motors zurück.
         /// </summary>
-        public int BackLeft {
+        public ushort BackLeft {
             get;
             set;
         }
@@ -38,12 +38,12 @@ namespace DroneLibrary {
         /// <summary>
         /// Gibt den Wert des hintern rechten Motors zurück.
         /// </summary>
-        public int BackRight {
+        public ushort BackRight {
             get;
             set;
         }
 
-        public QuadMotorValues(int fl, int fr, int bl, int br) : this() {
+        public QuadMotorValues(ushort fl, ushort fr, ushort bl, ushort br) : this() {
             this.FrontLeft = fl;
             this.FrontRight = fr;
             this.BackLeft = bl;

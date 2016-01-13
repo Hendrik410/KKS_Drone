@@ -73,8 +73,7 @@ namespace DroneLibrary
             if (other == null)
                 return false;
             return BuildVersion == other.BuildVersion 
-                && HighestRevision == other.HighestRevision
-                && Settings == other.Settings;
+                && HighestRevision == other.HighestRevision;
         }
 
         public override int GetHashCode()
@@ -84,7 +83,6 @@ namespace DroneLibrary
                 int hash = 13;
                 hash = hash * 7 + BuildVersion.GetHashCode();
                 hash = hash * 7 + HighestRevision.GetHashCode();
-                hash = hash * 7 + Settings.GetHashCode();
                 return hash;
             }
         }

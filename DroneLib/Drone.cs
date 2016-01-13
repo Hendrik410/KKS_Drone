@@ -38,8 +38,7 @@ namespace DroneLibrary
                 if (ping != value)
                 {
                     ping = value;
-                    if (OnPingChange != null)
-                        OnPingChange(this, new EventArgs());
+                    OnPingChange?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -93,8 +92,7 @@ namespace DroneLibrary
                     if (value != info)
                     {
                         info = value;
-                        if (OnInfoChange != null)
-                            OnInfoChange(this, EventArgs.Empty);
+                        OnInfoChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -116,8 +114,7 @@ namespace DroneLibrary
                 lock(locker) {
                     if(value != settings) {
                         settings = value;
-                        if(OnInfoChange != null)
-                            OnInfoChange(this, EventArgs.Empty);
+                        OnInfoChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -156,18 +153,12 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt zurück ob Pakete noch warten vom Drone bestätigt zu werden.
         /// </summary>
-        public bool AnyPacketsAcknowledgePending
-        {
-            get { return packetsToAcknowledge.Count > 0; }
-        }
+        public bool AnyPacketsAcknowledgePending => packetsToAcknowledge.Count > 0;
 
         /// <summary>
         /// Gibt die Anzahl der Pakete zurück die noch vom Drone bestätigt werden müssen.
         /// </summary>
-        public int PendingAcknowledgePacketsCount
-        {
-            get { return packetsToAcknowledge.Count; }
-        }
+        public int PendingAcknowledgePacketsCount => packetsToAcknowledge.Count;
 
 
         private object locker = new object();
@@ -175,7 +166,7 @@ namespace DroneLibrary
         public Drone(IPAddress address, Config config)
         {
             if (address == null)
-                throw new ArgumentNullException("address");
+                throw new ArgumentNullException(nameof(address));
 
             this.Config = config;
             this.Address = address;
@@ -215,14 +206,11 @@ namespace DroneLibrary
 
             if (disposing)
             {
-                if (socket != null)
-                    socket.Close();
+                socket?.Close();
 
-                if (packetBuffer != null)
-                    packetBuffer.Dispose();
+                packetBuffer?.Dispose();
 
-                if (packetWriter != null)
-                    packetWriter.Dispose();
+                packetWriter?.Dispose();
             }
 
             IsDisposed = true;
@@ -283,6 +271,13 @@ namespace DroneLibrary
             SendPacket(new PacketArm(false), true);
         }
 
+        public void SendMovementData(float pitch, float roll, float yaw, float thrust, bool hover) {
+            if(IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            SendPacket(new PacketSetMovement(pitch, roll, yaw, thrust, hover), false);
+        }
+
         public void SendBlink() {
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -327,7 +322,7 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
             if (packet == null)
-                throw new ArgumentNullException("packet");
+                throw new ArgumentNullException(nameof(packet));
 
             // wenn das Drone nicht erreichbar ist
             if (Ping < 0)
@@ -430,7 +425,7 @@ namespace DroneLibrary
 
         private void HandlePacket(byte[] packet)
         {
-            // jedes Kugelmatik V3 Paket ist mindestens HeaderSize Bytes lang und fangen mit "KKS" an
+            // jedes Drohnen Paket ist mindestens HeaderSize Bytes lang und fangen mit "FLY" an
             if (packet.Length < HeaderSize || packet[0] != 'F' || packet[1] != 'L' || packet[2] != 'Y')
                 return;
 
@@ -458,9 +453,9 @@ namespace DroneLibrary
                             throw new InvalidDataException("Packet is not long enough.");
 
                         int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10)
-                            if (OnConnected != null)
-                                OnConnected(this, EventArgs.Empty);
+                        if (timeSpan > 1000 * 10) {
+                            OnConnected?.Invoke(this, EventArgs.Empty);
+                        }
 
                         lastPing = Environment.TickCount;
 
@@ -493,7 +488,7 @@ namespace DroneLibrary
 
                         bool isArmed = reader.ReadByte() > 0;
                         
-                        QuadMotorValues motorValues = new QuadMotorValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+                        QuadMotorValues motorValues = new QuadMotorValues(reader.ReadUInt16(), reader.ReadUInt16(), reader.ReadUInt16(), reader.ReadUInt16());
 
                         Info = new DroneInfo(buildVersion, highestRevision, isArmed, motorValues);
                         RemovePacketToAcknowlegde(revision);

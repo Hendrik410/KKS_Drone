@@ -13,11 +13,9 @@ namespace DroneLibrary.Protocol {
         public readonly QuadMotorValues Values;
         public readonly bool IgnoreNotArmed;
 
-        public PacketType Type {
-            get { return PacketType.SetRawValues; }
-        }
+        public PacketType Type => PacketType.SetRawValues;
 
-        public PacketSetRawValues(int fl, int fr, int bl, int br, bool ignoreNotArmed) {
+        public PacketSetRawValues(ushort fl, ushort fr, ushort bl, ushort br, bool ignoreNotArmed) {
             this.Values = new QuadMotorValues(fl, fr, bl, br);
             this.IgnoreNotArmed = ignoreNotArmed;
         }
@@ -29,7 +27,7 @@ namespace DroneLibrary.Protocol {
 
         public void Write(BinaryWriter writer) {
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.FrontLeft) : Values.FrontLeft);
             writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.FrontRight) : Values.FrontRight);

@@ -120,12 +120,16 @@ byte* generatePacket(byte buffer[], int rev) {
 void handleUdpControl() {
 	int packetSize = udpControl.parsePacket();
 
+
 	//return wenn mindestgrösse nicht erreicht ist und leere buffer
 	if(packetSize < 9) {
 		for(byte i = 0; i < packetSize; i++)
 			udpControl.read();
 		return;
 	}
+
+	Serial.println("$ Got Packet");
+
 
 	udpControl.read(controlPacketBuffer, packetSize);
 
@@ -139,7 +143,7 @@ void handleUdpControl() {
 	ControlPacketType type = static_cast<ControlPacketType>(controlPacketBuffer[8]);
 
 	//return wenn revision unzulässig
-	if(lastRevision >= revision && type != ResetRevisionPacket)
+	if(lastRevision >= revision && type != ResetRevisionPacket && type != PingPacket)
 		return;
 
 	if(VERBOSE_SERIAL_PRINT) {
@@ -154,19 +158,20 @@ void handleUdpControl() {
 	switch(type) {
 		case MovementPacket:
 
+
 			break;
 		case RawSetPacket: {
 			//set the 4 motor values raw
-			if(packetSize < 26)
+			if(packetSize < 18)
 				return;
 
 			Serial.println(controlPacketBuffer[25]);
 			uint16_t fl = BinaryHelper::readUint16(controlPacketBuffer, 9);
-			uint16_t fr = BinaryHelper::readUint16(controlPacketBuffer, 13);
-			uint16_t bl = BinaryHelper::readUint16(controlPacketBuffer, 17);
-			uint16_t br = BinaryHelper::readUint16(controlPacketBuffer, 21);
+			uint16_t fr = BinaryHelper::readUint16(controlPacketBuffer, 11);
+			uint16_t bl = BinaryHelper::readUint16(controlPacketBuffer, 13);
+			uint16_t br = BinaryHelper::readUint16(controlPacketBuffer, 15);
 
-			bool ignoreNotArmed = controlPacketBuffer[25] > 0;
+			bool ignoreNotArmed = controlPacketBuffer[17] > 0;
 
 			if(servos.isArmed() || ignoreNotArmed) {
 				servos.setServos(fl, fr, bl, br);
@@ -175,12 +180,8 @@ void handleUdpControl() {
 		}
 		break;
 		case StopPacket:
-			if(packetSize >= 13) {
-				if(controlPacketBuffer[9] == 'S' && controlPacketBuffer[10] == 'T' && controlPacketBuffer[11] == 'O' && controlPacketBuffer[12] == 'P') {
-					engine.stop();
-					packetHandled = true;
-				}
-			}
+			engine.stop();
+			packetHandled = true;
 			break;
 		case ArmPacket:
 			if(packetSize == 13) {

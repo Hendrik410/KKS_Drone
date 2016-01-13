@@ -86,18 +86,22 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
 
 void DroneEngine::setTargetPitch(float pitch) {
 	targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
+	lastMovementUpdate = millis();
 }
 
 void DroneEngine::setTargetRoll(float roll) {
 	targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
+	lastMovementUpdate = millis();
 }
 
 void DroneEngine::setTargetRotarySpeed(float yaw) {
 	targetRotationSpeed = MathHelper::clampValue(yaw, -maxRotationSpeed, maxRotationSpeed);
+	lastMovementUpdate = millis();
 }
 
 void DroneEngine::setTargetVerticalSpeed(float vertical) {
 	targetVerticalSpeed = MathHelper::clampValue(vertical, -1, 1);
+	lastMovementUpdate = millis();
 }
 
 float DroneEngine::getTargetPitch() const {

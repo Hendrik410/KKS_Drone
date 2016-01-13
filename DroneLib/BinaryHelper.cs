@@ -25,6 +25,12 @@ namespace DroneLibrary {
                          (value & 0x00FF0000U) >> 8 | (value & 0xFF000000U) >> 24);
         }
 
+        public static byte[] WriteFloat(float val) {
+            byte[] arr = BitConverter.GetBytes(val);
+            Array.Reverse(arr);
+            return arr;
+        }
+
         public static ulong ReverseBytes(ulong value) {
             return (value & (ulong)0x00000000000000FFUL) << 56 | (value & (ulong)0x000000000000FF00UL) << 40 |
                    (value & (ulong)0x0000000000FF0000UL) << 24 | (value & (ulong)0x00000000FF000000UL) << 8 |

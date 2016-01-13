@@ -10,43 +10,36 @@ using DroneLibrary.Protocol;
 namespace DroneLibrary.Protocol {
     public struct PacketSetMovement : IPacket {
 
-        public readonly short Pitch, Roll, Yaw, Thrust;
+        public readonly bool Hover;
+        public readonly float Pitch, Roll, Yaw, Thrust;
 
-        public PacketType Type {
-            get { return PacketType.Movement; }
-        }
+        public PacketType Type => PacketType.Movement;
 
         /// <summary>
         /// Erstellt ein neues Packet zur Übermittlung von BewegungsDaten
         /// </summary>
-        /// <param name="pitch">Die Neigung an der X-Achse (-900 bis 900) in Grad x10</param>
-        /// <param name="roll">Die Neigung an der Y-Achse (-900 bis 900) in Grad x10</param>
-        /// <param name="yaw">Die Drehung um die Z-Achse (-900 bis 900) in Grad x10</param>
-        /// <param name="thrust">Der Schub entlang der Z-Achse (-1000 bis 1000) in mm/s</param>
-        public PacketSetMovement(short pitch, short roll, short yaw, short thrust) {
-            if(-900 > pitch || pitch > 900)
-                throw new ArgumentOutOfRangeException("pitch");
-            if(-900 > roll || roll > 900)
-                throw new ArgumentOutOfRangeException("roll");
-            if(-900 > yaw || yaw > 900)
-                throw new ArgumentOutOfRangeException("yaw");
-            if(-1000 > thrust || thrust > 1000)
-                throw new ArgumentOutOfRangeException("thrust");
-
+        /// <param name="pitch">Die Neigung an der X-Achse in Grad</param>
+        /// <param name="roll">Die Neigung an der Y-Achse in Grad</param>
+        /// <param name="yaw">Die Drehung um die Z-Achse in Grad</param>
+        /// <param name="thrust">Der Schub entlang der Z-Achse in von -1 bis 1</param>
+        /// <param name="hover">Gibt an, ob alle anderen Werte ignoriert werden sollen und die Drohne ihre Position halten soll.</param>
+        public PacketSetMovement(float pitch, float roll, float yaw, float thrust, bool hover) {
             Pitch = pitch;
             Roll = roll;
             Yaw = yaw;
             Thrust = thrust;
+            Hover = hover;
         }
 
         public void Write(BinaryWriter writer) {
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Pitch) : Pitch);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Roll) : Roll);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Yaw) : Yaw);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Thrust) : Thrust);
+            writer.Write((byte)(Hover ? 1 : 0));
+            writer.Write(BinaryHelper.WriteFloat(Pitch));
+            writer.Write(BinaryHelper.WriteFloat(Pitch));
+            writer.Write(BinaryHelper.WriteFloat(Pitch));
+            writer.Write(BinaryHelper.WriteFloat(Pitch));
         }
     }
 }
