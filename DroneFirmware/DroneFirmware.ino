@@ -1,6 +1,7 @@
 
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
+#include "Config.h"
 #include "ConfigManager.h"
 #include "EEPROM_MemoryAdapter.h"
 #include "MemoryAdapter.h"
@@ -40,7 +41,7 @@
 #endif
 
 #define BUILD_VERSION 1
-#define VERBOSE_SERIAL_PRINT true
+#define VERBOSE_SERIAL_PRINT false
 
 #define CONTROL_PORT 4711
 #define DATA_PORT 4712
@@ -73,7 +74,7 @@ IPAddress dataFeedSubscriptor;
 //int dataFeedSubscriptorPort = 0;
 
 Gyro gyro(VERBOSE_SERIAL_PRINT);
-ServoManager servos(900, 1100, 1900, 1500, VERBOSE_SERIAL_PRINT);
+ServoManager servos(1100, 1200, 1900, 1500, VERBOSE_SERIAL_PRINT);
 DroneEngine engine(&gyro, &servos, VERBOSE_SERIAL_PRINT);
 
 
@@ -127,8 +128,6 @@ void handleUdpControl() {
 			udpControl.read();
 		return;
 	}
-
-	Serial.println("$ Got Packet");
 
 
 	udpControl.read(controlPacketBuffer, packetSize);
