@@ -30,10 +30,13 @@ namespace DroneControl
 
             connectStatus.Text = string.Format(connectStatus.Text, ipAddress);
 
+
             timeoutTimer = new Timer();
             timeoutTimer.Interval = 10 * 1000; // Timeout von 10 Sekunden
             timeoutTimer.Tick += (object sender, EventArgs args) =>
             {
+                timeoutTimer.Stop();
+
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
                     DialogResult = DialogResult.Cancel;
@@ -42,9 +45,14 @@ namespace DroneControl
                 else
                     Connect();
             };
-            timeoutTimer.Start();
 
             Connect();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            timeoutTimer.Stop();
+            base.OnClosed(e);
         }
 
         /// <summary>
@@ -58,6 +66,8 @@ namespace DroneControl
             // TODO: drone.Connect() einbauen, damit das Event schon gesetzt ist bevor wir verbinden
             if (drone.Ping >= 0) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
                 OnDroneConnected(this, EventArgs.Empty);
+
+            timeoutTimer.Start();
         }
 
         private void OnDroneConnected(object sender, EventArgs args)

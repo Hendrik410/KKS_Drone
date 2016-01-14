@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.ProgressBar progressBar;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectingForm));
             this.connectStatus = new System.Windows.Forms.Label();
             this.abortButton = new System.Windows.Forms.Button();
             progressBar = new System.Windows.Forms.ProgressBar();
@@ -70,6 +71,7 @@
             this.Controls.Add(progressBar);
             this.Controls.Add(this.connectStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConnectingForm";
