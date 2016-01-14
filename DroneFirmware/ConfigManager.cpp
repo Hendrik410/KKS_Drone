@@ -62,3 +62,42 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 	memory->end();
 
 }
+
+Config ConfigManager::getDefault() {
+	Config config;
+
+	config.DroneName = "Drone";
+
+	config.NetworkSSID = "Drone";
+	config.NetworkPassword = "12345678";
+
+	config.NetworkControlPort = 4711;
+	config.NetworkDataPort = 4712;
+	config.NetworkPacketBufferSize = 128;
+
+	config.VerboseSerialLog = true;
+	config.MaxTemperature = 60;
+
+	config.TrimPitch = 0;
+	config.TrimRoll = 0;
+	config.TrimYaw = 0;
+	config.TrimThrottle = 0;
+
+	config.ServoMin = 1100;
+	config.ServoMax = 1900;
+	config.ServoIdle = 1200;
+	config.ServoHover = 1500;
+
+	config.DMPOffsetX = 220;
+	config.DMPOffsetY = 76;
+	config.DMPOffsetZ = -85;
+	config.DMPOffsetAccel = 1788;
+
+	config.PinFrontLeft = 12;
+	config.PinFrontRight = 13;
+	config.PinBackLeft = 16;
+	config.PinBackRight = 14;
+	config.PinLed = 0;
+
+	return config;
+}

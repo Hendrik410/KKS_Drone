@@ -4,17 +4,13 @@
 
 #include "ServoManager.h"
 
-ServoManager::ServoManager(int offValue, int idleValue,int hoverValue, int maxValue, bool debug_output) {
-	this->servoOffValue = offValue;
-	this->servoIdleValue = idleValue;
-	this->servoHoverValue = hoverValue;
-	this->servoMaxValue = maxValue;
-	this->debug_output = debug_output;
+ServoManager::ServoManager(Config* config) {
+	this->config = config;
 
-	servoFLValue = offValue;
-	servoFRValue = offValue;
-	servoBLValue = offValue;
-	servoBRValue = offValue;
+	servoFLValue = config->ServoMin;
+	servoFRValue = config->ServoMin;
+	servoBLValue = config->ServoMin;
+	servoBRValue = config->ServoMin;
 }
 
 
@@ -24,21 +20,21 @@ void ServoManager::init(int pinFL, int pinFR, int pinBL, int pinBR) {
 	backLeft.attach(pinBL);
 	backRight.attach(pinBR);
 
-	setAllServos(servoOffValue);
+	setAllServos(config->ServoMin);
 }
 
 void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
-	servoFLValue = forceWrite ? fl : MathHelper::clampValue(fl, servoOffValue, servoMaxValue);
-	servoFRValue = forceWrite ? fr : MathHelper::clampValue(fr, servoOffValue, servoMaxValue);
-	servoBLValue = forceWrite ? bl : MathHelper::clampValue(bl, servoOffValue, servoMaxValue);
-	servoBRValue = forceWrite ? br : MathHelper::clampValue(br, servoOffValue, servoMaxValue);
+	servoFLValue = forceWrite ? fl : MathHelper::clampValue(fl, config->ServoMin, config->ServoMax);
+	servoFRValue = forceWrite ? fr : MathHelper::clampValue(fr, config->ServoMin, config->ServoMax);
+	servoBLValue = forceWrite ? bl : MathHelper::clampValue(bl, config->ServoMin, config->ServoMax);
+	servoBRValue = forceWrite ? br : MathHelper::clampValue(br, config->ServoMin, config->ServoMax);
 
 	frontLeft.writeMicroseconds(servoFLValue);
 	frontRight.writeMicroseconds(servoFRValue);
 	backLeft.writeMicroseconds(servoBLValue);
 	backRight.writeMicroseconds(servoBRValue);
 
-	if(debug_output) {
+	if(config->VerboseSerialLog) {
 		Serial.print("$ Set Servos to: ");
 		Serial.print(servoFLValue);
 		Serial.print(", ");
@@ -56,10 +52,10 @@ void ServoManager::setAllServos(int val, bool forceWrite) {
 }
 
 void ServoManager::setRatio(float fl, float fr, float bl, float br) {
-	int targetFL = MathHelper::mapRatio(fl, servoOffValue, servoMaxValue, servoIdleValue);
-	int targetFR = MathHelper::mapRatio(fr, servoOffValue, servoMaxValue, servoIdleValue);
-	int targetBL = MathHelper::mapRatio(bl, servoOffValue, servoMaxValue, servoIdleValue);
-	int targetBR = MathHelper::mapRatio(br, servoOffValue, servoMaxValue, servoIdleValue);
+	int targetFL = MathHelper::mapRatio(fl, config->ServoMin, config->ServoMax, config->ServoHover);
+	int targetFR = MathHelper::mapRatio(fr, config->ServoMin, config->ServoMax, config->ServoHover);
+	int targetBL = MathHelper::mapRatio(bl, config->ServoMin, config->ServoMax, config->ServoHover);
+	int targetBR = MathHelper::mapRatio(br, config->ServoMin, config->ServoMax, config->ServoHover);
 
 	setServos(targetFL, targetFR, targetBL, targetBR);
 }
@@ -71,12 +67,12 @@ void ServoManager::setRationAll(float ratio) {
 
 void ServoManager::armMotors() {
 	if(!isArmed()) {
-		setAllServos(servoIdleValue);
+		setAllServos(config->ServoIdle);
 		_isArmed = true;
 	}
 }
 
 void ServoManager::disarmMotors() {
-	setAllServos(servoOffValue);
+	setAllServos(config->ServoIdle);
 	_isArmed = false;
 }

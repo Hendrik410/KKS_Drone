@@ -23,7 +23,7 @@
 class DroneEngine
 {
  protected:
-	 bool debug_output;
+	 Config* config;
 	 long lastPhysicsCalc;
 	 long lastYawTargetCalc;
 	 long lastMovementUpdate;
@@ -44,7 +44,7 @@ class DroneEngine
 	 float targetRotationSpeed;
 
  public:
-	explicit DroneEngine(Gyro* gyro, ServoManager* servos, bool debug_output);
+	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
 
 	void arm();
 	void disarm() const;

@@ -4,36 +4,41 @@
 
 #include "Gyro.h"
 
-Gyro::Gyro(bool debug_output) {
-	this->debug_output = debug_output;
+Gyro::Gyro(Config* config) {
+	this->config = config;
+
+	this->pitchOffset = 0;
+	this->rollOffset = 0;
+	this->yawOffset = 0;
 }
 
 
 void Gyro::init(){
 
-	if(debug_output)
+	if(config->VerboseSerialLog)
 		Serial.print("$ Initialize MPU6050 .. ");
 	_MPU6050.reset();
 	_MPU6050.initialize();
 	if(!_MPU6050.testConnection()) {
-		Serial.println("failed!");
-		//while(true) wdt_reset();
+		if(config->VerboseSerialLog)
+			Serial.println("failed!");
+		//while(true) wdt_reset(); //ToDo hang
 	}
-	if(debug_output)
+	if(config->VerboseSerialLog)
 		Serial.println("done");
 
-	if(debug_output)
+	if(config->VerboseSerialLog)
 		Serial.print("$ Initialize DMP .. ");
 	int result = _MPU6050.dmpInitialize();
 	if(result) {
-		if(debug_output) {
+		if(config->VerboseSerialLog) {
 			Serial.print("failed (");
 			Serial.print(result);
 			Serial.println(")!");
 		}
 		//while(true) wdt_reset();
 	}
-	if(debug_output)
+	if(config->VerboseSerialLog)
 		Serial.println("done");
 
 	MPU6050_Packet_Size = _MPU6050.dmpPacketSize;
@@ -54,7 +59,7 @@ void Gyro::update() {
 
 	if(_MPU6050.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
 		_MPU6050.resetFIFO();
-		if(debug_output)
+		if(config->VerboseSerialLog)
 			Serial.println("$ FIFO overflow!");
 	}
 
@@ -65,8 +70,6 @@ void Gyro::update() {
 
 	while(fifoCount > MPU6050_Packet_Size) {
 		_MPU6050.getFIFOBytes(MPU6050_FIFO_Buffer, MPU6050_Packet_Size);
-
-		fifoCount -= MPU6050_Packet_Size;
 
 		// get Euler angles in radiant
 		_MPU6050.dmpGetQuaternion(&q, MPU6050_FIFO_Buffer);

@@ -66,6 +66,8 @@ struct Config {
 	byte PinBackLeft;
 	//The pin of the back-right motor
 	byte PinBackRight;
+	//The pin of the LED
+	byte PinLed;
 };
 
 #endif

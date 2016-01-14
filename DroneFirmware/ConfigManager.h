@@ -22,6 +22,7 @@ class ConfigManager
  public:
 	 static Config loadConfig(MemoryAdaptor* memory);
 	 static void saveConfig(MemoryAdaptor* memory, const Config config);
+	 static Config getDefault();
 };
 
 #endif

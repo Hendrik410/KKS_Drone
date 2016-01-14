@@ -4,6 +4,7 @@
 #define _GYRO_h
 
 #include "arduino.h"
+#include "Config.h"
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include <Wire/Wire.h>
@@ -19,7 +20,7 @@
 class Gyro
 {
  protected:
-	 bool debug_output;
+	 Config* config;
 
 	 MPU6050 _MPU6050;
 	 int MPU6050_Packet_Size = 0;
@@ -39,7 +40,7 @@ class Gyro
 	 float yawOffset;
 
  public:
-	explicit Gyro(bool debug_output);
+	explicit Gyro(Config* config);
 
 	void init();
 	void update();

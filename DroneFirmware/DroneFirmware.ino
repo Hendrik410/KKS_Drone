@@ -22,6 +22,7 @@
 #define byte unsigned char
 
 #else
+#include "Config.h"
 #include "ConfigManager.h"
 #include "EEPROM_MemoryAdapter.h"
 #include "MemoryAdapter.h"
@@ -41,21 +42,11 @@
 #endif
 
 #define BUILD_VERSION 1
-#define VERBOSE_SERIAL_PRINT false
-
-#define CONTROL_PORT 4711
-#define DATA_PORT 4712
-
-#define PACKET_BUFFER_SIZE 128
-
-#define SERVO_FR_PIN 16
-#define SERVO_FL_PIN 14
-#define SERVO_BR_PIN 12
-#define SERVO_BL_PIN 13
-
-#define LED_PIN 0
 
 // #################### Global Variables #####################
+
+//The configuration of the drone
+Config config;
 
 /* Set these to your desired credentials. */
 const char *ssid = "Kugelmatik";
@@ -64,18 +55,18 @@ const char *password = "123456abc";
 uint32_t lastRevision = 0;
 
 WiFiUDP udpControl;
-byte controlPacketBuffer[PACKET_BUFFER_SIZE];
+byte* controlPacketBuffer;
 
 WiFiUDP udpData;
-byte dataPacketBuffer[PACKET_BUFFER_SIZE];
+byte* dataPacketBuffer;
 
 bool dataFeedSubscribed = false;
 IPAddress dataFeedSubscriptor;
 //int dataFeedSubscriptorPort = 0;
 
-Gyro gyro(VERBOSE_SERIAL_PRINT);
-ServoManager servos(1100, 1200, 1900, 1500, VERBOSE_SERIAL_PRINT);
-DroneEngine engine(&gyro, &servos, VERBOSE_SERIAL_PRINT);
+Gyro* gyro;
+ServoManager* servos;
+DroneEngine* engine;
 
 
 bool blinkRequested = false;
@@ -145,7 +136,7 @@ void handleUdpControl() {
 	if(lastRevision >= revision && type != ResetRevisionPacket && type != PingPacket)
 		return;
 
-	if(VERBOSE_SERIAL_PRINT) {
+	if(config.VerboseSerialLog) {
 		Serial.print("$ Got Packet with rev ");
 		Serial.print(revision);
 		Serial.print(" and type ");
@@ -172,23 +163,23 @@ void handleUdpControl() {
 
 			bool ignoreNotArmed = controlPacketBuffer[17] > 0;
 
-			if(servos.isArmed() || ignoreNotArmed) {
-				servos.setServos(fl, fr, bl, br);
+			if(servos->isArmed() || ignoreNotArmed) {
+				servos->setServos(fl, fr, bl, br);
 			}
 			packetHandled = true;
 		}
 		break;
 		case StopPacket:
-			engine.stop();
+			engine->stop();
 			packetHandled = true;
 			break;
 		case ArmPacket:
 			if(packetSize == 13) {
 				if(controlPacketBuffer[9] == 'A' && controlPacketBuffer[10] == 'R' && controlPacketBuffer[11] == 'M') {
 					if(controlPacketBuffer[12] > 0)
-						engine.arm();
+						engine->arm();
 					else
-						engine.disarm();
+						engine->disarm();
 
 					packetHandled = true;
 				}
@@ -218,12 +209,12 @@ void handleUdpControl() {
 			buf[9] = BUILD_VERSION;
 			BinaryHelper::writeUint32(buf, 10, lastRevision);
 			
-			buf[14] = engine.isArmed() ? 1 : 0;
+			buf[14] = engine->isArmed() ? 1 : 0;
 
-			BinaryHelper::writeUint16(buf, 15, servos.FL());
-			BinaryHelper::writeUint16(buf, 19, servos.FR());
-			BinaryHelper::writeUint16(buf, 23, servos.BL());
-			BinaryHelper::writeUint16(buf, 27, servos.BR());
+			BinaryHelper::writeUint16(buf, 15, servos->FL());
+			BinaryHelper::writeUint16(buf, 19, servos->FR());
+			BinaryHelper::writeUint16(buf, 23, servos->BL());
+			BinaryHelper::writeUint16(buf, 27, servos->BR());
 
 			udpControl.beginPacket(udpControl.remoteIP(), udpControl.remotePort());
 			udpControl.write(buf, 30);
@@ -245,7 +236,7 @@ void handleUdpControl() {
 			break;
 
 		case CalibrateGyro:
-			gyro.setAsZero();
+			gyro->setAsZero();
 			packetHandled = true;
 			break;
 
@@ -278,12 +269,12 @@ void handleUdpData() {
 void handleBlink() {
 	if(blinkExecuting) {
 		if(millis() - blinkStart > 250) {
-			digitalWrite(LED_PIN, LOW);
+			digitalWrite(config.PinLed, LOW);
 			blinkExecuting = false;
 		}
 	} else if(blinkRequested) {
 		blinkStart = millis();
-		digitalWrite(LED_PIN, HIGH);
+		digitalWrite(config.PinLed, HIGH);
 		blinkRequested = false;
 		blinkExecuting = true;
 	}
@@ -291,39 +282,47 @@ void handleBlink() {
 
 
 void setup() {
-	pinMode(LED_PIN, OUTPUT);
-	digitalWrite(LED_PIN, HIGH);
 
 	Serial.begin(74880);
-	if(VERBOSE_SERIAL_PRINT)
-		Serial.println("$ Drone V1 booting");
+
+	config = ConfigManager::getDefault();
+	if(config.VerboseSerialLog)
+		Serial.println("$ Drone V1 booting\n$ Configuration loaded");
+
+	//setup status LED
+	pinMode(config.PinLed, OUTPUT);
+	digitalWrite(config.PinLed, HIGH);
+
+	//allocate buffer memory
+	controlPacketBuffer = new byte[config.NetworkPacketBufferSize];
+	dataPacketBuffer = new byte[config.NetworkPacketBufferSize];
 
 
-	if(VERBOSE_SERIAL_PRINT)
+	if(config.VerboseSerialLog)
 		Serial.println("$ Configuring network");
 
 
 	WiFi.mode(WIFI_STA);
-	WiFi.begin(ssid, password);
+	WiFi.begin(config.NetworkSSID, config.NetworkPassword);
 	int connectStartTime = millis();
 	while(WiFi.waitForConnectResult() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
 		delay(20);
 	}
 
 	if(WiFi.waitForConnectResult() != WL_CONNECTED) {
-		if(VERBOSE_SERIAL_PRINT)
+		if(config.VerboseSerialLog)
 			Serial.println("$ Access Point not found, creating own ...");
 
 		WiFi.mode(WIFI_AP);
 		//setup ap
-		WiFi.softAP(ssid, password);
+		WiFi.softAP(config.NetworkSSID, config.NetworkPassword);
 		IPAddress myIP = WiFi.softAPIP();
-		if(VERBOSE_SERIAL_PRINT) {
+		if(config.VerboseSerialLog) {
 			Serial.print("$ AP IP address: ");
 			Serial.println(myIP);
 		}
 	} else {
-		if(VERBOSE_SERIAL_PRINT) {
+		if(config.VerboseSerialLog) {
 			Serial.println("$ Successfully connected to acces point");
 			IPAddress myIP = WiFi.localIP();
 			Serial.print("$ IP Adress: ");
@@ -334,42 +333,44 @@ void setup() {
 
 
 	//start udp servers
-	udpControl.begin(CONTROL_PORT);
-	if(VERBOSE_SERIAL_PRINT) {
+	udpControl.begin(config.NetworkControlPort);
+	if(config.VerboseSerialLog) {
 		Serial.print("$ Started UDP on port ");
-		Serial.print(CONTROL_PORT);
+		Serial.print(config.NetworkControlPort);
 		Serial.println(" for control");
 	}
 
-	udpData.begin(DATA_PORT);
-	if(VERBOSE_SERIAL_PRINT) {
+	udpData.begin(config.NetworkDataPort);
+	if(config.VerboseSerialLog) {
 		Serial.print("$ Started UDP on port ");
-		Serial.print(DATA_PORT);
+		Serial.print(config.NetworkDataPort);
 		Serial.println(" for data");
 	}
 
 	//setup servos
-	servos.init(SERVO_FL_PIN, SERVO_FR_PIN, SERVO_BL_PIN, SERVO_BR_PIN);
+	servos = new ServoManager(&config);
+	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
 
 
 	//setup MPU6050
+	gyro = new Gyro(&config);
 	Wire.begin(SDA, SCL);
-	gyro.init();
+	gyro->init();
 
 	
-	
+	engine = new DroneEngine(gyro, servos, &config);
 
-	digitalWrite(LED_PIN, LOW);
-	if(VERBOSE_SERIAL_PRINT)
+	digitalWrite(config.PinLed, LOW);
+	if(config.VerboseSerialLog)
 		Serial.println("$ Drone boot successfully");
 }
 
 void loop() {
 	//keep gyro data updated
-	gyro.update();
+	gyro->update();
 
 	//handle drone physics
-	engine.handle();
+	engine->handle();
 
 	if(millis() - lastLoopTime >= delayTime) {
 		handleUdpControl();

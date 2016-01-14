@@ -3,11 +3,8 @@
 #ifndef _SERVOMANAGER_h
 #define _SERVOMANAGER_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
+#include "arduino.h"
+#include "Config.h"
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include <Servo/src/Servo.h>
@@ -22,12 +19,7 @@
 class ServoManager
 {
  protected:
-	 bool debug_output;
-
-	 int servoOffValue;
-	 int servoIdleValue;
-	 int servoHoverValue;
-	 int servoMaxValue;
+	 Config* config;
 
 	 // The values for the Servos
 	 int servoFLValue;
@@ -44,7 +36,7 @@ class ServoManager
 	 bool _isArmed = false;
 
  public:
-	 explicit ServoManager(int offValue, int idleValue,int hoverValue, int maxValue, bool debug_output);
+	 explicit ServoManager(Config* config);
 
 	void init(int pinFL, int pinFR, int pinBL, int pinBR);
 	void setServos(int fl, int fr, int bl, int br, bool forceWrite = false);

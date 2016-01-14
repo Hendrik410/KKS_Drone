@@ -4,10 +4,10 @@
 
 #include "DroneEngine.h"
 
-DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, bool debug_output) {
+DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->gyro = gyro;
 	this->servos = servos;
-	this->debug_output = debug_output;
+	this->config = config;
 	this->lastPhysicsCalc = 0;
 
 	setMaxTilt(30);
