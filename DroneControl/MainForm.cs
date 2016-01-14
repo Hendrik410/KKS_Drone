@@ -44,7 +44,7 @@ namespace DroneControl
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
             if (pingLabel.InvokeRequired)
-                pingLabel.Invoke(new Action<object, EventArgs>(Drone_OnPingChange), sender, e);
+                pingLabel.Invoke(new EventHandler(Drone_OnPingChange), sender, e);
             else
             {
                 if (drone.Ping < 0)
