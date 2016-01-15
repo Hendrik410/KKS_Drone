@@ -47,8 +47,8 @@ class DroneEngine
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
 
 	void arm();
-	void disarm() const;
-	void stop() const;
+	void disarm();
+	void stop();
 
 	bool isArmed() const;
 	

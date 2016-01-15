@@ -12,6 +12,7 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
+	stop();
 }
 
 
@@ -19,14 +20,17 @@ void DroneEngine::arm(){
 	gyro->setAsZero();
 	setTargetMovement(0, 0, 0);
 	servos->armMotors();
+	_isArmed = true;
 }
 
-void DroneEngine::disarm() const {
+void DroneEngine::disarm() {
 	servos->disarmMotors();
+	_isArmed = false;
 }
 
-void DroneEngine::stop() const {
+void DroneEngine::stop() {
 	servos->disarmMotors();
+	_isArmed = false;
 }
 
 void DroneEngine::handle() {
@@ -48,6 +52,8 @@ void DroneEngine::handle() {
 		float ratioBL = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Counterclockwise);
 		float ratioBR = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Clockwise);
 
+		if(config->VerboseSerialLog)
+			Serial.println("$ Set Servos from Engine.handle");
 		servos->setRatio(ratioFL, ratioFR, ratioBL, ratioBR);
 
 		lastPhysicsCalc = millis();

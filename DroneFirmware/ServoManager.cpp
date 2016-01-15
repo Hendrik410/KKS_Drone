@@ -73,6 +73,6 @@ void ServoManager::armMotors() {
 }
 
 void ServoManager::disarmMotors() {
-	setAllServos(config->ServoIdle);
+	setAllServos(config->ServoMin);
 	_isArmed = false;
 }
