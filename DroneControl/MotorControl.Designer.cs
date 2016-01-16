@@ -28,28 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.Label rightBackLabel;
+            System.Windows.Forms.Label rightFrontLabel;
+            System.Windows.Forms.Label leftBackLabel;
+            System.Windows.Forms.Label leftFrontLabel;
             this.motorsGroupBox = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.rightTopTextBox = new System.Windows.Forms.TextBox();
-            this.rightTopLabel = new System.Windows.Forms.Label();
-            this.leftBottomTextBox = new System.Windows.Forms.TextBox();
-            this.leftBottomLabel = new System.Windows.Forms.Label();
-            this.leftTopTextBox = new System.Windows.Forms.TextBox();
-            this.leftTopLabel = new System.Windows.Forms.Label();
+            this.rightBackTextBox = new System.Windows.Forms.TextBox();
+            this.rightFrontTextBox = new System.Windows.Forms.TextBox();
+            this.leftBackTextBox = new System.Windows.Forms.TextBox();
+            this.leftFrontTextBox = new System.Windows.Forms.TextBox();
+            rightBackLabel = new System.Windows.Forms.Label();
+            rightFrontLabel = new System.Windows.Forms.Label();
+            leftBackLabel = new System.Windows.Forms.Label();
+            leftFrontLabel = new System.Windows.Forms.Label();
             this.motorsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // motorsGroupBox
             // 
-            this.motorsGroupBox.Controls.Add(this.textBox1);
-            this.motorsGroupBox.Controls.Add(this.label2);
-            this.motorsGroupBox.Controls.Add(this.rightTopTextBox);
-            this.motorsGroupBox.Controls.Add(this.rightTopLabel);
-            this.motorsGroupBox.Controls.Add(this.leftBottomTextBox);
-            this.motorsGroupBox.Controls.Add(this.leftBottomLabel);
-            this.motorsGroupBox.Controls.Add(this.leftTopTextBox);
-            this.motorsGroupBox.Controls.Add(this.leftTopLabel);
+            this.motorsGroupBox.Controls.Add(this.rightBackTextBox);
+            this.motorsGroupBox.Controls.Add(rightBackLabel);
+            this.motorsGroupBox.Controls.Add(this.rightFrontTextBox);
+            this.motorsGroupBox.Controls.Add(rightFrontLabel);
+            this.motorsGroupBox.Controls.Add(this.leftBackTextBox);
+            this.motorsGroupBox.Controls.Add(leftBackLabel);
+            this.motorsGroupBox.Controls.Add(this.leftFrontTextBox);
+            this.motorsGroupBox.Controls.Add(leftFrontLabel);
             this.motorsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.motorsGroupBox.Location = new System.Drawing.Point(0, 0);
             this.motorsGroupBox.Name = "motorsGroupBox";
@@ -58,69 +62,69 @@
             this.motorsGroupBox.TabStop = false;
             this.motorsGroupBox.Text = "Motors";
             // 
-            // textBox1
+            // rightBackTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(146, 48);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(61, 20);
-            this.textBox1.TabIndex = 7;
+            this.rightBackTextBox.Location = new System.Drawing.Point(146, 48);
+            this.rightBackTextBox.Name = "rightBackTextBox";
+            this.rightBackTextBox.Size = new System.Drawing.Size(61, 20);
+            this.rightBackTextBox.TabIndex = 7;
             // 
-            // label2
+            // rightBackLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(213, 51);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Left bottom";
+            rightBackLabel.AutoSize = true;
+            rightBackLabel.Location = new System.Drawing.Point(213, 51);
+            rightBackLabel.Name = "rightBackLabel";
+            rightBackLabel.Size = new System.Drawing.Size(59, 13);
+            rightBackLabel.TabIndex = 6;
+            rightBackLabel.Text = "Right back";
             // 
-            // rightTopTextBox
+            // rightFrontTextBox
             // 
-            this.rightTopTextBox.Location = new System.Drawing.Point(146, 22);
-            this.rightTopTextBox.Name = "rightTopTextBox";
-            this.rightTopTextBox.Size = new System.Drawing.Size(61, 20);
-            this.rightTopTextBox.TabIndex = 5;
+            this.rightFrontTextBox.Location = new System.Drawing.Point(146, 22);
+            this.rightFrontTextBox.Name = "rightFrontTextBox";
+            this.rightFrontTextBox.Size = new System.Drawing.Size(61, 20);
+            this.rightFrontTextBox.TabIndex = 5;
             // 
-            // rightTopLabel
+            // rightFrontLabel
             // 
-            this.rightTopLabel.AutoSize = true;
-            this.rightTopLabel.Location = new System.Drawing.Point(213, 25);
-            this.rightTopLabel.Name = "rightTopLabel";
-            this.rightTopLabel.Size = new System.Drawing.Size(67, 13);
-            this.rightTopLabel.TabIndex = 4;
-            this.rightTopLabel.Text = "Right bottom";
+            rightFrontLabel.AutoSize = true;
+            rightFrontLabel.Location = new System.Drawing.Point(213, 25);
+            rightFrontLabel.Name = "rightFrontLabel";
+            rightFrontLabel.Size = new System.Drawing.Size(56, 13);
+            rightFrontLabel.TabIndex = 4;
+            rightFrontLabel.Text = "Right front";
             // 
-            // leftBottomTextBox
+            // leftBackTextBox
             // 
-            this.leftBottomTextBox.Location = new System.Drawing.Point(79, 48);
-            this.leftBottomTextBox.Name = "leftBottomTextBox";
-            this.leftBottomTextBox.Size = new System.Drawing.Size(61, 20);
-            this.leftBottomTextBox.TabIndex = 3;
+            this.leftBackTextBox.Location = new System.Drawing.Point(79, 48);
+            this.leftBackTextBox.Name = "leftBackTextBox";
+            this.leftBackTextBox.Size = new System.Drawing.Size(61, 20);
+            this.leftBackTextBox.TabIndex = 3;
             // 
-            // leftBottomLabel
+            // leftBackLabel
             // 
-            this.leftBottomLabel.AutoSize = true;
-            this.leftBottomLabel.Location = new System.Drawing.Point(13, 51);
-            this.leftBottomLabel.Name = "leftBottomLabel";
-            this.leftBottomLabel.Size = new System.Drawing.Size(60, 13);
-            this.leftBottomLabel.TabIndex = 2;
-            this.leftBottomLabel.Text = "Left bottom";
+            leftBackLabel.AutoSize = true;
+            leftBackLabel.Location = new System.Drawing.Point(13, 51);
+            leftBackLabel.Name = "leftBackLabel";
+            leftBackLabel.Size = new System.Drawing.Size(52, 13);
+            leftBackLabel.TabIndex = 2;
+            leftBackLabel.Text = "Left back";
             // 
-            // leftTopTextBox
+            // leftFrontTextBox
             // 
-            this.leftTopTextBox.Location = new System.Drawing.Point(79, 22);
-            this.leftTopTextBox.Name = "leftTopTextBox";
-            this.leftTopTextBox.Size = new System.Drawing.Size(61, 20);
-            this.leftTopTextBox.TabIndex = 1;
+            this.leftFrontTextBox.Location = new System.Drawing.Point(79, 22);
+            this.leftFrontTextBox.Name = "leftFrontTextBox";
+            this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
+            this.leftFrontTextBox.TabIndex = 1;
             // 
-            // leftTopLabel
+            // leftFrontLabel
             // 
-            this.leftTopLabel.AutoSize = true;
-            this.leftTopLabel.Location = new System.Drawing.Point(13, 25);
-            this.leftTopLabel.Name = "leftTopLabel";
-            this.leftTopLabel.Size = new System.Drawing.Size(43, 13);
-            this.leftTopLabel.TabIndex = 0;
-            this.leftTopLabel.Text = "Left top";
+            leftFrontLabel.AutoSize = true;
+            leftFrontLabel.Location = new System.Drawing.Point(13, 25);
+            leftFrontLabel.Name = "leftFrontLabel";
+            leftFrontLabel.Size = new System.Drawing.Size(49, 13);
+            leftFrontLabel.TabIndex = 0;
+            leftFrontLabel.Text = "Left front";
             // 
             // MotorControl
             // 
@@ -138,13 +142,9 @@
         #endregion
 
         private System.Windows.Forms.GroupBox motorsGroupBox;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox rightTopTextBox;
-        private System.Windows.Forms.Label rightTopLabel;
-        private System.Windows.Forms.TextBox leftBottomTextBox;
-        private System.Windows.Forms.Label leftBottomLabel;
-        private System.Windows.Forms.TextBox leftTopTextBox;
-        private System.Windows.Forms.Label leftTopLabel;
+        private System.Windows.Forms.TextBox rightBackTextBox;
+        private System.Windows.Forms.TextBox rightFrontTextBox;
+        private System.Windows.Forms.TextBox leftBackTextBox;
+        private System.Windows.Forms.TextBox leftFrontTextBox;
     }
 }

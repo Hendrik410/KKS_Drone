@@ -32,6 +32,7 @@ namespace DroneControl
             timer.Start();
 
             drone.OnPingChange += Drone_OnPingChange;
+            motorControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
         }
