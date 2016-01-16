@@ -14,32 +14,23 @@ Gyro::Gyro(Config* config) {
 
 
 void Gyro::init(){
+	Log::info("Gyro", "init()");
 
-	if(config->VerboseSerialLog)
-		Serial.print("$ Initialize MPU6050 .. ");
 	_MPU6050.reset();
 	_MPU6050.initialize();
 	if(!_MPU6050.testConnection()) {
-		if(config->VerboseSerialLog)
-			Serial.println("failed!");
-		//while(true) wdt_reset(); //ToDo hang
+		Log::error("Gyro", "testConnection() failed!");
 	}
-	if(config->VerboseSerialLog)
-		Serial.println("done");
+	else 
+		Log::info("Gyro", "testConnection() OK");
 
-	if(config->VerboseSerialLog)
-		Serial.print("$ Initialize DMP .. ");
+	Log::info("Gyro", "dmpInitialize()");
+	
 	int result = _MPU6050.dmpInitialize();
-	if(result) {
-		if(config->VerboseSerialLog) {
-			Serial.print("failed (");
-			Serial.print(result);
-			Serial.println(")!");
-		}
-		//while(true) wdt_reset();
-	}
-	if(config->VerboseSerialLog)
-		Serial.println("done");
+	if(result) 
+		Log::error("Gyro", "result: %d", result);
+
+	Log::info("Gyro", "done with init");
 
 	MPU6050_Packet_Size = _MPU6050.dmpPacketSize;
 
@@ -59,8 +50,8 @@ void Gyro::update() {
 
 	if(_MPU6050.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
 		_MPU6050.resetFIFO();
-		if(config->VerboseSerialLog)
-			Serial.println("$ FIFO overflow!");
+		
+		Log::error("Gyro", "FIFO overflow!");
 	}
 
 	if(!_MPU6050.getIntDataReadyStatus())

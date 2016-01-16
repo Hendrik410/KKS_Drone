@@ -66,6 +66,9 @@
     <ClInclude Include="PacketType.h">
       <Filter>Header Files\net</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
@@ -93,5 +96,8 @@
       <Filter>Source Files\net</Filter>
     </ClCompile>
     <ClCompile Include="ServoManager.cpp" />
+    <ClCompile Include="Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 
 #include "arduino.h"
 #include "Config.h"
+#include "Log.h"
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include <Wire/Wire.h>

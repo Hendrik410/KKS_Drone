@@ -1,6 +1,7 @@
 
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
+#include "Log.h"
 #include "NetworkManager.h"
 #include "Config.h"
 #include "ConfigManager.h"
@@ -23,6 +24,7 @@
 #define byte unsigned char
 
 #else
+#include "Log.h"
 #include "NetworkManager.h"
 #include "Config.h"
 #include "ConfigManager.h"
@@ -90,20 +92,17 @@ void handleBlink() {
 
 
 void setup() {
-
 	Serial.begin(74880);
+	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
 
 	config = ConfigManager::getDefault();
-	if(config.VerboseSerialLog)
-		Serial.println("$ Drone V1 booting\n$ Configuration loaded");
 
 	//setup status LED
 	pinMode(config.PinLed, OUTPUT);
 	digitalWrite(config.PinLed, HIGH);
 
 
-	if(config.VerboseSerialLog)
-		Serial.println("$ Configuring network");
+	Log::info("Boot", "Init network...");
 
 
 	WiFi.mode(WIFI_STA);
@@ -114,29 +113,19 @@ void setup() {
 	}
 
 	if(WiFi.waitForConnectResult() != WL_CONNECTED) {
-		if(config.VerboseSerialLog)
-			Serial.println("$ Access Point not found, creating own ...");
+		Log::info("Boot", "Access point not found, creating own ...");
 
 		WiFi.mode(WIFI_AP);
-		//setup ap
 		WiFi.softAP(config.NetworkSSID, config.NetworkPassword);
-		IPAddress myIP = WiFi.softAPIP();
-		if(config.VerboseSerialLog) {
-			Serial.print("$ AP IP address: ");
-			Serial.println(myIP);
-		}
-	} else {
-		if(config.VerboseSerialLog) {
-			Serial.println("$ Successfully connected to acces point");
-			IPAddress myIP = WiFi.localIP();
-			Serial.print("$ IP Adress: ");
-			Serial.println(myIP);
-		}
 
+		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
+	} 
+	else {
+		Log::info("Boot", "Successfully connected to access point");
+		Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
 	}
 
-
-	//start udp servers
+	//start network
 	network = new NetworkManager(gyro, servos, engine, &config);
 
 	//setup servos
@@ -153,8 +142,9 @@ void setup() {
 	engine = new DroneEngine(gyro, servos, &config);
 
 	digitalWrite(config.PinLed, LOW);
-	if(config.VerboseSerialLog)
-		Serial.println("$ Drone boot successfully");
+	Log::info("Boot", "done booting. ready.");
+
+	Log::info("Test", "%d", 12345);
 }
 
 void loop() {

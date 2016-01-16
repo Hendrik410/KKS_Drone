@@ -11,17 +11,15 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	this->engine = engine;
 	this->config = config;
 
-	if (config->VerboseSerialLog) {
-		Serial.println("[Network] Starting network manager...");
-		Serial.printf("[Network] [Ports] hello: %d, control: %d, data: %d\n", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
-	}
+	Log::info("Network", "Starting network manager...");
+	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d\n", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
 
-	Serial.println("[Network] Creating UDP sockets...");
+	Log::info("Network", "Creating UDP sockets...");
 
 	helloUDP.begin(config->NetworkHelloPort);
 	controlUDP.begin(config->NetworkControlPort);
 
-	Serial.println("[Network] Creating buffers...");
+	Log::info("Network", "Creating buffers...");
 
 	readBuffer = new PacketBuffer(config->NetworkPacketBufferSize);
 	writeBuffer = new PacketBuffer(config->NetworkPacketBufferSize);
@@ -104,8 +102,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
-	if (config->VerboseSerialLog) 
-		Serial.printf("$ Got Packet with size %d rev %d and type: %d\n", readBuffer->getSize(), revision, type);
+	Log::debug("Network", "Got Packet with size %d rev %d and type: %d", readBuffer->getSize(), revision, type);
 
 	
 	if (ackRequested)
@@ -124,8 +121,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint16_t fr = readBuffer->readUint16();
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
-
-		Serial.printf("raw set packet: %d, %d, %d, %d", fl, fr, bl, br);
 
 		bool ignoreNotArmed = readBuffer->readUint8() > 0;
 

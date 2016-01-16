@@ -84,6 +84,7 @@
     <ClInclude Include="DroneEngine.h" />
     <ClInclude Include="EEPROM_MemoryAdapter.h" />
     <ClInclude Include="Gyro.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="MemoryAdapter.h" />
     <ClInclude Include="MotorEnums.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="DroneEngine.cpp" />
     <ClCompile Include="EEPROM_MemoryAdapter.cpp" />
     <ClCompile Include="Gyro.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="PacketBuffer.cpp" />

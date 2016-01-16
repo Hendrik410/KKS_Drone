@@ -52,8 +52,7 @@ void DroneEngine::handle() {
 		float ratioBL = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Counterclockwise);
 		float ratioBR = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Clockwise);
 
-		if(config->VerboseSerialLog)
-			Serial.println("$ Set Servos from Engine.handle");
+		Log::debug("Engine", "Set Servos from Engine.handle");
 		servos->setRatio(ratioFL, ratioFR, ratioBL, ratioBR);
 
 		lastPhysicsCalc = millis();

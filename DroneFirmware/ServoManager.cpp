@@ -34,8 +34,7 @@ void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
 	backLeft.writeMicroseconds(servoBLValue);
 	backRight.writeMicroseconds(servoBRValue);
 
-	if(config->VerboseSerialLog) 
-		Serial.printf("$ Set Servos to: %d, %d, %d, %d\n", servoFLValue, servoFRValue, servoBLValue, servoBRValue);
+	Log::debug("Servos", "setServos(): %d, %d, %d, %d", servoFLValue, servoFRValue, servoBLValue, servoBRValue);
 }
 
 

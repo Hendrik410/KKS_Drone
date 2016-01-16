@@ -24,11 +24,13 @@ uint32_t PacketBuffer::getBufferSize() const {
 
 bool PacketBuffer::assertPosition(uint32_t length) {
 	if (position + length > size) {
-		Serial.println("[Error] [PacketBuffer] assertPosition() operation not in range of packet");
+		Log::error("PacketBuffer", "assertPosition() operation not in range of packet");
+		Log::error("PacketBuffer", "%d + %d > %d", position, length, size);
 		return false;
 	}
 	if (position + length > bufferSize) {
-		Serial.println("[Error] [PacketBuffer] assertPosition() operation not in range of internal buffer");
+		Log::error("PacketBuffer", "assertPosition() operation not in range of internal buffer");
+		Log::error("PacketBuffer", "%d + %d > %d", position, length, bufferSize);
 		return false;
 	}
 	return true;
@@ -67,7 +69,8 @@ uint32_t PacketBuffer::getSize() const {
 
 void PacketBuffer::setSize(uint32_t size) {
 	if (size > bufferSize) {
-		Serial.println("[Error] [PacketBuffer] setSize() operation not in range of packet");
+		Log::error("PacketBuffer", "setSize() operation not in range of packet");
+		Log::error("PacketBuffer", "%d > %d", size, bufferSize);
 		return;
 	}
 

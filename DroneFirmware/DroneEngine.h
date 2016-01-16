@@ -9,6 +9,7 @@
 #include "ServoManager.h"
 #include "Gyro.h"
 #include "MathHelper.h"
+#include "Log.h"
 
 #define byte unsigned char
 #else
@@ -16,6 +17,7 @@
 #include "ServoManager.h"
 #include "Gyro.h"
 #include "MathHelper.h"
+#include "Log.h"
 #endif
 
 #define PHYSICS_CALC_DELAY_MS 20

@@ -10,6 +10,7 @@
 #endif
 
 #include "BinaryHelper.h"
+#include "Log.h"
 
 class PacketBuffer {
 private:
