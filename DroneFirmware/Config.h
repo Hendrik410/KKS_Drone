@@ -19,6 +19,10 @@ struct Config {
 	char* NetworkSSID;
 	//The password of the WiFi network
 	char* NetworkPassword;
+
+	//The UDP-Port for the hello packets
+	uint16_t NetworkHelloPort;
+
 	//The UDP-Port for the control packets
 	uint16_t NetworkControlPort;
 	//The UDP-Port for the data packets

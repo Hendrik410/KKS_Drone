@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="Drone.cs" />
+    <Compile Include="DroneEntry.cs" />
+    <Compile Include="DroneList.cs" />
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
     <Compile Include="Config.cs" />

@@ -29,6 +29,11 @@ namespace DroneLibrary
         public bool LogPingPacket { get; set; }
 
         [Category("Network")]
+        [Description("Hello-Port der UDP-Verbindung zu der Drohne")]
+        [Range(0, 65535)]
+        public int ProtocolHelloPort { get; set; }
+
+        [Category("Network")]
         [Description("Control-Port der UDP-Verbindung zu der Drohne")]
         [Range(0, 65535)]
         public int ProtocolControlPort { get; set; }
@@ -53,6 +58,7 @@ namespace DroneLibrary
 
         public Config()
         {
+            ProtocolHelloPort = 4710;
             ProtocolControlPort = 4711;
             ProtocolDataPort = 4712;
             VerbosePacketSending = true;

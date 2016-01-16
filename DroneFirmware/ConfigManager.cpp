@@ -71,6 +71,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkSSID = "Drone";
 	config.NetworkPassword = "12345678";
 
+	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 128;

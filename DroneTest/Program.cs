@@ -17,7 +17,7 @@ namespace DroneTest {
                 VerbosePacketSending = true,
                 VerbosePacketReceive = true
             };
-            Drone drone = new Drone(IPAddress.Parse("192.168.4.1"), config);
+            Drone drone = new Drone(IPAddress.Parse("192.168.178.26"), config);
             while(drone.Ping == -1) {
                 drone.SendPing();
                 Thread.Sleep(16);

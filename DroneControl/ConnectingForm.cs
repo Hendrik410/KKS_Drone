@@ -17,7 +17,9 @@ namespace DroneControl
         private IPAddress ipAddress;
 
         private Timer timeoutTimer;
-        private Drone drone;
+        private Timer pingTimer;
+
+        public Drone Drone { get; private set; }
 
         public ConnectingForm(IPAddress ipAddress)
         {
@@ -36,6 +38,7 @@ namespace DroneControl
             timeoutTimer.Tick += (object sender, EventArgs args) =>
             {
                 timeoutTimer.Stop();
+                pingTimer.Stop();
 
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
@@ -43,7 +46,17 @@ namespace DroneControl
                     Close();
                 }
                 else
-                    Connect();
+                {
+                    timeoutTimer.Start();
+                    pingTimer.Start();
+                }
+            };
+
+            pingTimer = new Timer();
+            pingTimer.Interval = 50;
+            pingTimer.Tick += (object sender, EventArgs args) =>
+            {
+                Drone.SendPing();
             };
 
             Connect();
@@ -60,28 +73,32 @@ namespace DroneControl
         /// </summary>
         private void Connect()
         {
-            drone = new Drone(ipAddress, new Config());
-            drone.OnConnected += OnDroneConnected;
+            Drone = new Drone(ipAddress, new Config());
+            Drone.OnConnected += OnDroneConnected;
 
             // TODO: drone.Connect() einbauen, damit das Event schon gesetzt ist bevor wir verbinden
-            if (drone.Ping >= 0) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
+            if (Drone.Ping >= 0) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
                 OnDroneConnected(this, EventArgs.Empty);
 
             timeoutTimer.Start();
+            pingTimer.Start();
         }
 
         private void OnDroneConnected(object sender, EventArgs args)
         {
-            new MainForm(drone).Show();
-
-            DialogResult = DialogResult.OK;
-            Close();
+            if (InvokeRequired)
+                Invoke(new EventHandler(OnDroneConnected), sender, args);
+            else
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         private void abortButton_Click(object sender, EventArgs e)
         {
-            if (drone != null)
-                drone.Dispose();
+            if (Drone != null)
+                Drone.Dispose();
 
             DialogResult = DialogResult.Abort;
             Close();

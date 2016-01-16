@@ -453,7 +453,7 @@ namespace DroneLibrary
                             throw new InvalidDataException("Packet is not long enough.");
 
                         int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10) {
+                        if (timeSpan > 1000 * 10 || Ping < 0) {
                             OnConnected?.Invoke(this, EventArgs.Empty);
                         }
 
