@@ -45,7 +45,7 @@ namespace DroneLibrary
                 writer.Write((byte)'Y');
                 writer.Write((byte)1);
 
-                client.Send(stream.GetBuffer(), (int)stream.Length, new IPEndPoint(IPAddress.Parse("192.168.178.255"), config.ProtocolHelloPort));
+                client.Send(stream.GetBuffer(), (int)stream.Length, new IPEndPoint(NetworkHelper.GetLocalBroadcastAddress(), config.ProtocolHelloPort));
             }
         }
 
