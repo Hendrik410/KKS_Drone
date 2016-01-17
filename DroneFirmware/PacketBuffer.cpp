@@ -145,8 +145,16 @@ void PacketBuffer::write(uint8_t* buffer, int length) {
 }
 
 void PacketBuffer::write(uint8_t* buffer, int length, int offset) {
-	uint8_t* dest = this->data + addAndAssertPosition(sizeof(uint8_t) * length);
+	int size = sizeof(uint8_t) * length;
+	uint8_t* dest = this->data + addAndAssertPosition(size);
 	uint8_t* source = buffer + offset;
 
-	memcpy(dest, source, length);
+	memcpy(dest, source, size);
+}
+
+void PacketBuffer::writeString(char* str) {
+	int size = sizeof(char) * (strlen(str) + 1); // mit 0 Char am Ende
+
+	uint8_t* dest = this->data + addAndAssertPosition(size);
+	memcpy(dest, str, size);
 }

@@ -63,6 +63,8 @@ public:
 
 	void write(uint8_t* buffer, int length);
 	void write(uint8_t* buffer, int offset, int length);
+
+	void writeString(char* str);
 };
 #endif
 
