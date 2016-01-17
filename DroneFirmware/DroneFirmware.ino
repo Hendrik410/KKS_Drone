@@ -129,21 +129,22 @@ void setup() {
 		Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
 	}
 
-	//start network
-	network = new NetworkManager(gyro, servos, engine, &config);
 
 	//setup servos
 	servos = new ServoManager(&config);
 	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
-
 
 	//setup MPU6050
 	gyro = new Gyro(&config);
 	Wire.begin(SDA, SCL);
 	gyro->init();
 
-	
+	//setup calculation engine
 	engine = new DroneEngine(gyro, servos, &config);
+
+	//start network
+	network = new NetworkManager(gyro, servos, engine, &config);
+
 
 	digitalWrite(config.PinLed, LOW);
 	Log::info("Boot", "done booting. ready.");

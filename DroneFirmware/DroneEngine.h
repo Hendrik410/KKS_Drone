@@ -22,6 +22,12 @@
 
 #define PHYSICS_CALC_DELAY_MS 20
 
+enum DroneState {
+	State_Idle,
+	State_Armed,
+	State_Flying
+};
+
 class DroneEngine
 {
  protected:
@@ -31,7 +37,7 @@ class DroneEngine
 	 long lastMovementUpdate;
 	 long maxMovementUpdate = 200;
 
-	 bool _isArmed;
+	 DroneState _state;
 
 	 Gyro* gyro;
 	 ServoManager* servos;
@@ -52,9 +58,12 @@ class DroneEngine
 	void disarm();
 	void stop();
 
-	bool isArmed() const;
+	DroneState state() const;
 	
 	void handle();
+
+	void setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite = false) const;
+	void setRawServoValues(int all, bool forceWrite = false) const;
 
 	void setMaxTilt(float tilt);
 	void setMaxRotationSpeed(float rotaionSpeed);

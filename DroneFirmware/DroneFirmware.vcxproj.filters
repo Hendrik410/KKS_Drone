@@ -98,8 +98,10 @@
     <ClCompile Include="NetworkManager.cpp">
       <Filter>Source Files\net</Filter>
     </ClCompile>
-    <ClCompile Include="ServoManager.cpp" />
     <ClCompile Include="Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServoManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

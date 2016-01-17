@@ -11,18 +11,15 @@ namespace DroneLibrary.Protocol {
     public struct PacketSetRawValues : IPacket {
 
         public readonly QuadMotorValues Values;
-        public readonly bool IgnoreNotArmed;
 
         public PacketType Type => PacketType.SetRawValues;
 
-        public PacketSetRawValues(ushort fl, ushort fr, ushort bl, ushort br, bool ignoreNotArmed) {
+        public PacketSetRawValues(ushort fl, ushort fr, ushort bl, ushort br) {
             this.Values = new QuadMotorValues(fl, fr, bl, br);
-            this.IgnoreNotArmed = ignoreNotArmed;
         }
 
-        public PacketSetRawValues(QuadMotorValues values, bool ignoreNotArmed) {
+        public PacketSetRawValues(QuadMotorValues values) {
             this.Values = values;
-            this.IgnoreNotArmed = ignoreNotArmed;
         }
 
         public void Write(BinaryWriter writer) {
@@ -33,7 +30,6 @@ namespace DroneLibrary.Protocol {
             writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.FrontRight) : Values.FrontRight);
             writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.BackLeft) : Values.BackLeft);
             writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.BackRight) : Values.BackRight);
-            writer.Write((byte)(IgnoreNotArmed ? 1 : 0));
         }
     }
 }

@@ -123,7 +123,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case RawSetPacket: {
 		//set the 4 motor values raw
-		if (readBuffer->getSize() < 18)
+		if (readBuffer->getSize() < 17)
 			return;
 
 		uint16_t fl = readBuffer->readUint16();
@@ -131,10 +131,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
 
-		bool ignoreNotArmed = readBuffer->readUint8() > 0;
-
-		if (servos->isArmed() || ignoreNotArmed)
-			servos->setServos(fl, fr, bl, br);
+		engine->setRawServoValues(fl, fr, bl, br);
 
 		break;
 	}
@@ -167,7 +164,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 
-		writeBuffer->write(byte(engine->isArmed() ? 1 : 0));
+		writeBuffer->write(byte(engine->state() == State_Armed ? 1 : 0));
 
 		writeBuffer->write(uint16_t(servos->FL()));
 		writeBuffer->write(uint16_t(servos->FR()));

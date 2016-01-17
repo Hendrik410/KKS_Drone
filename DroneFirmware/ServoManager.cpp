@@ -54,16 +54,3 @@ void ServoManager::setRatio(float fl, float fr, float bl, float br) {
 void ServoManager::setRationAll(float ratio) {
 	setRatio(ratio, ratio, ratio, ratio);
 }
-
-
-void ServoManager::armMotors() {
-	if(!isArmed()) {
-		setAllServos(config->ServoIdle);
-		_isArmed = true;
-	}
-}
-
-void ServoManager::disarmMotors() {
-	setAllServos(config->ServoMin);
-	_isArmed = false;
-}

@@ -12,25 +12,41 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
-	stop();
+	_state = State_Idle;
+	servos->setAllServos(config->ServoMin);
 }
 
 
 void DroneEngine::arm(){
-	gyro->setAsZero();
-	setTargetMovement(0, 0, 0);
-	servos->armMotors();
-	_isArmed = true;
+	if(_state == State_Idle) {
+		gyro->setAsZero();
+		setTargetMovement(0, 0, 0);
+		servos->setAllServos(config->ServoIdle);
+
+		_state = State_Armed;
+
+		Log::debug("Engine", "Armed Motors");
+	}
 }
 
 void DroneEngine::disarm() {
-	servos->disarmMotors();
-	_isArmed = false;
+	if(_state == State_Armed) {
+		servos->setAllServos(config->ServoMin);
+
+		_state = State_Idle;
+
+		Log::debug("Engine", "Disarmed Motors");
+	}
 }
 
 void DroneEngine::stop() {
-	servos->disarmMotors();
-	_isArmed = false;
+	if(_state == State_Flying) {
+		servos->setAllServos(config->ServoMin);
+
+		_state = State_Idle;
+	} else if(_state == State_Armed) {
+		disarm();
+	}
 }
 
 void DroneEngine::handle() {
@@ -38,7 +54,7 @@ void DroneEngine::handle() {
 		targetYaw += targetRotationSpeed / 10;
 	}
 
-	if(millis() - lastPhysicsCalc >= PHYSICS_CALC_DELAY_MS && _isArmed) {
+	if(millis() - lastPhysicsCalc >= PHYSICS_CALC_DELAY_MS && (/*_state == State_Armed ||*/ _state == State_Flying) ) {
 		float currentPitch = gyro->getPitch();
 		float currentRoll = gyro->getRoll();
 		float currentYaw = gyro->getYaw();
@@ -52,17 +68,27 @@ void DroneEngine::handle() {
 		float ratioBL = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Counterclockwise);
 		float ratioBR = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Clockwise);
 
-		Log::debug("Engine", "Set Servos from Engine.handle");
 		servos->setRatio(ratioFL, ratioFR, ratioBL, ratioBR);
 
 		lastPhysicsCalc = millis();
 	}
 }
 
+void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite) const {
+	if(_state == State_Armed)
+		servos->setServos(fl, fr, bl, br, forceWrite);
+}
+
+void DroneEngine::setRawServoValues(int all, bool forceWrite) const {
+	setRawServoValues(all, all, all, all, forceWrite);
+}
+
+
+
 /*################## Getter and Setter ####################*/
 
-bool DroneEngine::isArmed() const {
-	return _isArmed;
+DroneState DroneEngine::state() const {
+	return _state;
 }
 
 

@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 namespace DroneLibrary.Protocol {
     public struct PacketArm : IPacket {
 
-        public PacketType Type {
-            get{ return PacketType.Arm; }
-        }
+        public PacketType Type => PacketType.Arm;
 
         public readonly bool Arm;
 
@@ -20,8 +18,11 @@ namespace DroneLibrary.Protocol {
 
         public void Write(BinaryWriter writer) {
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
+            writer.Write((byte)'A');
+            writer.Write((byte)'R');
+            writer.Write((byte)'M');
             writer.Write((byte)(Arm ? 1 : 0));
         }
     }

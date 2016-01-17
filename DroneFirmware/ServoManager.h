@@ -34,7 +34,6 @@ class ServoManager
 	 Servo backLeft;
 	 Servo backRight;
 
-	 bool _isArmed = false;
 
  public:
 	 explicit ServoManager(Config* config);
@@ -44,12 +43,7 @@ class ServoManager
 	void setAllServos(int val, bool forceWrite = false);
 	void setRatio(float fl, float fr, float bl, float br);
 	void setRationAll(float ratio);
-	void armMotors();
-	void disarmMotors();
 
-	bool isArmed() const {
-		return _isArmed;
-	}
 	int FL() const {
 		return servoFLValue;
 	}
