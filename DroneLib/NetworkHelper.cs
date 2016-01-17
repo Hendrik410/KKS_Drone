@@ -28,6 +28,10 @@ namespace DroneLibrary {
                 .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
         }
 
+        /// <summary>
+        /// Gibt die Adresse zum Senden an alle Netzwerkgeräte zurück.
+        /// </summary>
+        /// <returns>Die Adresse zum Senden an alle Netzwerkgeräte</returns>
         public static IPAddress GetLocalBroadcastAddress() {
             byte[] ipBytes = GetLocalIPAddress().GetAddressBytes();
             ipBytes[3] = 255;
