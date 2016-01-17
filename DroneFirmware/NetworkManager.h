@@ -15,8 +15,10 @@
 #include "DroneEngine.h"
 #include "PacketBuffer.h"
 #include "PacketType.h"
-#include <ESP8266WiFi/src/WiFiUdp.h>
 #include "Log.h"
+#include "Build.h"
+
+#include <ESP8266WiFi/src/WiFiUdp.h>
 
 class NetworkManager
 {

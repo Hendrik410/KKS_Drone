@@ -1,29 +1,13 @@
 
-
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include "Log.h"
-#include "NetworkManager.h"
-#include "Config.h"
-#include "ConfigManager.h"
-#include "EEPROM_MemoryAdapter.h"
-#include "MemoryAdapter.h"
-#include "MotorEnums.h"
-#include "MathHelper.h"
-#include "DroneEngine.h"
-#include "ServoManager.h"
-#include "BinaryHelper.h"
 #include <Wire/Wire.h>
 #include <I2Cdev/I2Cdev.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
-#include "Gyro.h"
 #include <Servo/src/Servo.h>
 #include <ESP8266WiFi/src/WiFiUdp.h>
 #include <ESP8266WiFi/src/ESP8266WiFi.h>
 #include <EEPROM/EEPROM.h>
-
-#define byte unsigned char
-
-#else
+#include "Build.h"
 #include "Log.h"
 #include "NetworkManager.h"
 #include "Config.h"
@@ -33,19 +17,34 @@
 #include "MotorEnums.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
+#include "ServoManager.h"
+#include "BinaryHelper.h"
+
+
+#define byte unsigned char
+
+#else
 #include <Wire.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev/I2Cdev.h>
-#include "ServoManager.h"
-#include "BinaryHelper.h"
-#include "Gyro.h"
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
 #include <Servo.h>
 #include <EEPROM.h>
-#endif
+#include "Build.h"
+#include "Log.h"
+#include "NetworkManager.h"
+#include "Config.h"
+#include "ConfigManager.h"
+#include "EEPROM_MemoryAdapter.h"
+#include "MemoryAdapter.h"
+#include "MotorEnums.h"
+#include "MathHelper.h"
+#include "DroneEngine.h"
+#include "ServoManager.h"
+#include "BinaryHelper.h"
 
-#define BUILD_VERSION 1
+#endif
 
 // #################### Global Variables #####################
 
@@ -94,6 +93,11 @@ void handleBlink() {
 void setup() {
 	Serial.begin(74880);
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
+	Log::info("Boot", "Model: %s, Build: %s", MODEL_NAME, BUILD_NAME);
+
+	char serialCode[32];
+	getBuildSerialCode(serialCode, sizeof(serialCode));
+	Log::info("Boot", "Serial code: %s", serialCode);
 
 	config = ConfigManager::getDefault();
 
@@ -143,8 +147,6 @@ void setup() {
 
 	digitalWrite(config.PinLed, LOW);
 	Log::info("Boot", "done booting. ready.");
-
-	Log::info("Test", "%d", 12345);
 }
 
 void loop() {

@@ -80,10 +80,10 @@ namespace DroneLibrary
                     DroneEntry entry = new DroneEntry();
                     entry.Address = sender.Address;
 
-                    entry.Name = "Unkown";
-                    entry.Model = "Unkown";
-                    entry.SerialCode = "Unkown";
-                    entry.FirmwareVersion = 0;
+                    entry.Name = ReadString(reader);
+                    entry.Model = ReadString(reader);
+                    entry.SerialCode = ReadString(reader);
+                    entry.FirmwareVersion = reader.ReadByte();
 
                     AddDrone(entry);
                     foundDrones.Add(entry);
@@ -93,6 +93,22 @@ namespace DroneLibrary
             {
                 Log.Error(e.ToString());
             }
+        }
+
+        private string ReadString(BinaryReader reader)
+        {
+            StringBuilder str = new StringBuilder();
+
+            while(true)
+            {
+                char c = (char)reader.ReadByte();
+                if (c == 0)
+                    break;
+
+                str.Append(c);
+            }
+
+            return str.ToString();
         }
 
         private void RemoveDrone(IPAddress address)

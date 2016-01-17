@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryHelper.h" />
+    <ClInclude Include="Build.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="DroneEngine.h" />

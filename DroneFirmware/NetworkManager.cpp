@@ -4,7 +4,6 @@
 
 #include "NetworkManager.h"
 
-
 NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config) {
 	this->gyro = gyro;
 	this->servos = servos;
@@ -90,6 +89,16 @@ void NetworkManager::handleHello(WiFiUDP udp) {
 	writeBuffer->write('Y');
 	writeBuffer->write(byte(2));
 
+	writeBuffer->writeString(config->DroneName);
+	writeBuffer->writeString(MODEL_NAME);
+
+	char serialCode[32];
+	getBuildSerialCode(serialCode, sizeof(serialCode));
+	writeBuffer->writeString(serialCode);
+
+
+	writeBuffer->write(uint8_t(BUILD_VERSION));
+
 	sendPacket(udp);
 }
 
@@ -155,7 +164,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case GetInfoPacket: {
 		writeHeader(udp, revision, GetInfoPacket);
 
-		writeBuffer->write(byte(1)); // BUILD_VERSION));
+		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 
 		writeBuffer->write(byte(engine->isArmed() ? 1 : 0));
