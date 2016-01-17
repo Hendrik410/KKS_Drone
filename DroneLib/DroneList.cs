@@ -118,8 +118,19 @@ namespace DroneLibrary
                     foundDrones.RemoveAt(i--);
         }
 
+        private bool ContainsDrone(DroneEntry entry)
+        {
+            foreach (DroneEntry e in foundDrones)
+                if (e.Equals(entry))
+                    return true;
+            return false;
+        }
+
         private void AddDrone(DroneEntry entry)
         {
+            if (ContainsDrone(entry))
+                return;
+
             // alte Drone mit gleicher IP-Adresse entfernen
             RemoveDrone(entry.Address);
 
