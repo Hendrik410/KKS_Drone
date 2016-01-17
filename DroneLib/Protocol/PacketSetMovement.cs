@@ -20,7 +20,7 @@ namespace DroneLibrary.Protocol {
         /// </summary>
         /// <param name="pitch">Die Neigung an der X-Achse in Grad</param>
         /// <param name="roll">Die Neigung an der Y-Achse in Grad</param>
-        /// <param name="yaw">Die Drehung um die Z-Achse in Grad</param>
+        /// <param name="yaw">Die Drehung um die Z-Achse in Grad/Sekunde</param>
         /// <param name="thrust">Der Schub entlang der Z-Achse in von -1 bis 1</param>
         /// <param name="hover">Gibt an, ob alle anderen Werte ignoriert werden sollen und die Drohne ihre Position halten soll.</param>
         public PacketSetMovement(float pitch, float roll, float yaw, float thrust, bool hover) {
@@ -37,9 +37,9 @@ namespace DroneLibrary.Protocol {
 
             writer.Write((byte)(Hover ? 1 : 0));
             writer.Write(BinaryHelper.WriteFloat(Pitch));
-            writer.Write(BinaryHelper.WriteFloat(Pitch));
-            writer.Write(BinaryHelper.WriteFloat(Pitch));
-            writer.Write(BinaryHelper.WriteFloat(Pitch));
+            writer.Write(BinaryHelper.WriteFloat(Roll));
+            writer.Write(BinaryHelper.WriteFloat(Yaw));
+            writer.Write(BinaryHelper.WriteFloat(Thrust));
         }
     }
 }

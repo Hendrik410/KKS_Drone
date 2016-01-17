@@ -34,7 +34,7 @@ namespace DroneTest {
 
             Console.WriteLine("Press Key to start motors");
             Console.ReadKey(true);
-            drone.SendPacket(new PacketSetRawValues(1300, 1300, 1300, 1300), false);
+            drone.SendPacket(new PacketSetRawValues(1900, 1900, 1900, 1900), false);
 
             Console.WriteLine("Press Key to stop");
             Console.ReadKey(true);

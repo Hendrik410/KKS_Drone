@@ -11,7 +11,7 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	this->config = config;
 
 	Log::info("Network", "Starting network manager...");
-	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d\n", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
+	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
 
 	Log::info("Network", "Creating UDP sockets...");
 
@@ -119,8 +119,22 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 
 	switch (type) {
-	case MovementPacket:
-		break;
+	case MovementPacket: {
+		if(readBuffer->getSize() < 26)
+			return;
+
+		bool hover = readBuffer->readUint8() > 0;
+
+		float pitch = readBuffer->readFloat();
+		float roll = readBuffer->readFloat();
+		float yaw = readBuffer->readFloat();
+		float thrust = readBuffer->readFloat();
+
+		engine->setTargetMovement(pitch, roll, yaw);
+		engine->setTargetVerticalSpeed(thrust);
+
+	}
+	break;
 	case RawSetPacket: {
 		//set the 4 motor values raw
 		if (readBuffer->getSize() < 17)
