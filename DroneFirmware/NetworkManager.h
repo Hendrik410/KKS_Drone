@@ -39,10 +39,10 @@ protected:
 	void handleHello(WiFiUDP udp);
 	void handleControl(WiFiUDP udp);
 
-	void writeHeader(WiFiUDP udp, uint32_t revision, ControlPacketType packetType);
+	void writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType);
 
 	void sendPacket(WiFiUDP udp);
-	void sendAck(WiFiUDP udp, uint32_t revision);
+	void sendAck(WiFiUDP udp, int32_t revision);
 	void echoPacket(WiFiUDP udp);
 public:
 	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config);

@@ -7,9 +7,10 @@ namespace DroneLibrary.Protocol
     {
         public PacketType Type => PacketType.Stop;
 
-        public void Write(BinaryWriter writer){
-            if(writer == null)
-                throw new ArgumentNullException(nameof(writer));
+        public void Write(PacketBuffer packet)
+        {
+            if (packet == null)
+                throw new ArgumentNullException(nameof(packet));
         }
     }
 }

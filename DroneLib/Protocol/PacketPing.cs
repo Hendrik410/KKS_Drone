@@ -5,10 +5,7 @@ namespace DroneLibrary.Protocol
 {
     public struct PacketPing : IPacket
     {
-        public PacketType Type
-        {
-            get { return PacketType.Ping; }
-        }
+        public PacketType Type => PacketType.Ping;
 
         /// <summary>
         /// Gibt die Zeit zurück, an dem das Paket abgesendet wurde.
@@ -20,12 +17,12 @@ namespace DroneLibrary.Protocol
             this.Time = time;
         }
 
-        public void Write(BinaryWriter writer)
+        public void Write(PacketBuffer packet)
         {
-            if (writer == null)
-                throw new ArgumentNullException("writer");
+            if (packet == null)
+                throw new ArgumentNullException(nameof(packet));
 
-            writer.Write(Time);
+            packet.Write(Time);
         }
     }
 }

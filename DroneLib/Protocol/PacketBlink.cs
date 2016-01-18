@@ -6,16 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DroneLibrary.Protocol {
-    public struct PacketBlink : IPacket {
+    public struct PacketBlink : IPacket
+    {
+        public PacketType Type => PacketType.Blink;
 
-        public PacketType Type {
-            get {
-                return PacketType.Blink;
-            }
-        }
-
-        public void Write(BinaryWriter writer) {
-            
+        public void Write(PacketBuffer packet)
+        {
+            if (packet == null)
+                throw new ArgumentNullException(nameof(packet));
         }
     }
 }

@@ -7,29 +7,33 @@ using System.Threading.Tasks;
 using DroneLibrary;
 using DroneLibrary.Protocol;
 
-namespace DroneLibrary.Protocol {
-    public struct PacketSetRawValues : IPacket {
-
+namespace DroneLibrary.Protocol
+{
+    public struct PacketSetRawValues : IPacket
+    {
         public readonly QuadMotorValues Values;
 
         public PacketType Type => PacketType.SetRawValues;
 
-        public PacketSetRawValues(ushort fl, ushort fr, ushort bl, ushort br) {
+        public PacketSetRawValues(ushort fl, ushort fr, ushort bl, ushort br)
+        {
             this.Values = new QuadMotorValues(fl, fr, bl, br);
         }
 
-        public PacketSetRawValues(QuadMotorValues values) {
+        public PacketSetRawValues(QuadMotorValues values)
+        {
             this.Values = values;
         }
 
-        public void Write(BinaryWriter writer) {
-            if(writer == null)
-                throw new ArgumentNullException(nameof(writer));
+        public void Write(PacketBuffer packet)
+        {
+            if (packet == null)
+                throw new ArgumentNullException(nameof(packet));
 
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.FrontLeft) : Values.FrontLeft);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.FrontRight) : Values.FrontRight);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.BackLeft) : Values.BackLeft);
-            writer.Write(BitConverter.IsLittleEndian ? BinaryHelper.ReverseBytes(Values.BackRight) : Values.BackRight);
+            packet.Write(Values.FrontLeft);
+            packet.Write(Values.FrontRight);
+            packet.Write(Values.BackLeft);
+            packet.Write(Values.BackRight);
         }
     }
 }

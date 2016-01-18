@@ -16,6 +16,6 @@ namespace DroneLibrary.Protocol
         /// Schreibt den Paket-Inhalt zu einem BinaryWriter.
         /// </summary>
         /// <param name="writer"></param>
-        void Write(BinaryWriter writer);
+        void Write(PacketBuffer packet);
     }
 }

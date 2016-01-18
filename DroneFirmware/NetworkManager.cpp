@@ -60,16 +60,16 @@ void NetworkManager::sendPacket(WiFiUDP udp) {
 	writeBuffer->resetPosition();
 }
 
-void NetworkManager::writeHeader(WiFiUDP udp, uint32_t revision, ControlPacketType packetType) {
+void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType) {
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
 	writeBuffer->write(revision);
-	writeBuffer->write(byte(0)); // Ack
+	writeBuffer->write(byte(0)); // kein Ack anfordern
 	writeBuffer->write(static_cast<uint8_t>(packetType));
 }
 
-void NetworkManager::sendAck(WiFiUDP udp, uint32_t revision) {
+void NetworkManager::sendAck(WiFiUDP udp, int32_t revision) {
 	writeHeader(udp, revision, AckPacket);
 	sendPacket(udp);
 }
@@ -106,12 +106,12 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	if (readBuffer->getSize() < 9)
 		return;
 
-	uint32_t revision = readBuffer->readUint32();
+	int32_t revision = readBuffer->readInt32();
 	bool ackRequested = readBuffer->readUint8() > 0;
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
-	Log::debug("Network", "Got Packet with size %d rev %d and type: %d", readBuffer->getSize(), revision, type);
+	Log::debug("Network", "Got packet with size %d rev %d and type: %d", readBuffer->getSize(), revision, type);
 
 	
 	if (ackRequested)

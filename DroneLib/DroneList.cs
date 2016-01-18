@@ -45,7 +45,11 @@ namespace DroneLibrary
                 writer.Write((byte)'Y');
                 writer.Write((byte)1);
 
-                client.Send(stream.GetBuffer(), (int)stream.Length, new IPEndPoint(NetworkHelper.GetLocalBroadcastAddress(), config.ProtocolHelloPort));
+                IPAddress[] addresses = NetworkHelper.GetLocalBroadcastAddresses();
+                byte[] packet = stream.GetBuffer();
+
+                for (int i = 0; i < addresses.Length; i++)
+                    client.Send(stream.GetBuffer(), (int)stream.Length, new IPEndPoint(addresses[i], config.ProtocolHelloPort)); 
             }
         }
 
@@ -66,24 +70,25 @@ namespace DroneLibrary
             try
             {
                 using (MemoryStream stream = new MemoryStream(packet))
-                using (BinaryReader reader = new BinaryReader(stream))
                 {
-                    if (packet.Length < 3 || reader.ReadByte() != 'F' || reader.ReadByte() != 'L' || reader.ReadByte() != 'Y')
+                    PacketBuffer buffer = new PacketBuffer(stream);
+
+                    if (packet.Length < 3 || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
                     {
                         Log.Debug("Hello: Invalid magic value!");
                         return;
                     }
 
-                    if (reader.ReadByte() != 2)
+                    if (buffer.ReadByte() != 2)
                         return;
 
                     DroneEntry entry = new DroneEntry();
                     entry.Address = sender.Address;
 
-                    entry.Name = ReadString(reader);
-                    entry.Model = ReadString(reader);
-                    entry.SerialCode = ReadString(reader);
-                    entry.FirmwareVersion = reader.ReadByte();
+                    entry.Name = buffer.ReadString();
+                    entry.Model = buffer.ReadString();
+                    entry.SerialCode = buffer.ReadString();
+                    entry.FirmwareVersion = buffer.ReadByte();
 
                     AddDrone(entry);
                     foundDrones.Add(entry);
@@ -93,22 +98,6 @@ namespace DroneLibrary
             {
                 Log.Error(e.ToString());
             }
-        }
-
-        private string ReadString(BinaryReader reader)
-        {
-            StringBuilder str = new StringBuilder();
-
-            while(true)
-            {
-                char c = (char)reader.ReadByte();
-                if (c == 0)
-                    break;
-
-                str.Append(c);
-            }
-
-            return str.ToString();
         }
 
         private void RemoveDrone(IPAddress address)

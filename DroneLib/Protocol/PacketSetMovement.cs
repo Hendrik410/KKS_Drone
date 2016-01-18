@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using DroneLibrary;
 using DroneLibrary.Protocol;
 
-namespace DroneLibrary.Protocol {
-    public struct PacketSetMovement : IPacket {
+namespace DroneLibrary.Protocol
+{
+    public struct PacketSetMovement : IPacket
+    {
 
         public readonly bool Hover;
         public readonly float Pitch, Roll, Yaw, Thrust;
@@ -23,7 +25,8 @@ namespace DroneLibrary.Protocol {
         /// <param name="yaw">Die Drehung um die Z-Achse in Grad/Sekunde</param>
         /// <param name="thrust">Der Schub entlang der Z-Achse in von -1 bis 1</param>
         /// <param name="hover">Gibt an, ob alle anderen Werte ignoriert werden sollen und die Drohne ihre Position halten soll.</param>
-        public PacketSetMovement(float pitch, float roll, float yaw, float thrust, bool hover) {
+        public PacketSetMovement(float pitch, float roll, float yaw, float thrust, bool hover)
+        {
             Pitch = pitch;
             Roll = roll;
             Yaw = yaw;
@@ -31,15 +34,16 @@ namespace DroneLibrary.Protocol {
             Hover = hover;
         }
 
-        public void Write(BinaryWriter writer) {
-            if(writer == null)
-                throw new ArgumentNullException(nameof(writer));
+        public void Write(PacketBuffer packet)
+        {
+            if (packet == null)
+                throw new ArgumentNullException(nameof(packet));
 
-            writer.Write((byte)(Hover ? 1 : 0));
-            writer.Write(BinaryHelper.WriteFloat(Pitch));
-            writer.Write(BinaryHelper.WriteFloat(Roll));
-            writer.Write(BinaryHelper.WriteFloat(Yaw));
-            writer.Write(BinaryHelper.WriteFloat(Thrust));
+            packet.Write((byte)(Hover ? 1 : 0));
+            packet.Write(Pitch);
+            packet.Write(Roll);
+            packet.Write(Yaw);
+            packet.Write(Thrust);
         }
     }
 }

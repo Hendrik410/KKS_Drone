@@ -130,12 +130,12 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt den Paket-Buffer an der benutzt wird um die Pakete zu generieren.
         /// </summary>
-        private MemoryStream packetBuffer = new MemoryStream();
+        private MemoryStream packetStream = new MemoryStream();
 
         /// <summary>
         /// BinaryWriter der für den Packet-Buffer zum Schreiben benutzt wird.
         /// </summary>
-        private BinaryWriter packetWriter;
+        private PacketBuffer packetBuffer;
 
         /// <summary>
         /// Gibt den Zeitpunkt an als das Paket abgeschickt wurde.
@@ -171,7 +171,7 @@ namespace DroneLibrary
             socket = new UdpClient();
             socket.Connect(address, Config.ProtocolControlPort);
 
-            packetWriter = new BinaryWriter(packetBuffer);
+            packetBuffer = new PacketBuffer(packetStream);
 
             socket.BeginReceive(ReceivePacket, null);
 
@@ -204,10 +204,7 @@ namespace DroneLibrary
             if (disposing)
             {
                 socket?.Close();
-
-                packetBuffer?.Dispose();
-
-                packetWriter?.Dispose();
+                packetStream?.Dispose();
             }
 
             IsDisposed = true;
@@ -353,30 +350,29 @@ namespace DroneLibrary
                     packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
                 }
 
-                packetBuffer.Position = 0;
+                packetBuffer.ResetPosition();
 
                 // Paket-Header schreiben
-                packetWriter.Write((byte)'F');
-                packetWriter.Write((byte)'L');
-                packetWriter.Write((byte)'Y');
+                packetBuffer.Write((byte)'F');
+                packetBuffer.Write((byte)'L');
+                packetBuffer.Write((byte)'Y');
 
                 // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen!!
-                packetWriter.Write(BitConverter.IsLittleEndian? (int)BinaryHelper.ReverseBytes((uint)revision) : revision);
+                packetBuffer.Write(revision);
 
                 // wenn die Drone eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
                 if (guaranteed && !packet.Type.DoesClusterAnswer())
-                    packetWriter.Write((byte)1);
+                    packetBuffer.Write((byte)1);
                 else
-                    packetWriter.Write((byte)0);
+                    packetBuffer.Write((byte)0);
 
-                packetWriter.Write((byte)packet.Type);
+                packetBuffer.Write((byte)packet.Type);
 
                 // Paket Inhalt schreiben
-                packet.Write(packetWriter);
+                packet.Write(packetBuffer);
 
-
-                socket.BeginSend(packetBuffer.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
-                if (Config.VerbosePacketSending && (packet.Type != PacketType.Ping ||Config.LogPingPacket))
+                socket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
+                if (Config.VerbosePacketSending && (packet.Type != PacketType.Ping || Config.LogPingPacket))
                     Log.Verbose("[{0}] Packet:   [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
             }
             return true;
@@ -433,23 +429,20 @@ namespace DroneLibrary
         private void HandlePacket(byte[] packet)
         {
             // jedes Drohnen Paket ist mindestens HeaderSize Bytes lang und fangen mit "FLY" an
-            if (packet.Length < HeaderSize || packet[0] != 'F' || packet[1] != 'L' || packet[2] != 'Y')
-                return;
-
-            bool isGuaranteed = packet[7] > 0;
-            PacketType type = (PacketType)packet[8];
-
             using (MemoryStream stream = new MemoryStream(packet))
-            using (BinaryReader reader = new BinaryReader(stream))
             {
-                stream.Position = HeaderSize - 6; // 4 Bytes für die Revision, 2 Bytes für Typ und Ack
+                PacketBuffer buffer = new PacketBuffer(stream);
 
-                int revision = reader.ReadInt32();
+                if (packet.Length < HeaderSize || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
+                    return;
 
-                reader.ReadBytes(2);
+                int revision = buffer.ReadInt();
 
-                if (Config.VerbosePacketReceive 
-                    && type != PacketType.Ack 
+                bool isGuaranteed = buffer.ReadByte() > 0;
+                PacketType type = (PacketType)buffer.ReadByte();
+
+                if (Config.VerbosePacketReceive
+                    && type != PacketType.Ack
                     && (type != PacketType.Ping || Config.LogPingPacket))
                     Log.Verbose("[{0}] Received: [{1}] {2}, size: {3} bytes", Address.ToString(), revision, type, packet.Length);
 
@@ -460,13 +453,14 @@ namespace DroneLibrary
                             throw new InvalidDataException("Packet is not long enough.");
 
                         int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10 || Ping < 0) {
+                        if (timeSpan > 1000 * 10 || Ping < 0)
+                        {
                             OnConnected?.Invoke(this, EventArgs.Empty);
                         }
 
                         lastPing = Environment.TickCount;
 
-                        long time = reader.ReadInt64(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
+                        long time = buffer.ReadLong(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
                         Ping = (int)(stopwatch.ElapsedMilliseconds - time);
 
                         RemovePacketToAcknowlegde(revision);
@@ -485,17 +479,17 @@ namespace DroneLibrary
 
                         RemovePacketToAcknowlegde(revision);
                         break;
-                    
+
                     case PacketType.Info:
                         if (packet.Length < HeaderSize + 14)
                             throw new InvalidDataException("Packet is not long enough.");
 
-                        byte buildVersion = reader.ReadByte();
-                        int highestRevision = reader.ReadInt32();
+                        byte buildVersion = buffer.ReadByte();
+                        int highestRevision = buffer.ReadInt();
 
-                        bool isArmed = reader.ReadByte() > 0;
-                        
-                        QuadMotorValues motorValues = new QuadMotorValues(reader.ReadUInt16(), reader.ReadUInt16(), reader.ReadUInt16(), reader.ReadUInt16());
+                        bool isArmed = buffer.ReadByte() > 0;
+
+                        QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(), buffer.ReadUShort(), buffer.ReadUShort());
 
                         Info = new DroneInfo(buildVersion, highestRevision, isArmed, motorValues);
                         RemovePacketToAcknowlegde(revision);

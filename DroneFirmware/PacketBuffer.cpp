@@ -3,7 +3,7 @@
 // 
 
 #include "PacketBuffer.h"
-#include <stdexcept>
+
 
 
 PacketBuffer::PacketBuffer(uint32_t size) {
@@ -77,16 +77,32 @@ void PacketBuffer::setSize(uint32_t size) {
 	this->size = size;
 }
 
+int8_t PacketBuffer::readInt8() {
+	return data[addAndAssertPosition(sizeof(int8_t))];
+}
+
 uint8_t PacketBuffer::readUint8() {
 	return data[addAndAssertPosition(sizeof(uint8_t))];
+}
+
+int16_t PacketBuffer::readInt16() {
+	return BinaryHelper::readInt16(data, addAndAssertPosition(sizeof(int16_t)));
 }
 
 uint16_t PacketBuffer::readUint16() {
 	return BinaryHelper::readUint16(data, addAndAssertPosition(sizeof(uint16_t)));
 }
 
+int32_t PacketBuffer::readInt32() {
+	return BinaryHelper::readInt32(data, addAndAssertPosition(sizeof(int32_t)));
+}
+
 uint32_t PacketBuffer::readUint32() {
 	return BinaryHelper::readUint32(data, addAndAssertPosition(sizeof(uint32_t)));
+}
+
+int64_t PacketBuffer::readInt64() {
+	return BinaryHelper::readInt64(data, addAndAssertPosition(sizeof(int64_t)));
 }
 
 uint64_t PacketBuffer::readUint64() {
@@ -112,6 +128,21 @@ void PacketBuffer::read(uint8_t* buffer, int length, int offset) {
 	memcpy(dest, source, length);
 }
 
+void PacketBuffer::read(char* buffer, int length, int offset) {
+	uint8_t* source = this->data + addAndAssertPosition(sizeof(uint8_t) * length);
+	char* dest = buffer + offset;
+
+	memcpy(dest, source, length);
+}
+
+char* PacketBuffer::readString() {
+	uint16_t length = readUint16();
+
+	char* str = (char*)malloc(length * sizeof(length));
+	read(str, length, 0);
+	return str;
+}
+
 void PacketBuffer::write(char value) {
 	data[addAndAssertPosition(sizeof(value))] = value;
 }
@@ -130,6 +161,22 @@ void PacketBuffer::write(uint32_t value) {
 
 void PacketBuffer::write(uint64_t value) {
 	BinaryHelper::writeUint64(data, addAndAssertPosition(sizeof(value)), value);
+}
+
+void PacketBuffer::write(int8_t value) {
+	data[addAndAssertPosition(sizeof(value))] = value;
+}
+
+void PacketBuffer::write(int16_t value) {
+	BinaryHelper::writeInt16(data, addAndAssertPosition(sizeof(value)), value);
+}
+
+void PacketBuffer::write(int32_t value) {
+	BinaryHelper::writeInt32(data, addAndAssertPosition(sizeof(value)), value);
+}
+
+void PacketBuffer::write(int64_t value) {
+	BinaryHelper::writeInt64(data, addAndAssertPosition(sizeof(value)), value);
 }
 
 void PacketBuffer::write(float value) {
@@ -153,7 +200,9 @@ void PacketBuffer::write(uint8_t* buffer, int length, int offset) {
 }
 
 void PacketBuffer::writeString(char* str) {
-	int size = sizeof(char) * (strlen(str) + 1); // mit 0 Char am Ende
+	int size = sizeof(char) * strlen(str); 
+
+	write((uint16_t)strlen(str));
 
 	uint8_t* dest = this->data + addAndAssertPosition(size);
 	memcpy(dest, str, size);

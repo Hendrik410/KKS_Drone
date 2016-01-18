@@ -42,22 +42,34 @@ public:
 	// setzt die Länge des Pakets in Bytes
 	void setSize(uint32_t size);
 
+	int8_t readInt8();
 	uint8_t readUint8();
+	int16_t readInt16();
 	uint16_t readUint16();
+	int32_t readInt32();
 	uint32_t readUint32();
+	int64_t readInt64();
 	uint64_t readUint64();
 
 	float readFloat();
 	double readDouble();
 
 	void read(uint8_t* buffer, int length);
-	void read(uint8_t* buffer, int offset, int length);
+	void read(uint8_t* buffer, int length, int offset);
+	void read(char* buffer, int length, int offset);
+
+	char* readString();
 
 	void write(char value);
+	void write(int8_t value);
 	void write(uint8_t value);
+	void write(int16_t value);
 	void write(uint16_t value);
+	void write(int32_t value);
 	void write(uint32_t value);
+	void write(int64_t value);
 	void write(uint64_t value);
+
 	void write(float value);
 	void write(double value);
 
