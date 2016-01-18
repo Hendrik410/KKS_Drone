@@ -69,6 +69,7 @@
             this.ipAddressTextBox.Size = new System.Drawing.Size(173, 20);
             this.ipAddressTextBox.TabIndex = 3;
             this.ipAddressTextBox.TextChanged += new System.EventHandler(this.ipAddressTextBox_TextChanged);
+            this.ipAddressTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ipAddressTextBox_KeyUp);
             // 
             // droneListBox
             // 

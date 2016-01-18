@@ -40,8 +40,19 @@ namespace DroneControl
             base.OnClosed(e);
         }
 
+        private void TryToConnect()
+        {
+            IPAddress address;
+            if (!IPAddress.TryParse(ipAddressTextBox.Text, out address))
+                return;
+
+            Connect(address);
+        }
+
         private void Connect(IPAddress address)
         {
+            connectButton.Enabled = false;
+
             // wenn wir verbunden sind (result == OK), können wir das Fenster schließen
             ConnectingForm form = new ConnectingForm(address);
             if (form.ShowDialog() == DialogResult.OK)
@@ -51,6 +62,8 @@ namespace DroneControl
                 new MainForm(form.Drone).Show();
                 Hide();
             }
+
+            connectButton.Enabled = true;
         }
 
         private void DroneList_OnDroneFound(object sender, EventArgs e)
@@ -80,11 +93,7 @@ namespace DroneControl
 
         private void connectButton_Click(object sender, EventArgs e)
         {
-            IPAddress address;
-            if (!IPAddress.TryParse(ipAddressTextBox.Text, out address))
-                return;
-
-            Connect(address);
+            TryToConnect();
         }
 
         private void droneListBox_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -94,6 +103,15 @@ namespace DroneControl
 
             DroneEntry entry = (DroneEntry)droneListBox.SelectedItem;
             Connect(entry.Address);
+        }
+
+        private void ipAddressTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+                return;
+
+            e.SuppressKeyPress = true;
+            TryToConnect();
         }
     }
 }
