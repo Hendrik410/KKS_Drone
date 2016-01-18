@@ -15,7 +15,6 @@ namespace DroneControl
     public partial class ConnectForm : Form
     {
         private DroneList droneList;
-        private Timer searchTimer;
 
         public ConnectForm()
         {
@@ -25,7 +24,6 @@ namespace DroneControl
 
             droneList.OnDroneFound += DroneList_OnDroneFound;
 
-            searchTimer = new Timer();
             searchTimer.Interval = 2000; // 2 Sekunden
             searchTimer.Tick += (object sender, EventArgs args) =>
             {
@@ -48,6 +46,8 @@ namespace DroneControl
             ConnectingForm form = new ConnectingForm(address);
             if (form.ShowDialog() == DialogResult.OK)
             {
+                searchTimer.Stop();
+
                 new MainForm(form.Drone).Show();
                 Hide();
             }

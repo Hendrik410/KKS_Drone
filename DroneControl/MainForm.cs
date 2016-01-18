@@ -15,7 +15,6 @@ namespace DroneControl
 {
     public partial class MainForm : Form
     {
-        private Timer timer;
         private Drone drone;
 
         private object locker = new object();
@@ -29,7 +28,6 @@ namespace DroneControl
 
             this.drone = drone;
 
-            timer = new Timer();
             timer.Interval = 2000;
             timer.Tick += Timer_Tick;
             timer.Start();
@@ -40,6 +38,13 @@ namespace DroneControl
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
             statusArmedLabel.Text = string.Format(statusArmedLabel.Text, "diarmed");
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            timer.Stop();
+
+            base.OnClosed(e);
         }
 
         private void Drone_OnInfoChange(object sender, EventArgs eventArgs) {

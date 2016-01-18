@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ProgressBar progressBar;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectingForm));
             this.connectStatus = new System.Windows.Forms.Label();
             this.abortButton = new System.Windows.Forms.Button();
+            this.pingTimer = new System.Windows.Forms.Timer(this.components);
+            this.timeoutTimer = new System.Windows.Forms.Timer(this.components);
             progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
@@ -62,6 +65,14 @@
             this.abortButton.UseVisualStyleBackColor = true;
             this.abortButton.Click += new System.EventHandler(this.abortButton_Click);
             // 
+            // pingTimer
+            // 
+            this.pingTimer.Enabled = true;
+            // 
+            // timeoutTimer
+            // 
+            this.timeoutTimer.Enabled = true;
+            // 
             // ConnectingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -85,5 +96,7 @@
 
         private System.Windows.Forms.Button abortButton;
         private System.Windows.Forms.Label connectStatus;
+        private System.Windows.Forms.Timer pingTimer;
+        private System.Windows.Forms.Timer timeoutTimer;
     }
 }

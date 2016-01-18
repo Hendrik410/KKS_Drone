@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.pingLabel = new System.Windows.Forms.Label();
@@ -35,6 +36,7 @@
             this.armToogleButton = new System.Windows.Forms.Button();
             this.motorControl1 = new DroneControl.MotorControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -91,6 +93,10 @@
             this.artificialHorizon.TabIndex = 5;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -118,5 +124,6 @@
         private System.Windows.Forms.Label statusArmedLabel;
         private System.Windows.Forms.Button armToogleButton;
         private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
+        private System.Windows.Forms.Timer timer;
     }
 }

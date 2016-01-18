@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label ipAddressLabel;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectForm));
             this.connectButton = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@
             this.droneListBox = new System.Windows.Forms.ListBox();
             this.searchStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.searchTimer = new System.Windows.Forms.Timer(this.components);
             ipAddressLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -97,6 +99,10 @@
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 6;
             // 
+            // searchTimer
+            // 
+            this.searchTimer.Enabled = true;
+            // 
             // ConnectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -126,5 +132,6 @@
         private System.Windows.Forms.ListBox droneListBox;
         private System.Windows.Forms.Label searchStatus;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Timer searchTimer;
     }
 }

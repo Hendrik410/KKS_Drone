@@ -16,9 +16,6 @@ namespace DroneControl
     {
         private IPAddress ipAddress;
 
-        private Timer timeoutTimer;
-        private Timer pingTimer;
-
         public Drone Drone { get; private set; }
 
         public ConnectingForm(IPAddress ipAddress)
@@ -32,13 +29,10 @@ namespace DroneControl
 
             connectStatus.Text = string.Format(connectStatus.Text, ipAddress);
 
-
-            timeoutTimer = new Timer();
             timeoutTimer.Interval = 10 * 1000; // Timeout von 10 Sekunden
             timeoutTimer.Tick += (object sender, EventArgs args) =>
             {
-                timeoutTimer.Stop();
-                pingTimer.Stop();
+                StartTimers();
 
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
@@ -46,14 +40,10 @@ namespace DroneControl
                     Close();
                 }
                 else
-                {
-                    timeoutTimer.Start();
-                    pingTimer.Start();
-                }
+                    StopTimers();
             };
 
-            pingTimer = new Timer();
-            pingTimer.Interval = 50;
+            pingTimer.Interval = 200;
             pingTimer.Tick += (object sender, EventArgs args) =>
             {
                 Drone.SendPing();
@@ -64,8 +54,20 @@ namespace DroneControl
 
         protected override void OnClosed(EventArgs e)
         {
-            timeoutTimer.Stop();
+            StopTimers();
             base.OnClosed(e);
+        }
+
+        private void StartTimers()
+        {
+            timeoutTimer.Start();
+            pingTimer.Start();
+        }
+
+        private void StopTimers()
+        {
+            timeoutTimer.Stop();
+            pingTimer.Stop();
         }
 
         /// <summary>
@@ -80,8 +82,7 @@ namespace DroneControl
             if (Drone.Ping >= 0) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
                 OnDroneConnected(this, EventArgs.Empty);
 
-            timeoutTimer.Start();
-            pingTimer.Start();
+            StartTimers();
         }
 
         private void OnDroneConnected(object sender, EventArgs args)
@@ -91,8 +92,7 @@ namespace DroneControl
             else
             {
                 DialogResult = DialogResult.OK;
-                pingTimer.Stop();
-                timeoutTimer.Stop();
+                StopTimers();
                 Close();
             }
         }
@@ -103,6 +103,7 @@ namespace DroneControl
                 Drone.Dispose();
 
             DialogResult = DialogResult.Abort;
+            StopTimers();
             Close();
         }
     }
