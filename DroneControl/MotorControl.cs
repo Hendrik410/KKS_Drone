@@ -30,28 +30,20 @@ namespace DroneControl
             drone.OnInfoChange += OnDroneInfoChange;
         }
 
-        private void OnDroneInfoChange(object sender, EventArgs args) {
+        private void OnDroneInfoChange(object sender, EventArgs args)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler(OnDroneInfoChange), sender, args);
+                return;
+            }
+
             QuadMotorValues motorValues = drone.Info.MotorValues;
 
-            if(leftFrontTextBox.InvokeRequired)
-                leftFrontTextBox.Invoke(new EventHandler(OnDroneInfoChange), sender, args);
-            else
-                leftFrontTextBox.Text = $"{motorValues.FrontLeft}";
-
-            if(rightFrontTextBox.InvokeRequired)
-                rightFrontTextBox.Invoke(new EventHandler(OnDroneInfoChange), sender, args);
-            else
-                rightFrontTextBox.Text = $"{motorValues.FrontRight}";
-
-            if(leftBackTextBox.InvokeRequired)
-                leftBackTextBox.Invoke(new EventHandler(OnDroneInfoChange), sender, args);
-            else
-                leftBackTextBox.Text = $"{motorValues.BackLeft}";
-
-            if(rightBackTextBox.InvokeRequired)
-                rightBackTextBox.Invoke(new EventHandler(OnDroneInfoChange), sender, args);
-            else
-                rightBackTextBox.Text = $"{motorValues.BackRight}";
+            leftFrontTextBox.Text = $"{motorValues.FrontLeft}";
+            rightFrontTextBox.Text = $"{motorValues.FrontRight}";
+            leftBackTextBox.Text = $"{motorValues.BackLeft}";
+            rightBackTextBox.Text = $"{motorValues.BackRight}";
         }
 
         private void setValuesButton_Click(object sender, EventArgs e) {
