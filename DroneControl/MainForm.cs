@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace DroneControl
     {
         private Timer timer;
         private Drone drone;
+
+        private object locker = new object();
 
         public MainForm(Drone drone)
         {
@@ -32,14 +35,34 @@ namespace DroneControl
             timer.Start();
 
             drone.OnPingChange += Drone_OnPingChange;
+            drone.OnInfoChange += Drone_OnInfoChange;
             motorControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
+            statusArmedLabel.Text = string.Format(statusArmedLabel.Text, "diarmed");
+        }
+
+        private void Drone_OnInfoChange(object sender, EventArgs eventArgs) {
+
+            if(statusArmedLabel.InvokeRequired)
+                statusArmedLabel.Invoke(new EventHandler(Drone_OnInfoChange), sender, eventArgs);
+            else
+                statusArmedLabel.Text = $"Status: {(drone.Info.IsArmed ? "armed" : "disarmed")}";
+            
+            if(armToogleButton.InvokeRequired)
+                armToogleButton.Invoke(new EventHandler(Drone_OnInfoChange), sender, eventArgs);
+            else
+                armToogleButton.Text = drone.Info.IsArmed ? "Disarm" : "Arm";
+
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            drone.SendPing();
+            lock(locker) {
+                drone.SendPing();
+
+                drone.SendGetInfo();
+            }
         }
 
         private void Drone_OnPingChange(object sender, EventArgs e)
@@ -57,6 +80,15 @@ namespace DroneControl
                     pingLabel.ForeColor = Color.Red;
                 else
                     pingLabel.ForeColor = Color.Green;
+            }
+        }
+
+        private void armToogleButton_Click(object sender, EventArgs e) {
+            lock(locker) {
+                if(drone.Info.IsArmed)
+                    drone.SendDisarm();
+                else
+                    drone.SendArm();
             }
         }
     }

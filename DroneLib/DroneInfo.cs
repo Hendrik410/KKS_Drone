@@ -61,6 +61,7 @@ namespace DroneLibrary
             return !(a == b);
         }
 
+
         public override bool Equals(object obj)
         {
             if (obj is DroneInfo)
@@ -73,7 +74,9 @@ namespace DroneLibrary
             if (other == null)
                 return false;
             return BuildVersion == other.BuildVersion 
-                && HighestRevision == other.HighestRevision;
+                && HighestRevision == other.HighestRevision
+                && IsArmed == other.IsArmed
+                && MotorValues == other.MotorValues;
         }
 
         public override int GetHashCode()

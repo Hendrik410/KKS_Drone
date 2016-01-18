@@ -80,10 +80,7 @@ namespace DroneLibrary
         {
             get
             {
-                lock(locker)
-                {
-                    return info;
-                }
+                return info;
             }
             set
             {
@@ -249,6 +246,16 @@ namespace DroneLibrary
                 stopwatch.Start();
 
             SendPacket(new PacketPing(stopwatch.ElapsedMilliseconds), false);
+        }
+
+        /// <summary>
+        /// Fordert die Statusinformationen der Drone an.
+        /// </summary>
+        public void SendGetInfo() {
+            if(IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            SendPacket(new PacketInfo(), true);
         }
 
         /// <summary>
@@ -480,7 +487,7 @@ namespace DroneLibrary
                         break;
                     
                     case PacketType.Info:
-                        if (packet.Length < HeaderSize + 22)
+                        if (packet.Length < HeaderSize + 14)
                             throw new InvalidDataException("Packet is not long enough.");
 
                         byte buildVersion = reader.ReadByte();

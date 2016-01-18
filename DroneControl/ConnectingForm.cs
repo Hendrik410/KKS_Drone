@@ -91,6 +91,8 @@ namespace DroneControl
             else
             {
                 DialogResult = DialogResult.OK;
+                pingTimer.Stop();
+                timeoutTimer.Stop();
                 Close();
             }
         }

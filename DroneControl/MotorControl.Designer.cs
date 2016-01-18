@@ -33,6 +33,8 @@
             System.Windows.Forms.Label leftBackLabel;
             System.Windows.Forms.Label leftFrontLabel;
             this.motorsGroupBox = new System.Windows.Forms.GroupBox();
+            this.setValuesButton = new System.Windows.Forms.Button();
+            this.servoValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.rightBackTextBox = new System.Windows.Forms.TextBox();
             this.rightFrontTextBox = new System.Windows.Forms.TextBox();
             this.leftBackTextBox = new System.Windows.Forms.TextBox();
@@ -42,10 +44,49 @@
             leftBackLabel = new System.Windows.Forms.Label();
             leftFrontLabel = new System.Windows.Forms.Label();
             this.motorsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).BeginInit();
             this.SuspendLayout();
+            // 
+            // rightBackLabel
+            // 
+            rightBackLabel.AutoSize = true;
+            rightBackLabel.Location = new System.Drawing.Point(213, 51);
+            rightBackLabel.Name = "rightBackLabel";
+            rightBackLabel.Size = new System.Drawing.Size(59, 13);
+            rightBackLabel.TabIndex = 6;
+            rightBackLabel.Text = "Right back";
+            // 
+            // rightFrontLabel
+            // 
+            rightFrontLabel.AutoSize = true;
+            rightFrontLabel.Location = new System.Drawing.Point(213, 25);
+            rightFrontLabel.Name = "rightFrontLabel";
+            rightFrontLabel.Size = new System.Drawing.Size(56, 13);
+            rightFrontLabel.TabIndex = 4;
+            rightFrontLabel.Text = "Right front";
+            // 
+            // leftBackLabel
+            // 
+            leftBackLabel.AutoSize = true;
+            leftBackLabel.Location = new System.Drawing.Point(13, 51);
+            leftBackLabel.Name = "leftBackLabel";
+            leftBackLabel.Size = new System.Drawing.Size(52, 13);
+            leftBackLabel.TabIndex = 2;
+            leftBackLabel.Text = "Left back";
+            // 
+            // leftFrontLabel
+            // 
+            leftFrontLabel.AutoSize = true;
+            leftFrontLabel.Location = new System.Drawing.Point(13, 25);
+            leftFrontLabel.Name = "leftFrontLabel";
+            leftFrontLabel.Size = new System.Drawing.Size(49, 13);
+            leftFrontLabel.TabIndex = 0;
+            leftFrontLabel.Text = "Left front";
             // 
             // motorsGroupBox
             // 
+            this.motorsGroupBox.Controls.Add(this.setValuesButton);
+            this.motorsGroupBox.Controls.Add(this.servoValueNumericUpDown);
             this.motorsGroupBox.Controls.Add(this.rightBackTextBox);
             this.motorsGroupBox.Controls.Add(rightBackLabel);
             this.motorsGroupBox.Controls.Add(this.rightFrontTextBox);
@@ -62,69 +103,74 @@
             this.motorsGroupBox.TabStop = false;
             this.motorsGroupBox.Text = "Motors";
             // 
+            // setValuesButton
+            // 
+            this.setValuesButton.Location = new System.Drawing.Point(305, 49);
+            this.setValuesButton.Name = "setValuesButton";
+            this.setValuesButton.Size = new System.Drawing.Size(52, 22);
+            this.setValuesButton.TabIndex = 9;
+            this.setValuesButton.Text = "Set";
+            this.setValuesButton.UseVisualStyleBackColor = true;
+            this.setValuesButton.Click += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // servoValueNumericUpDown
+            // 
+            this.servoValueNumericUpDown.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.servoValueNumericUpDown.Location = new System.Drawing.Point(305, 23);
+            this.servoValueNumericUpDown.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.servoValueNumericUpDown.Minimum = new decimal(new int[] {
+            900,
+            0,
+            0,
+            0});
+            this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
+            this.servoValueNumericUpDown.Size = new System.Drawing.Size(53, 20);
+            this.servoValueNumericUpDown.TabIndex = 8;
+            this.servoValueNumericUpDown.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
             // rightBackTextBox
             // 
+            this.rightBackTextBox.Enabled = false;
             this.rightBackTextBox.Location = new System.Drawing.Point(146, 48);
             this.rightBackTextBox.Name = "rightBackTextBox";
             this.rightBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightBackTextBox.TabIndex = 7;
             // 
-            // rightBackLabel
-            // 
-            rightBackLabel.AutoSize = true;
-            rightBackLabel.Location = new System.Drawing.Point(213, 51);
-            rightBackLabel.Name = "rightBackLabel";
-            rightBackLabel.Size = new System.Drawing.Size(59, 13);
-            rightBackLabel.TabIndex = 6;
-            rightBackLabel.Text = "Right back";
-            // 
             // rightFrontTextBox
             // 
+            this.rightFrontTextBox.Enabled = false;
             this.rightFrontTextBox.Location = new System.Drawing.Point(146, 22);
             this.rightFrontTextBox.Name = "rightFrontTextBox";
             this.rightFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightFrontTextBox.TabIndex = 5;
             // 
-            // rightFrontLabel
-            // 
-            rightFrontLabel.AutoSize = true;
-            rightFrontLabel.Location = new System.Drawing.Point(213, 25);
-            rightFrontLabel.Name = "rightFrontLabel";
-            rightFrontLabel.Size = new System.Drawing.Size(56, 13);
-            rightFrontLabel.TabIndex = 4;
-            rightFrontLabel.Text = "Right front";
-            // 
             // leftBackTextBox
             // 
+            this.leftBackTextBox.Enabled = false;
             this.leftBackTextBox.Location = new System.Drawing.Point(79, 48);
             this.leftBackTextBox.Name = "leftBackTextBox";
             this.leftBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftBackTextBox.TabIndex = 3;
             // 
-            // leftBackLabel
-            // 
-            leftBackLabel.AutoSize = true;
-            leftBackLabel.Location = new System.Drawing.Point(13, 51);
-            leftBackLabel.Name = "leftBackLabel";
-            leftBackLabel.Size = new System.Drawing.Size(52, 13);
-            leftBackLabel.TabIndex = 2;
-            leftBackLabel.Text = "Left back";
-            // 
             // leftFrontTextBox
             // 
+            this.leftFrontTextBox.Enabled = false;
             this.leftFrontTextBox.Location = new System.Drawing.Point(79, 22);
             this.leftFrontTextBox.Name = "leftFrontTextBox";
             this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftFrontTextBox.TabIndex = 1;
-            // 
-            // leftFrontLabel
-            // 
-            leftFrontLabel.AutoSize = true;
-            leftFrontLabel.Location = new System.Drawing.Point(13, 25);
-            leftFrontLabel.Name = "leftFrontLabel";
-            leftFrontLabel.Size = new System.Drawing.Size(49, 13);
-            leftFrontLabel.TabIndex = 0;
-            leftFrontLabel.Text = "Left front";
             // 
             // MotorControl
             // 
@@ -135,6 +181,7 @@
             this.Size = new System.Drawing.Size(364, 92);
             this.motorsGroupBox.ResumeLayout(false);
             this.motorsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -146,5 +193,7 @@
         private System.Windows.Forms.TextBox rightFrontTextBox;
         private System.Windows.Forms.TextBox leftBackTextBox;
         private System.Windows.Forms.TextBox leftFrontTextBox;
+        private System.Windows.Forms.NumericUpDown servoValueNumericUpDown;
+        private System.Windows.Forms.Button setValuesButton;
     }
 }
