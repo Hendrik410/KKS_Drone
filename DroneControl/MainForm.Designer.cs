@@ -34,6 +34,7 @@
             this.statusArmedLabel = new System.Windows.Forms.Label();
             this.armToogleButton = new System.Windows.Forms.Button();
             this.motorControl1 = new DroneControl.MotorControl();
+            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -82,11 +83,20 @@
             this.motorControl1.Size = new System.Drawing.Size(364, 92);
             this.motorControl1.TabIndex = 2;
             // 
+            // artificialHorizon
+            // 
+            this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
+            this.artificialHorizon.Name = "artificialHorizon";
+            this.artificialHorizon.Size = new System.Drawing.Size(173, 175);
+            this.artificialHorizon.TabIndex = 5;
+            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 261);
+            this.ClientSize = new System.Drawing.Size(474, 353);
+            this.Controls.Add(this.artificialHorizon);
             this.Controls.Add(this.armToogleButton);
             this.Controls.Add(this.statusArmedLabel);
             this.Controls.Add(this.motorControl1);
@@ -107,5 +117,6 @@
         private MotorControl motorControl1;
         private System.Windows.Forms.Label statusArmedLabel;
         private System.Windows.Forms.Button armToogleButton;
+        private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
     }
 }

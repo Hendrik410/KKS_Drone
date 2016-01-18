@@ -63,7 +63,11 @@
     <Compile Include="Avionics\AttitudeIndicatorInstrumentControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Avionics\AvionicsInstrumentsControlsRessources.Designer.cs" />
+    <Compile Include="Avionics\AvionicsInstrumentsControlsRessources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AvionicsInstrumentsControlsRessources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Avionics\HeadingIndicatorInstrumentControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -102,7 +106,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Avionics\AvionicsInstrumentsControlsRessources.resx" />
+    <EmbeddedResource Include="Avionics\AvionicsInstrumentsControlsRessources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AvionicsInstrumentsControlsRessources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectForm.resx">
       <DependentUpon>ConnectForm.cs</DependentUpon>
     </EmbeddedResource>
