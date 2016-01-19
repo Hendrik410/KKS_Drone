@@ -45,6 +45,15 @@ namespace DroneControl
         {
             timer.Stop();
 
+            if (drone != null)
+            {
+                if (drone.Info != null && drone.Info.IsArmed)
+                    drone.SendDisarm();
+
+                drone.Dispose();
+            }
+
+            Application.Exit();
             base.OnClosed(e);
         }
 
