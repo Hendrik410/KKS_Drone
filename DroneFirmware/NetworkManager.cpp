@@ -10,6 +10,10 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	this->engine = engine;
 	this->config = config;
 
+	_dataFeedSubscribed = false;
+	_lastDataSend = 0;
+	_dataDirty = true;
+
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
 
@@ -30,6 +34,8 @@ void NetworkManager::handlePackets() {
 
 	if (beginParse(controlUDP))
 		handleControl(controlUDP);
+
+	handleData(dataUDP);
 }
 
 bool NetworkManager::beginParse(WiFiUDP udp) {
@@ -68,6 +74,14 @@ void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketTyp
 	writeBuffer->write(byte(0)); // kein Ack anfordern
 	writeBuffer->write(static_cast<uint8_t>(packetType));
 }
+
+void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision) {
+	writeBuffer->write('F');
+	writeBuffer->write('L');
+	writeBuffer->write('Y');
+	writeBuffer->write(revision);
+}
+
 
 void NetworkManager::sendAck(WiFiUDP udp, int32_t revision) {
 	writeHeader(udp, revision, AckPacket);
@@ -190,15 +204,46 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	}
 						
 	case SubscribeDataFeed:
-		/*dataFeedSubscriptor = udp.remoteIP();
-		dataFeedSubscribed = true;*/
+		_dataFeedSubscriptor = udp.remoteIP();
+		_dataFeedSubscribed = true;
 		break;
 
 	case UnsubscribeDataFeed:
-		//dataFeedSubscribed = false;
+		_dataFeedSubscribed = false;
 		break;
 	case CalibrateGyro:
 		gyro->setAsZero();
 		break;
+	}
+}
+
+void NetworkManager::handleData(WiFiUDP udp) {
+	if(_dataFeedSubscribed && (_dataDirty || millis() - _lastDataSend >= 2000)) {
+		writeDataHeader(dataUDP, 0); //TODO revision für data stream
+
+		writeBuffer->write(uint8_t(engine->state() == State_Armed ? 1 : 0));
+
+		writeBuffer->write(uint16_t(servos->FL()));
+		writeBuffer->write(uint16_t(servos->FR()));
+		writeBuffer->write(uint16_t(servos->BL()));
+		writeBuffer->write(uint16_t(servos->BR()));
+
+		writeBuffer->write(gyro->getPitch());
+		writeBuffer->write(gyro->getRoll());
+		writeBuffer->write(gyro->getYaw());
+
+
+		udp.beginPacket(_dataFeedSubscriptor, config->NetworkDataPort);
+		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
+		udp.endPacket();
+
+		uint32_t size = writeBuffer->getPosition();
+
+		writeBuffer->resetPosition();
+
+		_dataDirty = false;
+		_lastDataSend = millis();
+
+		Log::debug("Network", "Data send to %s; Size: %d", _dataFeedSubscriptor.toString().c_str(), size);
 	}
 }

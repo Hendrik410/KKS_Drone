@@ -10,7 +10,7 @@ namespace DroneLibrary
     /// <summary>
     /// Stellt verschiedene Informationen über das Drone bereit.
     /// </summary>
-    public class DroneInfo : IEquatable<DroneInfo>
+    public struct DroneInfo : IEquatable<DroneInfo>
     {
         /// <summary>
         /// Gibt die Build-Version der Firmware des Clusters zurück.
@@ -49,10 +49,6 @@ namespace DroneLibrary
 
         public static bool operator ==(DroneInfo a, DroneInfo b)
         {
-            if (object.ReferenceEquals(a, b))
-                return true;
-            if (object.ReferenceEquals(a, null))
-                return false;
             return a.Equals(b);
         }
 
@@ -65,14 +61,12 @@ namespace DroneLibrary
         public override bool Equals(object obj)
         {
             if (obj is DroneInfo)
-                return Equals(obj as DroneInfo);
+                return Equals((DroneInfo)obj);
             return false;
         }
 
         public bool Equals(DroneInfo other)
         {
-            if (other == null)
-                return false;
             return BuildVersion == other.BuildVersion 
                 && HighestRevision == other.HighestRevision
                 && IsArmed == other.IsArmed

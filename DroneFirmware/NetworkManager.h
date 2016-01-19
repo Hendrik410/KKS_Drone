@@ -28,6 +28,14 @@ protected:
 	DroneEngine* engine;
 	Config* config;
 
+	IPAddress _dataFeedSubscriptor;
+	bool _dataFeedSubscribed;
+	long _lastDataSend;
+	bool _dataDirty;
+	void dataChanged() {
+		_dataDirty = true;
+	}
+
 	WiFiUDP helloUDP;
 	WiFiUDP controlUDP;
 	WiFiUDP dataUDP;
@@ -38,8 +46,10 @@ protected:
 	bool beginParse(WiFiUDP udp);
 	void handleHello(WiFiUDP udp);
 	void handleControl(WiFiUDP udp);
+	void handleData(WiFiUDP upd);
 
 	void writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType);
+	void writeDataHeader(WiFiUDP udp, int32_t revision);
 
 	void sendPacket(WiFiUDP udp);
 	void sendAck(WiFiUDP udp, int32_t revision);

@@ -13,5 +13,9 @@
         ResetRevision = 8,
 
         Info = 9,
+        SubscribeDataFeed = 10,
+        UnsubscribeDataFeed = 11,
+
+        CalibrateGyro = 12,
     }
 }

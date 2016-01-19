@@ -37,6 +37,8 @@
             this.motorControl1 = new DroneControl.MotorControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.calibrateGyroButton = new System.Windows.Forms.Button();
+            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -89,7 +91,7 @@
             // 
             this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
             this.artificialHorizon.Name = "artificialHorizon";
-            this.artificialHorizon.Size = new System.Drawing.Size(173, 175);
+            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
             this.artificialHorizon.TabIndex = 5;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
@@ -97,11 +99,31 @@
             // 
             this.timer.Enabled = true;
             // 
+            // calibrateGyroButton
+            // 
+            this.calibrateGyroButton.Location = new System.Drawing.Point(191, 140);
+            this.calibrateGyroButton.Name = "calibrateGyroButton";
+            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
+            this.calibrateGyroButton.TabIndex = 6;
+            this.calibrateGyroButton.Text = "0";
+            this.calibrateGyroButton.UseVisualStyleBackColor = true;
+            this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
+            // 
+            // headingIndicator
+            // 
+            this.headingIndicator.Location = new System.Drawing.Point(221, 139);
+            this.headingIndicator.Name = "headingIndicator";
+            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
+            this.headingIndicator.TabIndex = 7;
+            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(474, 353);
+            this.Controls.Add(this.headingIndicator);
+            this.Controls.Add(this.calibrateGyroButton);
             this.Controls.Add(this.artificialHorizon);
             this.Controls.Add(this.armToogleButton);
             this.Controls.Add(this.statusArmedLabel);
@@ -125,5 +147,7 @@
         private System.Windows.Forms.Button armToogleButton;
         private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Button calibrateGyroButton;
+        private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
     }
 }

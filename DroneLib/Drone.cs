@@ -71,6 +71,28 @@ namespace DroneLibrary
             private set;
         }
 
+        /// <summary>
+        /// Wrid aufgerufen, wenn sich die aktuellen Daten der Drone ändern.
+        /// </summary>
+        public EventHandler OnDataChange;
+
+        private DroneData data;
+
+        /// <summary>
+        /// Gibt aktuelle Daten über das Verhalten der Drone zurück.
+        /// </summary>
+        public DroneData Data {
+            get { return data; }
+            set {
+                lock(locker) {
+                    if(value != data) {
+                        data = value;
+                        OnDataChange?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
         private DroneInfo info;
 
         /// <summary>
@@ -125,7 +147,12 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt den Socket an mit dem die Drone mit der Hardware per UDP verbunden ist.
         /// </summary>
-        private UdpClient socket;
+        private UdpClient controlSocket;
+
+        /// <summary>
+        /// Gibt den Socket an, mit dem die Drone die Daten empfängt.
+        /// </summary>
+        private UdpClient dataSocket;
 
         /// <summary>
         /// Gibt den Paket-Buffer an der benutzt wird um die Pakete zu generieren.
@@ -168,12 +195,16 @@ namespace DroneLibrary
             this.Config = config;
             this.Address = address;
 
-            socket = new UdpClient();
-            socket.Connect(address, Config.ProtocolControlPort);
+            controlSocket = new UdpClient();
+            controlSocket.Connect(address, Config.ProtocolControlPort);
+
+            dataSocket = new UdpClient(Config.ProtocolDataPort);
 
             packetBuffer = new PacketBuffer(packetStream);
 
-            socket.BeginReceive(ReceivePacket, null);
+            controlSocket.BeginReceive(ReceivePacket, null);
+
+            dataSocket.BeginReceive(ReceiveDataPacket, null);
 
             // Ping senden und ein ResetRevision Paket senden damit die Revision wieder zurück gesetzt wird
             SendPing();
@@ -184,6 +215,8 @@ namespace DroneLibrary
                 
             };
         }
+
+#region Dispose
 
         ~Drone()
         {
@@ -203,13 +236,15 @@ namespace DroneLibrary
 
             if (disposing)
             {
-                socket?.Close();
+                controlSocket?.Close();
+                dataSocket?.Close();
                 packetStream?.Dispose();
             }
 
             IsDisposed = true;
         }
 
+#endregion
 
         /// <summary>
         /// Verschickt alle Pakete nochmal die noch vom Drone bestätigt werden.
@@ -227,6 +262,8 @@ namespace DroneLibrary
                 return anyDataSent;
             }
         }
+
+#region SendShortcuts
 
         /// <summary>
         /// Schickt einen Ping-Befehl an das Drone. 
@@ -321,6 +358,10 @@ namespace DroneLibrary
             return SendPacket(packet, guaranteed, currentRevision++);
         }
 
+        #endregion SendShortcuts
+
+#region ControlUdp
+
         private bool SendPacket(IPacket packet, bool guaranteed, int revision)
         {
             if (IsDisposed)
@@ -371,7 +412,7 @@ namespace DroneLibrary
                 // Paket Inhalt schreiben
                 packet.Write(packetBuffer);
 
-                socket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
+                controlSocket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
                 if (Config.VerbosePacketSending && (packet.Type != PacketType.Ping || Config.LogPingPacket))
                     Log.Verbose("[{0}] Packet:   [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
             }
@@ -382,7 +423,7 @@ namespace DroneLibrary
         {
             try
             {
-                socket.EndSend(result);
+                controlSocket.EndSend(result);
             }
             catch(SocketException)
             {
@@ -398,12 +439,12 @@ namespace DroneLibrary
             try
             {
                 IPEndPoint endPoint = new IPEndPoint(Address, Config.ProtocolControlPort);
-                byte[] packet = socket.EndReceive(result, ref endPoint);
+                byte[] packet = controlSocket.EndReceive(result, ref endPoint);
 
                 // kein Packet empfangen
                 if (packet == null || packet.Length == 0)
                 {
-                    socket.BeginReceive(ReceivePacket, null);
+                    controlSocket.BeginReceive(ReceivePacket, null);
                     return;
                 }
 
@@ -420,7 +461,7 @@ namespace DroneLibrary
             }
             finally
             {
-                socket.BeginReceive(ReceivePacket, null);
+                controlSocket.BeginReceive(ReceivePacket, null);
             }
         }
 
@@ -499,6 +540,68 @@ namespace DroneLibrary
                 }
             }
         }
+
+#endregion
+
+#region DataFeedReceive
+
+        private void ReceiveDataPacket(IAsyncResult result) {
+            if(IsDisposed)
+                return;
+
+            try {
+                IPEndPoint endPoint = new IPEndPoint(Address, Config.ProtocolControlPort);
+                byte[] packet = dataSocket.EndReceive(result, ref endPoint);
+
+                // kein Packet empfangen
+                if(packet == null || packet.Length == 0) {
+                    dataSocket.BeginReceive(ReceivePacket, null);
+                    return;
+                }
+
+                lock (locker) {
+                    HandleDataPacket(packet);
+                }
+            } catch(Exception e) {
+                Log.Error(e.ToString());
+                if(Debugger.IsAttached)
+                    Debugger.Break();
+            } finally {
+                dataSocket.BeginReceive(ReceiveDataPacket, null);
+            }
+        }
+
+        private const int DataPacketSize = 25;
+
+        private void HandleDataPacket(byte[] packet) {
+
+            using(MemoryStream stream = new MemoryStream(packet)) {
+                PacketBuffer buffer = new PacketBuffer(stream);
+
+                if(packet.Length < DataPacketSize || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
+                    return;
+
+                int revision = buffer.ReadInt();
+                
+
+                if(Config.VerbosePacketReceive)
+                    Log.Verbose("[{0}] Received Data: [{1}] , size: {2} bytes", Address.ToString(), revision, packet.Length);
+
+                bool isArmed = buffer.ReadByte() > 0;
+
+                QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
+                    buffer.ReadUShort(), buffer.ReadUShort());
+
+                GyroData gyro = new GyroData(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadFloat());
+
+                Data = new DroneData(isArmed, motorValues, gyro);
+
+                if(Debugger.IsLogging())
+                    Debugger.Log(3, "DataFeed", "Got new Data\n");
+            }
+        }
+
+#endregion
 
         /// <summary>
         /// Entfernt ein Paket von der Liste der noch zu bestätigen Pakete.

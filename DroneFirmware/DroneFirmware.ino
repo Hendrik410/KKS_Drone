@@ -51,10 +51,6 @@
 //The configuration of the drone
 Config config;
 
-bool dataFeedSubscribed = false;
-IPAddress dataFeedSubscriptor;
-//int dataFeedSubscriptorPort = 0;
-
 Gyro* gyro;
 ServoManager* servos;
 DroneEngine* engine;

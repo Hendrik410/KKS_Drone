@@ -38,7 +38,7 @@ namespace DroneControl
                 return;
             }
 
-            QuadMotorValues motorValues = drone.Info.MotorValues;
+            QuadMotorValues motorValues = drone.Data.MotorValues;
 
             leftFrontTextBox.Text = $"{motorValues.FrontLeft}";
             rightFrontTextBox.Text = $"{motorValues.FrontRight}";

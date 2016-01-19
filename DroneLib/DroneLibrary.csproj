@@ -45,11 +45,13 @@
   <ItemGroup>
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="Drone.cs" />
+    <Compile Include="DroneData.cs" />
     <Compile Include="DroneEntry.cs" />
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="GyroData.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="NetworkHelper.cs" />
@@ -58,15 +60,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\IPacket.cs" />
     <Compile Include="Protocol\PacketArm.cs" />
+    <Compile Include="Protocol\PacketCalibrateGyro.cs" />
     <Compile Include="Protocol\PacketInfo.cs" />
     <Compile Include="Protocol\PacketPing.cs" />
     <Compile Include="Protocol\PacketBlink.cs" />
     <Compile Include="Protocol\PacketResetRevision.cs" />
     <Compile Include="Protocol\PacketSetMovement.cs" />
     <Compile Include="Protocol\PacketStop.cs" />
+    <Compile Include="Protocol\PacketSubscribeDataFeed.cs" />
     <Compile Include="Protocol\PacketType.cs" />
     <Compile Include="Protocol\PacketSetRawValues.cs" />
     <Compile Include="Protocol\PacketTypeHelper.cs" />
+    <Compile Include="Protocol\PacketUnsubscribeDataFeed.cs" />
     <Compile Include="QuadMotorValues.cs" />
     <Compile Include="Range.cs" />
   </ItemGroup>

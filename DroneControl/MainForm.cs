@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using DroneLibrary;
+using DroneLibrary.Protocol;
 
 namespace DroneControl
 {
@@ -27,13 +28,15 @@ namespace DroneControl
             InitializeComponent();
 
             this.drone = drone;
+            drone.SendPacket(new PacketCalibrateGyro(), true);
+            drone.SendPacket(new PacketSubscribeDataFeed(), true);
 
             timer.Interval = 2000;
             timer.Tick += Timer_Tick;
             timer.Start();
 
             drone.OnPingChange += Drone_OnPingChange;
-            drone.OnInfoChange += Drone_OnInfoChange;
+            drone.OnDataChange += Drone_OnDataChange;
             motorControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
@@ -44,20 +47,25 @@ namespace DroneControl
         {
             timer.Stop();
 
+            lock(locker) {
+                drone.SendPacket(new PacketUnsubscribeDataFeed(), true);
+            }
+
             base.OnClosed(e);
         }
 
-        private void Drone_OnInfoChange(object sender, EventArgs eventArgs) {
+        private void Drone_OnDataChange(object sender, EventArgs eventArgs) {
 
-            if(statusArmedLabel.InvokeRequired)
-                statusArmedLabel.Invoke(new EventHandler(Drone_OnInfoChange), sender, eventArgs);
-            else
-                statusArmedLabel.Text = $"Status: {(drone.Info.IsArmed ? "armed" : "disarmed")}";
-            
-            if(armToogleButton.InvokeRequired)
-                armToogleButton.Invoke(new EventHandler(Drone_OnInfoChange), sender, eventArgs);
-            else
-                armToogleButton.Text = drone.Info.IsArmed ? "Disarm" : "Arm";
+            if(InvokeRequired) {
+                Invoke(new EventHandler(Drone_OnDataChange), this, eventArgs);
+                return;
+            }
+
+            statusArmedLabel.Text = $"Status: {(drone.Data.IsArmed ? "armed" : "disarmed")}";
+            armToogleButton.Text = drone.Data.IsArmed ? "Disarm" : "Arm";
+
+            artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
+            headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
 
         }
 
@@ -66,7 +74,7 @@ namespace DroneControl
             lock(locker) {
                 drone.SendPing();
 
-                drone.SendGetInfo();
+                drone.ResendPendingPackets();
             }
         }
 
@@ -94,6 +102,12 @@ namespace DroneControl
                     drone.SendDisarm();
                 else
                     drone.SendArm();
+            }
+        }
+
+        private void calibrateGyroButton_Click(object sender, EventArgs e) {
+            lock(locker) {
+                drone.SendPacket(new PacketCalibrateGyro(), true);
             }
         }
     }
