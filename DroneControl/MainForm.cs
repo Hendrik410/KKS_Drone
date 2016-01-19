@@ -40,17 +40,23 @@ namespace DroneControl
             motorControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
-            statusArmedLabel.Text = string.Format(statusArmedLabel.Text, "diarmed");
+            UpdatePing();
+            UpdateInfo();
         }
 
         protected override void OnClosed(EventArgs e)
         {
             timer.Stop();
 
-            lock(locker) {
-                drone.SendPacket(new PacketUnsubscribeDataFeed(), true);
+            if (drone != null)
+            {
+                if (drone.Info != null && drone.Info.IsArmed)
+                    drone.SendDisarm();
+
+                drone.Dispose();
             }
 
+            Application.Exit();
             base.OnClosed(e);
         }
 
@@ -63,13 +69,25 @@ namespace DroneControl
 
             statusArmedLabel.Text = $"Status: {(drone.Data.IsArmed ? "armed" : "disarmed")}";
             armToogleButton.Text = drone.Data.IsArmed ? "Disarm" : "Arm";
-
+            
             artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
             headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
 
+        private void UpdateInfo()
+        {
+            if (drone.Info == null)
+            {
+                statusArmedLabel.Text = "Status: unkown";
+                armToogleButton.Text = "Arm";
+                armToogleButton.Enabled = false;
+            }
+            else if (drone.Info.IsArmed)
+            {
+                statusArmedLabel.Text = "Status: armed";
+                armToogleButton.Text = "Disarm";
+                armToogleButton.Enabled = true;
         }
-
-        private void Timer_Tick(object sender, EventArgs e)
+            else
         {
             lock(locker) {
                 drone.SendPing();
@@ -78,11 +96,17 @@ namespace DroneControl
             }
         }
 
+
+
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
             if (pingLabel.InvokeRequired)
                 pingLabel.Invoke(new EventHandler(Drone_OnPingChange), sender, e);
             else
+                UpdatePing();
+        }
+
+        private void UpdatePing()
             {
                 if (drone.Ping < 0)
                     pingLabel.Text = "Not connected";
@@ -94,11 +118,15 @@ namespace DroneControl
                 else
                     pingLabel.ForeColor = Color.Green;
             }
-        }
 
-        private void armToogleButton_Click(object sender, EventArgs e) {
-            lock(locker) {
-                if(drone.Info.IsArmed)
+        private void armToogleButton_Click(object sender, EventArgs e)
+        {
+            lock (locker)
+            {
+                if (drone.Info == null)
+                    return;
+
+                if (drone.Info.IsArmed)
                     drone.SendDisarm();
                 else
                     drone.SendArm();
