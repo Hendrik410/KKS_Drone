@@ -198,10 +198,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case SubscribeDataFeed:
 		_dataFeedSubscriptor = udp.remoteIP();
 		_dataFeedSubscribed = true;
+
+		Log::debug("Network", "Client %s subscribed data", udp.remoteIP().toString().c_str());
 		break;
 
 	case UnsubscribeDataFeed:
 		_dataFeedSubscribed = false;
+
+		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
 		gyro->setAsZero();
@@ -237,7 +241,5 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		writeBuffer->resetPosition();
 
 		_lastDataSend = millis();
-
-		Log::debug("Network", "Data send to %s; Size: %d", _dataFeedSubscriptor.toString().c_str(), size);
 	}
 }

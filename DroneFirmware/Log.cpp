@@ -16,7 +16,7 @@ const char* Log::getLevelString(LogLevel level) {
 }
 
 void Log::print(LogLevel level, const char* tag, const char* format, va_list args) {
-	Serial.printf("$ [%8ds] %s [%ds]", millis() / 1000, getLevelString(level), tag);
+	Serial.printf("$ [%8ds] %s [%s]", millis() / 1000, getLevelString(level), tag);
 
 	int padding = 12 - strlen(tag);
 	for (int i = 0; i < padding; i++)
