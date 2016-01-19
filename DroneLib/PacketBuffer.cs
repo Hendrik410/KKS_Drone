@@ -93,14 +93,12 @@ namespace DroneLibrary
         public float ReadFloat()
         {
             stream.Read(helperBuffer, 0, sizeof(float));
-            Array.Reverse(helperBuffer);
             return BitConverter.ToSingle(helperBuffer, 0);
         }
 
         public double ReadDouble()
         {
             stream.Read(helperBuffer, 0, sizeof(double));
-            Array.Reverse(helperBuffer);
             return BitConverter.ToSingle(helperBuffer, 0);
         }
 
