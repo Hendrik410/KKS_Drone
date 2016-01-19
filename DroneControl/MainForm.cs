@@ -42,6 +42,7 @@ namespace DroneControl
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
             UpdatePing();
             UpdateInfo();
+            UpdateData();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -60,59 +61,68 @@ namespace DroneControl
             base.OnClosed(e);
         }
 
-        private void Timer_Tick(object sender, EventArgs e) {
-            lock (locker) {
-                drone.SendPing();
-                drone.SendGetInfo();
-            }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            drone.SendPing();
+            drone.SendGetInfo();
         }
 
-        private void UpdatePing() {
-            if(drone.Ping < 0)
+        private void UpdatePing()
+        {
+            if (drone.Ping < 0)
                 pingLabel.Text = "Not connected";
             else
                 pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
 
-            if(drone.Ping < 0 || drone.Ping > 50)
+            if (drone.Ping < 0 || drone.Ping > 50)
                 pingLabel.ForeColor = Color.Red;
             else
                 pingLabel.ForeColor = Color.Green;
         }
 
-        private void UpdateInfo() {
-            if(drone.Info == null) {
-                statusArmedLabel.Text = "Status: unkown";
-                armToogleButton.Text = "Arm";
-                armToogleButton.Enabled = false;
-            } else if(drone.Info.IsArmed) {
-                statusArmedLabel.Text = "Status: armed";
-                armToogleButton.Text = "Disarm";
-                armToogleButton.Enabled = true;
-            } else {
-                lock (locker) {
-                    drone.SendPing();
-
-                    drone.ResendPendingPackets();
-                }
-            }
+        private void UpdateInfo()
+        {
 
         }
 
-        private void Drone_OnDataChange(object sender, EventArgs eventArgs) {
+        private void Drone_OnDataChange(object sender, EventArgs eventArgs)
+        {
 
-            if(InvokeRequired) {
+            if (InvokeRequired)
+            {
                 Invoke(new EventHandler(Drone_OnDataChange), this, eventArgs);
                 return;
             }
 
-            statusArmedLabel.Text = $"Status: {(drone.Data.IsArmed ? "armed" : "disarmed")}";
-            armToogleButton.Text = drone.Data.IsArmed ? "Disarm" : "Arm";
-
-            artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
-            headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
+            UpdateData();
         }
 
-        
+        private void UpdateData()
+        {
+            if (drone.Data == null)
+            {
+                statusArmedLabel.Text = "Status: no data";
+                armToogleButton.Enabled = false;
+            }
+            else
+            {
+                armToogleButton.Enabled = true;
+
+                if (drone.Data.IsArmed)
+                {
+                    statusArmedLabel.Text = "Status: armed";
+                    armToogleButton.Text = "Disarm";
+                }
+                else
+                {
+                    statusArmedLabel.Text = "Status: disarmed";
+                    armToogleButton.Text = "Arm";
+                }
+
+                artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
+                headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
+            }
+        }
 
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
@@ -121,25 +131,22 @@ namespace DroneControl
             else
                 UpdatePing();
         }
-        
+
 
         private void armToogleButton_Click(object sender, EventArgs e)
         {
-            lock (locker) {
-                if(drone.Info == null)
-                    return;
+            if (drone.Info == null)
+                return;
 
-                if(drone.Info.IsArmed)
-                    drone.SendDisarm();
-                else
-                    drone.SendArm();
-            }
+            if (drone.Info.IsArmed)
+                drone.SendDisarm();
+            else
+                drone.SendArm();
         }
 
-        private void calibrateGyroButton_Click(object sender, EventArgs e) {
-            lock(locker) {
-                drone.SendPacket(new PacketCalibrateGyro(), true);
-            }
+        private void calibrateGyroButton_Click(object sender, EventArgs e)
+        {
+            drone.SendPacket(new PacketCalibrateGyro(), true);
         }
     }
 }
