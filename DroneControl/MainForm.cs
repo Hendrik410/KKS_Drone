@@ -60,6 +60,44 @@ namespace DroneControl
             base.OnClosed(e);
         }
 
+        private void Timer_Tick(object sender, EventArgs e) {
+            lock (locker) {
+                drone.SendPing();
+                drone.SendGetInfo();
+            }
+        }
+
+        private void UpdatePing() {
+            if(drone.Ping < 0)
+                pingLabel.Text = "Not connected";
+            else
+                pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
+
+            if(drone.Ping < 0 || drone.Ping > 50)
+                pingLabel.ForeColor = Color.Red;
+            else
+                pingLabel.ForeColor = Color.Green;
+        }
+
+        private void UpdateInfo() {
+            if(drone.Info == null) {
+                statusArmedLabel.Text = "Status: unkown";
+                armToogleButton.Text = "Arm";
+                armToogleButton.Enabled = false;
+            } else if(drone.Info.IsArmed) {
+                statusArmedLabel.Text = "Status: armed";
+                armToogleButton.Text = "Disarm";
+                armToogleButton.Enabled = true;
+            } else {
+                lock (locker) {
+                    drone.SendPing();
+
+                    drone.ResendPendingPackets();
+                }
+            }
+
+        }
+
         private void Drone_OnDataChange(object sender, EventArgs eventArgs) {
 
             if(InvokeRequired) {
@@ -69,34 +107,12 @@ namespace DroneControl
 
             statusArmedLabel.Text = $"Status: {(drone.Data.IsArmed ? "armed" : "disarmed")}";
             armToogleButton.Text = drone.Data.IsArmed ? "Disarm" : "Arm";
-            
+
             artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
             headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
-
-        private void UpdateInfo()
-        {
-            if (drone.Info == null)
-            {
-                statusArmedLabel.Text = "Status: unkown";
-                armToogleButton.Text = "Arm";
-                armToogleButton.Enabled = false;
-            }
-            else if (drone.Info.IsArmed)
-            {
-                statusArmedLabel.Text = "Status: armed";
-                armToogleButton.Text = "Disarm";
-                armToogleButton.Enabled = true;
-        }
-            else
-        {
-            lock(locker) {
-                drone.SendPing();
-
-                drone.ResendPendingPackets();
-            }
         }
 
-
+        
 
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
@@ -105,28 +121,15 @@ namespace DroneControl
             else
                 UpdatePing();
         }
-
-        private void UpdatePing()
-            {
-                if (drone.Ping < 0)
-                    pingLabel.Text = "Not connected";
-                else
-                    pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
-
-                if (drone.Ping < 0 || drone.Ping > 50)
-                    pingLabel.ForeColor = Color.Red;
-                else
-                    pingLabel.ForeColor = Color.Green;
-            }
+        
 
         private void armToogleButton_Click(object sender, EventArgs e)
         {
-            lock (locker)
-            {
-                if (drone.Info == null)
+            lock (locker) {
+                if(drone.Info == null)
                     return;
 
-                if (drone.Info.IsArmed)
+                if(drone.Info.IsArmed)
                     drone.SendDisarm();
                 else
                     drone.SendArm();
