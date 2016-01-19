@@ -47,7 +47,7 @@ namespace DroneControl
         }
 
         private void setValuesButton_Click(object sender, EventArgs e) {
-            if(drone.Info.IsArmed)
+            if(drone.Data != null && drone.Data.IsArmed)
                 drone.SendPacket(new PacketSetRawValues(new QuadMotorValues((ushort)servoValueNumericUpDown.Value)),
                     true);
             else

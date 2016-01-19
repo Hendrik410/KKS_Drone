@@ -51,7 +51,7 @@ namespace DroneControl
 
             if (drone != null)
             {
-                if (drone.Info != null && drone.Info.IsArmed)
+                if (drone.Data != null && drone.Data.IsArmed)
                     drone.SendDisarm();
 
                 drone.Dispose();
@@ -135,10 +135,10 @@ namespace DroneControl
 
         private void armToogleButton_Click(object sender, EventArgs e)
         {
-            if (drone.Info == null)
+            if (drone.Data == null)
                 return;
 
-            if (drone.Info.IsArmed)
+            if (drone.Data.IsArmed)
                 drone.SendDisarm();
             else
                 drone.SendArm();

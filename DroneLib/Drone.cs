@@ -522,7 +522,7 @@ namespace DroneLibrary
                         break;
 
                     case PacketType.Info:
-                        if (packet.Length < HeaderSize + 14)
+                        if (packet.Length < HeaderSize + 5)
                             throw new InvalidDataException("Packet is not long enough.");
 
                         byte buildVersion = buffer.ReadByte();
