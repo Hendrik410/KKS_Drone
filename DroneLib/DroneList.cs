@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using DroneLibrary.Protocol;
 
 namespace DroneLibrary
 {
@@ -43,7 +44,7 @@ namespace DroneLibrary
                 writer.Write((byte)'F');
                 writer.Write((byte)'L');
                 writer.Write((byte)'Y');
-                writer.Write((byte)1);
+                writer.Write((byte)HelloPacketType.Question);
 
                 IPAddress[] addresses = NetworkHelper.GetLocalBroadcastAddresses();
                 byte[] packet = stream.GetBuffer();
@@ -79,7 +80,7 @@ namespace DroneLibrary
                         return;
                     }
 
-                    if (buffer.ReadByte() != 2)
+                    if (buffer.ReadByte() != (byte)HelloPacketType.Answer)
                         return;
 
                     DroneEntry entry = new DroneEntry();

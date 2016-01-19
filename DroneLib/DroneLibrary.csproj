@@ -58,6 +58,8 @@
     <Compile Include="NetworkStatistics.cs" />
     <Compile Include="PacketBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\DataPacketType.cs" />
+    <Compile Include="Protocol\HelloPacketType.cs" />
     <Compile Include="Protocol\IPacket.cs" />
     <Compile Include="Protocol\PacketArm.cs" />
     <Compile Include="Protocol\PacketCalibrateGyro.cs" />

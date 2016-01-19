@@ -4,6 +4,9 @@
 
 #include "Log.h"
 
+uint32_t Log::bufferLines = 0;
+char** Log::_buffer;
+
 const char* Log::getLevelString(LogLevel level) {
 	switch (level) {
 	case Error:
@@ -15,19 +18,83 @@ const char* Log::getLevelString(LogLevel level) {
 	}
 }
 
+uint32_t Log::getBufferLines() {
+	return bufferLines;
+}
+
+char** Log::getBuffer() {
+	if (_buffer == NULL)
+		_buffer = (char**)malloc(LOG_BUFFER_LINES);
+	return _buffer;
+}
+
+void Log::clearBuffer() {
+	char** buffer = getBuffer();
+	for (int i = 0; i < bufferLines; i++)
+	{
+		free(buffer[i]);
+		buffer[i] = NULL;
+	}
+	bufferLines = 0;
+}
+
+char* Log::popMessage() {
+	if (bufferLines == 0)
+		return NULL;
+
+	char** buffer = getBuffer();
+	char* msg = buffer[0];
+
+	for (int i = 1; i < bufferLines; i++)
+		buffer[i - 1] = buffer[i];
+
+	bufferLines--;
+
+	return msg;
+}
+
+void Log::addMessage(char* message) {
+	char** buffer = getBuffer();
+
+	// alte Log Einträge verschieben
+	if (bufferLines >= LOG_BUFFER_LINES) {
+		for (int i = 1; i < LOG_BUFFER_LINES; i++)
+			buffer[i - 1] = buffer[i];
+		bufferLines = LOG_BUFFER_LINES - 1;
+	}
+
+	buffer[bufferLines++] = message;
+}
+
 void Log::print(LogLevel level, const char* tag, const char* format, va_list args) {
-	Serial.printf("$ [%8ds] %s [%s]", millis() / 1000, getLevelString(level), tag);
+	int messageSize = 128 * sizeof(char);
+	char* message = (char*)malloc(messageSize);
+	if (message == NULL) {
+		Serial.println("Log::print(), malloc() failed.");
+		return;
+	}
 
-	int padding = 12 - strlen(tag);
-	for (int i = 0; i < padding; i++)
-		Serial.print(' ');
+	int size = snprintf(message, messageSize, "$ [%8ds] %s [%s]", millis() / 1000, getLevelString(level), tag);
+	if (size < 0 || size > messageSize)
+		return;
 
-	char buffer[128];
-	int size = vsnprintf(buffer, sizeof(buffer), format, args);
-	if (size > 0 && size < sizeof(buffer))
-		Serial.print(buffer);
+	// Padding
+	int startLength = strlen(message);
 
-	Serial.println();
+	int padding = 14 - strlen(tag);
+	if (padding > 0) {
+		for (int i = 0; i < padding; i++)
+			message[startLength + i] = ' ';
+		message[startLength + padding] = '\0';
+	}
+
+	size = vsnprintf(message + strlen(message), messageSize, format, args);
+	if (size < 0 || size > messageSize)
+		return;
+
+
+	Serial.println(message);
+	free(message);
 }
 
 void Log::error(const char* tag, const char* format, ...) {

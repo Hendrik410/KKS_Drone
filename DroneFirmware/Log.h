@@ -17,14 +17,26 @@ enum LogLevel {
 	Debug // Nachrichten die für Programmierer interessant sein können
 };
 
+#define LOG_BUFFER_LINES 32
+
 class Log {
 private:
+	static uint32_t bufferLines;
+	static char** _buffer;
+
+	static void addMessage(char* str);
+
 	static const char* getLevelString(LogLevel level);
 	static void print(LogLevel level, const char* tag, const char* format, va_list args);
 public:
 	static void error(const char* tag, const char* format, ...);
 	static void info(const char* tag, const char* format, ...);
 	static void debug(const char* tag, const char* format, ...);
+
+	static uint32_t getBufferLines();
+	static char** getBuffer();
+	static void clearBuffer();
+	static char* popMessage();
 };
 
 

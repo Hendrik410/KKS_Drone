@@ -75,17 +75,26 @@ void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketTyp
 	writeBuffer->write(static_cast<uint8_t>(packetType));
 }
 
-void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision) {
+void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketType packetType) {
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
 	writeBuffer->write(revision);
+	writeBuffer->write(static_cast<uint8_t>(packetType));
 }
 
 
 void NetworkManager::sendAck(WiFiUDP udp, int32_t revision) {
 	writeHeader(udp, revision, AckPacket);
 	sendPacket(udp);
+}
+
+void NetworkManager::sendData(WiFiUDP udp) {
+	udp.beginPacket(_dataFeedSubscriptor, config->NetworkDataPort);
+	udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
+	udp.endPacket();
+
+	writeBuffer->resetPosition();
 }
 
 void NetworkManager::echoPacket(WiFiUDP udp) {
@@ -95,13 +104,13 @@ void NetworkManager::echoPacket(WiFiUDP udp) {
 }
 
 void NetworkManager::handleHello(WiFiUDP udp) {
-	if (readBuffer->getSize() < 4 || readBuffer->readUint8() != 1)
+	if (readBuffer->getSize() < 4 || readBuffer->readUint8() != HelloQuestion)
 		return;
 
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
-	writeBuffer->write(byte(2));
+	writeBuffer->write(byte(HelloAnswer));
 
 	writeBuffer->writeString(config->DroneName);
 	writeBuffer->writeString(MODEL_NAME);
@@ -224,11 +233,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 }
 
 void NetworkManager::handleData(WiFiUDP udp) {
-	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool dataDirty = servos->dirty() | gyro->dirty(); 
+	if (!_dataFeedSubscribed)
+		return;
 
-	if(_dataFeedSubscribed && (dataDirty || millis() - _lastDataSend >= 2000)) {
-		writeDataHeader(dataUDP, dataRevision++); 
+	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
+	bool droneDataDirty = servos->dirty() | gyro->dirty(); 
+
+	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
+		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
 
 		writeBuffer->write(uint8_t(engine->state() == State_Armed ? 1 : 0));
 
@@ -241,15 +253,22 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		writeBuffer->write(int32_t(gyro->getRoll() * 10000));
 		writeBuffer->write(int32_t(gyro->getYaw() * 10000));
 
-
-		udp.beginPacket(_dataFeedSubscriptor, config->NetworkDataPort);
-		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
-		udp.endPacket();
-
-		uint32_t size = writeBuffer->getPosition();
-
-		writeBuffer->resetPosition();
-
+		sendData(udp);
 		_lastDataSend = millis();
+	}
+
+	if (Log::getBufferLines() > 0) {
+		writeDataHeader(dataUDP, dataRevision++, DataLog);
+
+		int messagesToSend = min(5, Log::getBufferLines());
+		writeBuffer->write(messagesToSend);
+
+		for (int i = 0; i < messagesToSend; i++) {
+			char* msg = Log::popMessage();
+			writeBuffer->writeString(msg);
+			free(msg);
+		}
+
+		sendData(udp);
 	}
 }

@@ -7,6 +7,11 @@
 #include "WProgram.h"
 #endif
 
+enum HelloPacketType : byte {
+	HelloQuestion = 1,
+	HelloAnswer = 2
+};
+
 enum ControlPacketType : byte {
 	MovementPacket = 1,
 	StopPacket = 2,
@@ -23,6 +28,11 @@ enum ControlPacketType : byte {
 	UnsubscribeDataFeed = 11,
 
 	CalibrateGyro = 12,
+};
+
+enum DataPacketType : byte {
+	DataDrone = 1,
+	DataLog = 2,
 };
 
 #endif

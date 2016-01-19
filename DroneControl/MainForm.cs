@@ -18,7 +18,7 @@ namespace DroneControl
     {
         private Drone drone;
 
-        private object locker = new object();
+        private LogForm logForm;
 
         public MainForm(Drone drone)
         {
@@ -67,6 +67,20 @@ namespace DroneControl
         {
             drone.SendPing();
             drone.SendGetInfo();
+        }
+
+        private Form ShowForm(Form form, Func<Form> onClosed)
+        {
+            if (onClosed == null)
+                throw new ArgumentNullException("onClosed");
+
+            if (form == null || form.IsDisposed)
+                form = onClosed();
+
+            if (!form.Visible)
+                form.Show(this);
+            form.BringToFront();
+            return form;
         }
 
         private void UpdatePing()
@@ -160,6 +174,11 @@ namespace DroneControl
         private void calibrateGyroButton_Click(object sender, EventArgs e)
         {
             drone.SendPacket(new PacketCalibrateGyro(), true);
+        }
+
+        private void logButton_Click(object sender, EventArgs e)
+        {
+            ShowForm(logForm, () => new LogForm());
         }
     }
 }

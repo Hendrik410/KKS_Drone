@@ -61,7 +61,12 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt die letzte Revision der Daten an die von der Drone geschickt wurden.
         /// </summary>
-        private int lastDataRevision = 0;
+        private int lastDataDroneRevision = 0;
+
+        /// <summary>
+        /// Gibt die letzte Revision der Daten an die von der Drone mit Log Daten geschickt wurden.
+        /// </summary>
+        private int lastDataLogRevision = 0;
 
         /// <summary>
         /// Gibt die IPAdress der Drone zurück.
@@ -617,33 +622,45 @@ namespace DroneLibrary
             }
         }
 
-        private const int DataPacketSize = 25;
+        private const int DataDronePacketSize = 25;
 
         private void HandleDataPacket(byte[] packet) {
-
-            using(MemoryStream stream = new MemoryStream(packet)) {
+            using (MemoryStream stream = new MemoryStream(packet)) {
                 PacketBuffer buffer = new PacketBuffer(stream);
-
-                if(packet.Length < DataPacketSize || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
+                if (buffer.Size < 3 || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
                     return;
 
                 int revision = buffer.ReadInt();
+                DataPacketType type = (DataPacketType)buffer.ReadByte();
 
-                if (!CheckRevision(lastDataRevision, revision))
-                    return;
+                switch (type)
+                {
+                    case DataPacketType.Drone:
+                        if (!CheckRevision(lastDataDroneRevision, revision))
+                            return;
 
-                if(Config.VerbosePacketReceive)
-                    Log.Verbose("[{0}] Received Data: [{1}] , size: {2} bytes", Address.ToString(), revision, packet.Length);
+                        bool isArmed = buffer.ReadByte() > 0;
 
-                bool isArmed = buffer.ReadByte() > 0;
+                        QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
+                            buffer.ReadUShort(), buffer.ReadUShort());
 
-                QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
-                    buffer.ReadUShort(), buffer.ReadUShort());
+                        GyroData gyro = new GyroData(buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f);
 
-                GyroData gyro = new GyroData(buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f);
+                        Data = new DroneData(isArmed, motorValues, gyro);
+                        lastDataDroneRevision = revision;
+                        break;
+                    case DataPacketType.Log:
+                        if (!CheckRevision(lastDataLogRevision, revision))
+                            return;
 
-                Data = new DroneData(isArmed, motorValues, gyro);
-                lastDataRevision = revision;
+                        int lines = buffer.ReadInt();
+
+                        for (int i = 0; i < lines; i++)
+                            Log.Info("[Drone] " + buffer.ReadString());
+
+                        lastDataLogRevision = revision;
+                        break;
+                }
             }
         }
 

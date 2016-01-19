@@ -40,6 +40,7 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.motorControl1 = new DroneControl.MotorControl();
+            this.logButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -129,11 +130,22 @@
             this.motorControl1.Size = new System.Drawing.Size(364, 92);
             this.motorControl1.TabIndex = 2;
             // 
+            // logButton
+            // 
+            this.logButton.Location = new System.Drawing.Point(321, 8);
+            this.logButton.Name = "logButton";
+            this.logButton.Size = new System.Drawing.Size(75, 23);
+            this.logButton.TabIndex = 9;
+            this.logButton.Text = "Log";
+            this.logButton.UseVisualStyleBackColor = true;
+            this.logButton.Click += new System.EventHandler(this.logButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.logButton);
             this.Controls.Add(this.infoPropertyGrid);
             this.Controls.Add(this.headingIndicator);
             this.Controls.Add(this.calibrateGyroButton);
@@ -163,5 +175,6 @@
         private System.Windows.Forms.Button calibrateGyroButton;
         private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
         private System.Windows.Forms.PropertyGrid infoPropertyGrid;
+        private System.Windows.Forms.Button logButton;
     }
 }
