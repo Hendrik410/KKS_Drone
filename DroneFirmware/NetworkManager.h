@@ -31,10 +31,6 @@ protected:
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
-	bool _dataDirty;
-	void dataChanged() {
-		_dataDirty = true;
-	}
 
 	WiFiUDP helloUDP;
 	WiFiUDP controlUDP;

@@ -12,7 +12,6 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 
 	_dataFeedSubscribed = false;
 	_lastDataSend = 0;
-	_dataDirty = true;
 
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
@@ -211,7 +210,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 }
 
 void NetworkManager::handleData(WiFiUDP udp) {
-	if(_dataFeedSubscribed && (_dataDirty || millis() - _lastDataSend >= 2000)) {
+	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
+	bool dataDirty = servos->dirty() | gyro->dirty(); 
+
+	if(_dataFeedSubscribed && (dataDirty || millis() - _lastDataSend >= 2000)) {
 		writeDataHeader(dataUDP, 0); //TODO revision für data stream
 
 		writeBuffer->write(uint8_t(engine->state() == State_Armed ? 1 : 0));
@@ -234,7 +236,6 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		writeBuffer->resetPosition();
 
-		_dataDirty = false;
 		_lastDataSend = millis();
 
 		Log::debug("Network", "Data send to %s; Size: %d", _dataFeedSubscriptor.toString().c_str(), size);

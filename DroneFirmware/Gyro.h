@@ -40,6 +40,12 @@ class Gyro
 	 float rollOffset;
 	 float yawOffset;
 
+	 float oldPitch;
+	 float oldRoll;
+	 float oldYaw;
+
+	 bool _dirty;
+
  public:
 	explicit Gyro(Config* config);
 
@@ -57,6 +63,13 @@ class Gyro
 	float getPitchRad() const;
 	float getRollRad() const;
 	float getYawRad() const;
+
+	// Gibt zurück ob die Daten sich geändert haben und setzt dann dirty wieder zurück
+	bool dirty() {
+		bool d = _dirty;
+		_dirty = false;
+		return d;
+	}
 };
 
 #endif

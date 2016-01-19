@@ -34,6 +34,8 @@ class ServoManager
 	 Servo backLeft;
 	 Servo backRight;
 
+	 bool _dirty;
+
 
  public:
 	 explicit ServoManager(Config* config);
@@ -55,6 +57,13 @@ class ServoManager
 	}
 	int BR() const {
 		return servoBRValue;
+	}
+
+	// Gibt zurück ob die Daten sich geändert haben und setzt dann dirty wieder zurück
+	bool dirty() {
+		bool d = _dirty;
+		_dirty = false;
+		return d;
 	}
 };
 

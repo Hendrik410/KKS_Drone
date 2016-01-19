@@ -69,6 +69,12 @@ void Gyro::update() {
 
 		fifoCount = _MPU6050.getFIFOCount();
 	}
+
+	_dirty = oldPitch != getPitchRad() || oldRoll != getRollRad() || oldYaw != getYawRad();
+
+	oldPitch = getPitchRad();
+	oldRoll = getRollRad();
+	oldYaw = getYawRad();
 }
 
 float Gyro::getTemperature() {
