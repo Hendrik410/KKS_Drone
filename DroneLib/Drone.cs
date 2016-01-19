@@ -59,6 +59,11 @@ namespace DroneLibrary
         private int currentRevision = 1;
 
         /// <summary>
+        /// Gibt die letzte Revision der Daten an die von der Drone geschickt wurden.
+        /// </summary>
+        private int lastDataRevision = 0;
+
+        /// <summary>
         /// Gibt die IPAdress der Drone zurück.
         /// </summary>
         public IPAddress Address { get; private set; }
@@ -389,6 +394,15 @@ namespace DroneLibrary
 
         #endregion SendShortcuts
 
+        private bool CheckRevision(int oldRev, int newRev)
+        {
+            if (newRev > oldRev)
+                return true;
+            if (newRev < 0 && oldRev >= 0) // Overflow
+                return true;
+            return false;
+        }
+
 #region ControlUdp
 
         private bool SendPacket(IPacket packet, bool guaranteed, int revision)
@@ -613,7 +627,9 @@ namespace DroneLibrary
                     return;
 
                 int revision = buffer.ReadInt();
-                
+
+                if (!CheckRevision(lastDataRevision, revision))
+                    return;
 
                 if(Config.VerbosePacketReceive)
                     Log.Verbose("[{0}] Received Data: [{1}] , size: {2} bytes", Address.ToString(), revision, packet.Length);
@@ -626,9 +642,7 @@ namespace DroneLibrary
                 GyroData gyro = new GyroData(buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f);
 
                 Data = new DroneData(isArmed, motorValues, gyro);
-
-                if(Debugger.IsLogging())
-                    Debugger.Log(3, "DataFeed", "Got new Data\n");
+                lastDataRevision = revision;
             }
         }
 

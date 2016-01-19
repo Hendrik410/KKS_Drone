@@ -32,6 +32,8 @@ protected:
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
 
+	int dataRevision;
+
 	WiFiUDP helloUDP;
 	WiFiUDP controlUDP;
 	WiFiUDP dataUDP;
