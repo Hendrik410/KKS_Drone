@@ -592,7 +592,7 @@ namespace DroneLibrary
                 QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
                     buffer.ReadUShort(), buffer.ReadUShort());
 
-                GyroData gyro = new GyroData(buffer.ReadFloat(), buffer.ReadFloat(), buffer.ReadFloat());
+                GyroData gyro = new GyroData(buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f);
 
                 Data = new DroneData(isArmed, motorValues, gyro);
 
