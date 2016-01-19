@@ -34,11 +34,12 @@
             this.pingLabel = new System.Windows.Forms.Label();
             this.statusArmedLabel = new System.Windows.Forms.Label();
             this.armToogleButton = new System.Windows.Forms.Button();
-            this.motorControl1 = new DroneControl.MotorControl();
-            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.calibrateGyroButton = new System.Windows.Forms.Button();
+            this.infoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
+            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
+            this.motorControl1 = new DroneControl.MotorControl();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -62,9 +63,10 @@
             // 
             // statusArmedLabel
             // 
+            this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.statusArmedLabel.AutoSize = true;
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(294, 13);
+            this.statusArmedLabel.Location = new System.Drawing.Point(475, 13);
             this.statusArmedLabel.Name = "statusArmedLabel";
             this.statusArmedLabel.Size = new System.Drawing.Size(57, 13);
             this.statusArmedLabel.TabIndex = 3;
@@ -72,28 +74,14 @@
             // 
             // armToogleButton
             // 
-            this.armToogleButton.Location = new System.Drawing.Point(384, 8);
+            this.armToogleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.armToogleButton.Location = new System.Drawing.Point(565, 8);
             this.armToogleButton.Name = "armToogleButton";
             this.armToogleButton.Size = new System.Drawing.Size(75, 23);
             this.armToogleButton.TabIndex = 4;
             this.armToogleButton.Text = "Arm";
             this.armToogleButton.UseVisualStyleBackColor = true;
             this.armToogleButton.Click += new System.EventHandler(this.armToogleButton_Click);
-            // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(12, 42);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 92);
-            this.motorControl1.TabIndex = 2;
-            // 
-            // artificialHorizon
-            // 
-            this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
-            this.artificialHorizon.Name = "artificialHorizon";
-            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
-            this.artificialHorizon.TabIndex = 5;
-            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
             // timer
             // 
@@ -109,6 +97,15 @@
             this.calibrateGyroButton.UseVisualStyleBackColor = true;
             this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
             // 
+            // infoPropertyGrid
+            // 
+            this.infoPropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.infoPropertyGrid.HelpVisible = false;
+            this.infoPropertyGrid.Location = new System.Drawing.Point(424, 42);
+            this.infoPropertyGrid.Name = "infoPropertyGrid";
+            this.infoPropertyGrid.Size = new System.Drawing.Size(216, 299);
+            this.infoPropertyGrid.TabIndex = 8;
+            // 
             // headingIndicator
             // 
             this.headingIndicator.Location = new System.Drawing.Point(221, 139);
@@ -117,11 +114,27 @@
             this.headingIndicator.TabIndex = 7;
             this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
             // 
+            // artificialHorizon
+            // 
+            this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
+            this.artificialHorizon.Name = "artificialHorizon";
+            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
+            this.artificialHorizon.TabIndex = 5;
+            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
+            // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(12, 42);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 92);
+            this.motorControl1.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 353);
+            this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.infoPropertyGrid);
             this.Controls.Add(this.headingIndicator);
             this.Controls.Add(this.calibrateGyroButton);
             this.Controls.Add(this.artificialHorizon);
@@ -149,5 +162,6 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button calibrateGyroButton;
         private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
+        private System.Windows.Forms.PropertyGrid infoPropertyGrid;
     }
 }

@@ -189,6 +189,15 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case GetInfoPacket: {
 		writeHeader(udp, revision, GetInfoPacket);
 
+		writeBuffer->writeString(config->DroneName);
+		writeBuffer->writeString(MODEL_NAME);
+
+		char serialCode[32];
+		getBuildSerialCode(serialCode, sizeof(serialCode));
+		writeBuffer->writeString(serialCode);
+
+		writeBuffer->writeString(BUILD_NAME);
+
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 

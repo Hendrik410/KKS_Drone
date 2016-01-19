@@ -35,6 +35,7 @@ namespace DroneControl
             timer.Tick += Timer_Tick;
             timer.Start();
 
+            drone.OnInfoChange += Drone_OnInfoChange;
             drone.OnPingChange += Drone_OnPingChange;
             drone.OnDataChange += Drone_OnDataChange;
             motorControl1.UpdateDrone(drone);
@@ -44,6 +45,7 @@ namespace DroneControl
             UpdateInfo();
             UpdateData();
         }
+
 
         protected override void OnClosed(EventArgs e)
         {
@@ -82,7 +84,18 @@ namespace DroneControl
 
         private void UpdateInfo()
         {
+            infoPropertyGrid.SelectedObject = drone.Info;
+        }
 
+        private void Drone_OnInfoChange(object sender, EventArgs eventArgs)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler(Drone_OnInfoChange), this, eventArgs);
+                return;
+            }
+
+            UpdateInfo();
         }
 
         private void Drone_OnDataChange(object sender, EventArgs eventArgs)

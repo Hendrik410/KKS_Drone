@@ -566,13 +566,14 @@ namespace DroneLibrary
                         break;
 
                     case PacketType.Info:
-                        if (packet.Length < HeaderSize + 5)
-                            throw new InvalidDataException("Packet is not long enough.");
-
+                        string name = buffer.ReadString();
+                        string modelName = buffer.ReadString();
+                        string serialCode = buffer.ReadString();
+                        string buildName = buffer.ReadString().Trim().Replace(' ', '_');
                         byte buildVersion = buffer.ReadByte();
                         int highestRevision = buffer.ReadInt();
 
-                        Info = new DroneInfo(buildVersion, highestRevision);
+                        Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
                         RemovePacketToAcknowlegde(revision);
                         break;
                     default:
