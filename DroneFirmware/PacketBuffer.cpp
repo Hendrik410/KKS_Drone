@@ -138,7 +138,7 @@ void PacketBuffer::read(char* buffer, int length, int offset) {
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
 
-	char* str = (char*)malloc(length * sizeof(length));
+	char* str = (char*)malloc(length * sizeof(char));
 	read(str, length, 0);
 	return str;
 }
