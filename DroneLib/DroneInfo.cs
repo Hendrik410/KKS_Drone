@@ -22,29 +22,10 @@ namespace DroneLibrary
         /// </summary>
         public int HighestRevision { get; private set; }
 
-        /// <summary>
-        /// Gibt zurück ob die Motoren aktiviert sind.
-        /// </summary>
-        public bool IsArmed {
-            get;
-            private set;
-        }
-        
-        /// <summary>
-        /// Gibt die einzelnen Motorwerte zurück.
-        /// </summary>
-        public QuadMotorValues MotorValues {
-            get;
-            private set;
-        }
-
-
-        public DroneInfo(byte buildVersion, int highestRevision, bool isArmed, QuadMotorValues motorValues)
+        public DroneInfo(byte buildVersion, int highestRevision)
         {
             this.BuildVersion = buildVersion;
             this.HighestRevision = highestRevision;
-            this.IsArmed = isArmed;
-            this.MotorValues = motorValues;
         }
 
         public static bool operator ==(DroneInfo a, DroneInfo b)
@@ -68,9 +49,7 @@ namespace DroneLibrary
         public bool Equals(DroneInfo other)
         {
             return BuildVersion == other.BuildVersion 
-                && HighestRevision == other.HighestRevision
-                && IsArmed == other.IsArmed
-                && MotorValues == other.MotorValues;
+                && HighestRevision == other.HighestRevision;
         }
 
         public override int GetHashCode()

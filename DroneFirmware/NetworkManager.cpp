@@ -192,13 +192,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 
-		writeBuffer->write(byte(engine->state() == State_Armed ? 1 : 0));
-
-		writeBuffer->write(uint16_t(servos->FL()));
-		writeBuffer->write(uint16_t(servos->FR()));
-		writeBuffer->write(uint16_t(servos->BL()));
-		writeBuffer->write(uint16_t(servos->BR()));
-
 		sendPacket(udp);
 		break;
 	}

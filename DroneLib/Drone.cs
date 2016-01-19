@@ -528,11 +528,7 @@ namespace DroneLibrary
                         byte buildVersion = buffer.ReadByte();
                         int highestRevision = buffer.ReadInt();
 
-                        bool isArmed = buffer.ReadByte() > 0;
-
-                        QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(), buffer.ReadUShort(), buffer.ReadUShort());
-
-                        Info = new DroneInfo(buildVersion, highestRevision, isArmed, motorValues);
+                        Info = new DroneInfo(buildVersion, highestRevision);
                         RemovePacketToAcknowlegde(revision);
                         break;
                     default:
