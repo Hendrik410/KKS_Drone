@@ -81,15 +81,27 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt aktuelle Daten über das Verhalten der Drone zurück.
         /// </summary>
-        public DroneData Data {
-            get { return data; }
-            set {
-                lock(locker) {
-                    if(value != data) {
-                        data = value;
-                        OnDataChange?.Invoke(this, EventArgs.Empty);
-                    }
+        public DroneData Data
+        {
+            get
+            {
+                lock (dataLock)
+                {
+                    return data;
                 }
+            }
+            set
+            {
+                bool changed;
+                lock (dataLock)
+                {
+                    changed = value != data;
+                    if (changed)
+                        data = value;
+                }
+
+                if (changed)
+                    OnDataChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -102,40 +114,57 @@ namespace DroneLibrary
         {
             get
             {
-                return info;
+                lock (infoLock)
+                {
+                    return info;
+                }
             }
             set
             {
-                lock (locker)
+                bool changed;
+                lock (infoLock)
                 {
-                    if (value != info)
-                    {
+                    changed = value != info;
+                    if (changed)
                         info = value;
-                        OnInfoChange?.Invoke(this, EventArgs.Empty);
-                    }
                 }
+
+                if (changed)
+                    OnInfoChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
+        /// <summary>
+        /// Wird aufgerufen, wenn sich die Dronen Einstellungen ändern.
+        /// </summary>
+        public EventHandler OnSettingsChange;
 
         private DroneSettings settings;
 
         /// <summary>
         /// Gibt Einstellungen der Drone zurück. Null wenn noch keine Informationen empfangen wurden.
         /// </summary>
-        public DroneSettings Settings {
-            get {
-                lock(locker) {
+        public DroneSettings Settings
+        {
+            get
+            {
+                lock (settingsLock)
+                {
                     return settings;
                 }
             }
-            set {
-                lock(locker) {
-                    if(value != settings) {
+            set
+            {
+                bool changed;
+                lock (settingsLock)
+                {
+                    changed = value != settings;
+                    if (changed)
                         settings = value;
-                        OnInfoChange?.Invoke(this, EventArgs.Empty);
-                    }
                 }
+
+                if (changed)
+                    OnSettingsChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -184,8 +213,8 @@ namespace DroneLibrary
         /// </summary>
         public int PendingAcknowledgePacketsCount => packetsToAcknowledge.Count;
 
+        private object infoLock = new object(), dataLock = new object(), settingsLock = new object();
 
-        private object locker = new object();
 
         public Drone(IPAddress address, Config config)
         {
@@ -252,7 +281,7 @@ namespace DroneLibrary
         /// <returns>Gibt true zurück, wenn Pakete gesendet wurden.</returns>
         public bool ResendPendingPackets()
         {
-            lock (locker)
+            lock (packetsToAcknowledge)
             {
                 bool anyDataSent = false;
                 KeyValuePair<int, IPacket>[] packets = packetsToAcknowledge.ToArray();
@@ -380,15 +409,19 @@ namespace DroneLibrary
                     return false;
             }
 
-            lock (locker)
+            lock (controlSocket)
             {
-                bool alreadySent = packetsToAcknowledge.ContainsKey(revision);
-                if (guaranteed)
+                bool alreadySent;
+                lock (packetsToAcknowledge)
                 {
-                    if (!stopwatch.IsRunning)
-                        stopwatch.Start();
-                    packetsToAcknowledge[revision] = packet;
-                    packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
+                    alreadySent = packetsToAcknowledge.ContainsKey(revision);
+                    if (guaranteed)
+                    {
+                        if (!stopwatch.IsRunning)
+                            stopwatch.Start();
+                        packetsToAcknowledge[revision] = packet;
+                        packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
+                    }
                 }
 
                 packetBuffer.ResetPosition();
@@ -448,10 +481,7 @@ namespace DroneLibrary
                     return;
                 }
 
-                lock (locker)
-                {
-                    HandlePacket(packet);
-                }
+                HandlePacket(packet);
             }
             catch (Exception e)
             {
@@ -537,32 +567,37 @@ namespace DroneLibrary
             }
         }
 
-#endregion
+        #endregion
 
-#region DataFeedReceive
+        #region DataFeedReceive
 
-        private void ReceiveDataPacket(IAsyncResult result) {
-            if(IsDisposed)
+        private void ReceiveDataPacket(IAsyncResult result)
+        {
+            if (IsDisposed)
                 return;
 
-            try {
+            try
+            {
                 IPEndPoint endPoint = new IPEndPoint(Address, Config.ProtocolControlPort);
                 byte[] packet = dataSocket.EndReceive(result, ref endPoint);
 
                 // kein Packet empfangen
-                if(packet == null || packet.Length == 0) {
+                if (packet == null || packet.Length == 0)
+                {
                     dataSocket.BeginReceive(ReceivePacket, null);
                     return;
                 }
 
-                lock (locker) {
-                    HandleDataPacket(packet);
-                }
-            } catch(Exception e) {
+                HandleDataPacket(packet);
+            }
+            catch (Exception e)
+            {
                 Log.Error(e.ToString());
-                if(Debugger.IsAttached)
+                if (Debugger.IsAttached)
                     Debugger.Break();
-            } finally {
+            }
+            finally
+            {
                 dataSocket.BeginReceive(ReceiveDataPacket, null);
             }
         }
@@ -605,8 +640,11 @@ namespace DroneLibrary
         /// <param name="packetID"></param>
         private void RemovePacketToAcknowlegde(int packetID)
         {
-            packetsToAcknowledge.Remove(packetID);
-            packetSendTime.Remove(packetID);
+            lock(packetsToAcknowledge)
+            {
+                packetsToAcknowledge.Remove(packetID);
+                packetSendTime.Remove(packetID);
+            }
         }
     }
 }
