@@ -14,7 +14,9 @@ namespace DroneControl
 {
     public partial class LogForm : Form
     {
-        public LogForm()
+        private Drone drone;
+
+        public LogForm(Drone drone)
         {
             InitializeComponent();
 
@@ -22,6 +24,10 @@ namespace DroneControl
             Log.OnFlushBuffer += Log_OnFlushBuffer;
             Log.FlushBuffer();
             Log.AutomaticFlush = true;
+
+            this.drone = drone;
+
+            drone.OnLogMessage += Drone_OnLogMessage;
         }
 
         private void Log_OnFlushBuffer(string obj)
@@ -32,21 +38,36 @@ namespace DroneControl
                 logTextBox.AppendText(obj);
         }
 
+        private void Drone_OnLogMessage(string msg)
+        {
+            if (droneLogTextBox.InvokeRequired)
+                droneLogTextBox.Invoke(new Action<string>(Drone_OnLogMessage), msg);
+            else
+                droneLogTextBox.AppendText(msg);
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
             Log.OnFlushBuffer -= Log_OnFlushBuffer;
             Log.AutomaticFlush = false;
-        }
 
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            logTextBox.Clear();
+            drone.OnLogMessage -= Drone_OnLogMessage;
         }
 
         private void flushTimer_Tick(object sender, EventArgs e)
         {
             Log.FlushBuffer();
+        }
+
+        private void logCleanButton_Click(object sender, EventArgs e)
+        {
+            logTextBox.Clear();
+        }
+
+        private void clearDroneButton_Click(object sender, EventArgs e)
+        {
+            droneLogTextBox.Clear();
         }
     }
 }

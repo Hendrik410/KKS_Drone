@@ -178,7 +178,7 @@ namespace DroneControl
 
         private void logButton_Click(object sender, EventArgs e)
         {
-            ShowForm(logForm, () => new LogForm());
+            ShowForm(logForm, () => new LogForm(drone));
         }
     }
 }

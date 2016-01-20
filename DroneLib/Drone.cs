@@ -54,6 +54,11 @@ namespace DroneLibrary
         public event EventHandler OnPingChange;
 
         /// <summary>
+        /// Wird aufgerufen wenn die Drone eine Log Nachricht schickt.
+        /// </summary>
+        public event Action<String> OnLogMessage;
+
+        /// <summary>
         /// Gibt die aktuelle Revision der Daten an die zu der Drone geschickt wurden.
         /// </summary>
         private int currentRevision = 1;
@@ -656,7 +661,14 @@ namespace DroneLibrary
                         int lines = buffer.ReadInt();
 
                         for (int i = 0; i < lines; i++)
-                            Log.Info("[Drone] " + buffer.ReadString());
+                        {
+                            string msg = buffer.ReadString();
+
+                            if (OnLogMessage == null)
+                                Log.Info("[Drone] " + msg);
+                            else
+                                OnLogMessage(msg + Environment.NewLine);
+                        }
 
                         lastDataLogRevision = revision;
                         break;
