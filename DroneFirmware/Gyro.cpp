@@ -108,7 +108,12 @@ float Gyro::getPitchRad() const {
 }
 
 float Gyro::getYawRad() const {
-	return ypr[0] - yawOffset;
+	float yaw = ypr[0] - yawOffset;
+	while (yaw < 0)
+		yaw += M_TWOPI;
+	while (yaw >= M_TWOPI)
+		yaw -= M_TWOPI;
+	return yaw;
 }
 
 
