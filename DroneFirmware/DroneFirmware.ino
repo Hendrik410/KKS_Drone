@@ -101,6 +101,9 @@ void setup() {
 	pinMode(config.PinLed, OUTPUT);
 	digitalWrite(config.PinLed, HIGH);
 
+	//setup servos
+	servos = new ServoManager(&config);
+	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
 
 	Log::info("Boot", "Init network...");
 
@@ -125,10 +128,6 @@ void setup() {
 		Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
 	}
 
-
-	//setup servos
-	servos = new ServoManager(&config);
-	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
 
 	//setup MPU6050
 	gyro = new Gyro(&config);
