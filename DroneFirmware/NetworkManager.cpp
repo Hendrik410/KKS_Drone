@@ -257,7 +257,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		_lastDataSend = millis();
 	}
 
-	if (Log::getBufferLines() > 0) {
+	while (Log::getBufferLines() > 0) {
 		writeDataHeader(dataUDP, dataRevision++, DataLog);
 
 		int messagesToSend = min(5, Log::getBufferLines());

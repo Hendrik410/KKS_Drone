@@ -24,7 +24,7 @@ uint32_t Log::getBufferLines() {
 
 char** Log::getBuffer() {
 	if (_buffer == NULL)
-		_buffer = (char**)malloc(LOG_BUFFER_LINES);
+		_buffer = (char**)malloc(LOG_BUFFER_LINES * sizeof(char*));
 	return _buffer;
 }
 
@@ -94,7 +94,7 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 
 
 	Serial.println(message);
-	free(message);
+	addMessage(message);
 }
 
 void Log::error(const char* tag, const char* format, ...) {
