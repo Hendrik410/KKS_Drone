@@ -254,9 +254,9 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		writeBuffer->write(uint16_t(servos->BL()));
 		writeBuffer->write(uint16_t(servos->BR()));
 
-		writeBuffer->write(int32_t(gyro->getPitch() * 10000));
-		writeBuffer->write(int32_t(gyro->getRoll() * 10000));
-		writeBuffer->write(int32_t(gyro->getYaw() * 10000));
+		writeBuffer->write(gyro->getPitch());
+		writeBuffer->write(gyro->getRoll());
+		writeBuffer->write(gyro->getYaw());
 
 		sendData(udp);
 		_lastDataSend = millis();

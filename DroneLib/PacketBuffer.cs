@@ -92,14 +92,18 @@ namespace DroneLibrary
 
         public float ReadFloat()
         {
-            stream.Read(helperBuffer, 0, sizeof(float));
-            return BitConverter.ToSingle(helperBuffer, 0);
+            return ReadInt() / 100000.0f;
+
+            /*stream.Read(helperBuffer, 0, sizeof(float));
+            return BitConverter.ToSingle(helperBuffer, 0);*/
         }
 
         public double ReadDouble()
         {
-            stream.Read(helperBuffer, 0, sizeof(double));
-            return BitConverter.ToSingle(helperBuffer, 0);
+            return ReadInt() / 100000.0f;
+            // FIXME
+            //stream.Read(helperBuffer, 0, sizeof(double));
+            // return BitConverter.ToSingle(helperBuffer, 0);
         }
 
         public string ReadString()
@@ -163,12 +167,16 @@ namespace DroneLibrary
 
         public void Write(float value)
         {
-            stream.Write(BitConverter.GetBytes(value), 0, sizeof(float));
+            writer.Write((int)(value * 100000));
+            // FIXME
+            //stream.Write(BitConverter.GetBytes(value), 0, sizeof(float));
         }
 
         public void Write(double value)
         {
-            stream.Write(BitConverter.GetBytes(value), 0, sizeof(double));
+            writer.Write((int)(value * 100000));
+            // FIXME
+            //stream.Write(BitConverter.GetBytes(value), 0, sizeof(double));
         }
 
         public void Write(string str)
