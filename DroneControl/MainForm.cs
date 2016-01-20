@@ -85,12 +85,12 @@ namespace DroneControl
 
         private void UpdatePing()
         {
-            if (drone.Ping < 0)
+            if (!drone.IsConnected)
                 pingLabel.Text = "Not connected";
             else
                 pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
 
-            if (drone.Ping < 0 || drone.Ping > 50)
+            if (!drone.IsConnected || drone.Ping > 50)
                 pingLabel.ForeColor = Color.Red;
             else
                 pingLabel.ForeColor = Color.Green;
@@ -126,9 +126,9 @@ namespace DroneControl
 
         private void UpdateData()
         {
-            if (drone.Data == null)
+            if (!drone.IsConnected)
             {
-                statusArmedLabel.Text = "Status: no data";
+                statusArmedLabel.Text = "Status: not connected";
                 armToogleButton.Enabled = false;
             }
             else
@@ -162,7 +162,7 @@ namespace DroneControl
 
         private void armToogleButton_Click(object sender, EventArgs e)
         {
-            if (drone.Data == null)
+            if (!drone.IsConnected)
                 return;
 
             if (drone.Data.IsArmed)

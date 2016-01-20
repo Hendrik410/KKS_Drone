@@ -43,6 +43,11 @@ namespace DroneLibrary
             }
         }
 
+        public bool IsConnected
+        {
+            get { return Ping >= 0; }
+        }
+
         /// <summary>
         /// Wird aufgerufen wenn die Drone verbunden ist.
         /// </summary>
@@ -423,7 +428,7 @@ namespace DroneLibrary
                 throw new ArgumentNullException(nameof(packet));
 
             // wenn das Drone nicht erreichbar ist
-            if (Ping < 0)
+            if (!IsConnected)
             {
                 if (Config.IgnoreGuaranteedWhenOffline)
                     guaranteed = false;
@@ -548,7 +553,7 @@ namespace DroneLibrary
                             throw new InvalidDataException("Packet is not long enough.");
 
                         int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10 || Ping < 0)
+                        if (timeSpan > 1000 * 10 || !IsConnected)
                         {
                             OnConnected?.Invoke(this, EventArgs.Empty);
                         }

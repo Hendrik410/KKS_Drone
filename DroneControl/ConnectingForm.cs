@@ -79,7 +79,7 @@ namespace DroneControl
             Drone.OnConnected += OnDroneConnected;
 
             // TODO: drone.Connect() einbauen, damit das Event schon gesetzt ist bevor wir verbinden
-            if (Drone.Ping >= 0) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
+            if (Drone.IsConnected) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
                 OnDroneConnected(this, EventArgs.Empty);
 
             StartTimers();
