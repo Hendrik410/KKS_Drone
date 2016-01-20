@@ -41,6 +41,7 @@
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.motorControl1 = new DroneControl.MotorControl();
             this.logButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -67,7 +68,7 @@
             this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.statusArmedLabel.AutoSize = true;
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(475, 13);
+            this.statusArmedLabel.Location = new System.Drawing.Point(430, 13);
             this.statusArmedLabel.Name = "statusArmedLabel";
             this.statusArmedLabel.Size = new System.Drawing.Size(57, 13);
             this.statusArmedLabel.TabIndex = 3;
@@ -140,11 +141,24 @@
             this.logButton.UseVisualStyleBackColor = true;
             this.logButton.Click += new System.EventHandler(this.logButton_Click);
             // 
+            // stopButton
+            // 
+            this.stopButton.BackColor = System.Drawing.Color.DarkRed;
+            this.stopButton.ForeColor = System.Drawing.Color.White;
+            this.stopButton.Location = new System.Drawing.Point(565, 38);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(75, 23);
+            this.stopButton.TabIndex = 10;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = false;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.stopButton);
             this.Controls.Add(this.logButton);
             this.Controls.Add(this.infoPropertyGrid);
             this.Controls.Add(this.headingIndicator);
@@ -176,5 +190,6 @@
         private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
         private System.Windows.Forms.PropertyGrid infoPropertyGrid;
         private System.Windows.Forms.Button logButton;
+        private System.Windows.Forms.Button stopButton;
     }
 }

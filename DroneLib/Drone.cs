@@ -293,7 +293,16 @@ namespace DroneLibrary
             IsDisposed = true;
         }
 
-#endregion
+        #endregion
+
+        public void Disconnect()
+        {
+            SendDisarm();
+            SendPacket(new PacketUnsubscribeDataFeed(), false);
+
+            controlSocket.Close();
+            dataSocket.Close();
+        }
 
         /// <summary>
         /// Verschickt alle Pakete nochmal die noch vom Drone bestätigt werden.
@@ -657,6 +666,7 @@ namespace DroneLibrary
                         GyroData gyro = new GyroData(buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f, buffer.ReadInt() / 10000f);
 
                         Data = new DroneData(isArmed, motorValues, gyro);
+
                         lastDataDroneRevision = revision;
                         break;
                     case DataPacketType.Log:
