@@ -338,6 +338,16 @@ namespace DroneLibrary
         }
 
         /// <summary>
+        /// Schickt der Drone den Befehl neuzustarten.
+        /// </summary>
+        public void SendReset() {
+            if(IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            SendPacket(new PacketReset(), true);
+        }
+
+        /// <summary>
         /// Fordert die Statusinformationen der Drone an.
         /// </summary>
         public void SendGetInfo() {

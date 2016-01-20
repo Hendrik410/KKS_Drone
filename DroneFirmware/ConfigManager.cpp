@@ -66,10 +66,10 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 Config ConfigManager::getDefault() {
 	Config config;
 
-	config.DroneName = "Drone";
+	config.DroneName = "Drone_BestOne";
 
-	config.NetworkSSID = "Drone";
-	config.NetworkPassword = "12345678";
+	config.NetworkSSID = "Kugelmatik";
+	config.NetworkPassword = "123456abc";
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;

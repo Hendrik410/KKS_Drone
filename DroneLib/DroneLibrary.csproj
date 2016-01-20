@@ -66,6 +66,7 @@
     <Compile Include="Protocol\PacketInfo.cs" />
     <Compile Include="Protocol\PacketPing.cs" />
     <Compile Include="Protocol\PacketBlink.cs" />
+    <Compile Include="Protocol\PacketReset.cs" />
     <Compile Include="Protocol\PacketResetRevision.cs" />
     <Compile Include="Protocol\PacketSetMovement.cs" />
     <Compile Include="Protocol\PacketStop.cs" />

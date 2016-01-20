@@ -17,5 +17,6 @@
         UnsubscribeDataFeed = 11,
 
         CalibrateGyro = 12,
+        Reset = 13
     }
 }

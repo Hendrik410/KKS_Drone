@@ -229,6 +229,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case CalibrateGyro:
 		gyro->setAsZero();
 		break;
+
+	case Reset:
+		if(engine->state() == State_Idle)
+			ESP.restart();
+		break;
 	}
 }
 
