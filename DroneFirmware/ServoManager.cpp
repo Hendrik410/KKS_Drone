@@ -20,7 +20,7 @@ void ServoManager::init(int pinFL, int pinFR, int pinBL, int pinBR) {
 	backLeft.attach(pinBL);
 	backRight.attach(pinBR);
 
-	setAllServos(config->ServoMin);
+	setAllServos(config->ServoMin, true);
 }
 
 void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
