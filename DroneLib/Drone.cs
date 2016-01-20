@@ -299,9 +299,6 @@ namespace DroneLibrary
         {
             SendDisarm();
             SendPacket(new PacketUnsubscribeDataFeed(), false);
-
-            controlSocket.Close();
-            dataSocket.Close();
         }
 
         /// <summary>
