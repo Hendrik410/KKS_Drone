@@ -42,6 +42,7 @@
             this.motorControl1 = new DroneControl.MotorControl();
             this.logButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
+            this.resetButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -103,9 +104,9 @@
             // 
             this.infoPropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.infoPropertyGrid.HelpVisible = false;
-            this.infoPropertyGrid.Location = new System.Drawing.Point(424, 42);
+            this.infoPropertyGrid.Location = new System.Drawing.Point(424, 67);
             this.infoPropertyGrid.Name = "infoPropertyGrid";
-            this.infoPropertyGrid.Size = new System.Drawing.Size(216, 299);
+            this.infoPropertyGrid.Size = new System.Drawing.Size(216, 274);
             this.infoPropertyGrid.TabIndex = 8;
             // 
             // headingIndicator
@@ -153,11 +154,22 @@
             this.stopButton.UseVisualStyleBackColor = false;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(424, 38);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(75, 23);
+            this.resetButton.TabIndex = 11;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.resetButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.logButton);
             this.Controls.Add(this.infoPropertyGrid);
@@ -191,5 +203,6 @@
         private System.Windows.Forms.PropertyGrid infoPropertyGrid;
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Button resetButton;
     }
 }

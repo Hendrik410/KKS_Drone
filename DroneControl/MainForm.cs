@@ -184,5 +184,9 @@ namespace DroneControl
         {
             drone.SendStop();
         }
+
+        private void resetButton_Click(object sender, EventArgs e) {
+            drone.SendReset();
+        }
     }
 }
