@@ -74,7 +74,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
-	config.NetworkPacketBufferSize = 128;
+	config.NetworkPacketBufferSize = 512;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
