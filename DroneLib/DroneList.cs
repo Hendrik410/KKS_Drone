@@ -92,7 +92,6 @@ namespace DroneLibrary
                     entry.FirmwareVersion = buffer.ReadByte();
 
                     AddDrone(entry);
-                    foundDrones.Add(entry);
                 }
             }
             catch (Exception e)
