@@ -102,6 +102,9 @@ namespace DroneControl
 
         private void Drone_OnInfoChange(object sender, EventArgs eventArgs)
         {
+            if (IsDisposed)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new EventHandler(Drone_OnInfoChange), this, eventArgs);
@@ -113,6 +116,8 @@ namespace DroneControl
 
         private void Drone_OnDataChange(object sender, EventArgs eventArgs)
         {
+            if (IsDisposed)
+                return;
 
             if (InvokeRequired)
             {
@@ -152,6 +157,9 @@ namespace DroneControl
 
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
+            if (IsDisposed)
+                return;
+
             if (pingLabel.InvokeRequired)
                 pingLabel.Invoke(new EventHandler(Drone_OnPingChange), sender, e);
             else
