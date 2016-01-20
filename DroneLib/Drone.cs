@@ -260,8 +260,13 @@ namespace DroneLibrary
 
             OnConnected += (sender, args) =>
             {
+                currentRevision = 1;
+                lastDataDroneRevision = 0;
+                lastDataLogRevision = 0;
+
                 SendPacket(new PacketResetRevision(), true);
-                
+                SendPacket(new PacketCalibrateGyro(), true);
+                SendPacket(new PacketSubscribeDataFeed(), true);
             };
         }
 
@@ -668,7 +673,7 @@ namespace DroneLibrary
                         break;
                     case DataPacketType.Log:
                         if (!CheckRevision(lastDataLogRevision, revision))
-                            return;
+                           return;
 
                         int lines = buffer.ReadInt();
 

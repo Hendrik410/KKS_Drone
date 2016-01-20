@@ -28,6 +28,7 @@ namespace DroneControl
             InitializeComponent();
 
             this.drone = drone;
+
             drone.SendPacket(new PacketCalibrateGyro(), true);
             drone.SendPacket(new PacketSubscribeDataFeed(), true);
 
