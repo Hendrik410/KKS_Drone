@@ -27,14 +27,14 @@ namespace DroneControl
                 throw new ArgumentNullException(nameof(drone));
 
             this.drone = drone;
-            drone.OnInfoChange += OnDroneInfoChange;
+            drone.OnDataChange += OnDroneDataChange;
         }
 
-        private void OnDroneInfoChange(object sender, EventArgs args)
+        private void OnDroneDataChange(object sender, EventArgs args)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler(OnDroneInfoChange), sender, args);
+                Invoke(new EventHandler(OnDroneDataChange), sender, args);
                 return;
             }
 
