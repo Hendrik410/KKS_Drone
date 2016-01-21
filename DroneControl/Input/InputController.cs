@@ -39,7 +39,7 @@ namespace DroneControl.Input {
 
                 case ControlButtonType.ToggleArm:
                     if(Drone.IsConnected) 
-                        if(Drone.Data.IsArmed)
+                        if(Drone.Data.State == DroneState.Armed)
                             Drone.SendDisarm();
                         else
                             Drone.SendArm();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DroneLibrary {
     public struct DroneData : IEquatable<DroneData> {
 
-        public bool IsArmed {
+        public DroneState State {
             get;
         }
 
@@ -19,8 +19,8 @@ namespace DroneLibrary {
             get;
         }
 
-        public DroneData(bool isArmed, QuadMotorValues motorValues, GyroData gyro) {
-            this.IsArmed = isArmed;
+        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro) {
+            this.State = state;
             this.MotorValues = motorValues;
             this.Gyro = gyro;
         }
@@ -40,7 +40,7 @@ namespace DroneLibrary {
         }
 
         public bool Equals(DroneData other) {
-            return IsArmed == other.IsArmed
+            return State == other.State
                    && MotorValues.Equals(other.MotorValues)
                    && Gyro.Equals(other.Gyro);
         }
@@ -48,7 +48,7 @@ namespace DroneLibrary {
         public override int GetHashCode() {
             unchecked {
                 int hash = 13;
-                hash = hash * 7 + IsArmed.GetHashCode();
+                hash = hash * 7 + State.GetHashCode();
                 hash = hash * 7 + MotorValues.GetHashCode();
                 hash = hash * 7 + Gyro.GetHashCode();
                 return hash;

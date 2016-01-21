@@ -50,11 +50,15 @@ void DroneEngine::stop() {
 }
 
 void DroneEngine::handle() {
+	if(_state == State_Flying && millis() - lastMovementUpdate >= maxMovementUpdateInterval)
+		stop();
+
 	if(millis() - lastYawTargetCalc >= 100) { // recalculate the yaw target 10 times a second to match rotary speed
 		targetYaw += targetRotationSpeed / 10;
+		lastYawTargetCalc = millis();
 	}
 
-	if(millis() - lastPhysicsCalc >= PHYSICS_CALC_DELAY_MS && (/*_state == State_Armed ||*/ _state == State_Flying) ) {
+	if(millis() - lastPhysicsCalc >= PHYSICS_CALC_DELAY_MS && _state == State_Flying) {
 		float currentPitch = gyro->getPitch();
 		float currentRoll = gyro->getRoll();
 		float currentYaw = gyro->getYaw();
@@ -113,6 +117,8 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
 	setTargetPitch(pitch);
 	setTargetRoll(roll);
 	setTargetRotarySpeed(yaw);
+	_state = State_Flying;
+	lastMovementUpdate = millis();
 }
 
 void DroneEngine::setTargetPitch(float pitch) {

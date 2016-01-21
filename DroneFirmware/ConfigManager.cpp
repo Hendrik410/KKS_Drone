@@ -104,9 +104,9 @@ Config ConfigManager::getDefault() {
 	config.TrimThrottle = 0;
 
 	config.ServoMin = 900;
-	config.ServoMax = 1900;
+	config.ServoMax = 1400;
 	config.ServoIdle = 1200;
-	config.ServoHover = 1500;
+	config.ServoHover = 1300;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;

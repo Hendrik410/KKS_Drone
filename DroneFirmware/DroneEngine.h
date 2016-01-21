@@ -35,7 +35,7 @@ class DroneEngine
 	 long lastPhysicsCalc;
 	 long lastYawTargetCalc;
 	 long lastMovementUpdate;
-	 long maxMovementUpdate = 200;
+	 long maxMovementUpdateInterval = 200;
 
 	 DroneState _state;
 

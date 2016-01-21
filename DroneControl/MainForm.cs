@@ -155,16 +155,18 @@ namespace DroneControl
             {
                 armToogleButton.Enabled = true;
 
-                if (drone.Data.IsArmed)
+                
+
+                if (drone.Data.State == DroneState.Armed)
                 {
-                    statusArmedLabel.Text = "Status: armed";
                     armToogleButton.Text = "Disarm";
                 }
                 else
                 {
-                    statusArmedLabel.Text = "Status: disarmed";
                     armToogleButton.Text = "Arm";
                 }
+
+                statusArmedLabel.Text = $"Status: {drone.Data.State}";
 
                 artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
                 headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
@@ -194,7 +196,7 @@ namespace DroneControl
             if (!drone.IsConnected)
                 return;
 
-            if (drone.Data.IsArmed)
+            if (drone.Data.State == DroneState.Armed)
                 drone.SendDisarm();
             else
                 drone.SendArm();

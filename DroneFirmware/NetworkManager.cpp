@@ -262,7 +262,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
 		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
 
-		writeBuffer->write(engine->state() == State_Armed);
+		writeBuffer->write(uint8_t(engine->state()));
 
 		writeBuffer->write(uint16_t(servos->FL()));
 		writeBuffer->write(uint16_t(servos->FR()));

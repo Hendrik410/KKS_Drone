@@ -673,7 +673,7 @@ namespace DroneLibrary
                         if (!CheckRevision(lastDataDroneRevision, revision))
                             return;
 
-                        bool isArmed = buffer.ReadByte() > 0;
+                        DroneState state = (DroneState)buffer.ReadByte();
 
                         QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
                             buffer.ReadUShort(), buffer.ReadUShort());
@@ -692,7 +692,7 @@ namespace DroneLibrary
                             // Temperature
                             buffer.ReadFloat());
 
-                        Data = new DroneData(isArmed, motorValues, gyro);
+                        Data = new DroneData(state, motorValues, gyro);
 
                         lastDataDroneRevision = revision;
                         break;

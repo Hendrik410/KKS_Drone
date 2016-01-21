@@ -51,6 +51,7 @@
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DroneState.cs" />
     <Compile Include="GyroData.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogLevel.cs" />

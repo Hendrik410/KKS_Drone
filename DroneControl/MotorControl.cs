@@ -54,7 +54,7 @@ namespace DroneControl
 
         private bool SendValues()
         {
-            if (drone.IsConnected && drone.Data.IsArmed)
+            if (drone.IsConnected && drone.Data.State == DroneState.Armed)
             {
                 drone.SendPacket(
                     new PacketSetRawValues(new QuadMotorValues((ushort)servoValueNumericUpDown.Value)), true);
