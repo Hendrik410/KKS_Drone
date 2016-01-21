@@ -46,12 +46,27 @@ namespace DroneControl
             rightBackTextBox.Text = $"{motorValues.BackRight}";
         }
 
-        private void setValuesButton_Click(object sender, EventArgs e) {
-            if(drone.Data != null && drone.Data.IsArmed)
-                drone.SendPacket(new PacketSetRawValues(new QuadMotorValues((ushort)servoValueNumericUpDown.Value)),
-                    true);
-            else
+        private void setValuesButton_Click(object sender, EventArgs e)
+        {
+            if (!SendValues())
                 MessageBox.Show("The drone has to be armed, before setting the motors!");
+        }
+
+        private bool SendValues()
+        {
+            if (drone.IsConnected && drone.Data.IsArmed)
+            {
+                drone.SendPacket(
+                    new PacketSetRawValues(new QuadMotorValues((ushort)servoValueNumericUpDown.Value)), true);
+                return true;
+            }
+            return false;
+        }
+
+        private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SendValues();
         }
     }
 }

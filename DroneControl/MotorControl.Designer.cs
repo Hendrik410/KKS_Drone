@@ -139,6 +139,7 @@
             0,
             0,
             0});
+            this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.servoValueNumericUpDown_KeyUp);
             // 
             // rightBackTextBox
             // 
