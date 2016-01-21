@@ -41,6 +41,7 @@ namespace DroneControl
             drone.OnDataChange += Drone_OnDataChange;
             drone.OnSettingsChange += Drone_OnSettingsChange;
             motorControl1.UpdateDrone(drone);
+            flightControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
             UpdatePing();
@@ -72,7 +73,7 @@ namespace DroneControl
         private Form ShowForm(Form form, Func<Form> onClosed)
         {
             if (onClosed == null)
-                throw new ArgumentNullException("onClosed");
+                throw new ArgumentNullException(nameof(onClosed));
 
             if (form == null || form.IsDisposed)
                 form = onClosed();
