@@ -41,10 +41,10 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.resetButton = new System.Windows.Forms.Button();
             this.accelerationLabel = new System.Windows.Forms.Label();
+            this.temperatureLabel = new System.Windows.Forms.Label();
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.motorControl1 = new DroneControl.MotorControl();
-            this.temperatureLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -123,6 +123,7 @@
             // 
             // stopButton
             // 
+            this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.stopButton.BackColor = System.Drawing.Color.DarkRed;
             this.stopButton.ForeColor = System.Drawing.Color.White;
             this.stopButton.Location = new System.Drawing.Point(565, 38);
@@ -135,6 +136,7 @@
             // 
             // resetButton
             // 
+            this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.resetButton.Location = new System.Drawing.Point(424, 38);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(75, 23);
@@ -151,6 +153,15 @@
             this.accelerationLabel.Size = new System.Drawing.Size(66, 13);
             this.accelerationLabel.TabIndex = 12;
             this.accelerationLabel.Text = "Acceleration";
+            // 
+            // temperatureLabel
+            // 
+            this.temperatureLabel.AutoSize = true;
+            this.temperatureLabel.Location = new System.Drawing.Point(13, 322);
+            this.temperatureLabel.Name = "temperatureLabel";
+            this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
+            this.temperatureLabel.TabIndex = 13;
+            this.temperatureLabel.Text = "Temperature";
             // 
             // headingIndicator
             // 
@@ -174,15 +185,6 @@
             this.motorControl1.Name = "motorControl1";
             this.motorControl1.Size = new System.Drawing.Size(364, 92);
             this.motorControl1.TabIndex = 2;
-            // 
-            // temperatureLabel
-            // 
-            this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(13, 322);
-            this.temperatureLabel.Name = "temperatureLabel";
-            this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
-            this.temperatureLabel.TabIndex = 13;
-            this.temperatureLabel.Text = "Temperature";
             // 
             // MainForm
             // 
