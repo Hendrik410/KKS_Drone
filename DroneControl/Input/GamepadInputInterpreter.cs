@@ -63,6 +63,7 @@ namespace DroneControl.Input {
 
             var joystickGuid = Guid.Empty;
 
+            
             foreach(DeviceInstance deviceInstance in directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices))
                 joystickGuid = deviceInstance.InstanceGuid;
 

@@ -119,8 +119,8 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.05f;
-	config.RotaryDegree2Ratio = 0.05f;
+	config.Degree2Ratio = 0.03f;
+	config.RotaryDegree2Ratio = 0.03f;
 
 	Log::info("Config", "Using default config");
 	return config;

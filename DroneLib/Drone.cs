@@ -404,8 +404,8 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketSetConfig(config), true);
-            Settings = config;
+            /*SendPacket(new PacketSetConfig(config), true);
+            Settings = config;*/
         }
 
         /// <summary>

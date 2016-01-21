@@ -63,8 +63,8 @@ void DroneEngine::handle() {
 		float currentRoll = gyro->getRoll();
 		float currentYaw = gyro->getYaw();
 
-		float correctionPitch = currentPitch - targetPitch;
-		float correctionRoll = currentRoll - targetRoll;
+		float correctionPitch = /*currentPitch -*/ targetPitch;
+		float correctionRoll = /*currentRoll -*/ targetRoll;
 		float correctionYaw = 0; // currentYaw - targetYaw;
 
 		float ratioFL = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
@@ -115,6 +115,9 @@ float DroneEngine::getMaxRotationSpeed() const {
 
 
 void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
+	if (_state == State_Idle)
+		return;
+
 	setTargetPitch(pitch);
 	setTargetRoll(roll);
 	setTargetRotarySpeed(yaw);
