@@ -83,8 +83,8 @@ float Gyro::getTemperature() {
 
 
 void Gyro::setAsZero() {
-	pitchOffset = ypr[1];
-	rollOffset = ypr[2];
+	pitchOffset = ypr[2];
+	rollOffset = ypr[1];
 	yawOffset = ypr[0];
 }
 
@@ -103,7 +103,7 @@ float Gyro::getRoll() const {
 }
 
 float Gyro::getPitchRad() const {
-	return ypr[1] - pitchOffset;
+	return ypr[2] - pitchOffset;
 }
 
 float Gyro::getYawRad() const {
@@ -117,7 +117,7 @@ float Gyro::getYawRad() const {
 
 
 float Gyro::getRollRad() const {
-	return ypr[2] - rollOffset;
+	return ypr[1] - rollOffset;
 }
 
 float Gyro::getAccelerationX() const {
