@@ -10,6 +10,10 @@ Gyro::Gyro(Config* config) {
 	this->pitchOffset = 0;
 	this->rollOffset = 0;
 	this->yawOffset = 0;
+
+	this->accelerationXOffset = 0;
+	this->accelerationYOffset = 0;
+	this->accelerationZOffset = 0;
 }
 
 
@@ -86,6 +90,10 @@ void Gyro::setAsZero() {
 	pitchOffset = ypr[2];
 	rollOffset = ypr[1];
 	yawOffset = ypr[0];
+
+	accelerationXOffset = aaReal.x;
+	accelerationYOffset = aaReal.y;
+	accelerationZOffset = aaReal.z;
 }
 
 
@@ -121,13 +129,13 @@ float Gyro::getRollRad() const {
 }
 
 float Gyro::getAccelerationX() const {
-	return aaReal.x;
+	return aaReal.x - accelerationXOffset;
 }
 
 float Gyro::getAccelerationY() const {
-	return aaReal.y;
+	return aaReal.y - accelerationYOffset;
 }
 
 float Gyro::getAccelerationZ() const {
-	return aaReal.z;
+	return aaReal.z - accelerationZOffset;
 }

@@ -54,9 +54,9 @@ namespace DroneControl
                 e.Data.Gyro.Yaw.ToString("0.00").PadLeft(6, ' '));
 
             accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2}",
-                e.Data.Gyro.AccelerationX.ToString("0.00").PadLeft(6, ' '),
-                e.Data.Gyro.AccelerationY.ToString("0.00").PadLeft(6, ' '),
-                e.Data.Gyro.AccelerationZ.ToString("0.00").PadLeft(6, ' '));
+                (e.Data.Gyro.AccelerationX / 100).ToString("0.00").PadLeft(6, ' '),
+                (e.Data.Gyro.AccelerationY / 100).ToString("0.00").PadLeft(6, ' '),
+                (e.Data.Gyro.AccelerationZ / 100).ToString("0.00").PadLeft(6, ' '));
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
                 e.Data.Gyro.Temperature.ToString("0.00").PadLeft(6, ' '));

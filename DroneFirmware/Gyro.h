@@ -40,6 +40,10 @@ class Gyro
 	 float rollOffset;
 	 float yawOffset;
 
+	 float accelerationXOffset;
+	 float accelerationYOffset;
+	 float accelerationZOffset;
+
 	 bool _dirty;
 
  public:
