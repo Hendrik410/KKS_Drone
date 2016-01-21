@@ -102,6 +102,9 @@ namespace DroneControl
 
         private void Drone_OnInfoChange(object sender, EventArgs eventArgs)
         {
+            if (IsDisposed)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new EventHandler(Drone_OnInfoChange), this, eventArgs);
@@ -113,6 +116,8 @@ namespace DroneControl
 
         private void Drone_OnDataChange(object sender, EventArgs eventArgs)
         {
+            if (IsDisposed)
+                return;
 
             if (InvokeRequired)
             {
@@ -147,11 +152,20 @@ namespace DroneControl
 
                 artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
                 headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
+
+                accelerationLabel.Text = string.Format("Acceleration x: {0:0.00} y: {1:0.00} z: {2:0.00}",
+                    drone.Data.Gyro.AccelerationX,
+                    drone.Data.Gyro.AccelerationY,
+                    drone.Data.Gyro.AccelerationZ);
+                temperatureLabel.Text = string.Format("Temperature: {0:0.0}°C", drone.Data.Gyro.Temperature);
             }
         }
 
         private void Drone_OnPingChange(object sender, EventArgs e)
         {
+            if (IsDisposed)
+                return;
+
             if (pingLabel.InvokeRequired)
                 pingLabel.Invoke(new EventHandler(Drone_OnPingChange), sender, e);
             else

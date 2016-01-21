@@ -67,14 +67,14 @@ void Gyro::update() {
 		_MPU6050.dmpGetGravity(&gravity, &q);
 		_MPU6050.dmpGetYawPitchRoll(ypr, &q, &gravity);
 
+		// Beschleunigung
+		_MPU6050.dmpGetAccel(&aa, MPU6050_FIFO_Buffer);
+		_MPU6050.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+
+		_dirty = true;
+
 		fifoCount = _MPU6050.getFIFOCount();
 	}
-
-	_dirty = oldPitch != getPitchRad() || oldRoll != getRollRad() || oldYaw != getYawRad();
-
-	oldPitch = getPitchRad();
-	oldRoll = getRollRad();
-	oldYaw = getYawRad();
 }
 
 float Gyro::getTemperature() {
@@ -87,7 +87,6 @@ void Gyro::setAsZero() {
 	rollOffset = ypr[2];
 	yawOffset = ypr[0];
 }
-
 
 
 float Gyro::getPitch() const {
@@ -108,10 +107,27 @@ float Gyro::getPitchRad() const {
 }
 
 float Gyro::getYawRad() const {
-	return ypr[0] - yawOffset;
+	float yaw = ypr[0] - yawOffset;
+	while (yaw < 0)
+		yaw += M_TWOPI;
+	while (yaw >= M_TWOPI)
+		yaw -= M_TWOPI;
+	return yaw;
 }
 
 
 float Gyro::getRollRad() const {
 	return ypr[2] - rollOffset;
+}
+
+float Gyro::getAccelerationX() const {
+	return aaReal.x;
+}
+
+float Gyro::getAccelerationY() const {
+	return aaReal.y;
+}
+
+float Gyro::getAccelerationZ() const {
+	return aaReal.z;
 }

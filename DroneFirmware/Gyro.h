@@ -40,10 +40,6 @@ class Gyro
 	 float rollOffset;
 	 float yawOffset;
 
-	 float oldPitch;
-	 float oldRoll;
-	 float oldYaw;
-
 	 bool _dirty;
 
  public:
@@ -63,6 +59,10 @@ class Gyro
 	float getPitchRad() const;
 	float getRollRad() const;
 	float getYawRad() const;
+
+	float getAccelerationX() const;
+	float getAccelerationY() const;
+	float getAccelerationZ() const;
 
 	// Gibt zurück ob die Daten sich geändert haben und setzt dann dirty wieder zurück
 	bool dirty() {

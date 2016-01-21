@@ -19,10 +19,20 @@ namespace DroneLibrary {
             get;
         }
 
-        public GyroData(float pitch, float roll, float yaw) {
+        public float AccelerationX { get; }
+        public float AccelerationY { get; }
+        public float AccelerationZ { get; }
+
+        public float Temperature { get; }
+
+        public GyroData(float pitch, float roll, float yaw, float accelerationX, float accelerationY, float accelerationZ, float temperature) {
             this.Pitch = pitch;
             this.Roll = roll;
             this.Yaw = yaw;
+            this.AccelerationX = accelerationX;
+            this.AccelerationY = accelerationY;
+            this.AccelerationZ = accelerationZ;
+            this.Temperature = temperature;
         }
 
         public static bool operator ==(GyroData a, GyroData b) {
@@ -42,7 +52,11 @@ namespace DroneLibrary {
         public bool Equals(GyroData other) {
             return Math.Abs(Roll - other.Roll) < 0.1f
                    && Math.Abs(Pitch - other.Pitch) < 0.1f
-                   && Math.Abs(Yaw - other.Yaw) < 0.1f;
+                   && Math.Abs(Yaw - other.Yaw) < 0.1f
+                   && Math.Abs(AccelerationX - other.AccelerationX) < 0.1f
+                   && Math.Abs(AccelerationY - other.AccelerationY) < 0.1f
+                   && Math.Abs(AccelerationZ - other.AccelerationZ) < 0.1f
+                   && Math.Abs(Temperature - other.Temperature) < 1f;
         }
 
         public override int GetHashCode() {
@@ -51,6 +65,10 @@ namespace DroneLibrary {
                 hash = hash * 7 + Pitch.GetHashCode();
                 hash = hash * 7 + Roll.GetHashCode();
                 hash = hash * 7 + Yaw.GetHashCode();
+                hash = hash * 7 + AccelerationX.GetHashCode();
+                hash = hash * 7 + AccelerationY.GetHashCode();
+                hash = hash * 7 + AccelerationZ.GetHashCode();
+                hash = hash * 7 + Temperature.GetHashCode();
                 return hash;
             }
         }
