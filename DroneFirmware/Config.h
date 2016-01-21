@@ -72,6 +72,9 @@ struct Config {
 	byte PinBackRight;
 	//The pin of the LED
 	byte PinLed;
+
+	float Degree2Ratio;
+	float RotaryDegree2Ratio;
 };
 
 #endif

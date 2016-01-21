@@ -12,13 +12,26 @@ namespace DroneLibrary
         public string NetworkSSID { get; set; }
         public string NetworkPassword { get; set; }
         public bool VerboseSerialLog { get; set; }
-        
-        public DroneSettings(string droneName, string networkSSID, string networkPassword, bool verboseSerialLog)
+
+        public float Degree2Ratio {
+            get;
+            set;
+        }
+
+        public float RotaryDegree2Ratio  {
+            get;
+            set;
+        }
+
+
+        public DroneSettings(string droneName, string networkSSID, string networkPassword, bool verboseSerialLog, float degree2Ratio, float rotaryDegree2Ratio)
         {
             this.DroneName = droneName;
             this.NetworkSSID = networkSSID;
             this.NetworkPassword = networkPassword;
             this.VerboseSerialLog = verboseSerialLog;
+            this.Degree2Ratio = Degree2Ratio;
+            this.RotaryDegree2Ratio = RotaryDegree2Ratio;
         }
 
         public static bool operator ==(DroneSettings a, DroneSettings b)
@@ -48,9 +61,12 @@ namespace DroneLibrary
             if (other == null)
                 return false;
             return DroneName == other.DroneName
-                && NetworkSSID == other.NetworkSSID
-                && NetworkPassword == other.NetworkPassword
-                && VerboseSerialLog == other.VerboseSerialLog;
+                   && NetworkSSID == other.NetworkSSID
+                   && NetworkPassword == other.NetworkPassword
+                   && VerboseSerialLog == other.VerboseSerialLog
+                   && Degree2Ratio == other.Degree2Ratio
+                   && RotaryDegree2Ratio == other.RotaryDegree2Ratio;
+
         }
 
         public override int GetHashCode()
@@ -62,6 +78,8 @@ namespace DroneLibrary
                 hash = hash * 7 + NetworkSSID.GetHashCode();
                 hash = hash * 7 + NetworkPassword.GetHashCode();
                 hash = hash * 7 + VerboseSerialLog.GetHashCode();
+                hash = hash * 7 + Degree2Ratio.GetHashCode();
+                hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();
                 return hash;
             }
         }

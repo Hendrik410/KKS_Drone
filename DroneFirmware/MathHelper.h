@@ -10,6 +10,7 @@
 #endif
 
 #include "MotorEnums.h"
+#include "Config.h"
 
 class MathHelper
 {
@@ -20,7 +21,7 @@ class MathHelper
 	 static const float Degree2Ratio;
 	 static const float RotaryDegree2Ratio;
 
-	 static float mixMotor(float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation);
+	 static float mixMotor(Config* config,float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation);
 };
 
 #endif

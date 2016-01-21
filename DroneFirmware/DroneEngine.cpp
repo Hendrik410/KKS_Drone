@@ -65,13 +65,14 @@ void DroneEngine::handle() {
 
 		float correctionPitch = currentPitch - targetPitch;
 		float correctionRoll = currentRoll - targetRoll;
-		float correctionYaw = currentYaw - targetYaw;
-		
-		float ratioFL = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
-		float ratioFR = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
-		float ratioBL = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Counterclockwise);
-		float ratioBR = MathHelper::mixMotor(correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Clockwise);
+		float correctionYaw = 0; // currentYaw - targetYaw;
 
+		float ratioFL = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
+		float ratioFR = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
+		float ratioBL = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
+		float ratioBR = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+
+		
 		servos->setRatio(ratioFL, ratioFR, ratioBL, ratioBR);
 
 		lastPhysicsCalc = millis();

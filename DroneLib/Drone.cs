@@ -608,10 +608,12 @@ namespace DroneLibrary
 
                         Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
                         Settings = new DroneSettings(
-                            buffer.ReadString(),
-                            buffer.ReadString(),
-                            buffer.ReadString(),
-                            buffer.ReadBoolean());
+                            "e", //buffer.ReadString(),
+                            "e", //buffer.ReadString(),
+                            "e", //buffer.ReadString(),
+                            true, //buffer.ReadBoolean(),
+                            buffer.ReadFloat(),
+                            buffer.ReadFloat());
 
                         RemovePacketToAcknowlegde(revision);
                         break;
