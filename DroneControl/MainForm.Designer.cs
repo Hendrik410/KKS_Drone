@@ -30,30 +30,26 @@
             this.statusArmedLabel = new System.Windows.Forms.Label();
             this.armToogleButton = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.infoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.logButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.resetButton = new System.Windows.Forms.Button();
-            this.accelerationLabel = new System.Windows.Forms.Label();
-            this.temperatureLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
             this.motorControl1 = new DroneControl.MotorControl();
             this.flightControlPage = new System.Windows.Forms.TabPage();
             this.flightControl1 = new DroneControl.FlightControl();
-            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
-            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.infoTabPage = new System.Windows.Forms.TabPage();
             this.configTabPage = new System.Windows.Forms.TabPage();
             this.droneConfigPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.infoTabPage = new System.Windows.Forms.TabPage();
+            this.sensorControl1 = new DroneControl.SensorControl();
             this.mainViewTabs.SuspendLayout();
             this.manualControlPage.SuspendLayout();
             this.flightControlPage.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.configTabPage.SuspendLayout();
             this.infoTabPage.SuspendLayout();
+            this.configTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -101,17 +97,6 @@
             // 
             this.timer.Enabled = true;
             // 
-            // calibrateGyroButton
-            // 
-            this.calibrateGyroButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.calibrateGyroButton.Location = new System.Drawing.Point(187, 264);
-            this.calibrateGyroButton.Name = "calibrateGyroButton";
-            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
-            this.calibrateGyroButton.TabIndex = 6;
-            this.calibrateGyroButton.Text = "0";
-            this.calibrateGyroButton.UseVisualStyleBackColor = true;
-            this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
-            // 
             // infoPropertyGrid
             // 
             this.infoPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -154,26 +139,6 @@
             this.resetButton.Text = "Reset";
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
-            // 
-            // accelerationLabel
-            // 
-            this.accelerationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.accelerationLabel.AutoSize = true;
-            this.accelerationLabel.Location = new System.Drawing.Point(134, 446);
-            this.accelerationLabel.Name = "accelerationLabel";
-            this.accelerationLabel.Size = new System.Drawing.Size(66, 13);
-            this.accelerationLabel.TabIndex = 12;
-            this.accelerationLabel.Text = "Acceleration";
-            // 
-            // temperatureLabel
-            // 
-            this.temperatureLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(9, 446);
-            this.temperatureLabel.Name = "temperatureLabel";
-            this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
-            this.temperatureLabel.TabIndex = 13;
-            this.temperatureLabel.Text = "Temperature";
             // 
             // mainViewTabs
             // 
@@ -221,24 +186,6 @@
             this.flightControl1.Size = new System.Drawing.Size(457, 160);
             this.flightControl1.TabIndex = 0;
             // 
-            // headingIndicator
-            // 
-            this.headingIndicator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.headingIndicator.Location = new System.Drawing.Point(217, 263);
-            this.headingIndicator.Name = "headingIndicator";
-            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
-            this.headingIndicator.TabIndex = 7;
-            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
-            // 
-            // artificialHorizon
-            // 
-            this.artificialHorizon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.artificialHorizon.Location = new System.Drawing.Point(8, 264);
-            this.artificialHorizon.Name = "artificialHorizon";
-            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
-            this.artificialHorizon.TabIndex = 5;
-            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.infoTabPage);
@@ -248,6 +195,17 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(220, 372);
             this.tabControl1.TabIndex = 15;
+            // 
+            // infoTabPage
+            // 
+            this.infoTabPage.Controls.Add(this.infoPropertyGrid);
+            this.infoTabPage.Location = new System.Drawing.Point(4, 22);
+            this.infoTabPage.Name = "infoTabPage";
+            this.infoTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.infoTabPage.Size = new System.Drawing.Size(212, 346);
+            this.infoTabPage.TabIndex = 0;
+            this.infoTabPage.Text = "Info";
+            this.infoTabPage.UseVisualStyleBackColor = true;
             // 
             // configTabPage
             // 
@@ -269,31 +227,23 @@
             this.droneConfigPropertyGrid.Size = new System.Drawing.Size(206, 340);
             this.droneConfigPropertyGrid.TabIndex = 9;
             // 
-            // infoTabPage
+            // sensorControl1
             // 
-            this.infoTabPage.Controls.Add(this.infoPropertyGrid);
-            this.infoTabPage.Location = new System.Drawing.Point(4, 22);
-            this.infoTabPage.Name = "infoTabPage";
-            this.infoTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.infoTabPage.Size = new System.Drawing.Size(212, 346);
-            this.infoTabPage.TabIndex = 0;
-            this.infoTabPage.Text = "Info";
-            this.infoTabPage.UseVisualStyleBackColor = true;
+            this.sensorControl1.Location = new System.Drawing.Point(12, 264);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(410, 226);
+            this.sensorControl1.TabIndex = 16;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 468);
+            this.ClientSize = new System.Drawing.Size(720, 496);
+            this.Controls.Add(this.sensorControl1);
             this.Controls.Add(this.mainViewTabs);
-            this.Controls.Add(this.temperatureLabel);
-            this.Controls.Add(this.accelerationLabel);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.logButton);
-            this.Controls.Add(this.headingIndicator);
-            this.Controls.Add(this.calibrateGyroButton);
-            this.Controls.Add(this.artificialHorizon);
             this.Controls.Add(this.armToogleButton);
             this.Controls.Add(this.statusArmedLabel);
             this.Controls.Add(this.pingLabel);
@@ -306,8 +256,8 @@
             this.manualControlPage.ResumeLayout(false);
             this.flightControlPage.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.configTabPage.ResumeLayout(false);
             this.infoTabPage.ResumeLayout(false);
+            this.configTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,16 +269,11 @@
         private System.Windows.Forms.Label pingLabel;
         private System.Windows.Forms.Label statusArmedLabel;
         private System.Windows.Forms.Button armToogleButton;
-        private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.Button calibrateGyroButton;
-        private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
         private System.Windows.Forms.PropertyGrid infoPropertyGrid;
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.Label accelerationLabel;
-        private System.Windows.Forms.Label temperatureLabel;
         private System.Windows.Forms.TabControl mainViewTabs;
         private System.Windows.Forms.TabPage manualControlPage;
         private MotorControl motorControl1;
@@ -338,5 +283,6 @@
         private System.Windows.Forms.PropertyGrid droneConfigPropertyGrid;
         private System.Windows.Forms.TabPage infoTabPage;
         private System.Windows.Forms.TabControl tabControl1;
+        private SensorControl sensorControl1;
     }
 }

@@ -124,6 +124,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SensorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SensorControl.Designer.cs">
+      <DependentUpon>SensorControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Avionics\AvionicsInstrumentsControlsRessources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AvionicsInstrumentsControlsRessources1.Designer.cs</LastGenOutput>
@@ -156,6 +162,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SensorControl.resx">
+      <DependentUpon>SensorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

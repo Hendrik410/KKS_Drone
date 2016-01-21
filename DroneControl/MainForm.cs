@@ -155,27 +155,12 @@ namespace DroneControl
             {
                 armToogleButton.Enabled = true;
 
-                
-
                 if (drone.Data.State == DroneState.Armed)
-                {
                     armToogleButton.Text = "Disarm";
-                }
                 else
-                {
                     armToogleButton.Text = "Arm";
-                }
 
                 statusArmedLabel.Text = $"Status: {drone.Data.State}";
-
-                artificialHorizon.SetAttitudeIndicatorParameters(drone.Data.Gyro.Pitch, drone.Data.Gyro.Roll);
-                headingIndicator.SetHeadingIndicatorParameters((int)drone.Data.Gyro.Yaw);
-
-                accelerationLabel.Text = string.Format("Acceleration x: {0:0.00} y: {1:0.00} z: {2:0.00}",
-                    drone.Data.Gyro.AccelerationX,
-                    drone.Data.Gyro.AccelerationY,
-                    drone.Data.Gyro.AccelerationZ);
-                temperatureLabel.Text = string.Format("Temperature: {0:0.0}°C", drone.Data.Gyro.Temperature);
             }
         }
 

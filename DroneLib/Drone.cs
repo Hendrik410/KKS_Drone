@@ -94,7 +94,7 @@ namespace DroneLibrary
         /// <summary>
         /// Wrid aufgerufen, wenn sich die aktuellen Daten der Drone ändern.
         /// </summary>
-        public EventHandler OnDataChange;
+        public event EventHandler OnDataChange;
 
         private DroneData data;
 
@@ -157,7 +157,7 @@ namespace DroneLibrary
         /// <summary>
         /// Wird aufgerufen, wenn sich die Dronen Einstellungen ändern.
         /// </summary>
-        public EventHandler OnSettingsChange;
+        public event EventHandler OnSettingsChange;
 
         private DroneSettings settings;
 
