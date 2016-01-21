@@ -57,13 +57,15 @@ namespace DroneControl
             connectButton.Enabled = false;
 
             // wenn wir verbunden sind (result == OK), können wir das Fenster schließen
-            ConnectingForm form = new ConnectingForm(address);
-            if (form.ShowDialog() == DialogResult.OK)
+            using (ConnectingForm form = new ConnectingForm(address))
             {
-                searchTimer.Stop();
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    searchTimer.Stop();
 
-                new MainForm(form.Drone).Show();
-                Hide();
+                    new MainForm(form.Drone).Show();
+                    Hide();
+                }
             }
 
             connectButton.Enabled = true;
