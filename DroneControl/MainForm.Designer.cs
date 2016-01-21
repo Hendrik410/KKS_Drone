@@ -37,12 +37,14 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.infoPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
-            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.motorControl1 = new DroneControl.MotorControl();
             this.logButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.resetButton = new System.Windows.Forms.Button();
+            this.accelerationLabel = new System.Windows.Forms.Label();
+            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
+            this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
+            this.motorControl1 = new DroneControl.MotorControl();
+            this.temperatureLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -109,29 +111,6 @@
             this.infoPropertyGrid.Size = new System.Drawing.Size(216, 274);
             this.infoPropertyGrid.TabIndex = 8;
             // 
-            // headingIndicator
-            // 
-            this.headingIndicator.Location = new System.Drawing.Point(221, 139);
-            this.headingIndicator.Name = "headingIndicator";
-            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
-            this.headingIndicator.TabIndex = 7;
-            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
-            // 
-            // artificialHorizon
-            // 
-            this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
-            this.artificialHorizon.Name = "artificialHorizon";
-            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
-            this.artificialHorizon.TabIndex = 5;
-            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
-            // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(12, 42);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 92);
-            this.motorControl1.TabIndex = 2;
-            // 
             // logButton
             // 
             this.logButton.Location = new System.Drawing.Point(321, 8);
@@ -164,11 +143,54 @@
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
+            // accelerationLabel
+            // 
+            this.accelerationLabel.AutoSize = true;
+            this.accelerationLabel.Location = new System.Drawing.Point(138, 322);
+            this.accelerationLabel.Name = "accelerationLabel";
+            this.accelerationLabel.Size = new System.Drawing.Size(66, 13);
+            this.accelerationLabel.TabIndex = 12;
+            this.accelerationLabel.Text = "Acceleration";
+            // 
+            // headingIndicator
+            // 
+            this.headingIndicator.Location = new System.Drawing.Point(221, 139);
+            this.headingIndicator.Name = "headingIndicator";
+            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
+            this.headingIndicator.TabIndex = 7;
+            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
+            // 
+            // artificialHorizon
+            // 
+            this.artificialHorizon.Location = new System.Drawing.Point(12, 140);
+            this.artificialHorizon.Name = "artificialHorizon";
+            this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
+            this.artificialHorizon.TabIndex = 5;
+            this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
+            // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(12, 42);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 92);
+            this.motorControl1.TabIndex = 2;
+            // 
+            // temperatureLabel
+            // 
+            this.temperatureLabel.AutoSize = true;
+            this.temperatureLabel.Location = new System.Drawing.Point(13, 322);
+            this.temperatureLabel.Name = "temperatureLabel";
+            this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
+            this.temperatureLabel.TabIndex = 13;
+            this.temperatureLabel.Text = "Temperature";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.temperatureLabel);
+            this.Controls.Add(this.accelerationLabel);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.logButton);
@@ -204,5 +226,7 @@
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button resetButton;
+        private System.Windows.Forms.Label accelerationLabel;
+        private System.Windows.Forms.Label temperatureLabel;
     }
 }
