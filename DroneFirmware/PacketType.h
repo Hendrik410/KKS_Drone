@@ -36,6 +36,7 @@ enum ControlPacketType : byte {
 enum DataPacketType : byte {
 	DataDrone = 1,
 	DataLog = 2,
+	DataDebug = 3
 };
 
 #endif

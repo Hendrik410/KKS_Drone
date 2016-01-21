@@ -31,8 +31,7 @@
             System.Windows.Forms.TabPage infoTabPage;
             System.Windows.Forms.TabPage settingsTabPage;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.resetButton = new System.Windows.Forms.Button();
+            this.debugButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.logButton = new System.Windows.Forms.Button();
             this.armToogleButton = new System.Windows.Forms.Button();
@@ -41,12 +40,13 @@
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
-            this.flightControlPage = new System.Windows.Forms.TabPage();
-            this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.motorControl1 = new DroneControl.MotorControl();
+            this.flightControlPage = new System.Windows.Forms.TabPage();
             this.flightControl1 = new DroneControl.FlightControl();
             this.sensorControl1 = new DroneControl.SensorControl();
+            this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -73,10 +73,6 @@
             settingsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            // 
             // dronePingSplitContainer
             // 
             dronePingSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -87,7 +83,7 @@
             // 
             // dronePingSplitContainer.Panel1
             // 
-            dronePingSplitContainer.Panel1.Controls.Add(this.resetButton);
+            dronePingSplitContainer.Panel1.Controls.Add(this.debugButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.stopButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.logButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.armToogleButton);
@@ -102,14 +98,15 @@
             dronePingSplitContainer.SplitterDistance = 30;
             dronePingSplitContainer.TabIndex = 18;
             // 
-            // resetButton
+            // debugButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(357, 5);
-            this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(75, 23);
-            this.resetButton.TabIndex = 18;
-            this.resetButton.Text = "Reset";
-            this.resetButton.UseVisualStyleBackColor = true;
+            this.debugButton.Location = new System.Drawing.Point(358, 5);
+            this.debugButton.Name = "debugButton";
+            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.TabIndex = 18;
+            this.debugButton.Text = "Debug";
+            this.debugButton.UseVisualStyleBackColor = true;
+            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
             // 
             // stopButton
             // 
@@ -122,6 +119,7 @@
             this.stopButton.TabIndex = 17;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = false;
+            this.stopButton.ClientSizeChanged += new System.EventHandler(this.stopButton_Click);
             // 
             // logButton
             // 
@@ -131,6 +129,7 @@
             this.logButton.TabIndex = 16;
             this.logButton.Text = "Log";
             this.logButton.UseVisualStyleBackColor = true;
+            this.logButton.Click += new System.EventHandler(this.logButton_Click);
             // 
             // armToogleButton
             // 
@@ -141,6 +140,7 @@
             this.armToogleButton.TabIndex = 15;
             this.armToogleButton.Text = "Arm";
             this.armToogleButton.UseVisualStyleBackColor = true;
+            this.armToogleButton.Click += new System.EventHandler(this.armToogleButton_Click);
             // 
             // statusArmedLabel
             // 
@@ -229,16 +229,38 @@
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
             // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(6, 3);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 92);
+            this.motorControl1.TabIndex = 3;
+            // 
             // flightControlPage
             // 
             this.flightControlPage.Controls.Add(this.flightControl1);
             this.flightControlPage.Location = new System.Drawing.Point(4, 22);
             this.flightControlPage.Name = "flightControlPage";
             this.flightControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.flightControlPage.Size = new System.Drawing.Size(465, 122);
+            this.flightControlPage.Size = new System.Drawing.Size(465, 160);
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
+            // 
+            // flightControl1
+            // 
+            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
+            this.flightControl1.Name = "flightControl1";
+            this.flightControl1.Size = new System.Drawing.Size(457, 160);
+            this.flightControl1.TabIndex = 0;
+            // 
+            // sensorControl1
+            // 
+            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(473, 293);
+            this.sensorControl1.TabIndex = 17;
             // 
             // infoTabControl
             // 
@@ -262,17 +284,6 @@
             infoTabPage.Text = "Info";
             infoTabPage.UseVisualStyleBackColor = true;
             // 
-            // settingsTabPage
-            // 
-            settingsTabPage.Controls.Add(this.droneSettingsPropertyGrid);
-            settingsTabPage.Location = new System.Drawing.Point(4, 22);
-            settingsTabPage.Name = "settingsTabPage";
-            settingsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            settingsTabPage.Size = new System.Drawing.Size(267, 403);
-            settingsTabPage.TabIndex = 1;
-            settingsTabPage.Text = "Settings";
-            settingsTabPage.UseVisualStyleBackColor = true;
-            // 
             // droneInfoPropertyGrid
             // 
             this.droneInfoPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -282,36 +293,29 @@
             this.droneInfoPropertyGrid.Size = new System.Drawing.Size(261, 451);
             this.droneInfoPropertyGrid.TabIndex = 0;
             // 
+            // settingsTabPage
+            // 
+            settingsTabPage.Controls.Add(this.droneSettingsPropertyGrid);
+            settingsTabPage.Location = new System.Drawing.Point(4, 22);
+            settingsTabPage.Name = "settingsTabPage";
+            settingsTabPage.Padding = new System.Windows.Forms.Padding(3);
+            settingsTabPage.Size = new System.Drawing.Size(267, 457);
+            settingsTabPage.TabIndex = 1;
+            settingsTabPage.Text = "Settings";
+            settingsTabPage.UseVisualStyleBackColor = true;
+            // 
             // droneSettingsPropertyGrid
             // 
             this.droneSettingsPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.droneSettingsPropertyGrid.HelpVisible = false;
             this.droneSettingsPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.droneSettingsPropertyGrid.Name = "droneSettingsPropertyGrid";
-            this.droneSettingsPropertyGrid.Size = new System.Drawing.Size(261, 397);
+            this.droneSettingsPropertyGrid.Size = new System.Drawing.Size(261, 451);
             this.droneSettingsPropertyGrid.TabIndex = 0;
             // 
-            // motorControl1
+            // timer
             // 
-            this.motorControl1.Location = new System.Drawing.Point(6, 3);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 92);
-            this.motorControl1.TabIndex = 3;
-            // 
-            // flightControl1
-            // 
-            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
-            this.flightControl1.Name = "flightControl1";
-            this.flightControl1.Size = new System.Drawing.Size(457, 160);
-            this.flightControl1.TabIndex = 0;
-            // 
-            // sensorControl1
-            // 
-            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
-            this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(473, 293);
-            this.sensorControl1.TabIndex = 17;
+            this.timer.Enabled = true;
             // 
             // MainForm
             // 
@@ -361,6 +365,6 @@
         private System.Windows.Forms.Button armToogleButton;
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.Button resetButton;
+        private System.Windows.Forms.Button debugButton;
     }
 }

@@ -301,4 +301,13 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		sendData(udp);
 	}
+
+	writeDataHeader(dataUDP, dataRevision++, DataDebug);
+
+	writeBuffer->write(engine->getFrontLeftRatio());
+	writeBuffer->write(engine->getFrontRightRatio());
+	writeBuffer->write(engine->getBackLeftRatio());
+	writeBuffer->write(engine->getBackRightRatio());
+
+	sendData(udp);
 }

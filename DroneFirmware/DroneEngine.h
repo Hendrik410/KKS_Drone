@@ -51,6 +51,11 @@ class DroneEngine
 	 float targetYaw;
 	 float targetRotationSpeed;
 
+	 float frontLeftRatio;
+	 float frontRightRatio;
+	 float backLeftRatio;
+	 float backRightRatio;
+
  public:
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
 
@@ -82,6 +87,11 @@ class DroneEngine
 	float getTargetYaw() const;
 	float getTargetRotarySpeed() const;
 	float getTargetVerticalSpeed() const;
+
+	float getFrontLeftRatio() const;
+	float getFrontRightRatio() const;
+	float getBackLeftRatio() const;
+	float getBackRightRatio() const;
 };
 
 #endif

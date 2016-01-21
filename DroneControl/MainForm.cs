@@ -19,6 +19,7 @@ namespace DroneControl
         private Drone drone;
 
         private LogForm logForm;
+        private DebugForm debugForm;
 
         public MainForm(Drone drone)
         {
@@ -198,13 +199,14 @@ namespace DroneControl
             drone.SendStop();
         }
 
-        private void resetButton_Click(object sender, EventArgs e) {
-            drone.SendReset();
-        }
-
         private void droneSettingsPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             drone.SendConfig((DroneSettings)droneSettingsPropertyGrid.SelectedObject);
+        }
+
+        private void debugButton_Click(object sender, EventArgs e)
+        {
+            ShowForm(debugForm, () => (debugForm = new DebugForm(drone)));
         }
     }
 }

@@ -10,6 +10,11 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->config = config;
 	this->lastPhysicsCalc = 0;
 
+	this->frontLeftRatio = 0;
+	this->frontRightRatio = 0;
+	this->backLeftRatio = 0;
+	this->backRightRatio = 0;
+
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
 	_state = State_Idle;
@@ -67,13 +72,12 @@ void DroneEngine::handle() {
 		float correctionRoll = /*currentRoll -*/ targetRoll;
 		float correctionYaw = 0; // currentYaw - targetYaw;
 
-		float ratioFL = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
-		float ratioFR = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
-		float ratioBL = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
-		float ratioBR = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+		frontLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
+		frontRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
+		backLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
+		backRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
 
-		
-		servos->setRatio(ratioFL, ratioFR, ratioBL, ratioBR);
+		servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
 
 		lastPhysicsCalc = millis();
 	}
@@ -165,3 +169,18 @@ float DroneEngine::getTargetVerticalSpeed() const {
 	return targetVerticalSpeed;
 }
 
+float DroneEngine::getFrontLeftRatio() const {
+	return frontLeftRatio;
+}
+
+float DroneEngine::getFrontRightRatio() const {
+	return frontRightRatio;
+}
+
+float DroneEngine::getBackLeftRatio() const {
+	return backLeftRatio;
+}
+
+float DroneEngine::getBackRightRatio() const {
+	return backRightRatio;
+}

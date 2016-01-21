@@ -79,6 +79,11 @@ namespace DroneLibrary
         private int lastDataLogRevision = 0;
 
         /// <summary>
+        /// Gibt die letzte Revision der Daten an die von der Drone mit Debug Daten geschickt wurden.
+        /// </summary>
+        private int lastDataDebugRevision = 0;
+
+        /// <summary>
         /// Gibt die IPAdress der Drone zurück.
         /// </summary>
         public IPAddress Address { get; private set; }
@@ -193,6 +198,37 @@ namespace DroneLibrary
             }
         }
 
+        public event EventHandler<DebugDataChangedEventArgs> OnDebugDataChange;
+
+        private DebugData debugData;
+
+        /// <summary>
+        /// Gibt aktuelle Daten über das Verhalten der Drone zurück.
+        /// </summary>
+        public DebugData DebugData
+        {
+            get
+            {
+                lock (debugDataLock)
+                {
+                    return debugData;
+                }
+            }
+            set
+            {
+                bool changed;
+                lock (dataLock)
+                {
+                    changed = value != debugData;
+                    if (changed)
+                        debugData = value;
+                }
+
+                if (changed)
+                    OnDebugDataChange?.Invoke(this, new DebugDataChangedEventArgs(this));
+            }
+        }
+
         /// <summary>
         /// Gibt den Socket an mit dem die Drone mit der Hardware per UDP verbunden ist.
         /// </summary>
@@ -233,7 +269,10 @@ namespace DroneLibrary
         /// </summary>
         public int PendingAcknowledgePacketsCount => packetsToAcknowledge.Count;
 
-        private object infoLock = new object(), dataLock = new object(), settingsLock = new object();
+        private object infoLock = new object();
+        private object dataLock = new object();
+        private object settingsLock = new object();
+        private object debugDataLock = new object();
 
 
         public Drone(IPAddress address, Config config)
@@ -728,6 +767,20 @@ namespace DroneLibrary
                         }
 
                         lastDataLogRevision = revision;
+                        break;
+                    case DataPacketType.Debug:
+                        if (!CheckRevision(lastDataDebugRevision, revision))
+                            return;
+
+                        DebugData = new DebugData()
+                        {
+                            FrontLeftRatio = buffer.ReadFloat(),
+                            FrontRightRatio = buffer.ReadFloat(),
+                            BackLeftRatio = buffer.ReadFloat(),
+                            BackRightRatio = buffer.ReadFloat()
+                        };
+
+                        lastDataDebugRevision = revision;
                         break;
                 }
             }
