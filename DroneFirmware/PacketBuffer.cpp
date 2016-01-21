@@ -114,15 +114,11 @@ uint64_t PacketBuffer::readUint64() {
 }
 
 float PacketBuffer::readFloat() {
-	return readInt32() / 100000.0f;
-	// FIXME
-	//return BinaryHelper::readFloat(data, addAndAssertPosition(sizeof(float)));
+	return BinaryHelper::readFloat(data, addAndAssertPosition(sizeof(float)));
 }
 
 double PacketBuffer::readDouble() {
-	return readInt32() / 100000.0f;
-	// FIXME
-	//return BinaryHelper::readDouble(data, addAndAssertPosition(sizeof(double)));
+	return BinaryHelper::readDouble(data, addAndAssertPosition(sizeof(double)));
 }
 
 void PacketBuffer::read(uint8_t* buffer, int length) {
@@ -200,15 +196,11 @@ void PacketBuffer::write(int64_t value) {
 }
 
 void PacketBuffer::write(float value) {
-	write(int32_t(value * 100000));
-	// FIXME
-	//BinaryHelper::writeFloat(data, addAndAssertPosition(sizeof(value)), value);
+	BinaryHelper::writeFloat(data, addAndAssertPosition(sizeof(value)), value);
 }
 
 void PacketBuffer::write(double value) {
-	write(int32_t(value * 100000));
-	// FIXME
-	//BinaryHelper::writeDouble(data, addAndAssertPosition(sizeof(value)), value);
+	BinaryHelper::writeDouble(data, addAndAssertPosition(sizeof(value)), value);
 }
 
 void PacketBuffer::write(uint8_t* buffer, int length) {
