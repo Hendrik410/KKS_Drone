@@ -15,31 +15,37 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt den benutzerfreundlichen Namen der Drone zurück.
         /// </summary>
+        [Category("Drone")]
         public string Name { get; private set; }
 
         /// <summary>
         /// Gibt den Model Namen der Drone zurück.
         /// </summary>
+        [Category("Drone")]
         public string ModelName { get; private set; }
 
         /// <summary>
         /// Gibt die Seriennummer der Drone zurück.
         /// </summary>
+        [Category("Drone")]
         public string SerialCode { get; private set; }
-        
+
         /// <summary>
         /// Gibt den Buildnamen der Drone zurück.
         /// </summary>
+        [Category("Build")]
         public string BuildName { get; private set; }
 
         /// <summary>
         /// Gibt die Build-Version der Firmware der Drone zurück.
         /// </summary>
+        [Category("Build")]
         public byte BuildVersion { get; private set; }
 
         /// <summary>
         /// Gibt die größte Revision der Drone zurück.
         /// </summary>
+        [Category("Debug")]
         public int HighestRevision { get; private set; }
 
         public DroneInfo(string name, string modelName, string serialCode, string buildName, byte buildVersion, int highestRevision)

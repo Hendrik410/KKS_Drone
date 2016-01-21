@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,26 @@ namespace DroneLibrary
 {
     public struct DroneSettings : IEquatable<DroneSettings>
     {
+        [Category("Drone")]
+        [Description("Name der Drone")]
         public string DroneName { get; set; }
+
+        [Category("Network")]
+        [Description("SSID des WiFi Netzwerks")]
         public string NetworkSSID { get; set; }
+
+        [Category("Network")]
+        [Description("Passwort des WiFi Netzwerks")]
         public string NetworkPassword { get; set; }
+
+        [Category("Debug")]
+        [Description("Ob Log-Nachrichten auf die serielle Schnittstelle geschrieben werden sollen.")]
         public bool VerboseSerialLog { get; set; }
+
+        [Category("Flying")]
         public float Degree2Ratio { get; set; }
+
+        [Category("Flying")]
         public float RotaryDegree2Ratio { get; set; }
 
 
