@@ -40,8 +40,10 @@ namespace DroneControl
             drone.OnPingChange += Drone_OnPingChange;
             drone.OnDataChange += Drone_OnDataChange;
             drone.OnSettingsChange += Drone_OnSettingsChange;
-            motorControl1.UpdateDrone(drone);
-            flightControl1.UpdateDrone(drone);
+
+            motorControl1.Init(drone);
+            flightControl1.Init(drone);
+            sensorControl1.Init(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
             UpdatePing();
@@ -56,8 +58,12 @@ namespace DroneControl
 
             if (drone != null)
             {
+                drone.OnInfoChange -= Drone_OnInfoChange;
+                drone.OnPingChange -= Drone_OnPingChange;
+                drone.OnDataChange -= Drone_OnDataChange;
+                drone.OnSettingsChange -= Drone_OnSettingsChange;
+
                 drone.Disconnect();
-                drone.Dispose();
             }
 
             Application.Exit();

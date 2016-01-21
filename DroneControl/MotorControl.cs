@@ -21,7 +21,13 @@ namespace DroneControl
             InitializeComponent();
         }
 
-        public void UpdateDrone(Drone drone)
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            drone.OnDataChange -= OnDroneDataChange;
+            base.OnHandleDestroyed(e);
+        }
+
+        public void Init(Drone drone)
         {
             if (drone == null)
                 throw new ArgumentNullException(nameof(drone));

@@ -32,7 +32,7 @@ namespace DroneControl {
             maxYawNumeric.ValueChanged += OnTiltLimitInputChange;
         }
 
-        public void UpdateDrone(Drone drone) {
+        public void Init(Drone drone) {
             if(drone == null)
                 throw new ArgumentNullException(nameof(drone));
 

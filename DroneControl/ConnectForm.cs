@@ -36,6 +36,9 @@ namespace DroneControl
 
         protected override void OnClosed(EventArgs e)
         {
+            if (droneList != null)
+                droneList.OnDroneFound -= DroneList_OnDroneFound;
+
             searchTimer.Stop();
             base.OnClosed(e);
         }

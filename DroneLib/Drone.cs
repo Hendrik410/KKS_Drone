@@ -304,6 +304,7 @@ namespace DroneLibrary
         {
             SendDisarm();
             SendPacket(new PacketUnsubscribeDataFeed(), false);
+            Dispose();
         }
 
         /// <summary>

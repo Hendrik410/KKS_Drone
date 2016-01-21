@@ -54,6 +54,9 @@ namespace DroneControl
 
         protected override void OnClosed(EventArgs e)
         {
+            if (Drone != null)
+                Drone.OnConnected -= OnDroneConnected;
+
             StopTimers();
             base.OnClosed(e);
         }
