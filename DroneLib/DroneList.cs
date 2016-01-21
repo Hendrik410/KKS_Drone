@@ -111,14 +111,17 @@ namespace DroneLibrary
         private bool UpdateDrone(DroneEntry entry)
         {
             for (int i = 0; i < foundDrones.Count; i++)
-                if (foundDrones[i].Equals(entry))
+            {
+                DroneEntry e = foundDrones[i];
+                if (e.Address.Equals(entry.Address))
                 {
                     foundDrones[i] = DroneEntry.UpdateEntry(entry);
 
-                    if (OnDroneFound != null)
+                    if (!e.Equals(entry) && OnDroneFound != null)
                         OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
                     return true;
                 }
+            }
             return false;
         }
 
