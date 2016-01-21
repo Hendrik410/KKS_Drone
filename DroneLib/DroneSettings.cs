@@ -8,20 +8,18 @@ namespace DroneLibrary
 {
     public class DroneSettings : IEquatable<DroneSettings>
     {
+        public string DroneName { get; set; }
+        public string NetworkSSID { get; set; }
+        public string NetworkPassword { get; set; }
+        public bool VerboseSerialLog { get; set; }
         
-        public DroneSettings()
+        public DroneSettings(string droneName, string networkSSID, string networkPassword, bool verboseSerialLog)
         {
-            
+            this.DroneName = droneName;
+            this.NetworkSSID = networkSSID;
+            this.NetworkPassword = networkPassword;
+            this.VerboseSerialLog = verboseSerialLog;
         }
-
-        public DroneSettings(Config config)
-        {
-            if (config == null)
-                throw new ArgumentNullException("config");
-
-            
-        }
-
 
         public static bool operator ==(DroneSettings a, DroneSettings b)
         {
@@ -49,7 +47,10 @@ namespace DroneLibrary
         {
             if (other == null)
                 return false;
-            return true;
+            return DroneName == other.DroneName
+                && NetworkSSID == other.NetworkSSID
+                && NetworkPassword == other.NetworkPassword
+                && VerboseSerialLog == other.VerboseSerialLog;
         }
 
         public override int GetHashCode()
@@ -57,6 +58,10 @@ namespace DroneLibrary
             unchecked
             {
                 int hash = 13;
+                hash = hash * 7 + DroneName.GetHashCode();
+                hash = hash * 7 + NetworkSSID.GetHashCode();
+                hash = hash * 7 + NetworkPassword.GetHashCode();
+                hash = hash * 7 + VerboseSerialLog.GetHashCode();
                 return hash;
             }
         }

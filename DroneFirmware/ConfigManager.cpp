@@ -4,7 +4,17 @@
 
 #include "ConfigManager.h"
 
+Config ConfigManager::loadConfig() {
+	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+	Config config = loadConfig(adapter);
+	delete adapter;
+	return config;
+}
+
 Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
+	if (memory->readByte(0) != 123)
+		return getDefault();
+
 	Config config;
 	byte buf[sizeof(config)];
 	
@@ -14,7 +24,7 @@ Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
 
 	int stringPos = 128; // all strings start after this address
 	memory->begin();
-	memory->read(0, buf, sizeof(config)); // read main structure
+	memory->read(1, buf, sizeof(config)); // read main structure
 
 	// read strings
 	memory->read(stringPos, name, sizeof(name)); 
@@ -33,7 +43,14 @@ Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
 	config.NetworkSSID = reinterpret_cast<char*>(ssid);
 	config.NetworkPassword = reinterpret_cast<char*>(password);
 
-	return config; //successful
+	Log::info("Config", "Config loaded");
+	return config; 
+}
+
+void ConfigManager::saveConfig(const Config config) {
+	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+	saveConfig(adapter, config);
+	delete adapter;
 }
 
 void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
@@ -47,7 +64,8 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 	int stringPos = 128; // all strings start after this address
 	memory->begin();
 
-	memory->write(0, buf, sizeof(config)); // write main structure
+	memory->writeByte(0, 123);
+	memory->write(1, buf, sizeof(config)); // write main structure
 
 	// write strings
 	memory->write(stringPos, name, 20);
@@ -61,15 +79,16 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 
 	memory->end();
 
+	Log::info("Config", "Config saved");
 }
 
 Config ConfigManager::getDefault() {
 	Config config;
 
-	config.DroneName = "Drone_BestOne";
+	config.DroneName = "koalaDrone";
 
-	config.NetworkSSID = "Kugelmatik";
-	config.NetworkPassword = "123456abc";
+	config.NetworkSSID = "Drone";
+	config.NetworkPassword = "12345678";
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
@@ -84,7 +103,7 @@ Config ConfigManager::getDefault() {
 	config.TrimYaw = 0;
 	config.TrimThrottle = 0;
 
-	config.ServoMin = 1100;
+	config.ServoMin = 900;
 	config.ServoMax = 1900;
 	config.ServoIdle = 1200;
 	config.ServoHover = 1500;
@@ -100,5 +119,6 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
+	Log::info("Config", "Using default config");
 	return config;
 }

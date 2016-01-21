@@ -95,7 +95,7 @@ void setup() {
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	Log::info("Boot", "Serial code: %s", serialCode);
 
-	config = ConfigManager::getDefault();
+	config = ConfigManager::loadConfig();
 
 	//setup status LED
 	pinMode(config.PinLed, OUTPUT);

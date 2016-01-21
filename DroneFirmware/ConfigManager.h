@@ -16,12 +16,18 @@ void * memcpy(void * destination, const void * source, int num);
 
 #include "MemoryAdapter.h"
 #include "Config.h"
+#include "Log.h"
+#include "EEPROM_MemoryAdapter.h"
 
 class ConfigManager
 {
  public:
+	 static Config loadConfig();
 	 static Config loadConfig(MemoryAdaptor* memory);
+
+	 static void saveConfig(const Config config);
 	 static void saveConfig(MemoryAdaptor* memory, const Config config);
+
 	 static Config getDefault();
 };
 

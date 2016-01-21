@@ -130,7 +130,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		return;
 
 	int32_t revision = readBuffer->readInt32();
-	bool ackRequested = readBuffer->readUint8() > 0;
+	bool ackRequested = readBuffer->readBoolean();
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
@@ -146,7 +146,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		if(readBuffer->getSize() < 26)
 			return;
 
-		bool hover = readBuffer->readUint8() > 0;
+		bool hover = readBuffer->readBoolean();
 
 		float pitch = readBuffer->readFloat();
 		float roll = readBuffer->readFloat();
@@ -178,7 +178,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case ArmPacket:
 		if (readBuffer->getSize() == 13) {
 			if (readBuffer->readUint8() == 'A' && readBuffer->readUint8() == 'R' && readBuffer->readUint8() == 'M') {
-				if (readBuffer->readUint8() > 0)
+				if (readBuffer->readBoolean())
 					engine->arm();
 				else
 					engine->disarm();
@@ -210,6 +210,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 
+		writeBuffer->writeString(config->DroneName);
+		writeBuffer->writeString(config->NetworkSSID);
+		writeBuffer->writeString(config->NetworkPassword);
+		writeBuffer->write(config->VerboseSerialLog);
+
 		sendPacket(udp);
 		break;
 	}
@@ -234,6 +239,16 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		if(engine->state() == State_Idle)
 			ESP.restart();
 		break;
+	case SetConfig:
+		config->DroneName = readBuffer->readString();
+		config->NetworkSSID = readBuffer->readString();
+		config->NetworkPassword = readBuffer->readString();
+		config->VerboseSerialLog = readBuffer->readBoolean();
+
+		Log::info("Network", "Config set.");
+
+		//ConfigManager::saveConfig(*config);
+		break;
 	}
 }
 
@@ -247,7 +262,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
 		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
 
-		writeBuffer->write(uint8_t(engine->state() == State_Armed ? 1 : 0));
+		writeBuffer->write(engine->state() == State_Armed);
 
 		writeBuffer->write(uint16_t(servos->FL()));
 		writeBuffer->write(uint16_t(servos->FR()));

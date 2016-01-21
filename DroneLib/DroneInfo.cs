@@ -76,7 +76,7 @@ namespace DroneLibrary
                 && ModelName == other.ModelName
                 && SerialCode == other.SerialCode
                 && BuildName == other.BuildName
-                && BuildVersion == other.BuildVersion 
+                && BuildVersion == other.BuildVersion
                 && HighestRevision == other.HighestRevision;
         }
 

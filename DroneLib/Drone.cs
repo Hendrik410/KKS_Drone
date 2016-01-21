@@ -399,13 +399,14 @@ namespace DroneLibrary
         /// <summary>
         /// Schickt einen Settings-Befehl an die Drohne.
         /// </summary>
-        /*public void SendConfig(DroneSettings config)
+        public void SendConfig(DroneSettings config)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketConfig(config), true);
-        }*/
+            SendPacket(new PacketSetConfig(config), true);
+            Settings = config;
+        }
 
         /// <summary>
         /// Schickt einen Stop-Befehl an das Drone.
@@ -485,11 +486,7 @@ namespace DroneLibrary
                 packetBuffer.Write(revision);
 
                 // wenn die Drone eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
-                if (guaranteed && !packet.Type.DoesClusterAnswer())
-                    packetBuffer.Write((byte)1);
-                else
-                    packetBuffer.Write((byte)0);
-
+                packetBuffer.Write(guaranteed && !packet.Type.DoesClusterAnswer());
                 packetBuffer.Write((byte)packet.Type);
 
                 // Paket Inhalt schreiben
@@ -610,6 +607,12 @@ namespace DroneLibrary
                         int highestRevision = buffer.ReadInt();
 
                         Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
+                        Settings = new DroneSettings(
+                            buffer.ReadString(),
+                            buffer.ReadString(),
+                            buffer.ReadString(),
+                            buffer.ReadBoolean());
+
                         RemovePacketToAcknowlegde(revision);
                         break;
                     default:

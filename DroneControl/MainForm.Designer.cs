@@ -45,6 +45,13 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             this.motorControl1 = new DroneControl.MotorControl();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.infoTabPage = new System.Windows.Forms.TabPage();
+            this.configTabPage = new System.Windows.Forms.TabPage();
+            this.droneConfigPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.tabControl1.SuspendLayout();
+            this.infoTabPage.SuspendLayout();
+            this.configTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // ipInfoLabel
@@ -104,11 +111,11 @@
             // 
             // infoPropertyGrid
             // 
-            this.infoPropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.infoPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.infoPropertyGrid.HelpVisible = false;
-            this.infoPropertyGrid.Location = new System.Drawing.Point(424, 67);
+            this.infoPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.infoPropertyGrid.Name = "infoPropertyGrid";
-            this.infoPropertyGrid.Size = new System.Drawing.Size(216, 274);
+            this.infoPropertyGrid.Size = new System.Drawing.Size(212, 233);
             this.infoPropertyGrid.TabIndex = 8;
             // 
             // logButton
@@ -186,17 +193,59 @@
             this.motorControl1.Size = new System.Drawing.Size(364, 92);
             this.motorControl1.TabIndex = 2;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.infoTabPage);
+            this.tabControl1.Controls.Add(this.configTabPage);
+            this.tabControl1.Location = new System.Drawing.Point(414, 76);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(226, 265);
+            this.tabControl1.TabIndex = 14;
+            // 
+            // infoTabPage
+            // 
+            this.infoTabPage.Controls.Add(this.infoPropertyGrid);
+            this.infoTabPage.Location = new System.Drawing.Point(4, 22);
+            this.infoTabPage.Name = "infoTabPage";
+            this.infoTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.infoTabPage.Size = new System.Drawing.Size(218, 239);
+            this.infoTabPage.TabIndex = 0;
+            this.infoTabPage.Text = "Info";
+            this.infoTabPage.UseVisualStyleBackColor = true;
+            // 
+            // configTabPage
+            // 
+            this.configTabPage.Controls.Add(this.droneConfigPropertyGrid);
+            this.configTabPage.Location = new System.Drawing.Point(4, 22);
+            this.configTabPage.Name = "configTabPage";
+            this.configTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.configTabPage.Size = new System.Drawing.Size(218, 239);
+            this.configTabPage.TabIndex = 1;
+            this.configTabPage.Text = "Config";
+            this.configTabPage.UseVisualStyleBackColor = true;
+            // 
+            // droneConfigPropertyGrid
+            // 
+            this.droneConfigPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.droneConfigPropertyGrid.HelpVisible = false;
+            this.droneConfigPropertyGrid.Location = new System.Drawing.Point(3, 3);
+            this.droneConfigPropertyGrid.Name = "droneConfigPropertyGrid";
+            this.droneConfigPropertyGrid.Size = new System.Drawing.Size(212, 233);
+            this.droneConfigPropertyGrid.TabIndex = 9;
+            this.droneConfigPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.droneConfigPropertyGrid_PropertyValueChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 353);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.temperatureLabel);
             this.Controls.Add(this.accelerationLabel);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.logButton);
-            this.Controls.Add(this.infoPropertyGrid);
             this.Controls.Add(this.headingIndicator);
             this.Controls.Add(this.calibrateGyroButton);
             this.Controls.Add(this.artificialHorizon);
@@ -208,6 +257,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Drone Control";
+            this.tabControl1.ResumeLayout(false);
+            this.infoTabPage.ResumeLayout(false);
+            this.configTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,5 +282,9 @@
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Label accelerationLabel;
         private System.Windows.Forms.Label temperatureLabel;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage infoTabPage;
+        private System.Windows.Forms.TabPage configTabPage;
+        private System.Windows.Forms.PropertyGrid droneConfigPropertyGrid;
     }
 }

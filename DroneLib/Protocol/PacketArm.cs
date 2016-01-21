@@ -26,7 +26,7 @@ namespace DroneLibrary.Protocol
             packet.Write((byte)'A');
             packet.Write((byte)'R');
             packet.Write((byte)'M');
-            packet.Write((byte)(Arm ? 1 : 0));
+            packet.Write(Arm);
         }
     }
 }

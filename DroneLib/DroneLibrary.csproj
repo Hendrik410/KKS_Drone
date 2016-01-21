@@ -63,6 +63,7 @@
     <Compile Include="Protocol\IPacket.cs" />
     <Compile Include="Protocol\PacketArm.cs" />
     <Compile Include="Protocol\PacketCalibrateGyro.cs" />
+    <Compile Include="Protocol\PacketSetConfig.cs" />
     <Compile Include="Protocol\PacketInfo.cs" />
     <Compile Include="Protocol\PacketPing.cs" />
     <Compile Include="Protocol\PacketBlink.cs" />

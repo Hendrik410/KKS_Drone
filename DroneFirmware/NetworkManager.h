@@ -17,6 +17,7 @@
 #include "PacketType.h"
 #include "Log.h"
 #include "Build.h"
+#include "ConfigManager.h"
 
 #include <ESP8266WiFi/src/WiFiUdp.h>
 

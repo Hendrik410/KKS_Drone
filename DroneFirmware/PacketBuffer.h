@@ -42,6 +42,7 @@ public:
 	// setzt die Länge des Pakets in Bytes
 	void setSize(uint32_t size);
 
+	bool readBoolean();
 	int8_t readInt8();
 	uint8_t readUint8();
 	int16_t readInt16();
@@ -60,6 +61,7 @@ public:
 
 	char* readString();
 
+	void write(bool value);
 	void write(char value);
 	void write(int8_t value);
 	void write(uint8_t value);

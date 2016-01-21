@@ -46,6 +46,11 @@ namespace DroneLibrary
             stream.Seek(offset, SeekOrigin.Current);
         }
 
+        public bool ReadBoolean()
+        {
+            return ReadByte() > 0;
+        }
+
         public byte ReadByte()
         {
             return reader.ReadByte();
@@ -116,6 +121,14 @@ namespace DroneLibrary
             return new string(str);
         }
 
+        public void Write(bool value)
+        {
+            if (value)
+                Write((byte)1);
+            else
+                Write((byte)0);
+        }
+
         public void Write(char value)
         {
             writer.Write(value);
@@ -167,21 +180,21 @@ namespace DroneLibrary
 
         public void Write(float value)
         {
-            writer.Write((int)(value * 100000));
+            Write((int)(value * 100000));
             // FIXME
             //stream.Write(BitConverter.GetBytes(value), 0, sizeof(float));
         }
 
         public void Write(double value)
         {
-            writer.Write((int)(value * 100000));
+            Write((int)(value * 100000));
             // FIXME
             //stream.Write(BitConverter.GetBytes(value), 0, sizeof(double));
         }
 
         public void Write(string str)
         {
-            writer.Write((ushort)str.Length);
+            Write((ushort)str.Length);
 
             for (int i = 0; i < str.Length; i++)
                 Write(str[i]);

@@ -77,6 +77,10 @@ void PacketBuffer::setSize(uint32_t size) {
 	this->size = size;
 }
 
+bool PacketBuffer::readBoolean() {
+	return readUint8() > 0;
+}
+
 int8_t PacketBuffer::readInt8() {
 	return data[addAndAssertPosition(sizeof(int8_t))];
 }
@@ -133,7 +137,7 @@ void PacketBuffer::read(uint8_t* buffer, int length, int offset) {
 }
 
 void PacketBuffer::read(char* buffer, int length, int offset) {
-	uint8_t* source = this->data + addAndAssertPosition(sizeof(uint8_t) * length);
+	uint8_t* source = this->data + addAndAssertPosition(sizeof(char) * length);
 	char* dest = buffer + offset;
 
 	memcpy(dest, source, length);
@@ -142,9 +146,18 @@ void PacketBuffer::read(char* buffer, int length, int offset) {
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
 
-	char* str = (char*)malloc(length * sizeof(char));
-	read(str, length, 0);
+	int size = length * sizeof(char);
+
+	char* str = (char*)malloc(size);
+	read(str, size, 0);
 	return str;
+}
+
+void PacketBuffer::write(bool value) {
+	if (value)
+		write(uint8_t(1));
+	else
+		write(uint8_t(0));
 }
 
 void PacketBuffer::write(char value) {

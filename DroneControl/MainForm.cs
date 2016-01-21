@@ -39,6 +39,7 @@ namespace DroneControl
             drone.OnInfoChange += Drone_OnInfoChange;
             drone.OnPingChange += Drone_OnPingChange;
             drone.OnDataChange += Drone_OnDataChange;
+            drone.OnSettingsChange += Drone_OnSettingsChange;
             motorControl1.UpdateDrone(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
@@ -128,6 +129,20 @@ namespace DroneControl
             UpdateData();
         }
 
+        private void Drone_OnSettingsChange(object sender, EventArgs eventArgs)
+        {
+            if (IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler(Drone_OnSettingsChange), this, eventArgs);
+                return;
+            }
+
+            droneConfigPropertyGrid.SelectedObject = drone.Settings;
+        }
+
         private void UpdateData()
         {
             if (!drone.IsConnected)
@@ -201,6 +216,11 @@ namespace DroneControl
 
         private void resetButton_Click(object sender, EventArgs e) {
             drone.SendReset();
+        }
+
+        private void droneConfigPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            drone.SendConfig((DroneSettings)droneConfigPropertyGrid.SelectedObject);
         }
     }
 }

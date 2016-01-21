@@ -39,7 +39,7 @@ namespace DroneLibrary.Protocol
             if (packet == null)
                 throw new ArgumentNullException(nameof(packet));
 
-            packet.Write((byte)(Hover ? 1 : 0));
+            packet.Write(Hover);
             packet.Write(Pitch);
             packet.Write(Roll);
             packet.Write(Yaw);
