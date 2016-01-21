@@ -106,7 +106,7 @@ namespace DroneControl
 
         private void UpdateInfo(DroneInfo info)
         {
-            infoPropertyGrid.SelectedObject = info;
+            droneInfoPropertyGrid.SelectedObject = info;
         }
 
 
@@ -132,7 +132,7 @@ namespace DroneControl
 
         private void UpdateSettings(DroneSettings settings)
         {
-            droneConfigPropertyGrid.SelectedObject = settings;
+            droneSettingsPropertyGrid.SelectedObject = settings;
         }
 
         private void Drone_OnInfoChange(object sender, InfoChangedEventArgs eventArgs)
@@ -202,9 +202,9 @@ namespace DroneControl
             drone.SendReset();
         }
 
-        private void droneConfigPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void droneSettingsPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            drone.SendConfig((DroneSettings)droneConfigPropertyGrid.SelectedObject);
+            drone.SendConfig((DroneSettings)droneSettingsPropertyGrid.SelectedObject);
         }
     }
 }
