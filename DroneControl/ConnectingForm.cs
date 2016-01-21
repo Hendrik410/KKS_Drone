@@ -52,13 +52,13 @@ namespace DroneControl
             Connect();
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (Drone != null)
                 Drone.OnConnected -= OnDroneConnected;
 
             StopTimers();
-            base.OnClosed(e);
+            base.OnFormClosing(e);
         }
 
         private void StartTimers()

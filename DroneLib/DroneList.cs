@@ -20,7 +20,7 @@ namespace DroneLibrary
         private UdpClient client;
         private List<DroneEntry> foundDrones = new List<DroneEntry>();
 
-        public event EventHandler OnDroneFound;
+        public event EventHandler<DroneListChangedEventArgs> OnDroneFound;
 
         public DroneList(Config config)
         {
@@ -116,7 +116,7 @@ namespace DroneLibrary
                     foundDrones[i] = DroneEntry.UpdateEntry(entry);
 
                     if (OnDroneFound != null)
-                        OnDroneFound(this, EventArgs.Empty);
+                        OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
                     return true;
                 }
             return false;
@@ -124,20 +124,27 @@ namespace DroneLibrary
 
         private void AddDrone(DroneEntry entry)
         {
-            if (UpdateDrone(entry))
-                return;
+            lock(foundDrones)
+            {
+                if (UpdateDrone(entry))
+                    return;
 
-            // alte Drone mit gleicher IP-Adresse entfernen
-            RemoveDrone(entry.Address);
+                // alte Drone mit gleicher IP-Adresse entfernen
+                RemoveDrone(entry.Address);
 
-            foundDrones.Add(entry);
+                foundDrones.Add(entry);
+            }
+
             if (OnDroneFound != null)
-                OnDroneFound(this, EventArgs.Empty);
+                OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
         }
 
         public DroneEntry[] GetDrones()
         {
-            return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds < 10).ToArray();
+            lock(foundDrones)
+            {
+                return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds < 10).ToArray();
+            }
         }
     }
 }

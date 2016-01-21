@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DroneLibrary;
+using DroneLibrary.Protocol;
 
 namespace DroneControl
 {
@@ -22,7 +23,8 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            this.Drone.OnDataChange -= Drone_OnDataChange;
+            if (this.Drone != null)
+                this.Drone.OnDataChange -= Drone_OnDataChange;
             base.OnHandleDestroyed(e);
         }
 
@@ -35,22 +37,34 @@ namespace DroneControl
             this.Drone.OnDataChange += Drone_OnDataChange;
         }
 
-        private void Drone_OnDataChange(object sender, EventArgs e)
+        private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler(Drone_OnDataChange), sender, e);
+                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), sender, e);
                 return;
             }
 
-            artificialHorizon.SetAttitudeIndicatorParameters(Drone.Data.Gyro.Pitch, Drone.Data.Gyro.Roll);
-            headingIndicator.SetHeadingIndicatorParameters((int)Drone.Data.Gyro.Yaw);
+            artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, e.Data.Gyro.Roll);
+            headingIndicator.SetHeadingIndicatorParameters((int)e.Data.Gyro.Yaw);
 
-            accelerationLabel.Text = string.Format("Acceleration x: {0:0.00} y: {1:0.00} z: {2:0.00}",
-                Drone.Data.Gyro.AccelerationX,
-                Drone.Data.Gyro.AccelerationY,
-                Drone.Data.Gyro.AccelerationZ);
-            temperatureLabel.Text = string.Format("Temperature: {0:0.0}°C", Drone.Data.Gyro.Temperature);
+            gyroDataLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
+                e.Data.Gyro.Roll.ToString("0.00").PadLeft(6, ' '),
+                e.Data.Gyro.Pitch.ToString("0.00").PadLeft(6, ' '),
+                e.Data.Gyro.Yaw.ToString("0.00").PadLeft(6, ' '));
+
+            accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2}",
+                e.Data.Gyro.AccelerationX.ToString("0.00").PadLeft(6, ' '),
+                e.Data.Gyro.AccelerationY.ToString("0.00").PadLeft(6, ' '),
+                e.Data.Gyro.AccelerationZ.ToString("0.00").PadLeft(6, ' '));
+
+            temperatureLabel.Text = string.Format("Temperature: {0}°C",
+                e.Data.Gyro.Temperature.ToString("0.00").PadLeft(6, ' '));
+        }
+
+        private void calibrateGyroButton_Click(object sender, EventArgs e)
+        {
+            Drone.SendPacket(new PacketCalibrateGyro(), true);
         }
     }
 }

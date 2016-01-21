@@ -182,8 +182,9 @@
             // 
             // targetPitchLabel
             // 
+            this.targetPitchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.targetPitchLabel.AutoSize = true;
-            this.targetPitchLabel.Location = new System.Drawing.Point(369, 14);
+            this.targetPitchLabel.Location = new System.Drawing.Point(302, 14);
             this.targetPitchLabel.Name = "targetPitchLabel";
             this.targetPitchLabel.Size = new System.Drawing.Size(85, 13);
             this.targetPitchLabel.TabIndex = 17;
@@ -191,8 +192,9 @@
             // 
             // targetRollLabel
             // 
+            this.targetRollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.targetRollLabel.AutoSize = true;
-            this.targetRollLabel.Location = new System.Drawing.Point(375, 27);
+            this.targetRollLabel.Location = new System.Drawing.Point(308, 27);
             this.targetRollLabel.Name = "targetRollLabel";
             this.targetRollLabel.Size = new System.Drawing.Size(79, 13);
             this.targetRollLabel.TabIndex = 18;
@@ -200,8 +202,9 @@
             // 
             // targetYawLabel
             // 
+            this.targetYawLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.targetYawLabel.AutoSize = true;
-            this.targetYawLabel.Location = new System.Drawing.Point(372, 40);
+            this.targetYawLabel.Location = new System.Drawing.Point(305, 40);
             this.targetYawLabel.Name = "targetYawLabel";
             this.targetYawLabel.Size = new System.Drawing.Size(82, 13);
             this.targetYawLabel.TabIndex = 19;
@@ -209,8 +212,9 @@
             // 
             // targetThrustLabel
             // 
+            this.targetThrustLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.targetThrustLabel.AutoSize = true;
-            this.targetThrustLabel.Location = new System.Drawing.Point(363, 53);
+            this.targetThrustLabel.Location = new System.Drawing.Point(296, 53);
             this.targetThrustLabel.Name = "targetThrustLabel";
             this.targetThrustLabel.Size = new System.Drawing.Size(91, 13);
             this.targetThrustLabel.TabIndex = 20;

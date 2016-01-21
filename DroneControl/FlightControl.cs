@@ -37,8 +37,10 @@ namespace DroneControl {
                 throw new ArgumentNullException(nameof(drone));
 
             this.drone = drone;
+
             DeviceInputInterpreter interpreter;
-            switch((InputInterpreterType)Enum.GetValues(typeof(InputInterpreterType)).GetValue(inputTypeComboBox.SelectedIndex)) {
+            switch ((InputInterpreterType)inputTypeComboBox.SelectedIndex)
+            {
                 case InputInterpreterType.GamePad:
                     interpreter = new GamepadInputInterpreter();
                     break;

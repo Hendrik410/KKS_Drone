@@ -194,6 +194,15 @@ namespace DroneLibrary
             Write(LogLevel.Warning, message);
         }
 
+        public static void Error(Exception e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+
+            Error(e.Message);
+            Error(e.StackTrace);
+        }
+
         /// <summary>
         /// Ruft Log.Write(LogLevel.Error, message) auf.
         /// </summary>

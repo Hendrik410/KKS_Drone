@@ -46,13 +46,14 @@ namespace DroneControl
                 droneLogTextBox.AppendText(msg);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            base.OnClosing(e);
             Log.OnFlushBuffer -= Log_OnFlushBuffer;
             Log.AutomaticFlush = false;
 
             drone.OnLogMessage -= Drone_OnLogMessage;
+
+            base.OnFormClosing(e);
         }
 
         private void flushTimer_Tick(object sender, EventArgs e)

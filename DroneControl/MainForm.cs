@@ -46,15 +46,16 @@ namespace DroneControl
             sensorControl1.Init(drone);
 
             ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
-            UpdatePing();
-            UpdateInfo();
-            UpdateData();
+            UpdatePing(drone.IsConnected, drone.Ping);
+            UpdateInfo(drone.Info);
+            UpdateData(drone.Data);
+            UpdateSettings(drone.Settings);
         }
 
-
-        protected override void OnClosed(EventArgs e)
+        protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            timer.Stop();
+            if (timer != null)
+                timer.Stop();
 
             if (drone != null)
             {
@@ -66,8 +67,8 @@ namespace DroneControl
                 drone.Disconnect();
             }
 
+            base.OnFormClosed(e);
             Application.Exit();
-            base.OnClosed(e);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -90,58 +91,26 @@ namespace DroneControl
             return form;
         }
 
-        private void UpdatePing()
+        private void UpdatePing(bool isConnected, int ping)
         {
-            if (!drone.IsConnected)
+            if (!isConnected)
                 pingLabel.Text = "Not connected";
             else
                 pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
 
-            if (!drone.IsConnected || drone.Ping > 50)
+            if (!isConnected || ping > 50)
                 pingLabel.ForeColor = Color.Red;
             else
                 pingLabel.ForeColor = Color.Green;
         }
 
-        private void UpdateInfo()
+        private void UpdateInfo(DroneInfo info)
         {
-            infoPropertyGrid.SelectedObject = drone.Info;
+            infoPropertyGrid.SelectedObject = info;
         }
 
-        private void Drone_OnInfoChange(object sender, EventArgs eventArgs)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler(Drone_OnInfoChange), this, eventArgs);
-                return;
-            }
 
-            UpdateInfo();
-        }
-
-        private void Drone_OnDataChange(object sender, EventArgs eventArgs)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler(Drone_OnDataChange), this, eventArgs);
-                return;
-            }
-
-            UpdateData();
-        }
-
-        private void Drone_OnSettingsChange(object sender, EventArgs eventArgs)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler(Drone_OnSettingsChange), this, eventArgs);
-                return;
-            }
-
-            droneConfigPropertyGrid.SelectedObject = drone.Settings;
-        }
-
-        private void UpdateData()
+        private void UpdateData(DroneData data)
         {
             if (!drone.IsConnected)
             {
@@ -152,21 +121,59 @@ namespace DroneControl
             {
                 armToogleButton.Enabled = true;
 
-                if (drone.Data.State == DroneState.Armed)
+                if (data.State == DroneState.Armed)
                     armToogleButton.Text = "Disarm";
                 else
                     armToogleButton.Text = "Arm";
 
-                statusArmedLabel.Text = $"Status: {drone.Data.State}";
+                statusArmedLabel.Text = $"Status: {data.State}";
             }
         }
 
-        private void Drone_OnPingChange(object sender, EventArgs e)
+        private void UpdateSettings(DroneSettings settings)
+        {
+            droneConfigPropertyGrid.SelectedObject = settings;
+        }
+
+        private void Drone_OnInfoChange(object sender, InfoChangedEventArgs eventArgs)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<InfoChangedEventArgs>(Drone_OnInfoChange), this, eventArgs);
+                return;
+            }
+
+            UpdateInfo(eventArgs.Info);
+        }
+
+        private void Drone_OnDataChange(object sender, DataChangedEventArgs eventArgs)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), this, eventArgs);
+                return;
+            }
+
+            UpdateData(eventArgs.Data);
+        }
+
+        private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs eventArgs)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<SettingsChangedEventArgs>(Drone_OnSettingsChange), this, eventArgs);
+                return;
+            }
+
+            UpdateSettings(eventArgs.Settings);
+        }
+
+        private void Drone_OnPingChange(object sender, PingChangedEventArgs e)
         {
             if (pingLabel.InvokeRequired)
-                pingLabel.Invoke(new EventHandler(Drone_OnPingChange), sender, e);
+                pingLabel.Invoke(new EventHandler<PingChangedEventArgs>(Drone_OnPingChange), sender, e);
             else
-                UpdatePing();
+                UpdatePing(e.IsConnected, e.Ping);
         }
 
 
@@ -179,11 +186,6 @@ namespace DroneControl
                 drone.SendDisarm();
             else
                 drone.SendArm();
-        }
-
-        private void calibrateGyroButton_Click(object sender, EventArgs e)
-        {
-            drone.SendPacket(new PacketCalibrateGyro(), true);
         }
 
         private void logButton_Click(object sender, EventArgs e)

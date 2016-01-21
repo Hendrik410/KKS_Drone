@@ -34,13 +34,13 @@ namespace DroneControl
             droneList.SendHello();
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (droneList != null)
                 droneList.OnDroneFound -= DroneList_OnDroneFound;
 
             searchTimer.Stop();
-            base.OnClosed(e);
+            base.OnFormClosing(e);
         }
 
         private void TryToConnect()
@@ -57,35 +57,34 @@ namespace DroneControl
             connectButton.Enabled = false;
 
             // wenn wir verbunden sind (result == OK), können wir das Fenster schließen
-            using (ConnectingForm form = new ConnectingForm(address))
+            ConnectingForm form = new ConnectingForm(address);
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    searchTimer.Stop();
+                searchTimer.Stop();
 
-                    new MainForm(form.Drone).Show();
-                    Hide();
-                }
+                new MainForm(form.Drone).Show();
+                Hide();
             }
+            form.Dispose();
 
             connectButton.Enabled = true;
         }
 
-        private void DroneList_OnDroneFound(object sender, EventArgs e)
+        private void DroneList_OnDroneFound(object sender, DroneListChangedEventArgs e)
         {
             if (InvokeRequired)
-                Invoke(new EventHandler(DroneList_OnDroneFound), sender, e);
+                Invoke(new EventHandler<DroneListChangedEventArgs>(DroneList_OnDroneFound), sender, e);
             else
             {
-                DroneEntry[] drones = droneList.GetDrones();
-
-                if (drones.Length == 1)
-                    searchStatus.Text = string.Format("Found {0} drone...", drones.Length);
+                if (e.Entries.Length == 0)
+                    searchStatus.Text = "Search drones...";
+                else if (e.Entries.Length == 1)
+                    searchStatus.Text = string.Format("Found {0} drone...", e.Entries.Length);
                 else
-                    searchStatus.Text = string.Format("Found {0} drones...", drones.Length);
+                    searchStatus.Text = string.Format("Found {0} drones...", e.Entries.Length);
 
                 droneListBox.Items.Clear();
-                foreach (DroneEntry entry in drones)
+                foreach (DroneEntry entry in e.Entries)
                     droneListBox.Items.Add(entry);
             }
         }

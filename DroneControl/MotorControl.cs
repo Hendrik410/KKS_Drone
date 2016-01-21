@@ -23,7 +23,8 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            drone.OnDataChange -= OnDroneDataChange;
+            if (drone != null)
+                drone.OnDataChange -= OnDroneDataChange;
             base.OnHandleDestroyed(e);
         }
 
@@ -36,15 +37,15 @@ namespace DroneControl
             drone.OnDataChange += OnDroneDataChange;
         }
 
-        private void OnDroneDataChange(object sender, EventArgs args)
+        private void OnDroneDataChange(object sender, DataChangedEventArgs args)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler(OnDroneDataChange), sender, args);
+                Invoke(new EventHandler<DataChangedEventArgs>(OnDroneDataChange), sender, args);
                 return;
             }
 
-            QuadMotorValues motorValues = drone.Data.MotorValues;
+            QuadMotorValues motorValues = args.Data.MotorValues;
 
             leftFrontTextBox.Text = $"{motorValues.FrontLeft}";
             rightFrontTextBox.Text = $"{motorValues.FrontRight}";

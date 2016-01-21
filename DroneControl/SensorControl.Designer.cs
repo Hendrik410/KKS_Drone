@@ -31,8 +31,9 @@
             System.Windows.Forms.GroupBox sensorGroupBox;
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.accelerationLabel = new System.Windows.Forms.Label();
-            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
+            this.gyroDataLabel = new System.Windows.Forms.Label();
+            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
@@ -40,6 +41,7 @@
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.gyroDataLabel);
             sensorGroupBox.Controls.Add(this.temperatureLabel);
             sensorGroupBox.Controls.Add(this.accelerationLabel);
             sensorGroupBox.Controls.Add(this.headingIndicator);
@@ -48,7 +50,7 @@
             sensorGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             sensorGroupBox.Location = new System.Drawing.Point(0, 0);
             sensorGroupBox.Name = "sensorGroupBox";
-            sensorGroupBox.Size = new System.Drawing.Size(410, 226);
+            sensorGroupBox.Size = new System.Drawing.Size(410, 262);
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
@@ -56,7 +58,7 @@
             // temperatureLabel
             // 
             this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(7, 201);
+            this.temperatureLabel.Location = new System.Drawing.Point(6, 223);
             this.temperatureLabel.Name = "temperatureLabel";
             this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
             this.temperatureLabel.TabIndex = 18;
@@ -65,11 +67,30 @@
             // accelerationLabel
             // 
             this.accelerationLabel.AutoSize = true;
-            this.accelerationLabel.Location = new System.Drawing.Point(132, 201);
+            this.accelerationLabel.Location = new System.Drawing.Point(212, 201);
             this.accelerationLabel.Name = "accelerationLabel";
             this.accelerationLabel.Size = new System.Drawing.Size(66, 13);
             this.accelerationLabel.TabIndex = 17;
             this.accelerationLabel.Text = "Acceleration";
+            // 
+            // calibrateGyroButton
+            // 
+            this.calibrateGyroButton.Location = new System.Drawing.Point(186, 19);
+            this.calibrateGyroButton.Name = "calibrateGyroButton";
+            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
+            this.calibrateGyroButton.TabIndex = 15;
+            this.calibrateGyroButton.Text = "0";
+            this.calibrateGyroButton.UseVisualStyleBackColor = true;
+            this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
+            // 
+            // gyroDataLabel
+            // 
+            this.gyroDataLabel.AutoSize = true;
+            this.gyroDataLabel.Location = new System.Drawing.Point(6, 201);
+            this.gyroDataLabel.Name = "gyroDataLabel";
+            this.gyroDataLabel.Size = new System.Drawing.Size(53, 13);
+            this.gyroDataLabel.TabIndex = 19;
+            this.gyroDataLabel.Text = "Gyro data";
             // 
             // headingIndicator
             // 
@@ -78,15 +99,6 @@
             this.headingIndicator.Size = new System.Drawing.Size(175, 175);
             this.headingIndicator.TabIndex = 16;
             this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
-            // 
-            // calibrateGyroButton
-            // 
-            this.calibrateGyroButton.Location = new System.Drawing.Point(185, -122);
-            this.calibrateGyroButton.Name = "calibrateGyroButton";
-            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
-            this.calibrateGyroButton.TabIndex = 15;
-            this.calibrateGyroButton.Text = "0";
-            this.calibrateGyroButton.UseVisualStyleBackColor = true;
             // 
             // artificialHorizon
             // 
@@ -102,7 +114,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(sensorGroupBox);
             this.Name = "SensorControl";
-            this.Size = new System.Drawing.Size(410, 226);
+            this.Size = new System.Drawing.Size(410, 262);
             sensorGroupBox.ResumeLayout(false);
             sensorGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -116,5 +128,6 @@
         private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
         private System.Windows.Forms.Button calibrateGyroButton;
         private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
+        private System.Windows.Forms.Label gyroDataLabel;
     }
 }

@@ -38,7 +38,7 @@ namespace DroneLibrary
                 if (ping != value)
                 {
                     ping = value;
-                    OnPingChange?.Invoke(this, new EventArgs());
+                    OnPingChange?.Invoke(this, new PingChangedEventArgs(this));
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace DroneLibrary
         /// <summary>
         /// Wird aufgerufen wenn sich der Ping-Wert ändert.
         /// </summary>
-        public event EventHandler OnPingChange;
+        public event EventHandler<PingChangedEventArgs> OnPingChange;
 
         /// <summary>
         /// Wird aufgerufen wenn die Drone eine Log Nachricht schickt.
@@ -94,7 +94,7 @@ namespace DroneLibrary
         /// <summary>
         /// Wrid aufgerufen, wenn sich die aktuellen Daten der Drone ändern.
         /// </summary>
-        public event EventHandler OnDataChange;
+        public event EventHandler<DataChangedEventArgs> OnDataChange;
 
         private DroneData data;
 
@@ -121,9 +121,14 @@ namespace DroneLibrary
                 }
 
                 if (changed)
-                    OnDataChange?.Invoke(this, EventArgs.Empty);
+                    OnDataChange?.Invoke(this, new DataChangedEventArgs(this));
             }
         }
+
+        /// <summary>
+        /// Wird aufgerufen wenn sich der Info-Wert ändert.
+        /// </summary>
+        public event EventHandler<InfoChangedEventArgs> OnInfoChange;
 
         private DroneInfo info;
 
@@ -150,14 +155,14 @@ namespace DroneLibrary
                 }
 
                 if (changed)
-                    OnInfoChange?.Invoke(this, EventArgs.Empty);
+                    OnInfoChange?.Invoke(this, new InfoChangedEventArgs(this));
             }
         }
 
         /// <summary>
         /// Wird aufgerufen, wenn sich die Dronen Einstellungen ändern.
         /// </summary>
-        public event EventHandler OnSettingsChange;
+        public event EventHandler<SettingsChangedEventArgs> OnSettingsChange;
 
         private DroneSettings settings;
 
@@ -184,14 +189,9 @@ namespace DroneLibrary
                 }
 
                 if (changed)
-                    OnSettingsChange?.Invoke(this, EventArgs.Empty);
+                    OnSettingsChange?.Invoke(this, new SettingsChangedEventArgs(this));
             }
         }
-
-        /// <summary>
-        /// Wird aufgerufen wenn sich der Info-Wert ändert.
-        /// </summary>
-        public event EventHandler OnInfoChange;
 
         /// <summary>
         /// Gibt den Socket an mit dem die Drone mit der Hardware per UDP verbunden ist.
@@ -304,6 +304,8 @@ namespace DroneLibrary
         {
             SendDisarm();
             SendPacket(new PacketUnsubscribeDataFeed(), false);
+
+            Ping = -1;
             Dispose();
         }
 
@@ -531,6 +533,10 @@ namespace DroneLibrary
 
                 HandlePacket(packet);
             }
+            catch (ObjectDisposedException e)
+            {
+                Log.Error(e);
+            }
             catch (Exception e)
             {
                 Log.Error(e.ToString());
@@ -647,9 +653,13 @@ namespace DroneLibrary
 
                 HandleDataPacket(packet);
             }
+            catch(ObjectDisposedException e)
+            {
+                Log.Error(e);
+            }
             catch (Exception e)
             {
-                Log.Error(e.ToString());
+                Log.Error(e);
                 if (Debugger.IsAttached)
                     Debugger.Break();
             }
