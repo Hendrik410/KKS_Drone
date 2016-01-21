@@ -146,10 +146,13 @@ void PacketBuffer::read(char* buffer, int length, int offset) {
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
 
+	Log::debug("PacketBuffer", "length: %d", length);
+
 	int size = length * sizeof(char);
 
-	char* str = (char*)malloc(size);
+	char* str = (char*)malloc(size + 1);
 	read(str, size, 0);
+	str[size] = '\0';
 	return str;
 }
 

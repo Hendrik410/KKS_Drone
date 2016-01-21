@@ -210,10 +210,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
 
-		/*writeBuffer->writeString(config->DroneName);
 		writeBuffer->writeString(config->NetworkSSID);
 		writeBuffer->writeString(config->NetworkPassword);
-		writeBuffer->write(config->VerboseSerialLog);*/
+		writeBuffer->write(config->VerboseSerialLog);
 
 		writeBuffer->write(config->Degree2Ratio);
 		writeBuffer->write(config->RotaryDegree2Ratio);
@@ -243,10 +242,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			ESP.restart();
 		break;
 	case SetConfig:
-		/*config->DroneName = readBuffer->readString();
+		config->DroneName = readBuffer->readString();
 		config->NetworkSSID = readBuffer->readString();
 		config->NetworkPassword = readBuffer->readString();
-		config->VerboseSerialLog = readBuffer->readBoolean();*/
+		config->VerboseSerialLog = readBuffer->readBoolean();
 		config->Degree2Ratio = readBuffer->readFloat();
 		config->RotaryDegree2Ratio = readBuffer->readFloat();
 

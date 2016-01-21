@@ -129,11 +129,6 @@ namespace DroneLibrary
                 Write((byte)0);
         }
 
-        public void Write(char value)
-        {
-            writer.Write(value);
-        }
-
         public void Write(byte value)
         {
             writer.Write(value);
@@ -197,7 +192,7 @@ namespace DroneLibrary
             Write((ushort)str.Length);
 
             for (int i = 0; i < str.Length; i++)
-                Write(str[i]);
+                Write((byte)str[i]);
         }
     }
 }

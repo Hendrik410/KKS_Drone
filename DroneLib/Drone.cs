@@ -407,8 +407,8 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            /*SendPacket(new PacketSetConfig(config), true);
-            Settings = config;*/
+            SendPacket(new PacketSetConfig(config), true);
+            Settings = config;
         }
 
         /// <summary>
@@ -614,13 +614,15 @@ namespace DroneLibrary
                         int highestRevision = buffer.ReadInt();
 
                         Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
-                        Settings = new DroneSettings(
-                            "e", //buffer.ReadString(),
-                            "e", //buffer.ReadString(),
-                            "e", //buffer.ReadString(),
-                            true, //buffer.ReadBoolean(),
-                            buffer.ReadFloat(),
-                            buffer.ReadFloat());
+                        Settings = new DroneSettings()
+                        {
+                            DroneName = name,
+                            NetworkSSID = buffer.ReadString(),
+                            NetworkPassword = buffer.ReadString(),
+                            VerboseSerialLog = buffer.ReadBoolean(),
+                            Degree2Ratio = buffer.ReadFloat(),
+                            RotaryDegree2Ratio = buffer.ReadFloat()
+                        };
 
                         RemovePacketToAcknowlegde(revision);
                         break;

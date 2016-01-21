@@ -6,40 +6,29 @@ using System.Threading.Tasks;
 
 namespace DroneLibrary
 {
-    public class DroneSettings : IEquatable<DroneSettings>
+    public struct DroneSettings : IEquatable<DroneSettings>
     {
         public string DroneName { get; set; }
         public string NetworkSSID { get; set; }
         public string NetworkPassword { get; set; }
         public bool VerboseSerialLog { get; set; }
-
-        public float Degree2Ratio {
-            get;
-            set;
-        }
-
-        public float RotaryDegree2Ratio  {
-            get;
-            set;
-        }
+        public float Degree2Ratio { get; set; }
+        public float RotaryDegree2Ratio { get; set; }
 
 
         public DroneSettings(string droneName, string networkSSID, string networkPassword, bool verboseSerialLog, float degree2Ratio, float rotaryDegree2Ratio)
+            : this()
         {
             this.DroneName = droneName;
             this.NetworkSSID = networkSSID;
             this.NetworkPassword = networkPassword;
             this.VerboseSerialLog = verboseSerialLog;
-            this.Degree2Ratio = Degree2Ratio;
-            this.RotaryDegree2Ratio = RotaryDegree2Ratio;
+            this.Degree2Ratio = degree2Ratio;
+            this.RotaryDegree2Ratio = rotaryDegree2Ratio;
         }
 
         public static bool operator ==(DroneSettings a, DroneSettings b)
         {
-            if (object.ReferenceEquals(a, b))
-                return true;
-            if (object.ReferenceEquals(a, null))
-                return false;
             return a.Equals(b);
         }
 
@@ -52,14 +41,12 @@ namespace DroneLibrary
         public override bool Equals(object obj)
         {
             if (obj is DroneSettings)
-                return Equals(obj as DroneSettings);
+                return Equals((DroneSettings)obj);
             return false;
         }
 
         public bool Equals(DroneSettings other)
         {
-            if (other == null)
-                return false;
             return DroneName == other.DroneName
                    && NetworkSSID == other.NetworkSSID
                    && NetworkPassword == other.NetworkPassword
@@ -74,9 +61,9 @@ namespace DroneLibrary
             unchecked
             {
                 int hash = 13;
-                hash = hash * 7 + DroneName.GetHashCode();
-                hash = hash * 7 + NetworkSSID.GetHashCode();
-                hash = hash * 7 + NetworkPassword.GetHashCode();
+                hash = hash * 7 + (DroneName == null ? 0 : DroneName.GetHashCode());
+                hash = hash * 7 + (NetworkSSID == null ? 0 : NetworkSSID.GetHashCode());
+                hash = hash * 7 + (NetworkPassword == null ? 0 : NetworkPassword.GetHashCode());
                 hash = hash * 7 + VerboseSerialLog.GetHashCode();
                 hash = hash * 7 + Degree2Ratio.GetHashCode();
                 hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();

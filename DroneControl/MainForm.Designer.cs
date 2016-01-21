@@ -212,6 +212,7 @@
             this.droneConfigPropertyGrid.Name = "droneConfigPropertyGrid";
             this.droneConfigPropertyGrid.Size = new System.Drawing.Size(206, 340);
             this.droneConfigPropertyGrid.TabIndex = 9;
+            this.droneConfigPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.droneConfigPropertyGrid_PropertyValueChanged);
             // 
             // sensorControl1
             // 
