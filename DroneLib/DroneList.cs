@@ -86,6 +86,7 @@ namespace DroneLibrary
                     DroneEntry entry = new DroneEntry();
                     entry.Address = sender.Address;
 
+                    entry.LastFound = DateTime.Now;
                     entry.Name = buffer.ReadString();
                     entry.Model = buffer.ReadString();
                     entry.SerialCode = buffer.ReadString();
@@ -107,17 +108,23 @@ namespace DroneLibrary
                     foundDrones.RemoveAt(i--);
         }
 
-        private bool ContainsDrone(DroneEntry entry)
+        private bool UpdateDrone(DroneEntry entry)
         {
-            foreach (DroneEntry e in foundDrones)
-                if (e.Equals(entry))
+            for (int i = 0; i < foundDrones.Count; i++)
+                if (foundDrones[i].Equals(entry))
+                {
+                    foundDrones[i] = DroneEntry.UpdateEntry(entry);
+
+                    if (OnDroneFound != null)
+                        OnDroneFound(this, EventArgs.Empty);
                     return true;
+                }
             return false;
         }
 
         private void AddDrone(DroneEntry entry)
         {
-            if (ContainsDrone(entry))
+            if (UpdateDrone(entry))
                 return;
 
             // alte Drone mit gleicher IP-Adresse entfernen
@@ -130,7 +137,7 @@ namespace DroneLibrary
 
         public DroneEntry[] GetDrones()
         {
-            return foundDrones.ToArray();
+            return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds < 10).ToArray();
         }
     }
 }

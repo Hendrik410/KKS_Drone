@@ -10,6 +10,11 @@ namespace DroneLibrary
     public struct DroneEntry : IEquatable<DroneEntry>
     {
         /// <summary>
+        /// Gibt den Zeitpunkt zurück, als die Drone zuletzt gefunden wurde.
+        /// </summary>
+        public DateTime LastFound { get; set; }
+
+        /// <summary>
         /// Gibt die IP-Adresse der Drone an.
         /// </summary>
         public IPAddress Address;
@@ -33,6 +38,18 @@ namespace DroneLibrary
         /// Gibt die Version der Firmware auf der Drone an.
         /// </summary>
         public int FirmwareVersion;
+
+        public static DroneEntry UpdateEntry(DroneEntry entry)
+        {
+            DroneEntry e = new DroneEntry();
+            e.LastFound = DateTime.Now;
+            e.Address = entry.Address;
+            e.Name = entry.Name;
+            e.Model = entry.Model;
+            e.SerialCode = entry.SerialCode;
+            e.FirmwareVersion = entry.FirmwareVersion;
+            return e;
+        }
 
         public override bool Equals(object obj)
         {
