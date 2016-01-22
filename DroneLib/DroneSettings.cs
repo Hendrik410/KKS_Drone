@@ -31,16 +31,31 @@ namespace DroneLibrary
         [Category("Flying")]
         public float RotaryDegree2Ratio { get; set; }
 
+        [Category("Engine")]
+        public ushort PhysicsCalcDelay { get; set; }
 
-        public DroneSettings(string droneName, string networkSSID, string networkPassword, bool verboseSerialLog, float degree2Ratio, float rotaryDegree2Ratio)
+
+        public DroneSettings(string name, PacketBuffer buffer)
             : this()
         {
-            this.DroneName = droneName;
-            this.NetworkSSID = networkSSID;
-            this.NetworkPassword = networkPassword;
-            this.VerboseSerialLog = verboseSerialLog;
-            this.Degree2Ratio = degree2Ratio;
-            this.RotaryDegree2Ratio = rotaryDegree2Ratio;
+            this.DroneName = name;
+            this.NetworkSSID = buffer.ReadString();
+            this.NetworkPassword = buffer.ReadString();
+            this.VerboseSerialLog = buffer.ReadBoolean();
+            this.Degree2Ratio = buffer.ReadFloat();
+            this.RotaryDegree2Ratio = buffer.ReadFloat();
+            this.PhysicsCalcDelay = buffer.ReadUShort();
+        }
+
+        public void Write(PacketBuffer buffer)
+        {
+            buffer.Write(DroneName);
+            buffer.Write(NetworkSSID);
+            buffer.Write(NetworkPassword);
+            buffer.Write(VerboseSerialLog);
+            buffer.Write(Degree2Ratio);
+            buffer.Write(RotaryDegree2Ratio);
+            buffer.Write(PhysicsCalcDelay);
         }
 
         public static bool operator ==(DroneSettings a, DroneSettings b)
@@ -68,7 +83,8 @@ namespace DroneLibrary
                    && NetworkPassword == other.NetworkPassword
                    && VerboseSerialLog == other.VerboseSerialLog
                    && Degree2Ratio == other.Degree2Ratio
-                   && RotaryDegree2Ratio == other.RotaryDegree2Ratio;
+                   && RotaryDegree2Ratio == other.RotaryDegree2Ratio
+                   && PhysicsCalcDelay == other.PhysicsCalcDelay;
 
         }
 
@@ -83,6 +99,7 @@ namespace DroneLibrary
                 hash = hash * 7 + VerboseSerialLog.GetHashCode();
                 hash = hash * 7 + Degree2Ratio.GetHashCode();
                 hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();
+                hash = hash * 7 + PhysicsCalcDelay.GetHashCode();
                 return hash;
             }
         }

@@ -22,12 +22,7 @@ namespace DroneLibrary.Protocol
             if (packet == null)
                 throw new ArgumentNullException(nameof(packet));
 
-            packet.Write(Settings.DroneName);
-            packet.Write(Settings.NetworkSSID);
-            packet.Write(Settings.NetworkPassword);
-            packet.Write(Settings.VerboseSerialLog);
-            packet.Write(Settings.Degree2Ratio);
-            packet.Write(Settings.RotaryDegree2Ratio);
+            Settings.Write(packet);
         }
     }
 }

@@ -87,8 +87,8 @@ Config ConfigManager::getDefault() {
 
 	config.DroneName = "koalaDrone";
 
-	config.NetworkSSID = "Kugelmatik";
-	config.NetworkPassword = "123456abc";
+	config.NetworkSSID = "Drone";
+	config.NetworkPassword = "12345678"; 
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
@@ -106,7 +106,7 @@ Config ConfigManager::getDefault() {
 	config.ServoMin = 900;
 	config.ServoMax = 1400;
 	config.ServoIdle = 1200;
-	config.ServoHover = 1300;
+	config.ServoHover = 1280;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;
@@ -121,6 +121,7 @@ Config ConfigManager::getDefault() {
 
 	config.Degree2Ratio = 0.03f;
 	config.RotaryDegree2Ratio = 0.03f;
+	config.PhysicsCalcDelay = 20;
 
 	Log::info("Config", "Using default config");
 	return config;

@@ -119,7 +119,7 @@
             this.stopButton.TabIndex = 17;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = false;
-            this.stopButton.ClientSizeChanged += new System.EventHandler(this.stopButton_Click);
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
             // logButton
             // 

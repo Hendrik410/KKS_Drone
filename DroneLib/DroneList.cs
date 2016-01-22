@@ -38,6 +38,11 @@ namespace DroneLibrary
         {
             Log.Debug("Sending hello broadcast");
 
+            IPAddress[] addresses = NetworkHelper.GetLocalBroadcastAddresses();
+            if (addresses == null)
+                return;
+
+
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
@@ -46,7 +51,6 @@ namespace DroneLibrary
                 writer.Write((byte)'Y');
                 writer.Write((byte)HelloPacketType.Question);
 
-                IPAddress[] addresses = NetworkHelper.GetLocalBroadcastAddresses();
                 byte[] packet = stream.GetBuffer();
 
                 for (int i = 0; i < addresses.Length; i++)

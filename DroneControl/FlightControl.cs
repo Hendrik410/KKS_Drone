@@ -44,7 +44,8 @@ namespace DroneControl {
         }
 
         public void Close() {
-            inputController.Stop();
+            if (inputController != null)
+                inputController.Stop(); // NPE
         }
         
 

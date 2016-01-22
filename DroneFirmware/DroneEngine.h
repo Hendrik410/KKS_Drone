@@ -20,8 +20,6 @@
 #include "Log.h"
 #endif
 
-#define PHYSICS_CALC_DELAY_MS 20
-
 enum DroneState {
 	State_Idle,
 	State_Armed,
