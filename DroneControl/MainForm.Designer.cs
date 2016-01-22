@@ -157,7 +157,7 @@
             // 
             this.pingLabel.AutoSize = true;
             this.pingLabel.ForeColor = System.Drawing.Color.Red;
-            this.pingLabel.Location = new System.Drawing.Point(151, 9);
+            this.pingLabel.Location = new System.Drawing.Point(172, 9);
             this.pingLabel.Name = "pingLabel";
             this.pingLabel.Size = new System.Drawing.Size(61, 13);
             this.pingLabel.TabIndex = 13;

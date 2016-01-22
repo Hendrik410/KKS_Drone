@@ -87,8 +87,8 @@ Config ConfigManager::getDefault() {
 
 	config.DroneName = "koalaDrone";
 
-	config.NetworkSSID = "Drone";
-	config.NetworkPassword = "12345678";
+	config.NetworkSSID = "Kugelmatik";
+	config.NetworkPassword = "123456abc";
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;

@@ -111,7 +111,12 @@ float Gyro::getRoll() const {
 }
 
 float Gyro::getPitchRad() const {
-	return ypr[2] - pitchOffset;
+	float pitch = ypr[2] - pitchOffset;
+	while (pitch < -M_PI_2)
+		pitch += M_PI;
+	while (pitch >= M_PI_2)
+		pitch -= M_PI;
+	return pitch;
 }
 
 float Gyro::getYawRad() const {
@@ -125,7 +130,12 @@ float Gyro::getYawRad() const {
 
 
 float Gyro::getRollRad() const {
-	return ypr[1] - rollOffset;
+	float roll = ypr[1] - rollOffset;
+	while (roll < -M_PI_2)
+		roll += M_PI;
+	while (roll >= M_PI_2)
+		roll -= M_PI;
+	return roll;
 }
 
 float Gyro::getAccelerationX() const {
