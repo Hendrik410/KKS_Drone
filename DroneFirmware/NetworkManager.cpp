@@ -217,6 +217,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->write(config->Degree2Ratio);
 		writeBuffer->write(config->RotaryDegree2Ratio);
 
+		writeBuffer->write(config->PhysicsCalcDelay);
+
 		sendPacket(udp);
 		break;
 	}
@@ -248,6 +250,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		config->VerboseSerialLog = readBuffer->readBoolean();
 		config->Degree2Ratio = readBuffer->readFloat();
 		config->RotaryDegree2Ratio = readBuffer->readFloat();
+		config->PhysicsCalcDelay = readBuffer->readUint16();
 
 		Log::info("Network", "Config set.");
 

@@ -75,6 +75,8 @@ struct Config {
 
 	float Degree2Ratio;
 	float RotaryDegree2Ratio;
+
+	uint16_t PhysicsCalcDelay;
 };
 
 #endif

@@ -33,6 +33,8 @@ namespace DroneLibrary {
         public static IPAddress[] GetLocalBroadcastAddresses()
         {
             IPAddress[] addresses = GetLocalIPAddresses();
+            if (addresses == null)
+                return null;
             for (int i = 0; i < addresses.Length; i++)
                 addresses[i] = GetLocalBroadcastAddress(addresses[i]);
             return addresses;

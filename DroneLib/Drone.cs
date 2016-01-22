@@ -653,15 +653,7 @@ namespace DroneLibrary
                         int highestRevision = buffer.ReadInt();
 
                         Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
-                        Settings = new DroneSettings()
-                        {
-                            DroneName = name,
-                            NetworkSSID = buffer.ReadString(),
-                            NetworkPassword = buffer.ReadString(),
-                            VerboseSerialLog = buffer.ReadBoolean(),
-                            Degree2Ratio = buffer.ReadFloat(),
-                            RotaryDegree2Ratio = buffer.ReadFloat()
-                        };
+                        Settings = new DroneSettings(name, buffer);
 
                         RemovePacketToAcknowlegde(revision);
                         break;
