@@ -51,8 +51,27 @@ namespace DroneControl {
             this.inputController = new InputController(drone, interpreter);
             this.inputController.DeviceInterpreter.TargetMovementChange += DeviceInterpreterOnTargetMovementChange;
             OnTiltLimitInputChange(this, EventArgs.Empty);
+
+            this.drone.OnDataChange += Drone_OnDataChange;
         }
-        
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            if (drone != null)
+                drone.OnDataChange -= Drone_OnDataChange;
+            base.OnHandleDestroyed(e);
+        }
+
+        private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), this, e);
+                return;
+            }
+
+            UpdateTargetRatio(e.Data);
+        }
 
         private void DeviceInterpreterOnTargetMovementChange(object sender, EventArgs eventArgs) {
             if(InvokeRequired) {
@@ -65,6 +84,8 @@ namespace DroneControl {
             targetRollLabel.Text = $"Target Roll: {target.TargetRoll}";
             targetYawLabel.Text = $"Target Yaw: {target.TargetYaw}";
             targetThrustLabel.Text = $"Target Thrust: {target.TargetThrust}";
+
+            UpdateTargetRatio(drone.Data);
         }
 
         private void OnTiltLimitInputChange(object sender, EventArgs e) {
@@ -81,6 +102,57 @@ namespace DroneControl {
                 inputTypeComboBox.Enabled = true;
                 inputController.Stop();
             }
+        }
+
+        private void UpdateTargetRatio(DroneData data)
+        {
+            TargetMovementData target = inputController.DeviceInterpreter.TargetMovementData;
+            float deltaPitch = target.TargetPitch - data.Gyro.Pitch;
+            float deltaRoll = target.TargetRoll - data.Gyro.Roll;
+            float deltaYaw = 0; //AngleDifference(data.Gyro.Yaw, target.TargetYaw);
+
+            ratioDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
+                GetTargetRatio(true, true, false, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
+                GetTargetRatio(true, false, true, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
+                GetTargetRatio(false, true, true, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
+                GetTargetRatio(false, false, false, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust));
+
+        }
+
+        private float AngleDifference(float a, float b)
+        {
+            return ((((a - b) % 360) + 540) % 360) - 180;
+        }
+
+        private float GetTargetRatio(bool isFront, bool isLeft, bool isClockwise, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio)
+        {
+            float targetMotorRatio = verticalRatio;
+
+            if (Math.Abs(pitchDelta) >= 0.02)
+            {
+                if (isFront)
+                    targetMotorRatio += pitchDelta * drone.Settings.Degree2Ratio;
+                else
+                    targetMotorRatio -= pitchDelta * drone.Settings.Degree2Ratio;
+            }
+
+            if (Math.Abs(rollDelta) >= 0.02)
+            {
+                if (isLeft)
+                    targetMotorRatio -= rollDelta * drone.Settings.Degree2Ratio;
+                else
+                    targetMotorRatio += rollDelta * drone.Settings.Degree2Ratio;
+            }
+
+            if (Math.Abs(yawDelta) >= 0.02)
+            {
+                if (isClockwise)
+                    targetMotorRatio -= yawDelta * drone.Settings.RotaryDegree2Ratio;
+                else
+                    targetMotorRatio += yawDelta * drone.Settings.RotaryDegree2Ratio;
+            }
+
+            return targetMotorRatio;
         }
     }
 }

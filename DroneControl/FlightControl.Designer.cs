@@ -36,6 +36,7 @@
             this.targetRollLabel = new System.Windows.Forms.Label();
             this.targetYawLabel = new System.Windows.Forms.Label();
             this.targetThrustLabel = new System.Windows.Forms.Label();
+            this.ratioDataLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxYawNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).BeginInit();
@@ -220,10 +221,21 @@
             this.targetThrustLabel.TabIndex = 20;
             this.targetThrustLabel.Text = "Target Thrust: {0}";
             // 
+            // ratioDataLabel
+            // 
+            this.ratioDataLabel.AutoSize = true;
+            this.ratioDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ratioDataLabel.Location = new System.Drawing.Point(296, 79);
+            this.ratioDataLabel.Name = "ratioDataLabel";
+            this.ratioDataLabel.Size = new System.Drawing.Size(67, 13);
+            this.ratioDataLabel.TabIndex = 21;
+            this.ratioDataLabel.Text = "Ratio data";
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ratioDataLabel);
             this.Controls.Add(this.targetThrustLabel);
             this.Controls.Add(this.targetYawLabel);
             this.Controls.Add(this.targetRollLabel);
@@ -262,5 +274,6 @@
         private System.Windows.Forms.Label targetRollLabel;
         private System.Windows.Forms.Label targetYawLabel;
         private System.Windows.Forms.Label targetThrustLabel;
+        private System.Windows.Forms.Label ratioDataLabel;
     }
 }

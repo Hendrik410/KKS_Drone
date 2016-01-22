@@ -37,7 +37,7 @@ namespace DroneControl
 
         private void UpdateDebugData(DebugData data)
         {
-            ratioDataLabel.Text = string.Format("FL: {0}\nFR: {1}\nBL: {2}\nBR: {3}",
+            ratioDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
                 data.FrontLeftRatio, data.FrontRightRatio,
                 data.BackLeftRatio, data.BackRightRatio);
         }
