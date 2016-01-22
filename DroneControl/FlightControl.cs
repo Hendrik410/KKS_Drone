@@ -118,6 +118,9 @@ namespace DroneControl {
 
         private void UpdateTargetRatio(DroneData data)
         {
+            if (inputController == null || inputController.DeviceInterpreter == null)
+                return;
+
             TargetMovementData target = inputController.DeviceInterpreter.TargetMovementData;
             float deltaPitch = target.TargetPitch - data.Gyro.Pitch;
             float deltaRoll = target.TargetRoll - data.Gyro.Roll;
