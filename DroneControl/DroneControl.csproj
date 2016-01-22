@@ -109,6 +109,7 @@
     <Compile Include="Input\GamepadInputInterpreter.cs" />
     <Compile Include="Input\InputController.cs" />
     <Compile Include="Input\InputInterpreterType.cs" />
+    <Compile Include="Input\PrecisionControllerInputInterpreter.cs" />
     <Compile Include="Input\TargetMovementData.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>

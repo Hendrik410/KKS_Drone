@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DroneControl.Input {
     public enum InputInterpreterType {
-        GamePad = 0
+        GamePad = 0,
+        PrecisionController = 1
     }
 }

@@ -8,12 +8,12 @@ using System.Timers;
 using SharpDX.DirectInput;
 
 namespace DroneControl.Input {
-    class GamepadInputInterpreter : DeviceInputInterpreter {
-
-
-        public override TargetMovementData TargetMovementData {
+    class PrecisionControllerInputInterpreter : DeviceInputInterpreter {
+        public override TargetMovementData TargetMovementData
+        {
             get { return targetMovementData; }
-            protected set {
+            protected set
+            {
                 targetMovementData = value; // immer setzten, um kontinuierlich daten der drohne zu senden
                 OnTargetMovementChange(EventArgs.Empty);
             }
@@ -24,16 +24,18 @@ namespace DroneControl.Input {
 
         private DirectInput directInput;
 
-        private Joystick inputDevice;
+        private Joystick inputJoystick;
+        private Joystick inputG13Joystick;
+        private Keyboard inputKeyboard;
 
         private TargetMovementData targetMovementData;
 
         private Dictionary<int, ControlButtonType> buttonMappings;
 
         private Stopwatch buttonPressedStopwatch;
-        private Dictionary<int, long> buttonPressedTimes; 
+        private Dictionary<int, long> buttonPressedTimes;
 
-        public GamepadInputInterpreter(int updateIntervall = 50) {
+        public PrecisionControllerInputInterpreter(int updateIntervall = 50) {
             if(updateIntervall < 1)
                 throw new ArgumentOutOfRangeException(nameof(updateIntervall));
 
@@ -62,15 +64,25 @@ namespace DroneControl.Input {
             directInput = new DirectInput();
 
             var joystickGuid = Guid.Empty;
+            var g13JoystickGuid = Guid.Empty;
 
-            
-            foreach(DeviceInstance deviceInstance in directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices))
-                joystickGuid = deviceInstance.InstanceGuid;
+            IList<DeviceInstance> controllerDevices = directInput.GetDevices(DeviceClass.All,
+                DeviceEnumerationFlags.AllDevices);
+            foreach(DeviceInstance deviceInstance in controllerDevices)
+                if(deviceInstance.InstanceName.Contains("G13"))
+                    g13JoystickGuid = deviceInstance.InstanceGuid;
+                else if(deviceInstance.Type == DeviceType.Joystick)
+                    joystickGuid = deviceInstance.InstanceGuid;
 
-            if(joystickGuid == Guid.Empty)
+            if(joystickGuid == Guid.Empty || g13JoystickGuid == Guid.Empty)
                 return false;
 
-            inputDevice = new Joystick(directInput, joystickGuid);
+            inputJoystick = new Joystick(directInput, joystickGuid);
+            inputG13Joystick = new Joystick(directInput, g13JoystickGuid);
+
+            inputKeyboard = new Keyboard(directInput);
+            inputKeyboard.Properties.BufferSize = 128;
+
 
             return true;
         }
@@ -78,7 +90,9 @@ namespace DroneControl.Input {
         public override bool StartListen() {
             if(!SelectDevice())
                 return false;
-            inputDevice.Acquire();
+            inputJoystick.Acquire();
+            inputG13Joystick.Acquire();
+            inputKeyboard.Acquire();
             timer.Start();
 
             return true;
@@ -86,24 +100,26 @@ namespace DroneControl.Input {
 
         public override bool StopListen() {
             timer.Stop();
-            inputDevice?.Unacquire();
+            inputJoystick?.Unacquire();
+            inputG13Joystick?.Unacquire();
+            inputKeyboard?.Unacquire();
             return true;
         }
 
-
         private const int controllerMaxValue = UInt16.MaxValue / 2;
         private const int minButtonPressedTime = 30;
-        
+
 
         private void OnTimerTick(object sender, EventArgs e) {
-            inputDevice.Poll();
+            inputJoystick.Poll();
 
-            JoystickState state = inputDevice.GetCurrentState();
+            JoystickState state = inputJoystick.GetCurrentState();
+            JoystickState g13State = inputG13Joystick.GetCurrentState();
 
             float targetPitch = ((float)(state.Y - controllerMaxValue) / controllerMaxValue) * MaxPitch;
             float targetRoll = ((float)(state.X - controllerMaxValue) / controllerMaxValue) * MaxRoll;
-            float targetYaw = ((float)(state.Z - controllerMaxValue) / controllerMaxValue) * MaxYaw;
-            float targetThrust = (float)(state.RotationZ - controllerMaxValue) / controllerMaxValue;
+            float targetYaw = ((float)(state.RotationZ - controllerMaxValue) / controllerMaxValue) * MaxYaw;
+            float targetThrust = (float)(g13State.Y - controllerMaxValue) / controllerMaxValue;
 
             targetRoll *= -1;
             targetThrust *= -1;
@@ -132,6 +148,5 @@ namespace DroneControl.Input {
             }
 
         }
-
     }
 }
