@@ -38,19 +38,11 @@ namespace DroneControl {
 
             this.drone = drone;
 
-            DeviceInputInterpreter interpreter;
-            switch ((InputInterpreterType)inputTypeComboBox.SelectedIndex)
-            {
-                case InputInterpreterType.GamePad:
-                    interpreter = new GamepadInputInterpreter();
-                    break;
-                default:
-                    return;
-            }
-
-            this.inputController = new InputController(drone, interpreter);
-            this.inputController.DeviceInterpreter.TargetMovementChange += DeviceInterpreterOnTargetMovementChange;
             OnTiltLimitInputChange(this, EventArgs.Empty);
+        }
+
+        public void Close() {
+            inputController.Stop();
         }
         
 
@@ -68,6 +60,8 @@ namespace DroneControl {
         }
 
         private void OnTiltLimitInputChange(object sender, EventArgs e) {
+            if(inputController == null) return;
+
             inputController.DeviceInterpreter.MaxPitch = (float)maxPitchNumeric.Value;
             inputController.DeviceInterpreter.MaxRoll = (float)maxRollNumeric.Value;
             inputController.DeviceInterpreter.MaxYaw = (float)maxYawNumeric.Value;
@@ -76,6 +70,23 @@ namespace DroneControl {
         private void activeCheckBox_CheckedChanged(object sender, EventArgs e) {
             if(activeCheckBox.Checked) {
                 inputTypeComboBox.Enabled = false;
+
+                DeviceInputInterpreter interpreter;
+                switch((InputInterpreterType)inputTypeComboBox.SelectedIndex) {
+                    case InputInterpreterType.GamePad:
+                        interpreter = new GamepadInputInterpreter();
+                        break;
+                    case InputInterpreterType.PrecisionController:
+                        interpreter = new PrecisionControllerInputInterpreter();
+                        break;
+                    default:
+                        return;
+                }
+
+                this.inputController = new InputController(drone, interpreter);
+                this.inputController.DeviceInterpreter.TargetMovementChange += DeviceInterpreterOnTargetMovementChange;
+                OnTiltLimitInputChange(this, EventArgs.Empty);
+
                 inputController.Start();
             } else {
                 inputTypeComboBox.Enabled = true;

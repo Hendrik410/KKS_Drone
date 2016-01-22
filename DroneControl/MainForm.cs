@@ -57,6 +57,8 @@ namespace DroneControl
         {
             if (timer != null)
                 timer.Stop();
+            
+            flightControl1.Close();
 
             if (drone != null)
             {

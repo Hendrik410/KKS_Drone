@@ -42,8 +42,8 @@ namespace DroneControl.Input {
             ControlButtonPressed?.Invoke(this, t);
         }
 
-        public abstract void StartListen();
-        public abstract void StopListen();
+        public abstract bool StartListen();
+        public abstract bool StopListen();
 
     }
 }
