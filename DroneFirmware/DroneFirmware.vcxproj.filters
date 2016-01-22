@@ -72,6 +72,9 @@
     <ClInclude Include="Build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
