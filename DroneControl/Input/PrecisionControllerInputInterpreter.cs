@@ -30,7 +30,7 @@ namespace DroneControl.Input {
 
         private TargetMovementData targetMovementData;
 
-        private Dictionary<int, ControlButtonType> buttonMappings;
+        private Dictionary<int, ControlButtonType> joystickButtonMappings;
 
         private Stopwatch buttonPressedStopwatch;
         private Dictionary<int, long> buttonPressedTimes;
@@ -39,7 +39,7 @@ namespace DroneControl.Input {
             if(updateIntervall < 1)
                 throw new ArgumentOutOfRangeException(nameof(updateIntervall));
 
-            buttonMappings = new Dictionary<int, ControlButtonType>();
+            joystickButtonMappings = new Dictionary<int, ControlButtonType>();
             PopulateButtonMappings();
             buttonPressedTimes = new Dictionary<int, long>();
             buttonPressedStopwatch = new Stopwatch();
@@ -54,9 +54,9 @@ namespace DroneControl.Input {
         }
 
         private void PopulateButtonMappings() {
-            buttonMappings.Add(0, ControlButtonType.Stop);
-            buttonMappings.Add(3, ControlButtonType.SetCurrentAsOffset);
-            buttonMappings.Add(9, ControlButtonType.ToggleArm);
+            joystickButtonMappings.Add(0, ControlButtonType.Stop);
+            joystickButtonMappings.Add(1, ControlButtonType.ToggleArm);
+            joystickButtonMappings.Add(2, ControlButtonType.SetCurrentAsOffset);
         }
 
         public bool SelectDevice() {
@@ -141,9 +141,9 @@ namespace DroneControl.Input {
 
                 if(!state.Buttons[i] && buttonPressedTimes.ContainsKey(i) && buttonPressedTimes[i] > 0)
                     if(buttonPressedStopwatch.ElapsedMilliseconds - buttonPressedTimes[i] >= minButtonPressedTime)
-                        if(buttonMappings.ContainsKey(i)) {
+                        if(joystickButtonMappings.ContainsKey(i)) {
                             buttonPressedTimes[i] = -1;
-                            OnControlButtonPressed(buttonMappings[i]);
+                            OnControlButtonPressed(joystickButtonMappings[i]);
                         }
             }
 
