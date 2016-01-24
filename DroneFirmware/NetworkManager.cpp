@@ -247,7 +247,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 
 	case Reset:
-		if(engine->state() == StateIdle)
+		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			ESP.restart();
 		break;
 	case SetConfig:
