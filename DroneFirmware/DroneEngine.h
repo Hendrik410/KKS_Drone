@@ -10,6 +10,7 @@
 #include "Gyro.h"
 #include "MathHelper.h"
 #include "Log.h"
+#include "LED.h"
 
 #define byte unsigned char
 #else
@@ -18,6 +19,7 @@
 #include "Gyro.h"
 #include "MathHelper.h"
 #include "Log.h"
+#include "LED.h"
 #endif
 
 enum DroneState {
