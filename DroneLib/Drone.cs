@@ -274,7 +274,6 @@ namespace DroneLibrary
         private object settingsLock = new object();
         private object debugDataLock = new object();
 
-
         public Drone(IPAddress address, Config config)
         {
             if (address == null)
@@ -366,6 +365,12 @@ namespace DroneLibrary
             }
         }
 
+        public void CheckConnection()
+        {
+            if (Environment.TickCount - lastPing > 3000)
+                Ping = -1;
+        }
+
 #region SendShortcuts
 
         /// <summary>
@@ -376,8 +381,7 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            if (Environment.TickCount - lastPing > 5000)
-                Ping = -1;
+            CheckConnection();
 
             if (!stopwatch.IsRunning)
                 stopwatch.Start();
@@ -628,11 +632,9 @@ namespace DroneLibrary
                         if (packet.Length < HeaderSize + sizeof(long))
                             throw new InvalidDataException("Packet is not long enough.");
 
-                        int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10 || !IsConnected)
-                        {
+                        CheckConnection();
+                        if (!IsConnected)
                             OnConnected?.Invoke(this, EventArgs.Empty);
-                        }
 
                         lastPing = Environment.TickCount;
 

@@ -21,6 +21,8 @@ namespace DroneControl
         private LogForm logForm;
         private DebugForm debugForm;
 
+        private long tickCount;
+
         public MainForm(Drone drone)
         {
             if (drone == null)
@@ -33,7 +35,7 @@ namespace DroneControl
             drone.SendPacket(new PacketCalibrateGyro(), true);
             drone.SendPacket(new PacketSubscribeDataFeed(), true);
 
-            timer.Interval = 2000;
+            timer.Interval = 250;
             timer.Tick += Timer_Tick;
             timer.Start();
 
@@ -77,7 +79,10 @@ namespace DroneControl
         private void Timer_Tick(object sender, EventArgs e)
         {
             drone.SendPing();
-            drone.SendGetInfo();
+            if (tickCount % 16 == 0)
+                drone.SendGetInfo();
+
+            tickCount++;
         }
 
         private Form ShowForm(Form form, Func<Form> onClosed)
