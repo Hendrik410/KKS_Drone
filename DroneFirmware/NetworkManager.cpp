@@ -134,7 +134,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
-	Log::debug("Network", "Got packet with size %d rev %d and type: %d", readBuffer->getSize(), revision, type);
+	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
 
 	
 	if (ackRequested)

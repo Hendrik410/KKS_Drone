@@ -39,4 +39,8 @@ enum DataPacketType : byte {
 	DataDebug = 3
 };
 
+const char* getHelloPacketName(HelloPacketType type);
+const char* getControlPacketName(ControlPacketType type);
+const char* getDataPacketName(DataPacketType type);
+
 #endif
