@@ -109,6 +109,11 @@ namespace DroneControl
 
         private void UpdateInfo(DroneInfo info)
         {
+            if (string.IsNullOrWhiteSpace(info.Name))
+                Text = string.Format("DroneControl - {0}", drone.Address);
+            else
+                Text = string.Format("DroneControl - {0}", info.Name);
+
             droneInfoPropertyGrid.SelectedObject = info;
         }
 

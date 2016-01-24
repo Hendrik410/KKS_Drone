@@ -77,6 +77,7 @@
             // 
             dronePingSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             dronePingSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            dronePingSplitContainer.IsSplitterFixed = true;
             dronePingSplitContainer.Location = new System.Drawing.Point(0, 0);
             dronePingSplitContainer.Name = "dronePingSplitContainer";
             dronePingSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
