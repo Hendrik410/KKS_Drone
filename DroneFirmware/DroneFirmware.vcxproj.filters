@@ -75,6 +75,9 @@
     <ClInclude Include="PID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LED.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
@@ -109,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="PID.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LED.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketType.cpp">
+      <Filter>Source Files\net</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

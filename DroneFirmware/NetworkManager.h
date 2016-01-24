@@ -18,6 +18,7 @@
 #include "Log.h"
 #include "Build.h"
 #include "ConfigManager.h"
+#include "LED.h"
 
 #include <ESP8266WiFi/src/WiFiUdp.h>
 

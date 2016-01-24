@@ -189,7 +189,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		echoPacket(udp);
 		break;
 	case BlinkPacket:
-		//blinkRequested = true;
+		blinkLED();
 		break;
 	case ResetRevisionPacket:
 		//lastRevision = 0;
