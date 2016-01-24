@@ -6,78 +6,62 @@
 
 Config ConfigManager::loadConfig() {
 	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+
+	adapter->begin();
 	Config config = loadConfig(adapter);
+	adapter->end();
+
 	delete adapter;
 	return config;
 }
 
 Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
-	if (memory->readByte(0) != 123)
+	if (memory->readByte(0) != 123) {
 		return getDefault();
+	}
 
-	Config config;
-	byte buf[sizeof(config)];
-	
-	unsigned char name[20];
-	unsigned char ssid[20];
-	unsigned char password[20];
-
-	int stringPos = 128; // all strings start after this address
-	memory->begin();
-	memory->read(1, buf, sizeof(config)); // read main structure
+	Config* config = (Config*)malloc(sizeof(Config));
+	memory->read(1, (byte*)config, sizeof(Config)); // read main structure
 
 	// read strings
-	memory->read(stringPos, name, sizeof(name)); 
-	stringPos += sizeof(name);
+	PacketBuffer* buffer = new PacketBuffer(128);
+	memory->read(128, buffer->getBuffer(), buffer->getBufferSize());
 
-	memory->read(stringPos, ssid, sizeof(ssid)); 
-	stringPos += sizeof(ssid);
+	config->DroneName = buffer->readString();
+	config->NetworkSSID = buffer->readString();
+	config->NetworkPassword = buffer->readString();
 
-	memory->read(stringPos, password, sizeof(password));
-	stringPos += sizeof(password);
-	memory->end();
+	delete buffer;
 
-	memcpy(&config, buf, sizeof(config));
-
-	config.DroneName = reinterpret_cast<char*>(name);
-	config.NetworkSSID = reinterpret_cast<char*>(ssid);
-	config.NetworkPassword = reinterpret_cast<char*>(password);
 
 	Log::info("Config", "Config loaded");
-	return config; 
+	return *config; 
 }
 
 void ConfigManager::saveConfig(const Config config) {
 	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+
+	adapter->begin();
 	saveConfig(adapter, config);
+	adapter->end();
+
 	delete adapter;
 }
 
 void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
-	byte buf[sizeof(config)];
-	memcpy(buf, &config, sizeof(config));
-
-	byte* name = reinterpret_cast<byte*>(config.DroneName);
-	byte* ssid = reinterpret_cast<byte*>(config.NetworkSSID);
-	byte* password = reinterpret_cast<byte*>(config.NetworkPassword);
-
-	int stringPos = 128; // all strings start after this address
-	memory->begin();
-
 	memory->writeByte(0, 123);
-	memory->write(1, buf, sizeof(config)); // write main structure
+
+	memory->write(1, (byte*)(&config), sizeof(Config)); // write main structure
 
 	// write strings
-	memory->write(stringPos, name, 20);
-	stringPos += 20;
+	PacketBuffer* buffer = new PacketBuffer(128);
+	buffer->writeString(config.DroneName);
+	buffer->writeString(config.NetworkSSID);
+	buffer->writeString(config.NetworkPassword);
 
-	memory->read(stringPos, ssid, 20);
-	stringPos += 20;
-
-	memory->read(stringPos, password, 20);
-	stringPos += 20;
-
-	memory->end();
+	memory->write(128, buffer->getBuffer(), buffer->getBufferSize());
+	
+	delete buffer;
 
 	Log::info("Config", "Config saved");
 }

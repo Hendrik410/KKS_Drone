@@ -303,6 +303,7 @@ namespace DroneLibrary
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
 
+                SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
                 SendPacket(new PacketCalibrateGyro(), true);
                 SendPacket(new PacketSubscribeDataFeed(), true);

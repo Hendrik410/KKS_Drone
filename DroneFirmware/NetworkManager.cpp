@@ -254,7 +254,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		Log::info("Network", "Config set.");
 
-		//ConfigManager::saveConfig(*config);
+		ConfigManager::saveConfig(*config);
 		break;
 	}
 }
