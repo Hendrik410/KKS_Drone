@@ -92,6 +92,7 @@
     <Compile Include="ConnectingForm.Designer.cs">
       <DependentUpon>ConnectingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataHistory.cs" />
     <Compile Include="DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +104,18 @@
     </Compile>
     <Compile Include="FlightControl.Designer.cs">
       <DependentUpon>FlightControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Graph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Graph.Designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GraphForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GraphForm.Designer.cs">
+      <DependentUpon>GraphForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Input\ControlButtonType.cs" />
     <Compile Include="Input\DeviceInputInterpreter.cs" />
@@ -152,6 +165,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FlightControl.resx">
       <DependentUpon>FlightControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Graph.resx">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphForm.resx">
+      <DependentUpon>GraphForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>

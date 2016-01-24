@@ -20,6 +20,7 @@ namespace DroneControl
 
         private LogForm logForm;
         private DebugForm debugForm;
+        private GraphForm graphForm;
 
         private long tickCount;
 
@@ -241,6 +242,11 @@ namespace DroneControl
         private void debugButton_Click(object sender, EventArgs e)
         {
             ShowForm(debugForm, () => (debugForm = new DebugForm(drone)));
+        }
+
+        private void graphButton_Click(object sender, EventArgs e)
+        {
+            ShowForm(graphForm, () => (graphForm = new GraphForm(drone)));
         }
     }
 }

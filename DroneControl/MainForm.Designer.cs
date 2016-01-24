@@ -40,13 +40,14 @@
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
+            this.motorControl1 = new DroneControl.MotorControl();
             this.flightControlPage = new System.Windows.Forms.TabPage();
+            this.flightControl1 = new DroneControl.FlightControl();
+            this.sensorControl1 = new DroneControl.SensorControl();
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.motorControl1 = new DroneControl.MotorControl();
-            this.flightControl1 = new DroneControl.FlightControl();
-            this.sensorControl1 = new DroneControl.SensorControl();
+            this.graphButton = new System.Windows.Forms.Button();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -84,6 +85,7 @@
             // 
             // dronePingSplitContainer.Panel1
             // 
+            dronePingSplitContainer.Panel1.Controls.Add(this.graphButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.debugButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.stopButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.logButton);
@@ -101,9 +103,9 @@
             // 
             // debugButton
             // 
-            this.debugButton.Location = new System.Drawing.Point(358, 5);
+            this.debugButton.Location = new System.Drawing.Point(322, 5);
             this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.Size = new System.Drawing.Size(52, 23);
             this.debugButton.TabIndex = 18;
             this.debugButton.Text = "Debug";
             this.debugButton.UseVisualStyleBackColor = true;
@@ -126,7 +128,7 @@
             // 
             this.logButton.Location = new System.Drawing.Point(276, 5);
             this.logButton.Name = "logButton";
-            this.logButton.Size = new System.Drawing.Size(75, 23);
+            this.logButton.Size = new System.Drawing.Size(39, 23);
             this.logButton.TabIndex = 16;
             this.logButton.Text = "Log";
             this.logButton.UseVisualStyleBackColor = true;
@@ -230,6 +232,13 @@
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
             // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(6, 3);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 92);
+            this.motorControl1.TabIndex = 3;
+            // 
             // flightControlPage
             // 
             this.flightControlPage.Controls.Add(this.flightControl1);
@@ -240,6 +249,21 @@
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
+            // 
+            // flightControl1
+            // 
+            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
+            this.flightControl1.Name = "flightControl1";
+            this.flightControl1.Size = new System.Drawing.Size(457, 160);
+            this.flightControl1.TabIndex = 0;
+            // 
+            // sensorControl1
+            // 
+            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(473, 293);
+            this.sensorControl1.TabIndex = 17;
             // 
             // infoTabControl
             // 
@@ -297,27 +321,15 @@
             // 
             this.timer.Enabled = true;
             // 
-            // motorControl1
+            // graphButton
             // 
-            this.motorControl1.Location = new System.Drawing.Point(6, 3);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 92);
-            this.motorControl1.TabIndex = 3;
-            // 
-            // flightControl1
-            // 
-            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
-            this.flightControl1.Name = "flightControl1";
-            this.flightControl1.Size = new System.Drawing.Size(457, 160);
-            this.flightControl1.TabIndex = 0;
-            // 
-            // sensorControl1
-            // 
-            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
-            this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(473, 293);
-            this.sensorControl1.TabIndex = 17;
+            this.graphButton.Location = new System.Drawing.Point(380, 5);
+            this.graphButton.Name = "graphButton";
+            this.graphButton.Size = new System.Drawing.Size(52, 23);
+            this.graphButton.TabIndex = 19;
+            this.graphButton.Text = "Graph";
+            this.graphButton.UseVisualStyleBackColor = true;
+            this.graphButton.Click += new System.EventHandler(this.graphButton_Click);
             // 
             // MainForm
             // 
@@ -368,5 +380,6 @@
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button debugButton;
+        private System.Windows.Forms.Button graphButton;
     }
 }

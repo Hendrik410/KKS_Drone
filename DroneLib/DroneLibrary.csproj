@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="DataChangedEventArgs.cs" />
+    <Compile Include="DataHistory.cs" />
     <Compile Include="DebugData.cs" />
     <Compile Include="DebugDataChangedEventArgs.cs" />
     <Compile Include="Drone.cs" />
