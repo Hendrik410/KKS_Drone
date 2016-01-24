@@ -33,9 +33,6 @@ namespace DroneControl
 
             this.drone = drone;
 
-            drone.SendPacket(new PacketCalibrateGyro(), true);
-            drone.SendPacket(new PacketSubscribeDataFeed(), true);
-
             timer.Interval = 250;
             timer.Tick += Timer_Tick;
             timer.Start();
@@ -82,6 +79,7 @@ namespace DroneControl
             drone.SendPing();
             if (tickCount % 16 == 0)
                 drone.SendGetInfo();
+            drone.ResendPendingPackets();
 
             tickCount++;
         }

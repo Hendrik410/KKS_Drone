@@ -101,6 +101,8 @@ namespace DroneLibrary
         /// </summary>
         public event EventHandler<DataChangedEventArgs> OnDataChange;
 
+        private int lastDataTime;
+
         private DroneData data;
 
         /// <summary>
@@ -290,7 +292,6 @@ namespace DroneLibrary
             packetBuffer = new PacketBuffer(packetStream);
 
             controlSocket.BeginReceive(ReceivePacket, null);
-
             dataSocket.BeginReceive(ReceiveDataPacket, null);
 
             // Ping senden und ein ResetRevision Paket senden damit die Revision wieder zurück gesetzt wird
@@ -298,6 +299,8 @@ namespace DroneLibrary
 
             OnConnected += (sender, args) =>
             {
+                Log.Info("Connected to {0}", Address);
+
                 currentRevision = 1;
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
@@ -365,10 +368,22 @@ namespace DroneLibrary
             }
         }
 
-        public void CheckConnection()
+        public bool CheckConnection()
         {
+            if (!IsConnected)
+                return false;
+
             if (Environment.TickCount - lastPing > 3000)
+            {
+                Log.Warning("Lost connection, no ping received");
                 Ping = -1;
+            }
+            else if (Environment.TickCount - lastDataTime > 10000)
+            {
+                Log.Warning("Lost connection, no data receied");
+                Ping = -1;
+            }
+            return IsConnected;
         }
 
 #region SendShortcuts
@@ -632,14 +647,15 @@ namespace DroneLibrary
                         if (packet.Length < HeaderSize + sizeof(long))
                             throw new InvalidDataException("Packet is not long enough.");
 
-                        CheckConnection();
-                        if (!IsConnected)
-                            OnConnected?.Invoke(this, EventArgs.Empty);
+                        bool wasNotConnected = !CheckConnection();
 
                         lastPing = Environment.TickCount;
 
                         long time = buffer.ReadLong(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
                         Ping = (int)(stopwatch.ElapsedMilliseconds - time);
+
+                        if (wasNotConnected)
+                            OnConnected?.Invoke(this, EventArgs.Empty);
 
                         RemovePacketToAcknowlegde(revision);
                         break;
@@ -719,6 +735,8 @@ namespace DroneLibrary
 
                 int revision = buffer.ReadInt();
                 DataPacketType type = (DataPacketType)buffer.ReadByte();
+
+                lastDataTime = Environment.TickCount;
 
                 switch (type)
                 {
