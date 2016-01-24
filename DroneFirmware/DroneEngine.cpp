@@ -35,24 +35,19 @@ void DroneEngine::arm(){
 }
 
 void DroneEngine::disarm() {
-	if(_state == StateArmed) {
+	if (_state == StateArmed || _state == StateFlying) {
 		servos->setAllServos(config->ServoMin);
 
 		_state = StateIdle;
-
 		Log::info("Engine", "Disarmed motors");
 	}
 }
 
 void DroneEngine::stop() {
-	if(_state == StateFlying) {
-		servos->setAllServos(config->ServoMin);
+	disarm();
 
-		_state = StateStopped;
-		Log::info("Engine", "Stopped");
-	} else if(_state == StateArmed) {
-		disarm();
-	}
+	_state = StateStopped;
+	Log::info("Engine", "Stopped!");
 }
 
 void DroneEngine::clearStatus() {
