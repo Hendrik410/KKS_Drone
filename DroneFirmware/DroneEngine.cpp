@@ -17,48 +17,56 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
-	_state = State_Idle;
+	_state = StateReset;
 	servos->setAllServos(config->ServoMin);
 }
 
 
 void DroneEngine::arm(){
-	if(_state == State_Idle) {
+	if(_state == StateIdle) {
 		gyro->setAsZero();
 		setTargetMovement(0, 0, 0);
 		servos->setAllServos(config->ServoIdle);
 
-		_state = State_Armed;
+		_state = StateArmed;
 
-		Log::debug("Engine", "Armed Motors");
+		Log::info("Engine", "Armed motors");
 	}
 }
 
 void DroneEngine::disarm() {
-	if(_state == State_Armed) {
+	if(_state == StateArmed) {
 		servos->setAllServos(config->ServoMin);
 
-		_state = State_Idle;
+		_state = StateIdle;
 
-		Log::debug("Engine", "Disarmed Motors");
+		Log::info("Engine", "Disarmed motors");
 	}
 }
 
 void DroneEngine::stop() {
-	if(_state == State_Flying) {
+	if(_state == StateFlying) {
 		servos->setAllServos(config->ServoMin);
 
-		_state = State_Idle;
-	} else if(_state == State_Armed) {
+		_state = StateStopped;
+		Log::info("Engine", "Stopped");
+	} else if(_state == StateArmed) {
 		disarm();
 	}
 }
 
+void DroneEngine::clearStatus() {
+	if (_state == StateReset || _state == StateStopped) {
+		_state = StateIdle;
+		Log::info("Engine", "Status cleared");
+	}
+}
+
 void DroneEngine::handle() {
-	if (_state == State_Armed || _state == State_Flying)
+	if (_state == StateArmed || _state == StateFlying)
 		blinkLED();
 
-	if (_state == State_Flying) {
+	if (_state == StateFlying) {
 		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
 			stop();
 			return;
@@ -97,7 +105,7 @@ void DroneEngine::handle() {
 }
 
 void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite) const {
-	if(_state == State_Armed)
+	if(_state == StateArmed)
 		servos->setServos(fl, fr, bl, br, forceWrite);
 }
 
@@ -132,13 +140,13 @@ float DroneEngine::getMaxRotationSpeed() const {
 
 
 void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
-	if (_state == State_Idle)
+	if (_state == StateIdle)
 		return;
 
 	setTargetPitch(pitch);
 	setTargetRoll(roll);
 	setTargetRotarySpeed(yaw);
-	_state = State_Flying;
+	_state = StateFlying;
 	lastMovementUpdate = millis();
 }
 

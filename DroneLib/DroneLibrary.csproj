@@ -77,6 +77,7 @@
     <Compile Include="Protocol\PacketReset.cs" />
     <Compile Include="Protocol\PacketResetRevision.cs" />
     <Compile Include="Protocol\PacketSetMovement.cs" />
+    <Compile Include="Protocol\PacketClearStatus.cs" />
     <Compile Include="Protocol\PacketStop.cs" />
     <Compile Include="Protocol\PacketSubscribeDataFeed.cs" />
     <Compile Include="Protocol\PacketType.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Protocol\PacketUnsubscribeDataFeed.cs" />
     <Compile Include="QuadMotorValues.cs" />
     <Compile Include="Range.cs" />
+    <Compile Include="ResetException.cs" />
+    <Compile Include="ResetReason.cs" />
     <Compile Include="SettingsChangedEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

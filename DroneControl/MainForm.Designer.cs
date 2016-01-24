@@ -34,7 +34,7 @@
             this.debugButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.logButton = new System.Windows.Forms.Button();
-            this.armToogleButton = new System.Windows.Forms.Button();
+            this.statusButton = new System.Windows.Forms.Button();
             this.statusArmedLabel = new System.Windows.Forms.Label();
             this.pingLabel = new System.Windows.Forms.Label();
             this.ipInfoLabel = new System.Windows.Forms.Label();
@@ -87,7 +87,7 @@
             dronePingSplitContainer.Panel1.Controls.Add(this.debugButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.stopButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.logButton);
-            dronePingSplitContainer.Panel1.Controls.Add(this.armToogleButton);
+            dronePingSplitContainer.Panel1.Controls.Add(this.statusButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.statusArmedLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.pingLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.ipInfoLabel);
@@ -132,16 +132,16 @@
             this.logButton.UseVisualStyleBackColor = true;
             this.logButton.Click += new System.EventHandler(this.logButton_Click);
             // 
-            // armToogleButton
+            // statusButton
             // 
-            this.armToogleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.armToogleButton.Location = new System.Drawing.Point(584, 5);
-            this.armToogleButton.Name = "armToogleButton";
-            this.armToogleButton.Size = new System.Drawing.Size(75, 23);
-            this.armToogleButton.TabIndex = 15;
-            this.armToogleButton.Text = "Arm";
-            this.armToogleButton.UseVisualStyleBackColor = true;
-            this.armToogleButton.Click += new System.EventHandler(this.armToogleButton_Click);
+            this.statusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.statusButton.Location = new System.Drawing.Point(584, 5);
+            this.statusButton.Name = "statusButton";
+            this.statusButton.Size = new System.Drawing.Size(75, 23);
+            this.statusButton.TabIndex = 15;
+            this.statusButton.Text = "Status";
+            this.statusButton.UseVisualStyleBackColor = true;
+            this.statusButton.Click += new System.EventHandler(this.statusToogleButton_Click);
             // 
             // statusArmedLabel
             // 
@@ -364,7 +364,7 @@
         private System.Windows.Forms.Label ipInfoLabel;
         private System.Windows.Forms.Label pingLabel;
         private System.Windows.Forms.Label statusArmedLabel;
-        private System.Windows.Forms.Button armToogleButton;
+        private System.Windows.Forms.Button statusButton;
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button debugButton;

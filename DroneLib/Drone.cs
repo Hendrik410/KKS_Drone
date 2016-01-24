@@ -452,7 +452,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Schickt einen Stop-Befehl an das Drone.
+        /// Schickt einen Stop-Befehl an die Drohne.
         /// </summary>
         public void SendStop()
         {
@@ -463,7 +463,18 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Schickt ein Packet an das Drone.
+        /// Schickt den ClearStatus-Befehl an die Drohne.
+        /// </summary>
+        public void SendClearStatus()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            SendPacket(new PacketClearStatus(), true);
+        }
+
+        /// <summary>
+        /// Schickt ein Packet an die Drohne.
         /// </summary>
         /// <param name="packet"></param>
         /// <param name="guaranteed">Ob vom Drone eine Antwort gefordert wird.</param>
@@ -492,13 +503,13 @@ namespace DroneLibrary
             if (packet == null)
                 throw new ArgumentNullException(nameof(packet));
 
-            // wenn das Drone nicht erreichbar ist
+            // wenn die Drohne nicht erreichbar ist
             if (!IsConnected)
             {
                 if (Config.IgnoreGuaranteedWhenOffline)
                     guaranteed = false;
 
-                // alle Pakete (außer Ping) ignorieren wenn das Drone offline ist
+                // alle Pakete (außer Ping) ignorieren wenn die Drohne offline ist
                 if (packet.Type != PacketType.Ping && Config.IgnorePacketsWhenOffline)
                     return false;
             }
@@ -525,10 +536,10 @@ namespace DroneLibrary
                 packetBuffer.Write((byte)'L');
                 packetBuffer.Write((byte)'Y');
 
-                // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen!!
+                // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen
                 packetBuffer.Write(revision);
 
-                // wenn die Drone eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
+                // wenn die Drohne eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
                 packetBuffer.Write(guaranteed && !packet.Type.DoesClusterAnswer());
                 packetBuffer.Write((byte)packet.Type);
 
@@ -550,7 +561,7 @@ namespace DroneLibrary
             }
             catch(SocketException)
             {
-                // Drone ist möglicherweiße nicht verfügbar
+                // Drohne ist möglicherweiße nicht verfügbar
             }
         }
 
@@ -646,15 +657,8 @@ namespace DroneLibrary
                         break;
 
                     case PacketType.Info:
-                        string name = buffer.ReadString();
-                        string modelName = buffer.ReadString();
-                        string serialCode = buffer.ReadString();
-                        string buildName = buffer.ReadString().Trim().Replace(' ', '_');
-                        byte buildVersion = buffer.ReadByte();
-                        int highestRevision = buffer.ReadInt();
-
-                        Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
-                        Settings = new DroneSettings(name, buffer);
+                        Info = new DroneInfo(buffer);
+                        Settings = new DroneSettings(Info.Name, buffer);
 
                         RemovePacketToAcknowlegde(revision);
                         break;

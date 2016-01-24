@@ -30,7 +30,8 @@ enum ControlPacketType : byte {
 	CalibrateGyro = 12,
 	Reset = 13,
 
-	SetConfig = 14
+	SetConfig = 14,
+	ClearStatus = 15,
 };
 
 enum DataPacketType : byte {

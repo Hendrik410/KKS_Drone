@@ -23,9 +23,12 @@
 #endif
 
 enum DroneState {
-	State_Idle,
-	State_Armed,
-	State_Flying
+	StateUnkown,
+	StateReset,
+	StateStopped,
+	StateIdle,
+	StateArmed,
+	StateFlying
 };
 
 class DroneEngine
@@ -62,6 +65,7 @@ class DroneEngine
 	void arm();
 	void disarm();
 	void stop();
+	void clearStatus();
 
 	DroneState state() const;
 	

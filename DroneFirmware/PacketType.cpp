@@ -39,6 +39,8 @@ const char* getControlPacketName(ControlPacketType type) {
 		return "Reset";
 	case SetConfig:
 		return "SetConfig";
+	case ClearStatus:
+		return "ClearStatus";
 	}
 }
 

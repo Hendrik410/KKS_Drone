@@ -21,6 +21,7 @@
 #include "LED.h"
 
 #include <ESP8266WiFi/src/WiFiUdp.h>
+#include <user_interface.h>
 
 class NetworkManager
 {
@@ -34,6 +35,7 @@ protected:
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
 
+	DroneState lastState;
 	int dataRevision;
 
 	WiFiUDP helloUDP;
