@@ -87,7 +87,7 @@ namespace DroneControl.Input
             float targetYaw = (state.Gamepad.RightThumbX / (float)short.MaxValue) * MaxYaw;
             float targetThrust = (state.Gamepad.RightThumbY / (float)short.MaxValue);
 
-            targetRoll *= -1;
+            targetPitch *= -1;
             targetThrust *= -1;
 
             if (Math.Abs(targetPitch) < 1)
