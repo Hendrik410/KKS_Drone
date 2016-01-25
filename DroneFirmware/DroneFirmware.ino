@@ -66,7 +66,7 @@ NetworkManager* network;
 
 
 int lastLoopTime = 0;
-short delayTime = 5;
+short delayTime = 20;
 
 //######################### Methods
 
