@@ -175,7 +175,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	}
 	case StopPacket:
-		engine->stop();
+		engine->stop(User);
 		break;
 	case ArmPacket:
 		if (readBuffer->getSize() == 13) {
@@ -216,6 +216,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(resetInfo->reason));
 		writeBuffer->write(uint8_t(resetInfo->exccause));
+
+		writeBuffer->write(uint8_t(engine->getStopReason()));
 
 		writeBuffer->writeString(config->NetworkSSID);
 		writeBuffer->writeString(config->NetworkPassword);

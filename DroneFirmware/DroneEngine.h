@@ -11,6 +11,7 @@
 #include "MathHelper.h"
 #include "Log.h"
 #include "LED.h"
+#include "StopReason.h"
 
 #define byte unsigned char
 #else
@@ -20,6 +21,7 @@
 #include "MathHelper.h"
 #include "Log.h"
 #include "LED.h"
+#include "StopReason.h"
 #endif
 
 enum DroneState {
@@ -41,6 +43,7 @@ class DroneEngine
 	 long maxMovementUpdateInterval = 500;
 
 	 DroneState _state;
+	 StopReason _stopReason;
 
 	 Gyro* gyro;
 	 ServoManager* servos;
@@ -64,10 +67,11 @@ class DroneEngine
 
 	void arm();
 	void disarm();
-	void stop();
+	void stop(StopReason reason);
 	void clearStatus();
 
 	DroneState state() const;
+	StopReason getStopReason() const;
 	
 	void handle();
 

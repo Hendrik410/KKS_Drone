@@ -54,6 +54,9 @@ namespace DroneLibrary
         [Category("Debug")]
         public ResetException ResetException { get; private set; }
 
+        [Category("Debug")]
+        public StopReason StopReason { get; private set; }
+
         public DroneInfo(PacketBuffer buffer)
         {
             Name = buffer.ReadString();
@@ -69,6 +72,8 @@ namespace DroneLibrary
 
             if (ResetReason != ResetReason.Exception)
                 ResetException = ResetException.None;
+
+            StopReason = (StopReason)buffer.ReadByte();
         }
 
         public static bool operator ==(DroneInfo a, DroneInfo b)
@@ -98,7 +103,8 @@ namespace DroneLibrary
                 && BuildVersion == other.BuildVersion
                 && HighestRevision == other.HighestRevision
                 && ResetReason == other.ResetReason
-                && ResetException == other.ResetException;
+                && ResetException == other.ResetException
+                && StopReason == other.StopReason;
         }
 
         public override int GetHashCode()
@@ -114,6 +120,7 @@ namespace DroneLibrary
                 hash = hash * 7 + HighestRevision.GetHashCode();
                 hash = hash * 7 + ResetReason.GetHashCode();
                 hash = hash * 7 + ResetException.GetHashCode();
+                hash = hash * 7 + StopReason.GetHashCode();
                 return hash;
             }
         }

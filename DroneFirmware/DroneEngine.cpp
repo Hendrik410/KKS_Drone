@@ -17,7 +17,9 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
+
 	_state = StateReset;
+	_stopReason = None;
 	servos->setAllServos(config->ServoMin);
 }
 
@@ -43,9 +45,10 @@ void DroneEngine::disarm() {
 	}
 }
 
-void DroneEngine::stop() {
+void DroneEngine::stop(StopReason reason) {
 	disarm();
 
+	_stopReason = reason;
 	_state = StateStopped;
 	Log::info("Engine", "Stopped!");
 }
@@ -63,12 +66,12 @@ void DroneEngine::handle() {
 
 	if (_state == StateFlying) {
 		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
-			stop();
+			stop(NoData);
 			return;
 		}
 
 		if (abs(gyro->getRoll()) > 35 || abs(gyro->getPitch()) > 35) {
-			stop();
+			stop(InvalidGyro);
 			return;
 		}
 
@@ -116,6 +119,9 @@ DroneState DroneEngine::state() const {
 	return _state;
 }
 
+StopReason DroneEngine::getStopReason() const {
+	return _stopReason;
+}
 
 void DroneEngine::setMaxTilt(float tilt) {
 	maxTilt = abs(tilt);
