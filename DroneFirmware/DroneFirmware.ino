@@ -1,5 +1,6 @@
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
+#include "LinearDroneEngine.h"
 #include <Wire/Wire.h>
 #include <I2Cdev/I2Cdev.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
@@ -46,12 +47,14 @@
 #include "BinaryHelper.h"
 #include "LED.h"
 #endif
+#include "PidDroneEngine.h"
 
 // #################### Global Variables #####################
 
 //The configuration of the drone
 Config config;
 
+VoltageInputReader* voltageReader;
 Gyro* gyro;
 ServoManager* servos;
 DroneEngine* engine;
@@ -114,11 +117,23 @@ void setup() {
 	Wire.begin(SDA, SCL);
 	gyro->init();
 
+	//setup battery input reader
+	voltageReader = new VoltageInputReader(0, 17, 1);
+
 	//setup calculation engine
-	engine = new DroneEngine(gyro, servos, &config);
+	switch(config.EngineType) {
+		case PID:
+			engine = new PidDroneEngine(gyro, servos, &config);
+			break;
+		case Linear:
+			engine = new LinearDroneEngine(gyro, servos, &config);
+			break;
+		default:
+			return;
+	}
 
 	//start network
-	network = new NetworkManager(gyro, servos, engine, &config);
+	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
 
 	Log::info("Boot", "done booting. ready.");
 }

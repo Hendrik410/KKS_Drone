@@ -4,12 +4,18 @@
 #define _CONFIG_h
 
 #include "arduino.h"
+#include "PID_Settings.h"
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 
 #define byte unsigned char
 #else
 #endif
+
+enum DroneEngineType : byte {
+	Linear,
+	PID
+};
 
 struct Config {
 	//A user-friendly name for the drone
@@ -77,6 +83,12 @@ struct Config {
 	float RotaryDegree2Ratio;
 
 	uint16_t PhysicsCalcDelay;
+
+	DroneEngineType EngineType;
+
+	PID_Settings PitchPidSettings;
+	PID_Settings RollPidSettings;
+	PID_Settings YawPidSettings;
 };
 
 #endif
