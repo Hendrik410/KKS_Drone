@@ -32,6 +32,12 @@ namespace DroneControl
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
+                return;
+            }
+
             frontLeftRatio.UpdateValue(e.DebugData.FrontLeftRatio);
             frontRightRatio.UpdateValue(e.DebugData.FrontRightRatio);
             backLeftRatio.UpdateValue(e.DebugData.BackLeftRatio);
