@@ -22,7 +22,7 @@
 #include "LED.h"
 #include "PidDroneEngine.h"
 #include "LinearDroneEngine.h"
-
+#include "VoltageInputReader.h"
 
 #define byte unsigned char
 
@@ -49,6 +49,7 @@
 #include "LED.h"
 #include "PidDroneEngine.h"
 #include "LinearDroneEngine.h"
+#include "VoltageInputReader.h"
 #endif
 
 
