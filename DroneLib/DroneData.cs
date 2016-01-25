@@ -19,10 +19,15 @@ namespace DroneLibrary {
             get;
         }
 
-        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro) {
+        public float BatteryVoltage {
+            get;
+        }
+
+        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro, float batteryVoltage) {
             this.State = state;
             this.MotorValues = motorValues;
             this.Gyro = gyro;
+            this.BatteryVoltage = batteryVoltage;
         }
 
         public static bool operator ==(DroneData a, DroneData b) {
@@ -42,7 +47,8 @@ namespace DroneLibrary {
         public bool Equals(DroneData other) {
             return State == other.State
                    && MotorValues.Equals(other.MotorValues)
-                   && Gyro.Equals(other.Gyro);
+                   && Gyro.Equals(other.Gyro)
+                   && BatteryVoltage == other.BatteryVoltage;
         }
 
         public override int GetHashCode() {
@@ -51,6 +57,7 @@ namespace DroneLibrary {
                 hash = hash * 7 + State.GetHashCode();
                 hash = hash * 7 + MotorValues.GetHashCode();
                 hash = hash * 7 + Gyro.GetHashCode();
+                hash = hash * 7 + (int)BatteryVoltage;
                 return hash;
             }
         }

@@ -332,6 +332,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		writeBuffer->write(gyro->getAccelerationZ());
 
 		writeBuffer->write(gyro->getTemperature());
+		writeBuffer->write(voltageReader->readVoltage());
 
 		sendData(udp);
 		_lastDataSend = millis();

@@ -764,7 +764,9 @@ namespace DroneLibrary
                             // Temperature
                             buffer.ReadFloat());
 
-                        Data = new DroneData(state, motorValues, gyro);
+                        float batteryVoltage = buffer.ReadFloat();
+
+                        Data = new DroneData(state, motorValues, gyro, batteryVoltage);
 
                         lastDataDroneRevision = revision;
                         break;
