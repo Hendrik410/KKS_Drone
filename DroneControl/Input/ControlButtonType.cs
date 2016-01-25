@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DroneControl.Input {
-    enum ControlButtonType {
+    public enum ControlButtonType {
         ToggleArm,
         Stop,
         SetCurrentAsOffset,

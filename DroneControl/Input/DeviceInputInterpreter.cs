@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DroneControl.Input {
-    abstract class DeviceInputInterpreter {
+    public abstract class DeviceInputInterpreter {
 
         public event EventHandler TargetMovementChange;
 

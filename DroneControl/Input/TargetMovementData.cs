@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DroneControl.Input {
-    struct TargetMovementData : IEquatable<TargetMovementData> {
+    public struct TargetMovementData : IEquatable<TargetMovementData> {
 
         public float TargetPitch {
             get;

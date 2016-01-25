@@ -102,6 +102,9 @@ namespace DroneControl {
                     case InputInterpreterType.PrecisionController:
                         interpreter = new PrecisionControllerInputInterpreter();
                         break;
+                    case InputInterpreterType.Xbox360:
+                        interpreter = new Xbox360InputInterpreter();
+                        break;
                     default:
                         return;
                 }
