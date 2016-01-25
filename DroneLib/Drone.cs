@@ -304,6 +304,7 @@ namespace DroneLibrary
                 currentRevision = 1;
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
+                lastDataDebugRevision = 0;
 
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
