@@ -135,7 +135,7 @@ float DroneEngine::getMaxRotationSpeed() const {
 
 
 void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
-	if (_state == StateIdle)
+	if (_state != StateArmed && _state != StateFlying)
 		return;
 
 	setTargetPitch(pitch);

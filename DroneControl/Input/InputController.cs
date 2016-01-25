@@ -50,7 +50,7 @@ namespace DroneControl.Input {
         private void OnTargetMovementDataChange(object sender, EventArgs eventArgs) {
             TargetMovementData targetMovement = DeviceInterpreter.TargetMovementData;
             
-            if (Drone.Data.State != DroneState.Idle)
+            if (Drone.Data.State == DroneState.Armed || Drone.Data.State == DroneState.Flying)
                 Drone.SendMovementData(targetMovement.TargetPitch, targetMovement.TargetRoll, targetMovement.TargetYaw, targetMovement.TargetThrust, false);
         }
 
