@@ -60,6 +60,8 @@ namespace DroneControl
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
                 e.Data.Gyro.Temperature.ToString("0.00").PadLeft(6, ' '));
+
+            batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V", e.Data.BatteryVoltage);
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)
