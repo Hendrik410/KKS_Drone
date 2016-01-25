@@ -122,7 +122,7 @@ void setup() {
 	gyro->init();
 
 	//setup battery input reader
-	voltageReader = new VoltageInputReader(0, 17, 1);
+	voltageReader = new VoltageInputReader(A0, 17, 1);
 
 	//setup calculation engine
 	switch(config.EngineType) {
