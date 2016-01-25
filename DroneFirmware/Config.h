@@ -13,8 +13,8 @@
 #endif
 
 enum DroneEngineType : byte {
-	Linear,
-	PID
+	EngineLinear,
+	EnginePID
 };
 
 struct Config {

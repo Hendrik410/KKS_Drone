@@ -93,7 +93,7 @@ void PID::SetSampleTime(int NewSampleTime) {
 			/ double(SampleTime);
 		ki *= ratio;
 		kd /= ratio;
-		SampleTime = unsigned long(NewSampleTime);
+		SampleTime = uint32_t(NewSampleTime);
 	}
 }
 

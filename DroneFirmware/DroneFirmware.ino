@@ -1,6 +1,5 @@
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include "LinearDroneEngine.h"
 #include <Wire/Wire.h>
 #include <I2Cdev/I2Cdev.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
@@ -21,6 +20,8 @@
 #include "ServoManager.h"
 #include "BinaryHelper.h"
 #include "LED.h"
+#include "PidDroneEngine.h"
+#include "LinearDroneEngine.h"
 
 
 #define byte unsigned char
@@ -46,8 +47,10 @@
 #include "ServoManager.h"
 #include "BinaryHelper.h"
 #include "LED.h"
-#endif
 #include "PidDroneEngine.h"
+#include "LinearDroneEngine.h"
+#endif
+
 
 // #################### Global Variables #####################
 
@@ -122,10 +125,10 @@ void setup() {
 
 	//setup calculation engine
 	switch(config.EngineType) {
-		case PID:
+		case EnginePID:
 			engine = new PidDroneEngine(gyro, servos, &config);
 			break;
-		case Linear:
+		case EngineLinear:
 			engine = new LinearDroneEngine(gyro, servos, &config);
 			break;
 		default:

@@ -107,7 +107,7 @@ Config ConfigManager::getDefault() {
 	config.RotaryDegree2Ratio = 0.03f;
 	config.PhysicsCalcDelay = 20;
 
-	config.EngineType = PID;
+	config.EngineType = EnginePID;
 
 	config.PitchPidSettings.Kp = 1;
 	config.PitchPidSettings.Ki = 0.05;
