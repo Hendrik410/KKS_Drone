@@ -30,7 +30,8 @@ enum ControlPacketType : byte {
 	CalibrateGyro = 12,
 	Reset = 13,
 
-	SetConfig = 14
+	SetConfig = 14,
+	ClearStatus = 15,
 };
 
 enum DataPacketType : byte {
@@ -38,5 +39,9 @@ enum DataPacketType : byte {
 	DataLog = 2,
 	DataDebug = 3
 };
+
+const char* getHelloPacketName(HelloPacketType type);
+const char* getControlPacketName(ControlPacketType type);
+const char* getDataPacketName(DataPacketType type);
 
 #endif

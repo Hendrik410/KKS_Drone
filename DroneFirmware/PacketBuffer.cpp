@@ -14,6 +14,12 @@ PacketBuffer::PacketBuffer(uint32_t size) {
 	this->size = size;
 }
 
+PacketBuffer::~PacketBuffer()
+{
+	if (data)
+		free(data);
+}
+
 uint8_t* PacketBuffer::getBuffer() const {
 	return data;
 }
@@ -141,8 +147,6 @@ void PacketBuffer::read(char* buffer, int length, int offset) {
 
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
-
-	Log::debug("PacketBuffer", "length: %d", length);
 
 	int size = length * sizeof(char);
 

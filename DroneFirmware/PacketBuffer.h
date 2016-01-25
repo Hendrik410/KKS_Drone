@@ -25,6 +25,7 @@ private:
 
 public:
 	explicit PacketBuffer(uint32_t size);
+	~PacketBuffer();
 
 	uint8_t* getBuffer() const;
 	uint32_t getBufferSize() const;

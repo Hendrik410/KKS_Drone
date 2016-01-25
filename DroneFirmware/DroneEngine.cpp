@@ -17,45 +17,90 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
-	_state = State_Idle;
+	_state = StateReset;
 	servos->setAllServos(config->ServoMin);
 }
 
 
 void DroneEngine::arm(){
-	if(_state == State_Idle) {
+	if(_state == StateIdle) {
 		gyro->setAsZero();
 		setTargetMovement(0, 0, 0);
 		servos->setAllServos(config->ServoIdle);
 
-		_state = State_Armed;
+		_state = StateArmed;
 
-		Log::debug("Engine", "Armed Motors");
+		Log::info("Engine", "Armed motors");
 	}
 }
 
 void DroneEngine::disarm() {
-	if(_state == State_Armed) {
+	if (_state == StateArmed || _state == StateFlying) {
 		servos->setAllServos(config->ServoMin);
 
-		_state = State_Idle;
-
-		Log::debug("Engine", "Disarmed Motors");
+		_state = StateIdle;
+		Log::info("Engine", "Disarmed motors");
 	}
 }
 
 void DroneEngine::stop() {
-	if(_state == State_Flying) {
-		servos->setAllServos(config->ServoMin);
+	disarm();
 
-		_state = State_Idle;
-	} else if(_state == State_Armed) {
-		disarm();
+	_state = StateStopped;
+	Log::info("Engine", "Stopped!");
+}
+
+void DroneEngine::clearStatus() {
+	if (_state == StateReset || _state == StateStopped) {
+		_state = StateIdle;
+		Log::info("Engine", "Status cleared");
+	}
+}
+
+void DroneEngine::handle() {
+	if (_state == StateArmed || _state == StateFlying)
+		blinkLED();
+
+	if (_state == StateFlying) {
+		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
+			stop();
+			return;
+		}
+
+		if (abs(gyro->getRoll()) > 35 || abs(gyro->getPitch()) > 35) {
+			stop();
+			return;
+		}
+
+		// recalculate the yaw target 10 times a second to match rotary speed
+		if (millis() - lastYawTargetCalc >= 100) {
+			targetYaw += targetRotationSpeed / 10;
+			lastYawTargetCalc = millis();
+		}
+
+		if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
+			float currentPitch = gyro->getPitch();
+			float currentRoll = gyro->getRoll();
+			float currentYaw = gyro->getYaw();
+
+			float correctionPitch = targetPitch - currentPitch;
+			float correctionRoll = targetRoll - currentRoll;
+			float correctionYaw = 0; // MathHelper::angleDifference(targetYaw, currentYaw);
+
+			frontLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
+			frontRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
+			backLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
+			backRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+
+			servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
+
+			lastPhysicsCalc = millis();
+		}
 	}
 }
 
 void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite) const {
-	if(_state == State_Armed)
+	if(_state == StateArmed)
 		servos->setServos(fl, fr, bl, br, forceWrite);
 }
 
@@ -90,13 +135,13 @@ float DroneEngine::getMaxRotationSpeed() const {
 
 
 void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
-	if (_state == State_Idle)
+	if (_state != StateArmed && _state != StateFlying)
 		return;
 
 	setTargetPitch(pitch);
 	setTargetRoll(roll);
 	setTargetRotarySpeed(yaw);
-	_state = State_Flying;
+	_state = StateFlying;
 	lastMovementUpdate = millis();
 }
 

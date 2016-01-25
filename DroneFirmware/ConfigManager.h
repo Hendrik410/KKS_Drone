@@ -18,6 +18,7 @@ void * memcpy(void * destination, const void * source, int num);
 #include "Config.h"
 #include "Log.h"
 #include "EEPROM_MemoryAdapter.h"
+#include "PacketBuffer.h"
 
 class ConfigManager
 {

@@ -15,6 +15,8 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	_lastDataSend = 0;
 	dataRevision = 1;
 
+	lastState = StateUnkown;
+
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
 
@@ -135,7 +137,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
-	Log::debug("Network", "Got packet with size %d rev %d and type: %d", readBuffer->getSize(), revision, type);
+	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
 
 	
 	if (ackRequested)
@@ -190,7 +192,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		echoPacket(udp);
 		break;
 	case BlinkPacket:
-		//blinkRequested = true;
+		blinkLED();
 		break;
 	case ResetRevisionPacket:
 		//lastRevision = 0;
@@ -210,6 +212,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 		writeBuffer->write(uint32_t(0)); // lastRevision);
+
+		rst_info* resetInfo = ESP.getResetInfoPtr();
+
+		writeBuffer->write(uint8_t(resetInfo->reason));
+		writeBuffer->write(uint8_t(resetInfo->exccause));
 
 		writeBuffer->writeString(config->NetworkSSID);
 		writeBuffer->writeString(config->NetworkPassword);
@@ -241,7 +248,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 
 	case Reset:
-		if(engine->state() == State_Idle)
+		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			ESP.restart();
 		break;
 	case SetConfig:
@@ -255,7 +262,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		Log::info("Network", "Config set.");
 
-		//ConfigManager::saveConfig(*config);
+		ConfigManager::saveConfig(*config);
+		break;
+	case ClearStatus:
+		engine->clearStatus();
 		break;
 	}
 }
@@ -265,7 +275,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 		return;
 
 	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = servos->dirty() | gyro->dirty(); 
+	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty(); 
 
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
 		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
@@ -289,6 +299,8 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		sendData(udp);
 		_lastDataSend = millis();
+
+		lastState = engine->state();
 	}
 
 	while (Log::getBufferLines() > 0) {

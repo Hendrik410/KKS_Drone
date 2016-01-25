@@ -57,5 +57,10 @@ namespace DroneControl
         {
             Drone.SendReset();
         }
+
+        private void blinkButton_Click(object sender, EventArgs e)
+        {
+            Drone.SendBlink();
+        }
     }
 }

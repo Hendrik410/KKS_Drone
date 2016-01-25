@@ -20,6 +20,9 @@ namespace DroneControl
 
         private LogForm logForm;
         private DebugForm debugForm;
+        private GraphForm graphForm;
+
+        private long tickCount;
 
         public MainForm(Drone drone)
         {
@@ -30,10 +33,7 @@ namespace DroneControl
 
             this.drone = drone;
 
-            drone.SendPacket(new PacketCalibrateGyro(), true);
-            drone.SendPacket(new PacketSubscribeDataFeed(), true);
-
-            timer.Interval = 2000;
+            timer.Interval = 250;
             timer.Tick += Timer_Tick;
             timer.Start();
 
@@ -77,7 +77,11 @@ namespace DroneControl
         private void Timer_Tick(object sender, EventArgs e)
         {
             drone.SendPing();
-            drone.SendGetInfo();
+            if (tickCount % 16 == 0)
+                drone.SendGetInfo();
+            drone.ResendPendingPackets();
+
+            tickCount++;
         }
 
         private Form ShowForm(Form form, Func<Form> onClosed)
@@ -109,6 +113,11 @@ namespace DroneControl
 
         private void UpdateInfo(DroneInfo info)
         {
+            if (string.IsNullOrWhiteSpace(info.Name))
+                Text = string.Format("DroneControl - {0}", drone.Address);
+            else
+                Text = string.Format("DroneControl - {0}", info.Name);
+
             droneInfoPropertyGrid.SelectedObject = info;
         }
 
@@ -118,16 +127,30 @@ namespace DroneControl
             if (!drone.IsConnected)
             {
                 statusArmedLabel.Text = "Status: not connected";
-                armToogleButton.Enabled = false;
+                statusButton.Enabled = false;
             }
             else
             {
-                armToogleButton.Enabled = true;
+                statusButton.Enabled = true;
 
-                if (data.State == DroneState.Armed)
-                    armToogleButton.Text = "Disarm";
-                else
-                    armToogleButton.Text = "Arm";
+                switch(drone.Data.State)
+                {
+                    case DroneState.Unkown:
+                        statusButton.Enabled = false;
+                        statusButton.Text = "Unkown";
+                        break;
+                    case DroneState.Stopped:
+                    case DroneState.Reset:
+                        statusButton.Text = "Clear";
+                        break;
+                    case DroneState.Idle:
+                        statusButton.Text = "Arm";
+                        break;
+                    case DroneState.Armed:
+                    case DroneState.Flying:
+                        statusButton.Text = "Disarm";
+                        break;
+                }
 
                 statusArmedLabel.Text = $"Status: {data.State}";
             }
@@ -180,15 +203,23 @@ namespace DroneControl
         }
 
 
-        private void armToogleButton_Click(object sender, EventArgs e)
+        private void statusToogleButton_Click(object sender, EventArgs e)
         {
-            if (!drone.IsConnected)
-                return;
+            switch(drone.Data.State)
+            {
+                case DroneState.Reset:
+                case DroneState.Stopped:
+                    drone.SendClearStatus();
+                    break;
+                case DroneState.Idle:
+                    drone.SendArm();
+                    break;
+                case DroneState.Armed:
+                case DroneState.Flying:
+                    drone.SendDisarm();
+                    break;
+            }
 
-            if (drone.Data.State == DroneState.Armed)
-                drone.SendDisarm();
-            else
-                drone.SendArm();
         }
 
         private void logButton_Click(object sender, EventArgs e)
@@ -209,6 +240,11 @@ namespace DroneControl
         private void debugButton_Click(object sender, EventArgs e)
         {
             ShowForm(debugForm, () => (debugForm = new DebugForm(drone)));
+        }
+
+        private void graphButton_Click(object sender, EventArgs e)
+        {
+            ShowForm(graphForm, () => (graphForm = new GraphForm(drone)));
         }
     }
 }

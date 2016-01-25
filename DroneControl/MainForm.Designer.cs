@@ -34,7 +34,7 @@
             this.debugButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.logButton = new System.Windows.Forms.Button();
-            this.armToogleButton = new System.Windows.Forms.Button();
+            this.statusButton = new System.Windows.Forms.Button();
             this.statusArmedLabel = new System.Windows.Forms.Label();
             this.pingLabel = new System.Windows.Forms.Label();
             this.ipInfoLabel = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.graphButton = new System.Windows.Forms.Button();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -77,16 +78,18 @@
             // 
             dronePingSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             dronePingSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            dronePingSplitContainer.IsSplitterFixed = true;
             dronePingSplitContainer.Location = new System.Drawing.Point(0, 0);
             dronePingSplitContainer.Name = "dronePingSplitContainer";
             dronePingSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // dronePingSplitContainer.Panel1
             // 
+            dronePingSplitContainer.Panel1.Controls.Add(this.graphButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.debugButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.stopButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.logButton);
-            dronePingSplitContainer.Panel1.Controls.Add(this.armToogleButton);
+            dronePingSplitContainer.Panel1.Controls.Add(this.statusButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.statusArmedLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.pingLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.ipInfoLabel);
@@ -100,9 +103,9 @@
             // 
             // debugButton
             // 
-            this.debugButton.Location = new System.Drawing.Point(358, 5);
+            this.debugButton.Location = new System.Drawing.Point(322, 5);
             this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(75, 23);
+            this.debugButton.Size = new System.Drawing.Size(52, 23);
             this.debugButton.TabIndex = 18;
             this.debugButton.Text = "Debug";
             this.debugButton.UseVisualStyleBackColor = true;
@@ -125,22 +128,22 @@
             // 
             this.logButton.Location = new System.Drawing.Point(276, 5);
             this.logButton.Name = "logButton";
-            this.logButton.Size = new System.Drawing.Size(75, 23);
+            this.logButton.Size = new System.Drawing.Size(39, 23);
             this.logButton.TabIndex = 16;
             this.logButton.Text = "Log";
             this.logButton.UseVisualStyleBackColor = true;
             this.logButton.Click += new System.EventHandler(this.logButton_Click);
             // 
-            // armToogleButton
+            // statusButton
             // 
-            this.armToogleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.armToogleButton.Location = new System.Drawing.Point(584, 5);
-            this.armToogleButton.Name = "armToogleButton";
-            this.armToogleButton.Size = new System.Drawing.Size(75, 23);
-            this.armToogleButton.TabIndex = 15;
-            this.armToogleButton.Text = "Arm";
-            this.armToogleButton.UseVisualStyleBackColor = true;
-            this.armToogleButton.Click += new System.EventHandler(this.armToogleButton_Click);
+            this.statusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.statusButton.Location = new System.Drawing.Point(584, 5);
+            this.statusButton.Name = "statusButton";
+            this.statusButton.Size = new System.Drawing.Size(75, 23);
+            this.statusButton.TabIndex = 15;
+            this.statusButton.Text = "Status";
+            this.statusButton.UseVisualStyleBackColor = true;
+            this.statusButton.Click += new System.EventHandler(this.statusToogleButton_Click);
             // 
             // statusArmedLabel
             // 
@@ -312,10 +315,21 @@
             this.droneSettingsPropertyGrid.Name = "droneSettingsPropertyGrid";
             this.droneSettingsPropertyGrid.Size = new System.Drawing.Size(261, 451);
             this.droneSettingsPropertyGrid.TabIndex = 0;
+            this.droneSettingsPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.droneSettingsPropertyGrid_PropertyValueChanged);
             // 
             // timer
             // 
             this.timer.Enabled = true;
+            // 
+            // graphButton
+            // 
+            this.graphButton.Location = new System.Drawing.Point(380, 5);
+            this.graphButton.Name = "graphButton";
+            this.graphButton.Size = new System.Drawing.Size(52, 23);
+            this.graphButton.TabIndex = 19;
+            this.graphButton.Text = "Graph";
+            this.graphButton.UseVisualStyleBackColor = true;
+            this.graphButton.Click += new System.EventHandler(this.graphButton_Click);
             // 
             // MainForm
             // 
@@ -362,9 +376,10 @@
         private System.Windows.Forms.Label ipInfoLabel;
         private System.Windows.Forms.Label pingLabel;
         private System.Windows.Forms.Label statusArmedLabel;
-        private System.Windows.Forms.Button armToogleButton;
+        private System.Windows.Forms.Button statusButton;
         private System.Windows.Forms.Button logButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button debugButton;
+        private System.Windows.Forms.Button graphButton;
     }
 }

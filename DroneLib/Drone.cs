@@ -101,6 +101,8 @@ namespace DroneLibrary
         /// </summary>
         public event EventHandler<DataChangedEventArgs> OnDataChange;
 
+        private int lastDataTime;
+
         private DroneData data;
 
         /// <summary>
@@ -274,7 +276,6 @@ namespace DroneLibrary
         private object settingsLock = new object();
         private object debugDataLock = new object();
 
-
         public Drone(IPAddress address, Config config)
         {
             if (address == null)
@@ -291,7 +292,6 @@ namespace DroneLibrary
             packetBuffer = new PacketBuffer(packetStream);
 
             controlSocket.BeginReceive(ReceivePacket, null);
-
             dataSocket.BeginReceive(ReceiveDataPacket, null);
 
             // Ping senden und ein ResetRevision Paket senden damit die Revision wieder zurück gesetzt wird
@@ -299,10 +299,14 @@ namespace DroneLibrary
 
             OnConnected += (sender, args) =>
             {
+                Log.Info("Connected to {0}", Address);
+
                 currentRevision = 1;
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
+                lastDataDebugRevision = 0;
 
+                SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
                 SendPacket(new PacketCalibrateGyro(), true);
                 SendPacket(new PacketSubscribeDataFeed(), true);
@@ -365,6 +369,24 @@ namespace DroneLibrary
             }
         }
 
+        public bool CheckConnection()
+        {
+            if (!IsConnected)
+                return false;
+
+            if (Environment.TickCount - lastPing > 3000)
+            {
+                Log.Warning("Lost connection, no ping received");
+                Ping = -1;
+            }
+            else if (Environment.TickCount - lastDataTime > 10000)
+            {
+                Log.Warning("Lost connection, no data receied");
+                Ping = -1;
+            }
+            return IsConnected;
+        }
+
 #region SendShortcuts
 
         /// <summary>
@@ -375,8 +397,7 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            if (Environment.TickCount - lastPing > 5000)
-                Ping = -1;
+            CheckConnection();
 
             if (!stopwatch.IsRunning)
                 stopwatch.Start();
@@ -451,7 +472,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Schickt einen Stop-Befehl an das Drone.
+        /// Schickt einen Stop-Befehl an die Drohne.
         /// </summary>
         public void SendStop()
         {
@@ -462,7 +483,18 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Schickt ein Packet an das Drone.
+        /// Schickt den ClearStatus-Befehl an die Drohne.
+        /// </summary>
+        public void SendClearStatus()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            SendPacket(new PacketClearStatus(), true);
+        }
+
+        /// <summary>
+        /// Schickt ein Packet an die Drohne.
         /// </summary>
         /// <param name="packet"></param>
         /// <param name="guaranteed">Ob vom Drone eine Antwort gefordert wird.</param>
@@ -491,13 +523,13 @@ namespace DroneLibrary
             if (packet == null)
                 throw new ArgumentNullException(nameof(packet));
 
-            // wenn das Drone nicht erreichbar ist
+            // wenn die Drohne nicht erreichbar ist
             if (!IsConnected)
             {
                 if (Config.IgnoreGuaranteedWhenOffline)
                     guaranteed = false;
 
-                // alle Pakete (außer Ping) ignorieren wenn das Drone offline ist
+                // alle Pakete (außer Ping) ignorieren wenn die Drohne offline ist
                 if (packet.Type != PacketType.Ping && Config.IgnorePacketsWhenOffline)
                     return false;
             }
@@ -524,10 +556,10 @@ namespace DroneLibrary
                 packetBuffer.Write((byte)'L');
                 packetBuffer.Write((byte)'Y');
 
-                // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen!!
+                // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen
                 packetBuffer.Write(revision);
 
-                // wenn die Drone eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
+                // wenn die Drohne eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
                 packetBuffer.Write(guaranteed && !packet.Type.DoesClusterAnswer());
                 packetBuffer.Write((byte)packet.Type);
 
@@ -549,7 +581,7 @@ namespace DroneLibrary
             }
             catch(SocketException)
             {
-                // Drone ist möglicherweiße nicht verfügbar
+                // Drohne ist möglicherweiße nicht verfügbar
             }
         }
 
@@ -616,16 +648,15 @@ namespace DroneLibrary
                         if (packet.Length < HeaderSize + sizeof(long))
                             throw new InvalidDataException("Packet is not long enough.");
 
-                        int timeSpan = Environment.TickCount - lastPing;
-                        if (timeSpan > 1000 * 10 || !IsConnected)
-                        {
-                            OnConnected?.Invoke(this, EventArgs.Empty);
-                        }
+                        bool wasNotConnected = !CheckConnection();
 
                         lastPing = Environment.TickCount;
 
                         long time = buffer.ReadLong(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
                         Ping = (int)(stopwatch.ElapsedMilliseconds - time);
+
+                        if (wasNotConnected)
+                            OnConnected?.Invoke(this, EventArgs.Empty);
 
                         RemovePacketToAcknowlegde(revision);
                         break;
@@ -645,15 +676,8 @@ namespace DroneLibrary
                         break;
 
                     case PacketType.Info:
-                        string name = buffer.ReadString();
-                        string modelName = buffer.ReadString();
-                        string serialCode = buffer.ReadString();
-                        string buildName = buffer.ReadString().Trim().Replace(' ', '_');
-                        byte buildVersion = buffer.ReadByte();
-                        int highestRevision = buffer.ReadInt();
-
-                        Info = new DroneInfo(name, modelName, serialCode, buildName, buildVersion, highestRevision);
-                        Settings = new DroneSettings(name, buffer);
+                        Info = new DroneInfo(buffer);
+                        Settings = new DroneSettings(Info.Name, buffer);
 
                         RemovePacketToAcknowlegde(revision);
                         break;
@@ -712,6 +736,8 @@ namespace DroneLibrary
 
                 int revision = buffer.ReadInt();
                 DataPacketType type = (DataPacketType)buffer.ReadByte();
+
+                lastDataTime = Environment.TickCount;
 
                 switch (type)
                 {

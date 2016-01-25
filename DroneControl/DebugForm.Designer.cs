@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugForm));
             this.resetButton = new System.Windows.Forms.Button();
             this.ratioDataLabel = new System.Windows.Forms.Label();
+            this.blinkButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // resetButton
@@ -53,11 +54,22 @@
             this.ratioDataLabel.TabIndex = 1;
             this.ratioDataLabel.Text = "Ratio data";
             // 
+            // blinkButton
+            // 
+            this.blinkButton.Location = new System.Drawing.Point(94, 13);
+            this.blinkButton.Name = "blinkButton";
+            this.blinkButton.Size = new System.Drawing.Size(75, 23);
+            this.blinkButton.TabIndex = 2;
+            this.blinkButton.Text = "Blink";
+            this.blinkButton.UseVisualStyleBackColor = true;
+            this.blinkButton.Click += new System.EventHandler(this.blinkButton_Click);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(357, 315);
+            this.Controls.Add(this.blinkButton);
             this.Controls.Add(this.ratioDataLabel);
             this.Controls.Add(this.resetButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -72,5 +84,6 @@
 
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Label ratioDataLabel;
+        private System.Windows.Forms.Button blinkButton;
     }
 }

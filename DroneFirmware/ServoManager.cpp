@@ -35,8 +35,6 @@ void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
 	backRight.writeMicroseconds(servoBRValue);
 
 	_dirty = true;
-
-	Log::debug("Servos", "setServos(): %d, %d, %d, %d", servoFLValue, servoFRValue, servoBLValue, servoBRValue);
 }
 
 

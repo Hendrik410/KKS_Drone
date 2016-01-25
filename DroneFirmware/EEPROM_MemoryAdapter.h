@@ -30,10 +30,10 @@ public:
 
 	bool begin() override;
 	bool end() override;
-	void writeByte(uint32_t address, byte val) override;
-	void write(uint32_t address, byte* data, uint32_t length) override;
+	void writeByte(uint32_t address, uint8_t val) override;
+	void write(uint32_t address, uint8_t* data, uint32_t length) override;
 	byte readByte(uint32_t address) override;
-	void read(uint32_t address, byte* data, uint32_t length) override;
+	void read(uint32_t address, uint8_t* data, uint32_t length) override;
 
 };
 

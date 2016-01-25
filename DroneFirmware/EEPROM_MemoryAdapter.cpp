@@ -20,20 +20,20 @@ bool EEPROM_MemoryAdapter::end() {
 	return true;
 }
 
-void EEPROM_MemoryAdapter::writeByte(uint32_t address, unsigned char val) {
-	EEPROM.write(address, val);
+void EEPROM_MemoryAdapter::writeByte(uint32_t address, uint8_t val) {
+	EEPROM.write(address + offset, val);
 }
 
 byte EEPROM_MemoryAdapter::readByte(uint32_t address) {
-	return EEPROM.read(address);
+	return EEPROM.read(address + offset);
 }
 
-void EEPROM_MemoryAdapter::read(uint32_t address, unsigned char* data, uint32_t length) {
-	memcpy(data, EEPROM.getDataPtr(), length);
+void EEPROM_MemoryAdapter::read(uint32_t address, uint8_t* data, uint32_t length) {
+	memcpy(data, EEPROM.getDataPtr() + address + offset, length);
 }
 
-void EEPROM_MemoryAdapter::write(uint32_t address, unsigned char* data, uint32_t length) {
-	memcpy(EEPROM.getDataPtr(), data, length);
+void EEPROM_MemoryAdapter::write(uint32_t address, uint8_t* data, uint32_t length) {
+	memcpy(EEPROM.getDataPtr() + address + offset, data, length);
 	EEPROM.setDirty();
 }
 

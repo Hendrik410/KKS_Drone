@@ -20,6 +20,7 @@
 #include "DroneEngine.h"
 #include "ServoManager.h"
 #include "BinaryHelper.h"
+#include "LED.h"
 
 
 #define byte unsigned char
@@ -44,7 +45,7 @@
 #include "DroneEngine.h"
 #include "ServoManager.h"
 #include "BinaryHelper.h"
-
+#include "LED.h"
 #endif
 #include "PidDroneEngine.h"
 
@@ -60,12 +61,8 @@ DroneEngine* engine;
 NetworkManager* network;
 
 
-bool blinkRequested = false;
-bool blinkExecuting = false;
-int blinkStart = 0;
-
 int lastLoopTime = 0;
-short delayTime = 15;
+short delayTime = 5;
 
 //######################### Methods
 
@@ -73,20 +70,6 @@ void hang() {
 	while(true) wdt_reset();
 }
 
-
-void handleBlink() {
-	if(blinkExecuting) {
-		if(millis() - blinkStart > 250) {
-			digitalWrite(config.PinLed, LOW);
-			blinkExecuting = false;
-		}
-	} else if(blinkRequested) {
-		blinkStart = millis();
-		digitalWrite(config.PinLed, HIGH);
-		blinkRequested = false;
-		blinkExecuting = true;
-	}
-}
 
 
 void setup() {
@@ -98,11 +81,7 @@ void setup() {
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	Log::info("Boot", "Serial code: %s", serialCode);
 
-	config = ConfigManager::getDefault(); // ConfigManager::loadConfig();
-
-	//setup status LED
-	pinMode(config.PinLed, OUTPUT);
-	digitalWrite(config.PinLed, HIGH);
+	config = ConfigManager::loadConfig();
 
 	//setup servos
 	servos = new ServoManager(&config);
@@ -110,6 +89,7 @@ void setup() {
 
 	Log::info("Boot", "Init network...");
 
+	setupLED(&config);
 
 	WiFi.mode(WIFI_STA);
 	WiFi.begin(config.NetworkSSID, config.NetworkPassword);
@@ -155,8 +135,6 @@ void setup() {
 	//start network
 	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
 
-
-	digitalWrite(config.PinLed, LOW);
 	Log::info("Boot", "done booting. ready.");
 }
 
@@ -167,10 +145,11 @@ void loop() {
 	//handle drone physics
 	engine->handle();
 
+	// handle LED
+	handleBlink();
+
 	if(millis() - lastLoopTime >= delayTime) {
 		network->handlePackets();
-
-		handleBlink();
 		
 		lastLoopTime = millis();
 	}

@@ -48,14 +48,27 @@ namespace DroneLibrary
         [Category("Debug")]
         public int HighestRevision { get; private set; }
 
-        public DroneInfo(string name, string modelName, string serialCode, string buildName, byte buildVersion, int highestRevision)
+        [Category("Debug")]
+        public ResetReason ResetReason { get; private set; }
+
+        [Category("Debug")]
+        public ResetException ResetException { get; private set; }
+
+        public DroneInfo(PacketBuffer buffer)
         {
-            this.Name = name;
-            this.ModelName = modelName;
-            this.SerialCode = serialCode;
-            this.BuildName = buildName;
-            this.BuildVersion = buildVersion;
-            this.HighestRevision = highestRevision;
+            Name = buffer.ReadString();
+            ModelName = buffer.ReadString();
+            SerialCode = buffer.ReadString();
+
+            BuildName = buffer.ReadString().Trim().Replace(' ', '_');
+            BuildVersion = buffer.ReadByte();
+
+            HighestRevision = buffer.ReadInt();
+            ResetReason = (ResetReason)buffer.ReadByte();
+            ResetException = (ResetException)buffer.ReadByte();
+
+            if (ResetReason != ResetReason.Exception)
+                ResetException = ResetException.None;
         }
 
         public static bool operator ==(DroneInfo a, DroneInfo b)
@@ -83,7 +96,9 @@ namespace DroneLibrary
                 && SerialCode == other.SerialCode
                 && BuildName == other.BuildName
                 && BuildVersion == other.BuildVersion
-                && HighestRevision == other.HighestRevision;
+                && HighestRevision == other.HighestRevision
+                && ResetReason == other.ResetReason
+                && ResetException == other.ResetException;
         }
 
         public override int GetHashCode()
@@ -97,6 +112,8 @@ namespace DroneLibrary
                 hash = hash * 7 + (BuildName == null ? 0 : BuildName.GetHashCode());
                 hash = hash * 7 + BuildVersion.GetHashCode();
                 hash = hash * 7 + HighestRevision.GetHashCode();
+                hash = hash * 7 + ResetReason.GetHashCode();
+                hash = hash * 7 + ResetException.GetHashCode();
                 return hash;
             }
         }
