@@ -3,7 +3,7 @@
 
 struct PID_Settings {
 public:
-	double Kp, Ki, Kd;
+	float Kp, Ki, Kd;
 };
 
 #endif

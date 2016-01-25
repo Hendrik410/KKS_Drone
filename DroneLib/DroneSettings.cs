@@ -34,6 +34,18 @@ namespace DroneLibrary
         [Category("Engine")]
         public ushort PhysicsCalcDelay { get; set; }
 
+        [Category("PID")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public PidSettings PitchPid { get; set; }
+
+        [Category("PID")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public PidSettings RollPid { get; set; }
+
+        [Category("PID")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public PidSettings YawPid { get; set; }
+
 
         public DroneSettings(string name, PacketBuffer buffer)
             : this()
@@ -45,6 +57,10 @@ namespace DroneLibrary
             this.Degree2Ratio = buffer.ReadFloat();
             this.RotaryDegree2Ratio = buffer.ReadFloat();
             this.PhysicsCalcDelay = buffer.ReadUShort();
+
+            this.PitchPid = new PidSettings(buffer);
+            this.RollPid = new PidSettings(buffer);
+            this.YawPid = new PidSettings(buffer);
         }
 
         public void Write(PacketBuffer buffer)
@@ -56,6 +72,10 @@ namespace DroneLibrary
             buffer.Write(Degree2Ratio);
             buffer.Write(RotaryDegree2Ratio);
             buffer.Write(PhysicsCalcDelay);
+
+            PitchPid.Write(buffer);
+            RollPid.Write(buffer);
+            YawPid.Write(buffer);
         }
 
         public static bool operator ==(DroneSettings a, DroneSettings b)
@@ -84,7 +104,10 @@ namespace DroneLibrary
                    && VerboseSerialLog == other.VerboseSerialLog
                    && Degree2Ratio == other.Degree2Ratio
                    && RotaryDegree2Ratio == other.RotaryDegree2Ratio
-                   && PhysicsCalcDelay == other.PhysicsCalcDelay;
+                   && PhysicsCalcDelay == other.PhysicsCalcDelay
+                   && PitchPid.Equals(other.PitchPid)
+                   && RollPid.Equals(other.RollPid)
+                   && YawPid.Equals(other.YawPid);
 
         }
 
@@ -100,6 +123,9 @@ namespace DroneLibrary
                 hash = hash * 7 + Degree2Ratio.GetHashCode();
                 hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();
                 hash = hash * 7 + PhysicsCalcDelay.GetHashCode();
+                hash = hash * 7 + PitchPid.GetHashCode();
+                hash = hash * 7 + RollPid.GetHashCode();
+                hash = hash * 7 + YawPid.GetHashCode();
                 return hash;
             }
         }

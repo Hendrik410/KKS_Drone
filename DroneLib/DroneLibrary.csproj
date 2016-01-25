@@ -64,6 +64,7 @@
     <Compile Include="NetworkHelper.cs" />
     <Compile Include="NetworkStatistics.cs" />
     <Compile Include="PacketBuffer.cs" />
+    <Compile Include="PidSettings.cs" />
     <Compile Include="PingChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\DataPacketType.cs" />

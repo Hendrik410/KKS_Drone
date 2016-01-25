@@ -229,6 +229,18 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(config->PhysicsCalcDelay);
 
+		writeBuffer->write(config->PitchPidSettings.Kp);
+		writeBuffer->write(config->PitchPidSettings.Ki);
+		writeBuffer->write(config->PitchPidSettings.Kd);
+
+		writeBuffer->write(config->RollPidSettings.Kp);
+		writeBuffer->write(config->RollPidSettings.Ki);
+		writeBuffer->write(config->RollPidSettings.Kd);
+
+		writeBuffer->write(config->YawPidSettings.Kp);
+		writeBuffer->write(config->YawPidSettings.Ki);
+		writeBuffer->write(config->YawPidSettings.Kd);
+
 		sendPacket(udp);
 		break;
 	}
@@ -261,6 +273,28 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		config->Degree2Ratio = readBuffer->readFloat();
 		config->RotaryDegree2Ratio = readBuffer->readFloat();
 		config->PhysicsCalcDelay = readBuffer->readUint16();
+
+		PID_Settings pitch, roll, yaw;
+		pitch = config->PitchPidSettings;
+		roll = config->RollPidSettings;
+		yaw = config->YawPidSettings;
+
+
+		pitch.Kp = readBuffer->readFloat();
+		pitch.Ki = readBuffer->readFloat();
+		pitch.Kd = readBuffer->readFloat();
+
+		roll.Kp = readBuffer->readFloat();
+		roll.Ki = readBuffer->readFloat();
+		roll.Kd = readBuffer->readFloat();
+
+		yaw.Kp = readBuffer->readFloat();
+		yaw.Ki = readBuffer->readFloat();
+		yaw.Kd = readBuffer->readFloat();
+
+		config->PitchPidSettings = pitch;
+		config->RollPidSettings = roll;
+		config->YawPidSettings = yaw;
 
 		Log::info("Network", "Config set.");
 

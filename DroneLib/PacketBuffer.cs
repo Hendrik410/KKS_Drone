@@ -104,7 +104,7 @@ namespace DroneLibrary
         public double ReadDouble()
         {
             stream.Read(helperBuffer, 0, sizeof(double));
-            return BitConverter.ToSingle(helperBuffer, 0);
+            return BitConverter.ToDouble(helperBuffer, 0);
         }
 
         public string ReadString()
