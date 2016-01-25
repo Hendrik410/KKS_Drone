@@ -19,6 +19,6 @@ float VoltageInputReader::readVoltage() {
 }
 
 float VoltageInputReader::readRawVoltage() {
-	return (analogRead(_inputPin) / 1024) / (_maxInputVoltage * _maxVoltage);
+	return ((analogRead(_inputPin) / 1024.0f) / _maxInputVoltage) * _maxVoltage;
 }
 
