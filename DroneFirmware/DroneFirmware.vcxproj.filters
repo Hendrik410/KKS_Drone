@@ -19,6 +19,12 @@
     <Filter Include="Header Files\net">
       <UniqueIdentifier>{6370e8c3-eadb-46d6-8aab-78a3c000c6d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{d7d1cda8-86b0-4334-94c3-2543e0fd3952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{54cba317-ddab-4b6f-bdb9-971bcce241a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />
@@ -30,16 +36,7 @@
     <ClInclude Include="Gyro.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BinaryHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServoManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DroneEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MotorEnums.h">
@@ -72,21 +69,33 @@
     <ClInclude Include="Build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
     <ClInclude Include="PID.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryHelper.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="DroneEngine.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="PidDroneEngine.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="PID_Settings.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="VoltageInputReader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearDroneEngine.h">
+      <Filter>Header Files\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BinaryHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DroneEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MathHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EEPROM_MemoryAdapter.cpp">
@@ -107,7 +116,25 @@
     <ClCompile Include="ServoManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
     <ClCompile Include="PID.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DroneEngine.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryHelper.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="PidDroneEngine.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="VoltageInputReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearDroneEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

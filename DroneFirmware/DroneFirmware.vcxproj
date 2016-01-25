@@ -85,6 +85,8 @@
     <ClInclude Include="DroneEngine.h" />
     <ClInclude Include="EEPROM_MemoryAdapter.h" />
     <ClInclude Include="Gyro.h" />
+    <ClInclude Include="LinearDroneEngine.h" />
+    <ClInclude Include="PID_Settings.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="MemoryAdapter.h" />
@@ -93,7 +95,9 @@
     <ClInclude Include="PacketBuffer.h" />
     <ClInclude Include="PacketType.h" />
     <ClInclude Include="PID.h" />
+    <ClInclude Include="PidDroneEngine.h" />
     <ClInclude Include="ServoManager.h" />
+    <ClInclude Include="VoltageInputReader.h" />
     <ClInclude Include="__vm\.DroneFirmware.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,12 +106,15 @@
     <ClCompile Include="DroneEngine.cpp" />
     <ClCompile Include="EEPROM_MemoryAdapter.cpp" />
     <ClCompile Include="Gyro.cpp" />
+    <ClCompile Include="LinearDroneEngine.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="PacketBuffer.cpp" />
     <ClCompile Include="PID.cpp" />
+    <ClCompile Include="PidDroneEngine.cpp" />
     <ClCompile Include="ServoManager.cpp" />
+    <ClCompile Include="VoltageInputReader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

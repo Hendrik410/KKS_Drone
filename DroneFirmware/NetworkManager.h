@@ -20,6 +20,7 @@
 #include "ConfigManager.h"
 
 #include <ESP8266WiFi/src/WiFiUdp.h>
+#include "VoltageInputReader.h"
 
 class NetworkManager
 {
@@ -28,6 +29,7 @@ protected:
 	ServoManager* servos;
 	DroneEngine* engine;
 	Config* config;
+	VoltageInputReader* voltageReader;
 
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
@@ -55,7 +57,7 @@ protected:
 	void sendData(WiFiUDP udp);
 	void echoPacket(WiFiUDP udp);
 public:
-	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config);
+	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
 
 	void handlePackets();
 };

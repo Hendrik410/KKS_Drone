@@ -44,10 +44,10 @@ class DroneEngine
 	 float maxRotationSpeed;
 
 	 float targetVerticalSpeed;
-	 float targetPitch;
-	 float targetRoll;
-	 float targetYaw;
-	 float targetRotationSpeed;
+	 double targetPitch;
+	 double targetRoll;
+	 double targetYaw;
+	 double targetRotationSpeed;
 
 	 float frontLeftRatio;
 	 float frontRightRatio;
@@ -63,7 +63,7 @@ class DroneEngine
 
 	DroneState state() const;
 	
-	void handle();
+	virtual void handle() = 0;
 
 	void setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite = false) const;
 	void setRawServoValues(int all, bool forceWrite = false) const;

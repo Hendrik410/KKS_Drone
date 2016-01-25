@@ -4,11 +4,12 @@
 
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config) {
+NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
 	this->gyro = gyro;
 	this->servos = servos;
 	this->engine = engine;
 	this->config = config;
+	this->voltageReader = voltageReader;
 
 	_dataFeedSubscribed = false;
 	_lastDataSend = 0;

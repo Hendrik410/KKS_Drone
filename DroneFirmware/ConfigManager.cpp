@@ -123,6 +123,21 @@ Config ConfigManager::getDefault() {
 	config.RotaryDegree2Ratio = 0.03f;
 	config.PhysicsCalcDelay = 20;
 
+	config.EngineType = PID;
+
+	config.PitchPidSettings.Kp = 1;
+	config.PitchPidSettings.Ki = 0.05;
+	config.PitchPidSettings.Kd = 0.25;
+
+	config.RollPidSettings.Kp = 1;
+	config.RollPidSettings.Ki = 0.05;
+	config.RollPidSettings.Kd = 0.25;
+
+	config.YawPidSettings.Kp = 1;
+	config.YawPidSettings.Ki = 0.05;
+	config.YawPidSettings.Kd = 0.25;
+	
+
 	Log::info("Config", "Using default config");
 	return config;
 }
