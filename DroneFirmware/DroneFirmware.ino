@@ -66,7 +66,7 @@ NetworkManager* network;
 
 
 int lastLoopTime = 0;
-short delayTime = 20;
+short delayTime = 0;
 
 //######################### Methods
 
@@ -147,7 +147,7 @@ void loop() {
 	gyro->update();
 
 	//handle drone physics
-	engine->handle();
+	//engine->handle();
 
 	// handle LED
 	handleBlink();

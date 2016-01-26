@@ -15,6 +15,8 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	_lastDataSend = 0;
 	dataRevision = 1;
 
+	tickCount = 0;
+
 	lastState = StateUnkown;
 
 	Log::info("Network", "Starting network manager...");
@@ -356,11 +358,21 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	if (!_dataFeedSubscribed)
 		return;
 
+	sendDroneData(udp);
+
+	if (tickCount % 4 == 0)
+		sendLog(udp);
+
+	if (tickCount % 8 == 0)
+		sendDebugData(udp);
+}
+
+void NetworkManager::sendDroneData(WiFiUDP udp) {
 	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty(); 
+	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty();
 
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
-		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
+		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
 
@@ -385,7 +397,9 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		lastState = engine->state();
 	}
+}
 
+void NetworkManager::sendLog(WiFiUDP udp) {
 	while (Log::getBufferLines() > 0) {
 		writeDataHeader(dataUDP, dataRevision++, DataLog);
 
@@ -400,7 +414,9 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		sendData(udp);
 	}
+}
 
+void NetworkManager::sendDebugData(WiFiUDP udp) {
 	writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
 	writeBuffer->write(engine->getFrontLeftRatio());
