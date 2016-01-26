@@ -45,8 +45,10 @@ namespace DroneControl
                 return;
             }
 
-            artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, e.Data.Gyro.Roll);
-            headingIndicator.SetHeadingIndicatorParameters((int)e.Data.Gyro.Yaw);
+            if (!float.IsNaN(e.Data.Gyro.Pitch) && !float.IsNaN(e.Data.Gyro.Roll))
+                artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, e.Data.Gyro.Roll);
+            if (!float.IsNaN(e.Data.Gyro.Yaw))
+                headingIndicator.SetHeadingIndicatorParameters((int)e.Data.Gyro.Yaw);
 
             gyroDataLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
                 e.Data.Gyro.Roll.ToString("0.00").PadLeft(6, ' '),

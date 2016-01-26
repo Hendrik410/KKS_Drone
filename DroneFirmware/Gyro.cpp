@@ -16,13 +16,12 @@ Gyro::Gyro(Config* config) {
 	this->accelerationZOffset = 0;
 }
 
-
 void Gyro::init(){
 	Log::info("Gyro", "init()");
 
-	_MPU6050.reset();
-	_MPU6050.initialize();
-	if(!_MPU6050.testConnection()) {
+	mpu.reset();
+	mpu.initialize();
+	if(mpu.testConnection()) {
 		Log::error("Gyro", "testConnection() failed!");
 	}
 	else 
@@ -30,59 +29,47 @@ void Gyro::init(){
 
 	Log::info("Gyro", "dmpInitialize()");
 	
-	int result = _MPU6050.dmpInitialize();
+	int result = mpu.dmpInitialize();
 	if(result) 
 		Log::error("Gyro", "result: %d", result);
 
 	Log::info("Gyro", "done with init");
 
-	MPU6050_Packet_Size = _MPU6050.dmpPacketSize;
+	packetSize = mpu.dmpPacketSize;
 
-	// supply your own gyro offsets here, scaled for min sensitivity
-	_MPU6050.setXGyroOffset(220);
-	_MPU6050.setYGyroOffset(76);
-	_MPU6050.setZGyroOffset(-85);
-	_MPU6050.setZAccelOffset(1788); // 1688 factory default for my test chip
-
-	_MPU6050.setDMPEnabled(true);
-	_MPU6050.resetFIFO();
+	mpu.setDMPEnabled(true);
+	mpu.resetFIFO();
 }
 
 void Gyro::update() {
-
-	int fifoCount = _MPU6050.getFIFOCount();
-
-	if(_MPU6050.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
-		_MPU6050.resetFIFO();
-		
-		Log::error("Gyro", "FIFO overflow!");
-	}
-
-	if(!_MPU6050.getIntDataReadyStatus())
+	uint16_t fifoCount = mpu.getFIFOCount();
+	if (!mpu.getIntDataReadyStatus() || fifoCount < packetSize)
 		return;
 
-	while(fifoCount < MPU6050_Packet_Size) fifoCount = _MPU6050.getFIFOCount();
 
-	while(fifoCount > MPU6050_Packet_Size) {
-		_MPU6050.getFIFOBytes(MPU6050_FIFO_Buffer, MPU6050_Packet_Size);
+	if (mpu.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
+		mpu.resetFIFO();
 
-		// get Euler angles in radiant
-		_MPU6050.dmpGetQuaternion(&q, MPU6050_FIFO_Buffer);
-		_MPU6050.dmpGetGravity(&gravity, &q);
-		_MPU6050.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-		// Beschleunigung
-		_MPU6050.dmpGetAccel(&aa, MPU6050_FIFO_Buffer);
-		_MPU6050.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-
-		_dirty = true;
-
-		fifoCount = _MPU6050.getFIFOCount();
+		Log::error("Gyro", "FIFO overflow!");
+		return;
 	}
+
+	mpu.getFIFOBytes(fifoBuffer, packetSize);
+
+	// Gyro Werte
+	mpu.dmpGetQuaternion(&q, fifoBuffer);
+	mpu.dmpGetGravity(&gravity, &q);
+	mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+
+	// Beschleunigung
+	mpu.dmpGetAccel(&aa, fifoBuffer);
+	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+
+	_dirty = true;
 }
 
 float Gyro::getTemperature() {
-	return _MPU6050.getTemperature() / 340.00 + 36.53;
+	return mpu.getTemperature() / 340.00 + 36.53;
 }
 
 

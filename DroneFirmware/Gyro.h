@@ -23,9 +23,9 @@ class Gyro
  protected:
 	 Config* config;
 
-	 MPU6050 _MPU6050;
-	 int MPU6050_Packet_Size = 0;
-	 byte MPU6050_FIFO_Buffer[64];
+	 MPU6050 mpu;
+	 int packetSize = 0;
+	 byte fifoBuffer[64];
 
 	 // orientation/motion vars
 	 Quaternion q;           // [w, x, y, z]         quaternion container
@@ -33,7 +33,6 @@ class Gyro
 	 VectorInt16 aaReal;     // [x, y, z]            gravity-free accel sensor measurements
 	 VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements
 	 VectorFloat gravity;    // [x, y, z]            gravity vector
-	 float euler[3];         // [psi, theta, phi]    Euler angle container
 	 float ypr[3];
 
 	 float pitchOffset;
