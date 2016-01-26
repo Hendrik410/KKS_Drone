@@ -146,9 +146,9 @@ namespace DroneLibrary
                 hash = hash * 7 + Degree2Ratio.GetHashCode();
                 hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();
                 hash = hash * 7 + PhysicsCalcDelay.GetHashCode();
-                hash = hash * 7 + PitchPid.GetHashCode();
-                hash = hash * 7 + RollPid.GetHashCode();
-                hash = hash * 7 + YawPid.GetHashCode();
+                hash = hash * 7 + (PitchPid == null ? 0 : PitchPid.GetHashCode());
+                hash = hash * 7 + (RollPid == null ? 0 : RollPid.GetHashCode());
+                hash = hash * 7 + (YawPid == null ? 0 : YawPid.GetHashCode());
                 return hash;
             }
         }
