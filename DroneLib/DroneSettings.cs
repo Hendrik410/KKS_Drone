@@ -65,6 +65,29 @@ namespace DroneLibrary
 
         public void Write(PacketBuffer buffer)
         {
+            if (string.IsNullOrWhiteSpace(DroneName))
+                throw new ArgumentException("DroneName is null or white space", nameof(DroneName));
+            if (DroneName.Length > 30)
+                throw new ArgumentException("DroneName is longer then 30 chars", nameof(DroneName));
+
+            if (string.IsNullOrWhiteSpace(NetworkSSID))
+                throw new ArgumentException("NetworkSSID is null or white space", nameof(NetworkSSID));
+            if (NetworkSSID.Length > 30)
+                throw new ArgumentException("NetworkSSID is longer then 30 chars", nameof(NetworkSSID));
+
+            if (string.IsNullOrWhiteSpace(NetworkPassword))
+                throw new ArgumentException("NetworkPassword is null or white space", nameof(NetworkPassword));
+            if (NetworkPassword.Length > 30)
+                throw new ArgumentException("NetworkPassword is longer then 30 chars", nameof(NetworkPassword));
+
+            if (Degree2Ratio < 0 || Degree2Ratio > 1)
+                throw new ArgumentOutOfRangeException(nameof(Degree2Ratio), Degree2Ratio, "Value must be in range 0 - 1");
+            if (RotaryDegree2Ratio < 0 || RotaryDegree2Ratio > 1)
+                throw new ArgumentOutOfRangeException(nameof(RotaryDegree2Ratio), RotaryDegree2Ratio, "Value must be in range 0 - 1");
+
+            if (PhysicsCalcDelay < 0 || PhysicsCalcDelay > 100)
+                throw new ArgumentOutOfRangeException(nameof(PhysicsCalcDelay), PhysicsCalcDelay, "Value must be in range 0 - 100");
+
             buffer.Write(DroneName);
             buffer.Write(NetworkSSID);
             buffer.Write(NetworkPassword);

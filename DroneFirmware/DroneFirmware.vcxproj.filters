@@ -149,5 +149,8 @@
     <ClCompile Include="LinearDroneEngine.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
+    <ClCompile Include="PID_Settings.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

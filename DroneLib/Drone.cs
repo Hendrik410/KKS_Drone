@@ -412,6 +412,9 @@ namespace DroneLibrary
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
+            if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
+                throw new InvalidOperationException("Drone in invalid state: " + Data.State);
+
             SendPacket(new PacketReset(), true);
         }
 

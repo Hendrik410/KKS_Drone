@@ -11,21 +11,20 @@ PidDroneEngine::PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config)
 	inputRoll = 0;
 	inputYaw = 0;
 
-	pidPitch = new PID(&inputPitch, &outputPitch, &targetPitch, 
-					   config->PitchPidSettings.Kp, 
-					   config->PitchPidSettings.Ki, 
-					   config->PitchPidSettings.Kd, DIRECT);
+	pidPitch = new PID(&inputPitch, &outputPitch, &targetPitch,
+		config->PitchPidSettings.Kp,
+		config->PitchPidSettings.Ki,
+		config->PitchPidSettings.Kd, DIRECT);
 
 	pidRoll = new PID(&inputRoll, &outputRoll, &targetRoll,
-					  config->RollPidSettings.Kp,
-					  config->RollPidSettings.Ki,
-					  config->RollPidSettings.Kd, DIRECT);
+		config->RollPidSettings.Kp,
+		config->RollPidSettings.Ki,
+		config->RollPidSettings.Kd, DIRECT);
 
 	pidYaw = new PID(&inputYaw, &outputYaw, &targetYaw,
-					   config->YawPidSettings.Kp,
-					   config->YawPidSettings.Ki,
-					   config->YawPidSettings.Kd, DIRECT);
-
+		config->YawPidSettings.Kp,
+		config->YawPidSettings.Ki,
+		config->YawPidSettings.Kd, DIRECT);
 }
 
 
@@ -34,13 +33,25 @@ void PidDroneEngine::handle() {
 	inputRoll = gyro->getRoll();
 	inputYaw = gyro->getYaw();
 
+	pidRoll->SetTunings(	config->RollPidSettings.Kp,
+							config->RollPidSettings.Ki,
+							config->RollPidSettings.Kd);
+	pidPitch->SetTunings(	config->PitchPidSettings.Kp,
+							config->PitchPidSettings.Ki,
+							config->PitchPidSettings.Kd);
+
+	pidYaw->SetTunings(	config->YawPidSettings.Kp,
+							config->YawPidSettings.Ki,
+							config->YawPidSettings.Kd);
+
+
 	if (_state == StateFlying) {
 		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
 			stop(InvalidGyro);
 			return;
 		}
 
-		if (abs(gyro->getRoll()) > 35 || abs(gyro->getPitch()) > 35) {
+		if (abs(gyro->getRoll()) > 50 || abs(gyro->getPitch()) > 50) {
 			stop(InvalidGyro);
 			return;
 		}

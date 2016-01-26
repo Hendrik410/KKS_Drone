@@ -146,9 +146,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	switch (type) {
 	case MovementPacket: {
-		if(readBuffer->getSize() < 26)
-			return;
-
 		bool hover = readBuffer->readBoolean();
 
 		float pitch = readBuffer->readFloat();
@@ -162,16 +159,33 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	}
 	break;
 	case RawSetPacket: {
-		//set the 4 motor values raw
-		if (readBuffer->getSize() < 17)
-			return;
-
 		uint16_t fl = readBuffer->readUint16();
 		uint16_t fr = readBuffer->readUint16();
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
 
-		engine->setRawServoValues(fl, fr, bl, br);
+		if (fl >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for fl");
+			return;
+		}
+
+		if (fr >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for fr");
+			return;
+		}
+
+		if (bl >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for bl");
+			return;
+		}
+
+		if (br >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for br");
+			return;
+		}
+
+		if (engine->state() == StateArmed)
+			engine->setRawServoValues(fl, fr, bl, br);
 
 		break;
 	}
@@ -258,39 +272,70 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
-		gyro->setAsZero();
+		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
+			gyro->setAsZero();
 		break;
 
 	case Reset:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			ESP.restart();
 		break;
-	case SetConfig:
-		config->DroneName = readBuffer->readString();
-		config->NetworkSSID = readBuffer->readString();
-		config->NetworkPassword = readBuffer->readString();
-		config->VerboseSerialLog = readBuffer->readBoolean();
-		config->Degree2Ratio = readBuffer->readFloat();
-		config->RotaryDegree2Ratio = readBuffer->readFloat();
-		config->PhysicsCalcDelay = readBuffer->readUint16();
+	case SetConfig: {
+		char* droneName = readBuffer->readString();
+		if (strlen(droneName) == 0 || strlen(droneName) > 30) {
+			Log::error("Network", "[SetConfig] Invalid value for droneName");
+			return;
+		}
+
+		char* networkSSID = readBuffer->readString();
+		if (strlen(networkSSID) == 0 || strlen(networkSSID) > 30) {
+			Log::error("Network", "[SetConfig] Invalid value for droneName");
+			return;
+		}
+
+		char* networkPassword = readBuffer->readString();
+		if (strlen(networkPassword) == 0 || strlen(networkPassword) > 30) {
+			Log::error("Network", "[SetConfig] Invalid value for networkPassword");
+			return;
+		}
+
+		bool verboseSerialLog = readBuffer->readBoolean();
+
+		float degree2Ratio = readBuffer->readFloat();
+		if (degree2Ratio < 0 || degree2Ratio > 1) {
+			Log::error("Network", "[SetConfig] Invalid value for degree2Ratio");
+			return;
+		}
+
+		float rotaryDegree2Ratio = readBuffer->readFloat();
+		if (rotaryDegree2Ratio < 0 || rotaryDegree2Ratio > 1) {
+			Log::error("Network", "[SetConfig] Invalid value for rotaryDegree2Ratio");
+			return;
+		}
+
+		uint16_t physicsCalcDelay = readBuffer->readUint16();
+		if (physicsCalcDelay < 0 || physicsCalcDelay > 100) {
+			Log::error("Network", "[SetConfig] Invalid value for physicsCalcDelay");
+			return;
+		}
+
+		config->DroneName = droneName;
+		config->NetworkSSID = networkSSID;
+		config->NetworkPassword = networkPassword;
+		config->VerboseSerialLog = verboseSerialLog;
+		config->Degree2Ratio = degree2Ratio;
+		config->RotaryDegree2Ratio = rotaryDegree2Ratio;
+		config->PhysicsCalcDelay = physicsCalcDelay;
+
 
 		PID_Settings pitch, roll, yaw;
-		pitch = config->PitchPidSettings;
-		roll = config->RollPidSettings;
-		yaw = config->YawPidSettings;
 
-
-		pitch.Kp = readBuffer->readFloat();
-		pitch.Ki = readBuffer->readFloat();
-		pitch.Kd = readBuffer->readFloat();
-
-		roll.Kp = readBuffer->readFloat();
-		roll.Ki = readBuffer->readFloat();
-		roll.Kd = readBuffer->readFloat();
-
-		yaw.Kp = readBuffer->readFloat();
-		yaw.Ki = readBuffer->readFloat();
-		yaw.Kd = readBuffer->readFloat();
+		if (!PID_Settings::read(readBuffer, &pitch))
+			return;
+		if (!PID_Settings::read(readBuffer, &roll))
+			return;
+		if (!PID_Settings::read(readBuffer, &yaw))
+			return;
 
 		config->PitchPidSettings = pitch;
 		config->RollPidSettings = roll;
@@ -299,6 +344,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::info("Network", "Config set.");
 
 		ConfigManager::saveConfig(*config);
+		}
 		break;
 	case ClearStatus:
 		engine->clearStatus();

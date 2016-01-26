@@ -21,6 +21,13 @@ namespace DroneLibrary
 
         public void Write(PacketBuffer buffer)
         {
+            if (Kp < 0 || Kp > 1)
+                throw new ArgumentOutOfRangeException(nameof(Kp), Kp, "Kp must be in range 0 - 1");
+            if (Ki < 0 || Ki > 1)
+                throw new ArgumentOutOfRangeException(nameof(Ki), Ki, "Ki must be in range 0 - 1");
+            if (Kd < 0 || Kd > 1)
+                throw new ArgumentOutOfRangeException(nameof(Kd), Kd, "Kd must be in range 0 - 1");
+
             buffer.Write(Kp);
             buffer.Write(Ki);
             buffer.Write(Kd);

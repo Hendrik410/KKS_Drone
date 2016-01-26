@@ -234,7 +234,16 @@ namespace DroneControl
 
         private void droneSettingsPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            drone.SendConfig((DroneSettings)droneSettingsPropertyGrid.SelectedObject);
+            try
+            {
+                DroneSettings settings = (DroneSettings)droneSettingsPropertyGrid.SelectedObject;
+                drone.SendConfig(settings);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex);
+                MessageBox.Show(ex.Message, "Error setting settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void debugButton_Click(object sender, EventArgs e)
