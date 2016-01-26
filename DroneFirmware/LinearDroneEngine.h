@@ -13,7 +13,7 @@ class LinearDroneEngine : public DroneEngine
 
  public:
 	 LinearDroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
-	 void handle() override;
+	 void handleInternal() override;
 };
 
 #endif

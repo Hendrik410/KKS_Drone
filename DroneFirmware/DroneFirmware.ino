@@ -147,7 +147,7 @@ void loop() {
 	gyro->update();
 
 	//handle drone physics
-	//engine->handle();
+	engine->handle();
 
 	// handle LED
 	handleBlink();

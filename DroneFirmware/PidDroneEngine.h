@@ -19,7 +19,7 @@ class PidDroneEngine : public DroneEngine
 	 double outputPitch, outputRoll, outputYaw;
  public:
 	 PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
-	 void handle() override;
+	 void handleInternal() override;
 };
 
 #endif
