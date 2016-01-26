@@ -54,7 +54,10 @@ void Gyro::update() {
 		return;
 	}
 
-	mpu.getFIFOBytes(fifoBuffer, packetSize);
+	while (fifoCount >= packetSize) {
+		mpu.getFIFOBytes(fifoBuffer, packetSize);
+		fifoCount -= packetSize;
+	}
 
 	// Gyro Werte
 	mpu.dmpGetQuaternion(&q, fifoBuffer);
