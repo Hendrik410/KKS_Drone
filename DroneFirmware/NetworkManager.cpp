@@ -369,7 +369,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 void NetworkManager::sendDroneData(WiFiUDP udp) {
 	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty();
+	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty() | voltageReader->dirty();
 
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);
