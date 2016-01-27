@@ -93,7 +93,7 @@ namespace DroneControl
                 form = onClosed();
 
             if (!form.Visible)
-                form.Show(this);
+                form.Show();
             form.BringToFront();
             return form;
         }
