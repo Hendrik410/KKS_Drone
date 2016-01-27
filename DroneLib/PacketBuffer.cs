@@ -117,6 +117,11 @@ namespace DroneLibrary
             return new string(str);
         }
 
+        public void Read(byte[] buffer, int offset, int count)
+        {
+            stream.Read(buffer, offset, count);
+        }
+
         public void Write(bool value)
         {
             if (value)
@@ -185,6 +190,11 @@ namespace DroneLibrary
 
             for (int i = 0; i < str.Length; i++)
                 Write((byte)str[i]);
+        }
+
+        public void Write(byte[] buffer, int offset, int count)
+        {
+            stream.Write(buffer, offset, count);
         }
     }
 }

@@ -99,7 +99,6 @@
     <Compile Include="ConnectingForm.Designer.cs">
       <DependentUpon>ConnectingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataHistory.cs" />
     <Compile Include="DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -4,153 +4,165 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace DroneLibrary
 {
-    public struct DroneSettings : IEquatable<DroneSettings>
+    [StructLayout(LayoutKind.Sequential, Size = 172, Pack = 0, CharSet = CharSet.Ansi)]
+    [TypeConverter(typeof(DroneSettingsTypeConverter))]
+    public unsafe struct DroneSettings 
     {
+        //A user-friendly name for the drone
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
         [Category("Drone")]
-        [Description("Name der Drone")]
-        public string DroneName { get; set; }
+        public string DroneName;
+
+        //The name of the WiFi network
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+        [Category("Network")]
+        public string NetworkSSID;
+
+        //The password of the WiFi network
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        [Category("Network")]
+        public string NetworkPassword;
+
+        //The UDP-Port for the hello packets
+        [Category("Network")]
+        public ushort NetworkHelloPort;
+
+        //The UDP-Port for the control packets
+        [Category("Network")]
+        public ushort NetworkControlPort;
+        //The UDP-Port for the data packets
 
         [Category("Network")]
-        [Description("SSID des WiFi Netzwerks")]
-        public string NetworkSSID { get; set; }
+        public ushort NetworkDataPort;
+        //The size of the buffer for incoming packets
 
         [Category("Network")]
-        [Description("Passwort des WiFi Netzwerks")]
-        public string NetworkPassword { get; set; }
+        public ushort NetworkPacketBufferSize;
 
+        //Toogles the debug output on Serial
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Debug")]
-        [Description("Ob Log-Nachrichten auf die serielle Schnittstelle geschrieben werden sollen.")]
-        public bool VerboseSerialLog { get; set; }
+        public bool VerboseSerialLog;
+        //The temperature, at which the drone starts to decent on turn off
+
+        [Category("Drone")]
+        public float MaxTemperature;
+
+        //A offset value for the pitch
+        [Category("Flying")]
+        public ushort TrimPitch;
+
+        //A offset value for the roll
+        [Category("Flying")]
+        public ushort TrimRoll;
+
+        //A offset value for the yaw
+        [Category("Flying")]
+        public ushort TrimYaw;
+
+        //A offset value for the throttle
+        [Category("Flying")]
+        public ushort TrimThrottle;
+
+        //The minumum output value for the ESC's
+        [Category("Motors")]
+        public ushort ServoMin;
+
+        //The maximum output value for the ESC's
+        [Category("Motors")]
+        public ushort ServoMax;
+
+        //The output value for the ESC's, at which they start to turn
+        [Category("Motors")]
+        public ushort ServoIdle;
+
+        //The output value for the ESC's, at which the drone hovers
+        [Category("Motors")]
+        public ushort ServoHover;
+
+        //The X gyro offset value for the DMP
+        [Category("Gyro")]
+        public short DMPOffsetX;
+
+        //The Y gyro offset value for the DMP
+        [Category("Gyro")]
+        public short DMPOffsetY;
+
+        //The Z gyro offset value for the DMP
+        [Category("Gyro")]
+        public short DMPOffsetZ;
+
+        //The acceleration offset value for the DMP
+        [Category("Gyro")]
+        public ushort DMPOffsetAccel;
+
+        //The pin of the front-left motor
+        [Category("Pins")]
+        public byte PinFrontLeft;
+
+        //The pin of the front-right motor
+        [Category("Pins")]
+        public byte PinFrontRight;
+
+        //The pin of the back-left motor
+        [Category("Pins")]
+        public byte PinBackLeft;
+
+        //The pin of the back-right motor
+        [Category("Pins")]
+        public byte PinBackRight;
+
+        //The pin of the LED
+        [Category("Pins")]
+        public byte PinLed;
 
         [Category("Flying")]
-        public float Degree2Ratio { get; set; }
+        public float Degree2Ratio;
 
         [Category("Flying")]
-        public float RotaryDegree2Ratio { get; set; }
+        public float RotaryDegree2Ratio;
 
-        [Category("Engine")]
-        public ushort PhysicsCalcDelay { get; set; }
+        [Category("Flying")]
+        public ushort PhysicsCalcDelay;
 
-        [Category("PID")]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public PidSettings PitchPid { get; set; }
+        [Category("Flying")]
+        [MarshalAs(UnmanagedType.U1)]
+        public EngineType EngineType;
 
-        [Category("PID")]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public PidSettings RollPid { get; set; }
-
-        [Category("PID")]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public PidSettings YawPid { get; set; }
+        public PidSettings PitchPidSettings;
+        public PidSettings RollPidSettings;
+        public PidSettings YawPidSettings;
 
 
-        public DroneSettings(string name, PacketBuffer buffer)
-            : this()
+        public static DroneSettings Read(PacketBuffer packetBuffer)
         {
-            this.DroneName = name;
-            this.NetworkSSID = buffer.ReadString();
-            this.NetworkPassword = buffer.ReadString();
-            this.VerboseSerialLog = buffer.ReadBoolean();
-            this.Degree2Ratio = buffer.ReadFloat();
-            this.RotaryDegree2Ratio = buffer.ReadFloat();
-            this.PhysicsCalcDelay = buffer.ReadUShort();
+            int size = Marshal.SizeOf(typeof(DroneSettings));
 
-            this.PitchPid = new PidSettings(buffer);
-            this.RollPid = new PidSettings(buffer);
-            this.YawPid = new PidSettings(buffer);
+            byte[] buffer = new byte[size];
+            packetBuffer.Read(buffer, 0, buffer.Length);
+
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            DroneSettings settings = (DroneSettings)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DroneSettings));  
+            handle.Free();
+
+            return settings;
         }
 
-        public void Write(PacketBuffer buffer)
+        public void Write(PacketBuffer packetBuffer)
         {
-            if (string.IsNullOrWhiteSpace(DroneName))
-                throw new ArgumentException("DroneName is null or white space", nameof(DroneName));
-            if (DroneName.Length > 30)
-                throw new ArgumentException("DroneName is longer then 30 chars", nameof(DroneName));
+            int size = Marshal.SizeOf(typeof(DroneSettings));
 
-            if (string.IsNullOrWhiteSpace(NetworkSSID))
-                throw new ArgumentException("NetworkSSID is null or white space", nameof(NetworkSSID));
-            if (NetworkSSID.Length > 30)
-                throw new ArgumentException("NetworkSSID is longer then 30 chars", nameof(NetworkSSID));
+            byte[] buffer = new byte[size];
 
-            if (string.IsNullOrWhiteSpace(NetworkPassword))
-                throw new ArgumentException("NetworkPassword is null or white space", nameof(NetworkPassword));
-            if (NetworkPassword.Length > 30)
-                throw new ArgumentException("NetworkPassword is longer then 30 chars", nameof(NetworkPassword));
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            Marshal.StructureToPtr(this, handle.AddrOfPinnedObject(), false);
+            handle.Free();
 
-            if (Degree2Ratio < 0 || Degree2Ratio > 1)
-                throw new ArgumentOutOfRangeException(nameof(Degree2Ratio), Degree2Ratio, "Value must be in range 0 - 1");
-            if (RotaryDegree2Ratio < 0 || RotaryDegree2Ratio > 1)
-                throw new ArgumentOutOfRangeException(nameof(RotaryDegree2Ratio), RotaryDegree2Ratio, "Value must be in range 0 - 1");
-
-            if (PhysicsCalcDelay < 0 || PhysicsCalcDelay > 100)
-                throw new ArgumentOutOfRangeException(nameof(PhysicsCalcDelay), PhysicsCalcDelay, "Value must be in range 0 - 100");
-
-            buffer.Write(DroneName);
-            buffer.Write(NetworkSSID);
-            buffer.Write(NetworkPassword);
-            buffer.Write(VerboseSerialLog);
-            buffer.Write(Degree2Ratio);
-            buffer.Write(RotaryDegree2Ratio);
-            buffer.Write(PhysicsCalcDelay);
-
-            PitchPid.Write(buffer);
-            RollPid.Write(buffer);
-            YawPid.Write(buffer);
-        }
-
-        public static bool operator ==(DroneSettings a, DroneSettings b)
-        {
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(DroneSettings a, DroneSettings b)
-        {
-            return !(a == b);
-        }
-
-
-        public override bool Equals(object obj)
-        {
-            if (obj is DroneSettings)
-                return Equals((DroneSettings)obj);
-            return false;
-        }
-
-        public bool Equals(DroneSettings other)
-        {
-            return DroneName == other.DroneName
-                   && NetworkSSID == other.NetworkSSID
-                   && NetworkPassword == other.NetworkPassword
-                   && VerboseSerialLog == other.VerboseSerialLog
-                   && Degree2Ratio == other.Degree2Ratio
-                   && RotaryDegree2Ratio == other.RotaryDegree2Ratio
-                   && PhysicsCalcDelay == other.PhysicsCalcDelay
-                   && PitchPid.Equals(other.PitchPid)
-                   && RollPid.Equals(other.RollPid)
-                   && YawPid.Equals(other.YawPid);
-
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 13;
-                hash = hash * 7 + (DroneName == null ? 0 : DroneName.GetHashCode());
-                hash = hash * 7 + (NetworkSSID == null ? 0 : NetworkSSID.GetHashCode());
-                hash = hash * 7 + (NetworkPassword == null ? 0 : NetworkPassword.GetHashCode());
-                hash = hash * 7 + VerboseSerialLog.GetHashCode();
-                hash = hash * 7 + Degree2Ratio.GetHashCode();
-                hash = hash * 7 + RotaryDegree2Ratio.GetHashCode();
-                hash = hash * 7 + PhysicsCalcDelay.GetHashCode();
-                hash = hash * 7 + (PitchPid == null ? 0 : PitchPid.GetHashCode());
-                hash = hash * 7 + (RollPid == null ? 0 : RollPid.GetHashCode());
-                hash = hash * 7 + (YawPid == null ? 0 : YawPid.GetHashCode());
-                return hash;
-            }
+            packetBuffer.Write(buffer, 0, buffer.Length);
         }
     }
 }

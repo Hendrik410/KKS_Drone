@@ -190,7 +190,7 @@ namespace DroneLibrary
                 bool changed;
                 lock (settingsLock)
                 {
-                    changed = value != settings;
+                    changed = !value.Equals(settings);
                     if (changed)
                         settings = value;
                 }
@@ -680,7 +680,7 @@ namespace DroneLibrary
 
                     case PacketType.Info:
                         Info = new DroneInfo(buffer);
-                        Settings = new DroneSettings(Info.Name, buffer);
+                        Settings = DroneSettings.Read(buffer);
 
                         RemovePacketToAcknowlegde(revision);
                         break;

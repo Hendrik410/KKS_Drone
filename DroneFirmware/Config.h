@@ -19,12 +19,12 @@ enum DroneEngineType : byte {
 
 struct Config {
 	//A user-friendly name for the drone
-	char* DroneName;
+	char DroneName[20];
 
 	//The name of the WiFi network
-	char* NetworkSSID;
+	char NetworkSSID[20];
 	//The password of the WiFi network
-	char* NetworkPassword;
+	char NetworkPassword[30];
 
 	//The UDP-Port for the hello packets
 	uint16_t NetworkHelloPort;
@@ -60,11 +60,11 @@ struct Config {
 	uint16_t ServoHover;
 
 	//The X gyro offset value for the DMP
-	uint16_t DMPOffsetX;
+	int16_t DMPOffsetX;
 	//The Y gyro offset value for the DMP
-	uint16_t DMPOffsetY;
+	int16_t DMPOffsetY;
 	//The Z gyro offset value for the DMP
-	uint16_t DMPOffsetZ;
+	int16_t DMPOffsetZ;
 	//The acceleration offset value for the DMP
 	uint16_t DMPOffsetAccel;
 

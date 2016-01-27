@@ -236,26 +236,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 
-		writeBuffer->writeString(config->NetworkSSID);
-		writeBuffer->writeString(config->NetworkPassword);
-		writeBuffer->write(config->VerboseSerialLog);
-
-		writeBuffer->write(config->Degree2Ratio);
-		writeBuffer->write(config->RotaryDegree2Ratio);
-
-		writeBuffer->write(config->PhysicsCalcDelay);
-
-		writeBuffer->write(config->PitchPidSettings.Kp);
-		writeBuffer->write(config->PitchPidSettings.Ki);
-		writeBuffer->write(config->PitchPidSettings.Kd);
-
-		writeBuffer->write(config->RollPidSettings.Kp);
-		writeBuffer->write(config->RollPidSettings.Ki);
-		writeBuffer->write(config->RollPidSettings.Kd);
-
-		writeBuffer->write(config->YawPidSettings.Kp);
-		writeBuffer->write(config->YawPidSettings.Ki);
-		writeBuffer->write(config->YawPidSettings.Kd);
+		writeBuffer->write((uint8_t*)config, sizeof(Config));
 
 		sendPacket(udp);
 		break;
@@ -283,65 +264,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			ESP.restart();
 		break;
 	case SetConfig: {
-		char* droneName = readBuffer->readString();
-		if (strlen(droneName) == 0 || strlen(droneName) > 30) {
-			Log::error("Network", "[SetConfig] Invalid value for droneName");
-			return;
-		}
-
-		char* networkSSID = readBuffer->readString();
-		if (strlen(networkSSID) == 0 || strlen(networkSSID) > 30) {
-			Log::error("Network", "[SetConfig] Invalid value for droneName");
-			return;
-		}
-
-		char* networkPassword = readBuffer->readString();
-		if (strlen(networkPassword) == 0 || strlen(networkPassword) > 30) {
-			Log::error("Network", "[SetConfig] Invalid value for networkPassword");
-			return;
-		}
-
-		bool verboseSerialLog = readBuffer->readBoolean();
-
-		float degree2Ratio = readBuffer->readFloat();
-		if (degree2Ratio < 0 || degree2Ratio > 1) {
-			Log::error("Network", "[SetConfig] Invalid value for degree2Ratio");
-			return;
-		}
-
-		float rotaryDegree2Ratio = readBuffer->readFloat();
-		if (rotaryDegree2Ratio < 0 || rotaryDegree2Ratio > 1) {
-			Log::error("Network", "[SetConfig] Invalid value for rotaryDegree2Ratio");
-			return;
-		}
-
-		uint16_t physicsCalcDelay = readBuffer->readUint16();
-		if (physicsCalcDelay < 0 || physicsCalcDelay > 100) {
-			Log::error("Network", "[SetConfig] Invalid value for physicsCalcDelay");
-			return;
-		}
-
-		config->DroneName = droneName;
-		config->NetworkSSID = networkSSID;
-		config->NetworkPassword = networkPassword;
-		config->VerboseSerialLog = verboseSerialLog;
-		config->Degree2Ratio = degree2Ratio;
-		config->RotaryDegree2Ratio = rotaryDegree2Ratio;
-		config->PhysicsCalcDelay = physicsCalcDelay;
-
-
-		PID_Settings pitch, roll, yaw;
-
-		if (!PID_Settings::read(readBuffer, &pitch))
-			return;
-		if (!PID_Settings::read(readBuffer, &roll))
-			return;
-		if (!PID_Settings::read(readBuffer, &yaw))
-			return;
-
-		config->PitchPidSettings = pitch;
-		config->RollPidSettings = roll;
-		config->YawPidSettings = yaw;
+		readBuffer->read((byte*)config, sizeof(Config));
 
 		Log::info("Network", "Config set.");
 
