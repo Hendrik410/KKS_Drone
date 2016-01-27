@@ -87,6 +87,10 @@ void setup() {
 
 	config = ConfigManager::loadConfig();
 
+	// Log setzen
+	Log::setPrintToSerial(config.VerboseSerialLog);
+
+
 	//setup servos
 	servos = new ServoManager(&config);
 	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
