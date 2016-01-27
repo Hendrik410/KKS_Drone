@@ -153,6 +153,8 @@ namespace DroneControl
                 }
 
                 statusArmedLabel.Text = $"Status: {data.State}";
+
+                wifiRssiLabel.Text = $"Wifi signal: {data.WifiRssi}dBm";
             }
         }
 

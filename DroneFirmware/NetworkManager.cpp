@@ -319,6 +319,7 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 
 		writeBuffer->write(gyro->getTemperature());
 		writeBuffer->write(voltageReader->readVoltage());
+		writeBuffer->write(WiFi.RSSI());
 
 		sendData(udp);
 		_lastDataSend = millis();
@@ -331,7 +332,10 @@ void NetworkManager::sendLog(WiFiUDP udp) {
 	while (Log::getBufferLines() > 0) {
 		writeDataHeader(dataUDP, dataRevision++, DataLog);
 
-		int messagesToSend = min(5, Log::getBufferLines());
+		int messagesToSend = Log::getBufferLines();
+		if (messagesToSend > 5)
+			messagesToSend = 5;
+
 		writeBuffer->write(messagesToSend);
 
 		for (int i = 0; i < messagesToSend; i++) {

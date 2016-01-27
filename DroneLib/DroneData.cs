@@ -23,11 +23,14 @@ namespace DroneLibrary {
             get;
         }
 
-        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro, float batteryVoltage) {
+        public int WifiRssi { get; }
+
+        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro, float batteryVoltage, int wifiRssi) {
             this.State = state;
             this.MotorValues = motorValues;
             this.Gyro = gyro;
             this.BatteryVoltage = batteryVoltage;
+            this.WifiRssi = wifiRssi;
         }
 
         public static bool operator ==(DroneData a, DroneData b) {

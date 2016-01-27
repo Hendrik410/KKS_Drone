@@ -23,6 +23,7 @@
 #include <ESP8266WiFi/src/WiFiUdp.h>
 #include "VoltageInputReader.h"
 #include <user_interface.h>
+#include "ESP8266WiFi.h"
 
 class NetworkManager
 {
