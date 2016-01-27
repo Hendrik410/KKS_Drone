@@ -264,9 +264,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			ESP.restart();
 		break;
 	case SetConfig: {
+		if (readBuffer->getSize() - readBuffer->getPosition() != sizeof(Config)) {
+			Log::error("Network", "[SetConfig] Packet size does not match config structure size");
+			return;
+		}
 		readBuffer->read((byte*)config, sizeof(Config));
 
 		Log::info("Network", "Config set.");
+		Log::setPrintToSerial(config->VerboseSerialLog);
 
 		ConfigManager::saveConfig(*config);
 		}

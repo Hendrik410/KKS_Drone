@@ -21,6 +21,7 @@ enum LogLevel {
 
 class Log {
 private:
+	static bool printToSerial;
 	static uint32_t bufferLines;
 	static char** _buffer;
 
@@ -37,6 +38,8 @@ public:
 	static char** getBuffer();
 	static void clearBuffer();
 	static char* popMessage();
+
+	static void setPrintToSerial(bool value);
 };
 
 
