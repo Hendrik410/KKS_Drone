@@ -306,6 +306,9 @@ namespace DroneLibrary
                 lastDataLogRevision = 0;
                 lastDataDebugRevision = 0;
 
+                // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
+                packetsToAcknowledge.Clear();
+
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
                 SendPacket(new PacketCalibrateGyro(), true);
@@ -415,7 +418,7 @@ namespace DroneLibrary
             if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
                 throw new InvalidOperationException("Drone in invalid state: " + Data.State);
 
-            SendPacket(new PacketReset(), true);
+            SendPacket(new PacketReset(), false);
         }
 
         /// <summary>
@@ -425,7 +428,7 @@ namespace DroneLibrary
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketInfo(), true);
+            SendPacket(new PacketInfo(), false);
         }
 
         /// <summary>
