@@ -8,12 +8,15 @@
 
 class LinearDroneEngine : public DroneEngine
 {
- protected:
+protected:
+	float oldValues[4];
+	float newValues[4];
 
+	float getTargetRatio(MotorPosition position, MotorRotation rotation, float* target, float* data);
 
- public:
-	 LinearDroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
-	 void handleInternal() override;
+public:
+	LinearDroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
+	void handleInternal() override;
 };
 
 #endif

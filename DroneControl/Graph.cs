@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DroneLibrary;
 
 namespace DroneControl
 {
@@ -37,7 +38,8 @@ namespace DroneControl
 
         private int GetValue(int x)
         {
-            return (int)(((History[x] - History.Min) / (History.Max - History.Min)) * Height);
+            int v = (Height - 1) - (int)(((History[x] - History.FullMin) / (History.FullMax - History.FullMin)) * Height);
+            return Math.Min(Height, Math.Max(0, v));
         }
 
         protected override void OnPaint(PaintEventArgs e)

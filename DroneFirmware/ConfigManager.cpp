@@ -128,6 +128,9 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kp = 1;
 	config.YawPidSettings.Ki = 0.05;
 	config.YawPidSettings.Kd = 0.25;
+
+	config.InterpolationFactor = 0.5f;
+	config.CorrectionFactor = 0.4f;
 	
 
 	Log::info("Config", "Using default config");

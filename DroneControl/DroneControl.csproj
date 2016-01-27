@@ -131,6 +131,7 @@
     <Compile Include="Input\PrecisionControllerInputInterpreter.cs" />
     <Compile Include="Input\TargetMovementData.cs" />
     <Compile Include="Input\Xbox360InputInterpreter.cs" />
+    <Compile Include="LinearTargetRatio.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>

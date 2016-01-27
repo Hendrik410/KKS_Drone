@@ -16,21 +16,21 @@ Gyro::Gyro(Config* config) {
 	this->accelerationZOffset = 0;
 }
 
-void Gyro::init(){
+void Gyro::init() {
 	Log::info("Gyro", "init()");
 
 	mpu.reset();
 	mpu.initialize();
-	if(mpu.testConnection()) {
+	if (mpu.testConnection()) {
 		Log::error("Gyro", "testConnection() failed!");
 	}
-	else 
+	else
 		Log::info("Gyro", "testConnection() OK");
 
 	Log::info("Gyro", "dmpInitialize()");
-	
+
 	int result = mpu.dmpInitialize();
-	if(result) 
+	if (result)
 		Log::error("Gyro", "result: %d", result);
 
 	Log::info("Gyro", "done with init");
@@ -42,11 +42,10 @@ void Gyro::init(){
 }
 
 void Gyro::update() {
-	uint16_t fifoCount = mpu.getFIFOCount();
-	if (!mpu.getIntDataReadyStatus() || fifoCount < packetSize)
+	if (!mpu.getIntDataReadyStatus())
 		return;
 
-
+	uint16_t fifoCount = mpu.getFIFOCount();
 	if (mpu.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
 		mpu.resetFIFO();
 
@@ -54,10 +53,10 @@ void Gyro::update() {
 		return;
 	}
 
-	while (fifoCount >= packetSize) {
-		mpu.getFIFOBytes(fifoBuffer, packetSize);
-		fifoCount -= packetSize;
-	}
+	while (fifoCount < packetSize)
+		fifoCount = mpu.getFIFOCount();
+
+	mpu.getFIFOBytes(fifoBuffer, packetSize);
 
 	// Gyro Werte
 	mpu.dmpGetQuaternion(&q, fifoBuffer);

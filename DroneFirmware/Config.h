@@ -89,6 +89,9 @@ struct Config {
 	PID_Settings PitchPidSettings;
 	PID_Settings RollPidSettings;
 	PID_Settings YawPidSettings;
+
+	float InterpolationFactor;
+	float CorrectionFactor;
 };
 
 #endif

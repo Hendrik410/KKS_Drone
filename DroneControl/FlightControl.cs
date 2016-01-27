@@ -10,19 +10,25 @@ using System.Windows.Forms;
 using DroneControl.Input;
 using DroneLibrary;
 
-namespace DroneControl {
-    public partial class FlightControl : UserControl {
+namespace DroneControl
+{
+    public partial class FlightControl : UserControl
+    {
 
         private Drone drone;
 
         private InputController inputController;
+        private LinearTargetRatio targetRatio;
 
-        public FlightControl() {
+        public event EventHandler<float[]> OnRatioChanged;
+
+        public FlightControl()
+        {
 
             InitializeComponent();
-            
 
-            foreach(string s in Enum.GetNames(typeof(InputInterpreterType)))
+
+            foreach (string s in Enum.GetNames(typeof(InputInterpreterType)))
                 inputTypeComboBox.Items.Add(s);
 
             inputTypeComboBox.SelectedIndex = 0;
@@ -30,10 +36,13 @@ namespace DroneControl {
             maxPitchNumeric.ValueChanged += OnTiltLimitInputChange;
             maxRollNumeric.ValueChanged += OnTiltLimitInputChange;
             maxYawNumeric.ValueChanged += OnTiltLimitInputChange;
+
+            targetRatio = new LinearTargetRatio();
         }
 
-        public void Init(Drone drone) {
-            if(drone == null)
+        public void Init(Drone drone)
+        {
+            if (drone == null)
                 throw new ArgumentNullException(nameof(drone));
 
             this.drone = drone;
@@ -43,11 +52,12 @@ namespace DroneControl {
             this.drone.OnDataChange += Drone_OnDataChange;
         }
 
-        public void Close() {
+        public void Close()
+        {
             if (inputController != null)
                 inputController.Stop(); // NPE
         }
-        
+
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
@@ -67,8 +77,10 @@ namespace DroneControl {
             UpdateTargetRatio(e.Data);
         }
 
-        private void DeviceInterpreterOnTargetMovementChange(object sender, EventArgs eventArgs) {
-            if(InvokeRequired) {
+        private void DeviceInterpreterOnTargetMovementChange(object sender, EventArgs eventArgs)
+        {
+            if (InvokeRequired)
+            {
                 Invoke(new EventHandler(DeviceInterpreterOnTargetMovementChange), this, eventArgs);
                 return;
             }
@@ -82,20 +94,24 @@ namespace DroneControl {
             UpdateTargetRatio(drone.Data);
         }
 
-        private void OnTiltLimitInputChange(object sender, EventArgs e) {
-            if(inputController == null) return;
+        private void OnTiltLimitInputChange(object sender, EventArgs e)
+        {
+            if (inputController == null) return;
 
             inputController.DeviceInterpreter.MaxPitch = (float)maxPitchNumeric.Value;
             inputController.DeviceInterpreter.MaxRoll = (float)maxRollNumeric.Value;
             inputController.DeviceInterpreter.MaxYaw = (float)maxYawNumeric.Value;
         }
 
-        private void activeCheckBox_CheckedChanged(object sender, EventArgs e) {
-            if(activeCheckBox.Checked) {
+        private void activeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (activeCheckBox.Checked)
+            {
                 inputTypeComboBox.Enabled = false;
 
                 DeviceInputInterpreter interpreter;
-                switch((InputInterpreterType)inputTypeComboBox.SelectedIndex) {
+                switch ((InputInterpreterType)inputTypeComboBox.SelectedIndex)
+                {
                     case InputInterpreterType.GamePad:
                         interpreter = new GamepadInputInterpreter();
                         break;
@@ -114,7 +130,8 @@ namespace DroneControl {
                 OnTiltLimitInputChange(this, EventArgs.Empty);
 
                 inputController.Start();
-            } else {
+            }
+            else {
                 inputTypeComboBox.Enabled = true;
                 inputController.Stop();
             }
@@ -126,52 +143,13 @@ namespace DroneControl {
                 return;
 
             TargetMovementData target = inputController.DeviceInterpreter.TargetMovementData;
-            float deltaPitch = target.TargetPitch - data.Gyro.Pitch;
-            float deltaRoll = target.TargetRoll - data.Gyro.Roll;
-            float deltaYaw = 0; //AngleDifference(data.Gyro.Yaw, target.TargetYaw);
 
+            float[] ratios = targetRatio.Calculate(drone.Settings, target, data);
             ratioDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
-                GetTargetRatio(true, true, false, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
-                GetTargetRatio(true, false, true, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
-                GetTargetRatio(false, true, true, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust),
-                GetTargetRatio(false, false, false, deltaPitch, deltaRoll, deltaYaw, target.TargetThrust));
+                ratios[0], ratios[1], ratios[2], ratios[3]);
 
-        }
-
-        private float AngleDifference(float a, float b)
-        {
-            return ((((a - b) % 360) + 540) % 360) - 180;
-        }
-
-        private float GetTargetRatio(bool isFront, bool isLeft, bool isClockwise, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio)
-        {
-            float targetMotorRatio = verticalRatio;
-
-            if (Math.Abs(pitchDelta) >= 0.02)
-            {
-                if (isFront)
-                    targetMotorRatio += pitchDelta * drone.Settings.Degree2Ratio;
-                else
-                    targetMotorRatio -= pitchDelta * drone.Settings.Degree2Ratio;
-            }
-
-            if (Math.Abs(rollDelta) >= 0.02)
-            {
-                if (isLeft)
-                    targetMotorRatio -= rollDelta * drone.Settings.Degree2Ratio;
-                else
-                    targetMotorRatio += rollDelta * drone.Settings.Degree2Ratio;
-            }
-
-            if (Math.Abs(yawDelta) >= 0.02)
-            {
-                if (isClockwise)
-                    targetMotorRatio -= yawDelta * drone.Settings.RotaryDegree2Ratio;
-                else
-                    targetMotorRatio += yawDelta * drone.Settings.RotaryDegree2Ratio;
-            }
-
-            return targetMotorRatio;
+            if (OnRatioChanged != null)
+                OnRatioChanged(this, ratios);
         }
     }
 }

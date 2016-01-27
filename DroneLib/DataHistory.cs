@@ -49,6 +49,22 @@ namespace DroneLibrary
             get { return values.Last(); }
         }
 
+        public int ValueCount
+        {
+            get { return values.Count; }
+        }
+
+        public double FullMin { get; private set; } = double.MaxValue;
+        public double FullMax { get; private set; } = double.MinValue;
+
+        public double this[int value]
+        {
+            get
+            {
+                return values[Math.Min(value, values.Count)];
+            }
+        }
+
         public DataHistory(int count)
         {
             if (count <= 0)
@@ -77,6 +93,11 @@ namespace DroneLibrary
                 values.RemoveAt(0);
             values.Add(value);
             dirty = true;
+
+            if (value < FullMin)
+                FullMin = value;
+            if (value > FullMax)
+                FullMax = value;
         }
     }
 }

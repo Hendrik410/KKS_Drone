@@ -133,10 +133,20 @@ namespace DroneLibrary
         [MarshalAs(UnmanagedType.U1)]
         public EngineType EngineType;
 
+        [Category("Flying")]
         public PidSettings PitchPidSettings;
+
+        [Category("Flying")]
         public PidSettings RollPidSettings;
+
+        [Category("Flying")]
         public PidSettings YawPidSettings;
 
+        [Category("Flying")]
+        public float InterpolationFactor;
+
+        [Category("Flying")]
+        public float CorrectionFactor;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

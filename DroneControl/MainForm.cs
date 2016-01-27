@@ -253,7 +253,7 @@ namespace DroneControl
 
         private void graphButton_Click(object sender, EventArgs e)
         {
-            ShowForm(graphForm, () => (graphForm = new GraphForm(drone)));
+            ShowForm(graphForm, () => (graphForm = new GraphForm(drone, flightControl1)));
         }
     }
 }
