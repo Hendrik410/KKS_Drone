@@ -19,11 +19,14 @@ void * memcpy(void * destination, const void * source, int num);
 #endif
 
 #include "MemoryAdapter.h"
+#include "Log.h"
 
 class EEPROM_MemoryAdapter : public MemoryAdaptor {
 protected:
 	uint16_t size;
 	uint16_t offset;
+
+	bool assertAddress(uint32_t address, uint32_t length);
 
 public:
 	EEPROM_MemoryAdapter(uint16_t size, uint16_t offset);
