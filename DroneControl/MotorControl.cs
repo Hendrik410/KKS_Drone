@@ -40,6 +40,7 @@ namespace DroneControl
             
             UpdateValueBounds(drone.Settings);
             UpdateServoValue();
+            UpdateEnabled(drone.Data.State == DroneState.Armed);
         }
 
         private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
@@ -76,6 +77,17 @@ namespace DroneControl
                 rightBackTextBox.Text = motorValues.BackRight.ToString();
 
             UpdateServoValue();
+            UpdateEnabled(args.Data.State == DroneState.Armed);
+        }
+
+        private void UpdateEnabled(bool enabled)
+        {
+            leftFrontTextBox.Enabled = enabled;
+            rightFrontTextBox.Enabled = enabled;
+            leftBackTextBox.Enabled = enabled;
+            rightBackTextBox.Enabled = enabled;
+            servoValueNumericUpDown.Enabled = enabled;
+            valueTrackBar.Enabled = enabled;
         }
 
         private void UpdateValueBounds(DroneSettings settings)

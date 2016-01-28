@@ -42,13 +42,13 @@
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
-            this.motorControl1 = new DroneControl.MotorControl();
             this.flightControlPage = new System.Windows.Forms.TabPage();
-            this.flightControl1 = new DroneControl.FlightControl();
-            this.sensorControl1 = new DroneControl.SensorControl();
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.motorControl1 = new DroneControl.MotorControl();
+            this.flightControl1 = new DroneControl.FlightControl();
+            this.sensorControl1 = new DroneControl.SensorControl();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -229,7 +229,7 @@
             // 
             motorsSensorSplitContainer.Panel2.Controls.Add(this.sensorControl1);
             motorsSensorSplitContainer.Size = new System.Drawing.Size(473, 462);
-            motorsSensorSplitContainer.SplitterDistance = 177;
+            motorsSensorSplitContainer.SplitterDistance = 186;
             motorsSensorSplitContainer.TabIndex = 0;
             // 
             // mainViewTabs
@@ -240,7 +240,7 @@
             this.mainViewTabs.Location = new System.Drawing.Point(0, 0);
             this.mainViewTabs.Name = "mainViewTabs";
             this.mainViewTabs.SelectedIndex = 0;
-            this.mainViewTabs.Size = new System.Drawing.Size(473, 177);
+            this.mainViewTabs.Size = new System.Drawing.Size(473, 186);
             this.mainViewTabs.TabIndex = 15;
             // 
             // manualControlPage
@@ -249,17 +249,10 @@
             this.manualControlPage.Location = new System.Drawing.Point(4, 22);
             this.manualControlPage.Name = "manualControlPage";
             this.manualControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.manualControlPage.Size = new System.Drawing.Size(465, 151);
+            this.manualControlPage.Size = new System.Drawing.Size(465, 160);
             this.manualControlPage.TabIndex = 0;
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
-            // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(6, 3);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 132);
-            this.motorControl1.TabIndex = 3;
             // 
             // flightControlPage
             // 
@@ -267,25 +260,10 @@
             this.flightControlPage.Location = new System.Drawing.Point(4, 22);
             this.flightControlPage.Name = "flightControlPage";
             this.flightControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.flightControlPage.Size = new System.Drawing.Size(465, 151);
+            this.flightControlPage.Size = new System.Drawing.Size(465, 160);
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
-            // 
-            // flightControl1
-            // 
-            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
-            this.flightControl1.Name = "flightControl1";
-            this.flightControl1.Size = new System.Drawing.Size(457, 160);
-            this.flightControl1.TabIndex = 0;
-            // 
-            // sensorControl1
-            // 
-            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
-            this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(473, 281);
-            this.sensorControl1.TabIndex = 17;
             // 
             // infoTabControl
             // 
@@ -344,6 +322,28 @@
             // timer
             // 
             this.timer.Enabled = true;
+            // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(6, 3);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 132);
+            this.motorControl1.TabIndex = 3;
+            // 
+            // flightControl1
+            // 
+            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
+            this.flightControl1.Name = "flightControl1";
+            this.flightControl1.Size = new System.Drawing.Size(457, 160);
+            this.flightControl1.TabIndex = 0;
+            // 
+            // sensorControl1
+            // 
+            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(473, 272);
+            this.sensorControl1.TabIndex = 17;
             // 
             // MainForm
             // 
