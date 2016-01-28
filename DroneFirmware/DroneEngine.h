@@ -38,6 +38,7 @@ class DroneEngine
  private:
 	long lastPhysicsCalc;
 	long lastMovementUpdate;
+	long lastHeartbeat;
 
 	float maxTilt;
 	float maxRotationSpeed;
@@ -75,6 +76,8 @@ class DroneEngine
 	
 	void handle();
 	virtual void handleInternal() = 0;
+
+	void heartbeat();
 
 	void setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite = false) const;
 	void setRawServoValues(int all, bool forceWrite = false) const;

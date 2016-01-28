@@ -62,12 +62,16 @@ void DroneEngine::clearStatus() {
 }
 
 void DroneEngine::handle() {
-	if (_state == StateArmed || _state == StateFlying)
+	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED();
 
-	if (_state == StateFlying) {
-		if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
+		if (_state == StateFlying && millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
 			stop(NoData);
+			return;
+		}
+
+		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
+			stop(NoPing);
 			return;
 		}
 
@@ -92,7 +96,9 @@ void DroneEngine::setRawServoValues(int all, bool forceWrite) const {
 	setRawServoValues(all, all, all, all, forceWrite);
 }
 
-
+void DroneEngine::heartbeat() {
+	lastHeartbeat = millis();
+}
 
 /*################## Getter and Setter ####################*/
 

@@ -206,6 +206,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case PingPacket:
 		echoPacket(udp);
+
+		engine->heartbeat();
 		break;
 	case BlinkPacket:
 		blinkLED();

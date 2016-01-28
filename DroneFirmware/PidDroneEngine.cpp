@@ -11,7 +11,7 @@ PidDroneEngine::PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config)
 	inputRoll = 0;
 	inputYaw = 0;
 
-	lastYaw = gyro->getYaw();
+	targetYaw = gyro->getYaw();
 
 	pidPitch = new PID(&inputPitch, &outputPitch, &targetPitch,
 		config->PitchPidSettings.Kp,

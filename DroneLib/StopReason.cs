@@ -12,6 +12,7 @@ namespace DroneLibrary
         None,
         User,
         NoData,
+        NoPing,
         InvalidGyro
     }
 }

@@ -6,6 +6,7 @@ enum StopReason : byte {
 	None, 
 	User,
 	NoData,
+	NoPing,
 	InvalidGyro
 };
 
