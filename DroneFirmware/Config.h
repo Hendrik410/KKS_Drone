@@ -36,6 +36,9 @@ struct Config {
 	//The size of the buffer for incoming packets
 	uint16_t NetworkPacketBufferSize;
 
+	//The time, after when the drone stopps without any action sent
+	uint32_t MaximumNetworkTimeout;
+
 	//Toogles the debug output on Serial
 	bool VerboseSerialLog;
 	//The temperature, at which the drone starts to decent on turn off

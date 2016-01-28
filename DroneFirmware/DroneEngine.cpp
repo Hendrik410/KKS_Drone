@@ -65,7 +65,7 @@ void DroneEngine::handle() {
 		blinkLED();
 
 	if (_state == StateFlying) {
-		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
+		if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
 			stop(NoData);
 			return;
 		}

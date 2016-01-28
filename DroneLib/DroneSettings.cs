@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace DroneLibrary
 {
-    [StructLayout(LayoutKind.Sequential, Size = 172, Pack = 0, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Size = 176, Pack = 0, CharSet = CharSet.Ansi)]
     [TypeConverter(typeof(DroneSettingsTypeConverter))]
     public unsafe struct DroneSettings 
     {
@@ -42,6 +42,10 @@ namespace DroneLibrary
 
         [Category("Network")]
         public ushort NetworkPacketBufferSize;
+
+        //The time, after when the drone stopps without any action sent
+        [Category("Network")]
+        public uint MaximumNetworkTimeout;
 
         //Toogles the debug output on Serial
         [MarshalAs(UnmanagedType.U1)]
