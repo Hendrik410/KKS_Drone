@@ -75,7 +75,7 @@ void DroneEngine::handle() {
 			return;
 		}
 
-		if (abs(gyro->getRoll()) > 35 || abs(gyro->getPitch()) > 35) {
+		if (abs(gyro->getRoll()) > config->SafeRoll || abs(gyro->getPitch()) > config->SafePitch) {
 			stop(InvalidGyro);
 			return;
 		}

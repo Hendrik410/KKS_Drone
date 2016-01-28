@@ -97,6 +97,9 @@ struct Config {
 
 	float InterpolationFactor;
 	float CorrectionFactor;
+
+	float SafePitch;
+	float SafeRoll;
 };
 
 #endif

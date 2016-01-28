@@ -133,6 +133,9 @@ Config ConfigManager::getDefault() {
 
 	config.InterpolationFactor = 0.5f;
 	config.CorrectionFactor = 0;
+
+	config.SafePitch = 35;
+	config.SafeRoll = 35;
 	
 
 	Log::info("Config", "Using default config");
