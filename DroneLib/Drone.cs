@@ -774,7 +774,10 @@ namespace DroneLibrary
 
                         int wifiRssi = buffer.ReadInt();
 
-                        Data = new DroneData(state, motorValues, gyro, batteryVoltage, wifiRssi);
+                        MotorRatios motorRatios = new MotorRatios(buffer.ReadFloat(), buffer.ReadFloat(),
+                            buffer.ReadFloat(), buffer.ReadFloat());
+
+                        Data = new DroneData(state, motorValues, motorRatios, gyro, batteryVoltage, wifiRssi);
 
                         lastDataDroneRevision = revision;
                         break;

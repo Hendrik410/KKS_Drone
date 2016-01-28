@@ -321,6 +321,11 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(voltageReader->readVoltage());
 		writeBuffer->write(WiFi.RSSI());
 
+		writeBuffer->write(engine->getFrontLeftRatio());
+		writeBuffer->write(engine->getFrontRightRatio());
+		writeBuffer->write(engine->getBackLeftRatio());
+		writeBuffer->write(engine->getBackRightRatio());
+
 		sendData(udp);
 		_lastDataSend = millis();
 
