@@ -40,6 +40,7 @@ class DroneEngine
 	 long lastPhysicsCalc;
 	 long lastYawTargetCalc;
 	 long lastMovementUpdate;
+	 long maxMovementUpdateInterval = 500;
 
 	 DroneState _state;
 	 StopReason _stopReason;
@@ -72,8 +73,7 @@ class DroneEngine
 	DroneState state() const;
 	StopReason getStopReason() const;
 	
-	void handle();
-	virtual void handleInternal() = 0;
+	virtual void handle() = 0;
 
 	void setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite = false) const;
 	void setRawServoValues(int all, bool forceWrite = false) const;

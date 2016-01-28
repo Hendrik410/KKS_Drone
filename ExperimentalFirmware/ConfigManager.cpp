@@ -16,35 +16,26 @@ Config ConfigManager::loadConfig() {
 }
 
 Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
-	// wir nutzen erstes Byte um zu Erkennen ob schon Daten geschrieben wurden
-	if (memory->readByte(0) != CONFIG_MAGIC_VALUE) {
-		Log::info("Config", "Saved magic value does not match excepted magic value");
+	if (memory->readByte(0) != 123) {
 		return getDefault();
 	}
 
-	if (memory->readByte(1) != CONFIG_VERSION) {
-		Log::info("Config", "Saved config version does not match excepted version");
-		return getDefault();
-	}
-
-	// nach Magic Value folgt ein uint16_t für die Größe der Config
-	uint8_t buffer[sizeof(uint16_t)];
-	memory->read(2, buffer, sizeof(buffer));
-
-	uint16_t size = BinaryHelper::readUint16(buffer, 0);
-
-	// über die Größe erkennen wir ob sich die Structure geändert hat
-	if (size != sizeof(Config)) {
-		Log::info("Config", "Config size does not match saved size");
-		return getDefault();
-	}
-
-	// nach der Größe folgen unsere eigentliche Daten
 	Config* config = (Config*)malloc(sizeof(Config));
-	memory->read(4, (byte*)config, sizeof(Config));
+	memory->read(1, (byte*)config, sizeof(Config)); // read main structure
+
+	// read strings
+	PacketBuffer* buffer = new PacketBuffer(128);
+	memory->read(128, buffer->getBuffer(), buffer->getBufferSize());
+
+	config->DroneName = buffer->readString();
+	config->NetworkSSID = buffer->readString();
+	config->NetworkPassword = buffer->readString();
+
+	delete buffer;
+
 
 	Log::info("Config", "Config loaded");
-	return *config;
+	return *config; 
 }
 
 void ConfigManager::saveConfig(const Config config) {
@@ -58,18 +49,19 @@ void ConfigManager::saveConfig(const Config config) {
 }
 
 void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
-	// Magic Value speichern
-	memory->writeByte(0, CONFIG_MAGIC_VALUE);
+	memory->writeByte(0, 123);
 
-	memory->writeByte(1, CONFIG_VERSION);
+	memory->write(1, (byte*)(&config), sizeof(Config)); // write main structure
 
-	// Größe der Config Structure speichern
-	uint8_t buffer[sizeof(uint16_t)];
-	BinaryHelper::writeUint16(buffer, 0, sizeof(Config));
-	memory->write(2, buffer, sizeof(buffer));
+	// write strings
+	PacketBuffer* buffer = new PacketBuffer(128);
+	buffer->writeString(config.DroneName);
+	buffer->writeString(config.NetworkSSID);
+	buffer->writeString(config.NetworkPassword);
 
-	// eigentliche Daten speichern
-	memory->write(4, (byte*)(&config), sizeof(Config));
+	memory->write(128, buffer->getBuffer(), buffer->getBufferSize());
+	
+	delete buffer;
 
 	Log::info("Config", "Config saved");
 }
@@ -77,16 +69,15 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 Config ConfigManager::getDefault() {
 	Config config;
 
-	memcpy(config.DroneName, "koalaDrone", 11);
+	config.DroneName = "koalaDrone";
 
-	memcpy(config.NetworkSSID, "Drone", 6);
-	memcpy(config.NetworkPassword, "12345678", 9);
+	config.NetworkSSID = "Drone";
+	config.NetworkPassword = "12345678"; 
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 512;
-	config.MaximumNetworkTimeout = 500;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
@@ -97,9 +88,9 @@ Config ConfigManager::getDefault() {
 	config.TrimThrottle = 0;
 
 	config.ServoMin = 900;
-	config.ServoMax = 2000;
-	config.ServoIdle = 975;
-	config.ServoHover = 1200;
+	config.ServoMax = 1400;
+	config.ServoIdle = 1200;
+	config.ServoHover = 1280;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;
@@ -112,11 +103,11 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.05f;
-	config.RotaryDegree2Ratio = 0.05f;
+	config.Degree2Ratio = 0.03f;
+	config.RotaryDegree2Ratio = 0.03f;
 	config.PhysicsCalcDelay = 20;
 
-	config.EngineType = EngineLinear;
+	config.EngineType = EnginePID;
 
 	config.PitchPidSettings.Kp = 1;
 	config.PitchPidSettings.Ki = 0.05;
@@ -129,9 +120,6 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kp = 1;
 	config.YawPidSettings.Ki = 0.05;
 	config.YawPidSettings.Kd = 0.25;
-
-	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0;
 	
 
 	Log::info("Config", "Using default config");

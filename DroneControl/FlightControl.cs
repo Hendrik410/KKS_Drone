@@ -143,10 +143,12 @@ namespace DroneControl
                 return;
 
             TargetMovementData target = inputController.DeviceInterpreter.TargetMovementData;
+            MotorRatios actualMotorRatios = data.MotorRatios;
 
             float[] ratios = targetRatio.Calculate(drone.Settings, target, data);
-            ratioDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
-                ratios[0], ratios[1], ratios[2], ratios[3]);
+            ratioDataLabel.Text = string.Format("FL: {0:0.00} ({4:0.00})\nFR: {1:0.00} ({5:0.00})\nBL: {2:0.00} ({6:0.00})\nBR: {3:0.00} ({7:0.00})",
+                ratios[0], ratios[1], ratios[2], ratios[3],
+                actualMotorRatios.FrontLeft, actualMotorRatios.FrontRight, actualMotorRatios.BackLeft, actualMotorRatios.BackRight);
 
             if (OnRatioChanged != null)
                 OnRatioChanged(this, ratios);

@@ -65,7 +65,7 @@ void DroneEngine::handle() {
 		blinkLED();
 
 	if (_state == StateFlying) {
-		if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
+		if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
 			stop(NoData);
 			return;
 		}
@@ -75,7 +75,30 @@ void DroneEngine::handle() {
 			return;
 		}
 
-		handleInternal();
+		// recalculate the yaw target 10 times a second to match rotary speed
+		if (millis() - lastYawTargetCalc >= 100) {
+			targetYaw += targetRotationSpeed / 10;
+			lastYawTargetCalc = millis();
+		}
+
+		if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
+			float currentPitch = gyro->getPitch();
+			float currentRoll = gyro->getRoll();
+			float currentYaw = gyro->getYaw();
+
+			float correctionPitch = targetPitch - currentPitch;
+			float correctionRoll = targetRoll - currentRoll;
+			float correctionYaw = 0; // MathHelper::angleDifference(targetYaw, currentYaw);
+
+			frontLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
+			frontRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
+			backLeftRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
+			backRightRatio = MathHelper::mixMotor(config, correctionPitch, correctionRoll, correctionYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+
+			servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
+
+			lastPhysicsCalc = millis();
+		}
 	}
 }
 

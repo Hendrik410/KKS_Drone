@@ -25,6 +25,13 @@ PidDroneEngine::PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config)
 		config->YawPidSettings.Kp,
 		config->YawPidSettings.Ki,
 		config->YawPidSettings.Kd, DIRECT);
+
+	pidPitch->SetMode(AUTOMATIC);
+	pidPitch->SetOutputLimits(-40, 40);
+	pidRoll->SetMode(AUTOMATIC);
+	pidRoll->SetOutputLimits(-40, 40);
+	pidYaw->SetMode(AUTOMATIC);
+	pidYaw->SetOutputLimits(-40, 40);
 }
 
 
@@ -45,7 +52,7 @@ void PidDroneEngine::handleInternal() {
 		config->YawPidSettings.Kd);
 
 
-	if (millis() - lastMovementUpdate >= maxMovementUpdateInterval) {
+	if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
 		stop(InvalidGyro);
 		return;
 	}
