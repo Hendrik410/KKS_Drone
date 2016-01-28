@@ -54,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DroneLib\DroneLibrary.csproj">
       <Project>{6e3fca3a-367d-4a00-bc85-00c767c16c80}</Project>
       <Name>DroneLibrary</Name>
