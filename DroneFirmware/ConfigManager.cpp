@@ -16,26 +16,35 @@ Config ConfigManager::loadConfig() {
 }
 
 Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
-	if (memory->readByte(0) != 123) {
+	// wir nutzen erstes Byte um zu Erkennen ob schon Daten geschrieben wurden
+	if (memory->readByte(0) != CONFIG_MAGIC_VALUE) {
+		Log::info("Config", "Saved magic value does not match excepted magic value");
 		return getDefault();
 	}
 
+	if (memory->readByte(1) != CONFIG_VERSION) {
+		Log::info("Config", "Saved config version does not match excepted version");
+		return getDefault();
+	}
+
+	// nach Magic Value folgt ein uint16_t für die Größe der Config
+	uint8_t buffer[sizeof(uint16_t)];
+	memory->read(2, buffer, sizeof(buffer));
+
+	uint16_t size = BinaryHelper::readUint16(buffer, 0);
+
+	// über die Größe erkennen wir ob sich die Structure geändert hat
+	if (size != sizeof(Config)) {
+		Log::info("Config", "Config size does not match saved size");
+		return getDefault();
+	}
+
+	// nach der Größe folgen unsere eigentliche Daten
 	Config* config = (Config*)malloc(sizeof(Config));
-	memory->read(1, (byte*)config, sizeof(Config)); // read main structure
-
-	// read strings
-	PacketBuffer* buffer = new PacketBuffer(128);
-	memory->read(128, buffer->getBuffer(), buffer->getBufferSize());
-
-	config->DroneName = buffer->readString();
-	config->NetworkSSID = buffer->readString();
-	config->NetworkPassword = buffer->readString();
-
-	delete buffer;
-
+	memory->read(4, (byte*)config, sizeof(Config));
 
 	Log::info("Config", "Config loaded");
-	return *config; 
+	return *config;
 }
 
 void ConfigManager::saveConfig(const Config config) {
@@ -49,19 +58,18 @@ void ConfigManager::saveConfig(const Config config) {
 }
 
 void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
-	memory->writeByte(0, 123);
+	// Magic Value speichern
+	memory->writeByte(0, CONFIG_MAGIC_VALUE);
 
-	memory->write(1, (byte*)(&config), sizeof(Config)); // write main structure
+	memory->writeByte(1, CONFIG_VERSION);
 
-	// write strings
-	PacketBuffer* buffer = new PacketBuffer(128);
-	buffer->writeString(config.DroneName);
-	buffer->writeString(config.NetworkSSID);
-	buffer->writeString(config.NetworkPassword);
+	// Größe der Config Structure speichern
+	uint8_t buffer[sizeof(uint16_t)];
+	BinaryHelper::writeUint16(buffer, 0, sizeof(Config));
+	memory->write(2, buffer, sizeof(buffer));
 
-	memory->write(128, buffer->getBuffer(), buffer->getBufferSize());
-	
-	delete buffer;
+	// eigentliche Daten speichern
+	memory->write(4, (byte*)(&config), sizeof(Config));
 
 	Log::info("Config", "Config saved");
 }
@@ -69,10 +77,10 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 Config ConfigManager::getDefault() {
 	Config config;
 
-	config.DroneName = "koalaDrone";
+	memcpy(config.DroneName, "koalaDrone", 11);
 
-	config.NetworkSSID = "Drone";
-	config.NetworkPassword = "12345678"; 
+	memcpy(config.NetworkSSID, "Drone", 6);
+	memcpy(config.NetworkPassword, "12345678", 9);
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
@@ -120,6 +128,9 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kp = 1;
 	config.YawPidSettings.Ki = 0.05;
 	config.YawPidSettings.Kd = 0.25;
+
+	config.InterpolationFactor = 0.5f;
+	config.CorrectionFactor = 0.4f;
 	
 
 	Log::info("Config", "Using default config");

@@ -190,7 +190,7 @@ namespace DroneLibrary
                 bool changed;
                 lock (settingsLock)
                 {
-                    changed = value != settings;
+                    changed = !value.Equals(settings);
                     if (changed)
                         settings = value;
                 }
@@ -306,6 +306,9 @@ namespace DroneLibrary
                 lastDataLogRevision = 0;
                 lastDataDebugRevision = 0;
 
+                // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
+                packetsToAcknowledge.Clear();
+
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
                 SendPacket(new PacketCalibrateGyro(), true);
@@ -412,7 +415,10 @@ namespace DroneLibrary
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketReset(), true);
+            if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
+                throw new InvalidOperationException("Drone in invalid state: " + Data.State);
+
+            SendPacket(new PacketReset(), false);
         }
 
         /// <summary>
@@ -422,7 +428,7 @@ namespace DroneLibrary
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketInfo(), true);
+            SendPacket(new PacketInfo(), false);
         }
 
         /// <summary>
@@ -677,7 +683,7 @@ namespace DroneLibrary
 
                     case PacketType.Info:
                         Info = new DroneInfo(buffer);
-                        Settings = new DroneSettings(Info.Name, buffer);
+                        Settings = DroneSettings.Read(buffer);
 
                         RemovePacketToAcknowlegde(revision);
                         break;
@@ -766,7 +772,9 @@ namespace DroneLibrary
 
                         float batteryVoltage = buffer.ReadFloat();
 
-                        Data = new DroneData(state, motorValues, gyro, batteryVoltage);
+                        int wifiRssi = buffer.ReadInt();
+
+                        Data = new DroneData(state, motorValues, gyro, batteryVoltage, wifiRssi);
 
                         lastDataDroneRevision = revision;
                         break;

@@ -14,19 +14,25 @@ namespace DroneControl
     public partial class GraphForm : Form
     {
         public Drone Drone { get; private set; }
+        public FlightControl FlightControl { get; private set; }
 
-        public GraphForm(Drone drone)
+        public GraphForm(Drone drone, FlightControl flightControl)
         {
             InitializeComponent();
 
             this.Drone = drone;
             this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
+
+            this.FlightControl = flightControl;
+            this.FlightControl.OnRatioChanged += FlightControl_OnRatioChanged;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (this.Drone != null)
                 this.Drone.OnDebugDataChange -= Drone_OnDebugDataChange;
+            if (this.FlightControl != null)
+                this.FlightControl.OnRatioChanged -= FlightControl_OnRatioChanged;
             base.OnFormClosed(e);
         }
 
@@ -38,10 +44,30 @@ namespace DroneControl
                 return;
             }
 
-            frontLeftRatio.UpdateValue(e.DebugData.FrontLeftRatio);
-            frontRightRatio.UpdateValue(e.DebugData.FrontRightRatio);
-            backLeftRatio.UpdateValue(e.DebugData.BackLeftRatio);
-            backRightRatio.UpdateValue(e.DebugData.BackRightRatio);
+            if (Drone.Data.State == DroneState.Armed || Drone.Data.State == DroneState.Flying)
+            {
+                frontLeftRatio.UpdateValue(e.DebugData.FrontLeftRatio);
+                frontRightRatio.UpdateValue(e.DebugData.FrontRightRatio);
+                backLeftRatio.UpdateValue(e.DebugData.BackLeftRatio);
+                backRightRatio.UpdateValue(e.DebugData.BackRightRatio);
+            }
+        }
+
+        private void FlightControl_OnRatioChanged(object sender, float[] e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<float[]>(FlightControl_OnRatioChanged), sender, e);
+                return;
+            }
+
+            if (Drone.Data.State != DroneState.Armed && Drone.Data.State != DroneState.Flying)
+            {
+                frontLeftRatio.UpdateValue(e[0]);
+                frontRightRatio.UpdateValue(e[1]);
+                backLeftRatio.UpdateValue(e[2]);
+                backRightRatio.UpdateValue(e[3]);
+            }
         }
     }
 }

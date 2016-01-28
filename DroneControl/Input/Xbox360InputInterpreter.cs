@@ -26,6 +26,8 @@ namespace DroneControl.Input
         private Timer timer;
         private Controller controller;
 
+        private State lastState;
+
         private TargetMovementData targetMovementData;
 
         public Xbox360InputInterpreter(int updateIntervall = 50)
@@ -87,8 +89,7 @@ namespace DroneControl.Input
             float targetYaw = (state.Gamepad.RightThumbX / (float)short.MaxValue) * MaxYaw;
             float targetThrust = (state.Gamepad.RightThumbY / (float)short.MaxValue);
 
-            targetPitch *= -1;
-            targetThrust *= -1;
+            targetRoll *= -1;
 
             if (Math.Abs(targetPitch) < 1)
                 targetPitch = 0;
@@ -99,15 +100,19 @@ namespace DroneControl.Input
             if (Math.Abs(targetThrust) < 0.1)
                 targetThrust = 0;
 
+            
+
             TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetYaw, targetThrust);
 
-            CheckButton(state, GamepadButtonFlags.Start, ControlButtonType.ToggleArm);
-            CheckButton(state, GamepadButtonFlags.Y, ControlButtonType.Stop);
+            CheckButton(lastState, state, GamepadButtonFlags.Start, ControlButtonType.ToggleArm);
+            CheckButton(lastState, state, GamepadButtonFlags.Y, ControlButtonType.Stop);
+
+            lastState = state;
         }
 
-        private void CheckButton(State state, GamepadButtonFlags button, ControlButtonType type)
+        private void CheckButton(State lastState, State state, GamepadButtonFlags button, ControlButtonType type)
         {
-            if (state.Gamepad.Buttons.HasFlag(button))
+            if (lastState.Gamepad.Buttons.HasFlag(button) && !state.Gamepad.Buttons.HasFlag(button))
                 OnControlButtonPressed(type);
         }
     }

@@ -143,35 +143,35 @@
             // 
             // rightBackTextBox
             // 
-            this.rightBackTextBox.Enabled = false;
             this.rightBackTextBox.Location = new System.Drawing.Point(146, 48);
             this.rightBackTextBox.Name = "rightBackTextBox";
             this.rightBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightBackTextBox.TabIndex = 7;
+            this.rightBackTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
             // 
             // rightFrontTextBox
             // 
-            this.rightFrontTextBox.Enabled = false;
             this.rightFrontTextBox.Location = new System.Drawing.Point(146, 22);
             this.rightFrontTextBox.Name = "rightFrontTextBox";
             this.rightFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightFrontTextBox.TabIndex = 5;
+            this.rightFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
             // 
             // leftBackTextBox
             // 
-            this.leftBackTextBox.Enabled = false;
             this.leftBackTextBox.Location = new System.Drawing.Point(79, 48);
             this.leftBackTextBox.Name = "leftBackTextBox";
             this.leftBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftBackTextBox.TabIndex = 3;
+            this.leftBackTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
             // 
             // leftFrontTextBox
             // 
-            this.leftFrontTextBox.Enabled = false;
             this.leftFrontTextBox.Location = new System.Drawing.Point(79, 22);
             this.leftFrontTextBox.Name = "leftFrontTextBox";
             this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftFrontTextBox.TabIndex = 1;
+            this.leftFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
             // 
             // MotorControl
             // 

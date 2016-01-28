@@ -23,6 +23,7 @@
 #include <ESP8266WiFi/src/WiFiUdp.h>
 #include "VoltageInputReader.h"
 #include <user_interface.h>
+#include "ESP8266WiFi.h"
 
 class NetworkManager
 {
@@ -36,6 +37,8 @@ protected:
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
+
+	uint64_t tickCount;
 
 	DroneState lastState;
 	int dataRevision;
@@ -59,6 +62,10 @@ protected:
 	void sendAck(WiFiUDP udp, int32_t revision);
 	void sendData(WiFiUDP udp);
 	void echoPacket(WiFiUDP udp);
+
+	void sendDroneData(WiFiUDP udp);
+	void sendLog(WiFiUDP udp);
+	void sendDebugData(WiFiUDP udp);
 public:
 	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
 

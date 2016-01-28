@@ -6,6 +6,7 @@
 
 uint32_t Log::bufferLines = 0;
 char** Log::_buffer;
+bool Log::printToSerial = true;
 
 const char* Log::getLevelString(LogLevel level) {
 	switch (level) {
@@ -93,7 +94,9 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 		return;
 
 
-	Serial.println(message);
+	if (printToSerial)
+		Serial.println(message);
+
 	addMessage(message);
 }
 
@@ -116,4 +119,11 @@ void Log::debug(const char* tag, const char* format, ...) {
 	va_start(args, format);
 	print(Debug, tag, format, args);
 	va_end(args);
+}
+
+void Log::setPrintToSerial(bool value) {
+	if (value != Log::printToSerial && !value) 
+		Log::info("Log", "VerboseSerialLog set to false");
+
+	Log::printToSerial = value;
 }

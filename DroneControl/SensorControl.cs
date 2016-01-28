@@ -45,8 +45,10 @@ namespace DroneControl
                 return;
             }
 
-            artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, e.Data.Gyro.Roll);
-            headingIndicator.SetHeadingIndicatorParameters((int)e.Data.Gyro.Yaw);
+            if (!float.IsNaN(e.Data.Gyro.Pitch) && !float.IsNaN(e.Data.Gyro.Roll))
+                artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, e.Data.Gyro.Roll);
+            if (!float.IsNaN(e.Data.Gyro.Yaw))
+                headingIndicator.SetHeadingIndicatorParameters((int)e.Data.Gyro.Yaw);
 
             gyroDataLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
                 e.Data.Gyro.Roll.ToString("0.00").PadLeft(6, ' '),
@@ -60,6 +62,8 @@ namespace DroneControl
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
                 e.Data.Gyro.Temperature.ToString("0.00").PadLeft(6, ' '));
+
+            batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V", e.Data.BatteryVoltage.ToString("0.00").PadLeft(6, ' '));
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)

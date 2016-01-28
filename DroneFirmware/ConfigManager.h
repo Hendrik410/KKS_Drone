@@ -20,6 +20,9 @@ void * memcpy(void * destination, const void * source, int num);
 #include "EEPROM_MemoryAdapter.h"
 #include "PacketBuffer.h"
 
+#define CONFIG_MAGIC_VALUE 124
+#define CONFIG_VERSION 2
+
 class ConfigManager
 {
  public:

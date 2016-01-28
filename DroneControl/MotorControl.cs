@@ -15,6 +15,7 @@ namespace DroneControl
     public partial class MotorControl : UserControl
     {
         private Drone drone;
+        private bool changingValues = false;
 
         public MotorControl()
         {
@@ -47,10 +48,17 @@ namespace DroneControl
 
             QuadMotorValues motorValues = args.Data.MotorValues;
 
-            leftFrontTextBox.Text = $"{motorValues.FrontLeft}";
-            rightFrontTextBox.Text = $"{motorValues.FrontRight}";
-            leftBackTextBox.Text = $"{motorValues.BackLeft}";
-            rightBackTextBox.Text = $"{motorValues.BackRight}";
+            if (!leftFrontTextBox.Focused)
+                leftFrontTextBox.Text = motorValues.FrontLeft.ToString();
+
+            if (!rightFrontTextBox.Focused)
+                rightFrontTextBox.Text = motorValues.FrontRight.ToString();
+
+            if (!leftBackTextBox.Focused)
+                leftBackTextBox.Text = motorValues.BackLeft.ToString();
+
+            if (!rightBackTextBox.Focused)
+                rightBackTextBox.Text = motorValues.BackRight.ToString();
         }
 
         private void setValuesButton_Click(object sender, EventArgs e)
@@ -61,19 +69,40 @@ namespace DroneControl
 
         private bool SendValues()
         {
+            ushort leftFront = ushort.Parse(leftFrontTextBox.Text);
+            ushort rightFront = ushort.Parse(rightFrontTextBox.Text);
+            ushort leftBack = ushort.Parse(leftBackTextBox.Text);
+            ushort rightBack = ushort.Parse(rightBackTextBox.Text);
+
+            servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
             if (drone.IsConnected && drone.Data.State == DroneState.Armed)
             {
                 drone.SendPacket(
-                    new PacketSetRawValues(new QuadMotorValues((ushort)servoValueNumericUpDown.Value)), true);
+                    new PacketSetRawValues(new QuadMotorValues(leftFront, rightFront, leftBack, rightBack)), true);
                 return true;
             }
             return false;
         }
 
+        private void OnEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && !changingValues)
+                SendValues();
+        }
+
         private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
+                changingValues = true;
+                leftFrontTextBox.Text = servoValueNumericUpDown.Value.ToString();
+                rightFrontTextBox.Text = servoValueNumericUpDown.Value.ToString();
+                leftBackTextBox.Text = servoValueNumericUpDown.Value.ToString();
+                rightBackTextBox.Text = servoValueNumericUpDown.Value.ToString();
+                changingValues = false;
+
                 SendValues();
+            }
         }
     }
 }

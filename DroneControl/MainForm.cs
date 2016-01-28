@@ -93,7 +93,7 @@ namespace DroneControl
                 form = onClosed();
 
             if (!form.Visible)
-                form.Show(this);
+                form.Show();
             form.BringToFront();
             return form;
         }
@@ -153,6 +153,8 @@ namespace DroneControl
                 }
 
                 statusArmedLabel.Text = $"Status: {data.State}";
+
+                wifiRssiLabel.Text = $"Wifi signal: {data.WifiRssi}dBm";
             }
         }
 
@@ -234,7 +236,16 @@ namespace DroneControl
 
         private void droneSettingsPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            drone.SendConfig((DroneSettings)droneSettingsPropertyGrid.SelectedObject);
+            try
+            {
+                DroneSettings settings = (DroneSettings)droneSettingsPropertyGrid.SelectedObject;
+                drone.SendConfig(settings);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex);
+                MessageBox.Show(ex.Message, "Error setting settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void debugButton_Click(object sender, EventArgs e)
@@ -244,7 +255,7 @@ namespace DroneControl
 
         private void graphButton_Click(object sender, EventArgs e)
         {
-            ShowForm(graphForm, () => (graphForm = new GraphForm(drone)));
+            ShowForm(graphForm, () => (graphForm = new GraphForm(drone, flightControl1)));
         }
     }
 }

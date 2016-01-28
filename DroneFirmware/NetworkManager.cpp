@@ -15,6 +15,8 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	_lastDataSend = 0;
 	dataRevision = 1;
 
+	tickCount = 0;
+
 	lastState = StateUnkown;
 
 	Log::info("Network", "Starting network manager...");
@@ -146,9 +148,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	switch (type) {
 	case MovementPacket: {
-		if(readBuffer->getSize() < 26)
-			return;
-
 		bool hover = readBuffer->readBoolean();
 
 		float pitch = readBuffer->readFloat();
@@ -162,16 +161,33 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	}
 	break;
 	case RawSetPacket: {
-		//set the 4 motor values raw
-		if (readBuffer->getSize() < 17)
-			return;
-
 		uint16_t fl = readBuffer->readUint16();
 		uint16_t fr = readBuffer->readUint16();
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
 
-		engine->setRawServoValues(fl, fr, bl, br);
+		if (fl >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for fl");
+			return;
+		}
+
+		if (fr >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for fr");
+			return;
+		}
+
+		if (bl >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for bl");
+			return;
+		}
+
+		if (br >= config->ServoMax) {
+			Log::error("Network", "[RawSetPacket] Invalid value for br");
+			return;
+		}
+
+		if (engine->state() == StateArmed)
+			engine->setRawServoValues(fl, fr, bl, br);
 
 		break;
 	}
@@ -220,14 +236,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 
-		writeBuffer->writeString(config->NetworkSSID);
-		writeBuffer->writeString(config->NetworkPassword);
-		writeBuffer->write(config->VerboseSerialLog);
-
-		writeBuffer->write(config->Degree2Ratio);
-		writeBuffer->write(config->RotaryDegree2Ratio);
-
-		writeBuffer->write(config->PhysicsCalcDelay);
+		writeBuffer->write((uint8_t*)config, sizeof(Config));
 
 		sendPacket(udp);
 		break;
@@ -246,25 +255,26 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
-		gyro->setAsZero();
+		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
+			gyro->setAsZero();
 		break;
 
 	case Reset:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			ESP.restart();
 		break;
-	case SetConfig:
-		config->DroneName = readBuffer->readString();
-		config->NetworkSSID = readBuffer->readString();
-		config->NetworkPassword = readBuffer->readString();
-		config->VerboseSerialLog = readBuffer->readBoolean();
-		config->Degree2Ratio = readBuffer->readFloat();
-		config->RotaryDegree2Ratio = readBuffer->readFloat();
-		config->PhysicsCalcDelay = readBuffer->readUint16();
+	case SetConfig: {
+		if (readBuffer->getSize() - readBuffer->getPosition() != sizeof(Config)) {
+			Log::error("Network", "[SetConfig] Packet size does not match config structure size");
+			return;
+		}
+		readBuffer->read((byte*)config, sizeof(Config));
 
 		Log::info("Network", "Config set.");
+		Log::setPrintToSerial(config->VerboseSerialLog);
 
 		ConfigManager::saveConfig(*config);
+		}
 		break;
 	case ClearStatus:
 		engine->clearStatus();
@@ -276,11 +286,21 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	if (!_dataFeedSubscribed)
 		return;
 
+	sendDroneData(udp);
+
+	if (tickCount % 4 == 0)
+		sendLog(udp);
+
+	if (tickCount % 8 == 0)
+		sendDebugData(udp);
+}
+
+void NetworkManager::sendDroneData(WiFiUDP udp) {
 	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty(); 
+	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty() | voltageReader->dirty();
 
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
-		writeDataHeader(dataUDP, dataRevision++, DataDrone); 
+		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
 
@@ -299,17 +319,23 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		writeBuffer->write(gyro->getTemperature());
 		writeBuffer->write(voltageReader->readVoltage());
+		writeBuffer->write(WiFi.RSSI());
 
 		sendData(udp);
 		_lastDataSend = millis();
 
 		lastState = engine->state();
 	}
+}
 
+void NetworkManager::sendLog(WiFiUDP udp) {
 	while (Log::getBufferLines() > 0) {
 		writeDataHeader(dataUDP, dataRevision++, DataLog);
 
-		int messagesToSend = min(5, Log::getBufferLines());
+		int messagesToSend = Log::getBufferLines();
+		if (messagesToSend > 5)
+			messagesToSend = 5;
+
 		writeBuffer->write(messagesToSend);
 
 		for (int i = 0; i < messagesToSend; i++) {
@@ -320,7 +346,9 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 		sendData(udp);
 	}
+}
 
+void NetworkManager::sendDebugData(WiFiUDP udp) {
 	writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
 	writeBuffer->write(engine->getFrontLeftRatio());

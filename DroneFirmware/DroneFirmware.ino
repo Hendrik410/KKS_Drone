@@ -66,7 +66,7 @@ NetworkManager* network;
 
 
 int lastLoopTime = 0;
-short delayTime = 5;
+short delayTime = 10;
 
 //######################### Methods
 
@@ -86,6 +86,10 @@ void setup() {
 	Log::info("Boot", "Serial code: %s", serialCode);
 
 	config = ConfigManager::loadConfig();
+
+	// Log setzen
+	Log::setPrintToSerial(config.VerboseSerialLog);
+
 
 	//setup servos
 	servos = new ServoManager(&config);

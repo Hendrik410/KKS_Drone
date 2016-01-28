@@ -105,7 +105,6 @@ namespace DroneControl.Input {
             float targetYaw = ((float)(state.Z - controllerMaxValue) / controllerMaxValue) * MaxYaw;
             float targetThrust = (float)(state.RotationZ - controllerMaxValue) / controllerMaxValue;
 
-            targetRoll *= -1;
             targetThrust *= -1;
 
             if(Math.Abs(targetPitch) < 0.1)

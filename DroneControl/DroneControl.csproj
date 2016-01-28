@@ -99,7 +99,6 @@
     <Compile Include="ConnectingForm.Designer.cs">
       <DependentUpon>ConnectingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataHistory.cs" />
     <Compile Include="DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +131,7 @@
     <Compile Include="Input\PrecisionControllerInputInterpreter.cs" />
     <Compile Include="Input\TargetMovementData.cs" />
     <Compile Include="Input\Xbox360InputInterpreter.cs" />
+    <Compile Include="LinearTargetRatio.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
