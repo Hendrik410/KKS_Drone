@@ -21,8 +21,10 @@ struct Config {
 	//A user-friendly name for the drone
 	char DroneName[20];
 
-	//The name of the WiFi network
+	// Name des WiFi Netzwerks
+	// leerer String bedeutet es wird keine Verbindung zu einem Netzwerk aufgebaut
 	char NetworkSSID[20];
+
 	//The password of the WiFi network
 	char NetworkPassword[30];
 

@@ -77,10 +77,11 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 Config ConfigManager::getDefault() {
 	Config config;
 
-	memcpy(config.DroneName, "koalaDrone", 11);
+	strcpy(config.DroneName, "koalaDrone");
 
-	memcpy(config.NetworkSSID, "Drone", 6);
-	memcpy(config.NetworkPassword, "12345678", 9);
+	// leere String, siehe NetworkSSID
+	strcpy(config.NetworkSSID, ""); 
+	strcpy(config.NetworkPassword, "12345678");
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
