@@ -96,9 +96,9 @@ Config ConfigManager::getDefault() {
 	config.TrimThrottle = 0;
 
 	config.ServoMin = 900;
-	config.ServoMax = 1400;
-	config.ServoIdle = 1200;
-	config.ServoHover = 1280;
+	config.ServoMax = 2000;
+	config.ServoIdle = 975;
+	config.ServoHover = 1200;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;
@@ -111,11 +111,11 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.03f;
-	config.RotaryDegree2Ratio = 0.03f;
+	config.Degree2Ratio = 0.05f;
+	config.RotaryDegree2Ratio = 0.05f;
 	config.PhysicsCalcDelay = 20;
 
-	config.EngineType = EnginePID;
+	config.EngineType = EngineLinear;
 
 	config.PitchPidSettings.Kp = 1;
 	config.PitchPidSettings.Ki = 0.05;
@@ -130,7 +130,7 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kd = 0.25;
 
 	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0.4f;
+	config.CorrectionFactor = 0;
 	
 
 	Log::info("Config", "Using default config");

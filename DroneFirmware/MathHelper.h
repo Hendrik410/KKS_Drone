@@ -18,9 +18,6 @@ class MathHelper
 	 static float clampValue(float value, float min, float max);
 	 static float mapRatio(float ratio, float min, float max, float center);
 
-	 static const float Degree2Ratio;
-	 static const float RotaryDegree2Ratio;
-
 	 static float angleDifference(float a, float b);
 	 static float mixMotor(Config* config,float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation);
 };
