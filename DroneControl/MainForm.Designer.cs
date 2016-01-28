@@ -170,13 +170,13 @@
             // 
             this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(411, 10);
+            this.statusArmedLabel.Location = new System.Drawing.Point(385, 10);
             this.statusArmedLabel.Name = "statusArmedLabel";
             this.statusArmedLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.statusArmedLabel.Size = new System.Drawing.Size(167, 13);
+            this.statusArmedLabel.Size = new System.Drawing.Size(193, 13);
             this.statusArmedLabel.TabIndex = 14;
             this.statusArmedLabel.Text = "Status: {0}";
-            this.statusArmedLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.statusArmedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pingLabel
             // 

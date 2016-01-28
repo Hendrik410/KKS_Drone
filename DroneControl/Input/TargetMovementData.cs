@@ -7,26 +7,15 @@ using System.Threading.Tasks;
 namespace DroneControl.Input {
     public struct TargetMovementData : IEquatable<TargetMovementData> {
 
-        public float TargetPitch {
-            get;
-        }
+        public float TargetPitch { get; private set; }
+        public float TargetRoll { get; private set; }
+        public float TargetRotationalSpeed { get; private set; }
+        public float TargetThrust { get; private set; }
 
-        public float TargetRoll {
-            get;
-        }
-
-        public float TargetYaw {
-            get;
-        }
-
-        public float TargetThrust {
-            get;
-        }
-
-        public TargetMovementData(float targetPitch, float targetRoll, float targetYaw, float targetThrust) {
+        public TargetMovementData(float targetPitch, float targetRoll, float targetRotationalSpeed, float targetThrust) {
             TargetPitch = targetPitch;
             TargetRoll = targetRoll;
-            TargetYaw = targetYaw;
+            TargetRotationalSpeed = targetRotationalSpeed;
             TargetThrust = targetThrust;
         }
 
@@ -48,7 +37,7 @@ namespace DroneControl.Input {
             unchecked {
                 int hashCode = TargetPitch.GetHashCode();
                 hashCode = (hashCode * 397) ^ TargetRoll.GetHashCode();
-                hashCode = (hashCode * 397) ^ TargetYaw.GetHashCode();
+                hashCode = (hashCode * 397) ^ TargetRotationalSpeed.GetHashCode();
                 hashCode = (hashCode * 397) ^ TargetThrust.GetHashCode();
                 return hashCode;
             }
@@ -57,7 +46,7 @@ namespace DroneControl.Input {
         public bool Equals(TargetMovementData other) {
             return Math.Abs(TargetPitch - other.TargetPitch) < 0.05
                    && Math.Abs(TargetRoll - other.TargetRoll) < 0.05
-                   && Math.Abs(TargetYaw - other.TargetYaw) < 0.05
+                   && Math.Abs(TargetRotationalSpeed - other.TargetRotationalSpeed) < 0.05
                    && Math.Abs(TargetThrust - other.TargetThrust) < 0.01;
         }
     }

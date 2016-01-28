@@ -451,11 +451,11 @@ namespace DroneLibrary
             SendPacket(new PacketArm(false), true);
         }
 
-        public void SendMovementData(float pitch, float roll, float yaw, float thrust, bool hover) {
+        public void SendMovementData(float pitch, float roll, float rotationalSpeed, float thrust, bool hover) {
             if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketSetMovement(pitch, roll, yaw, thrust, hover), false);
+            SendPacket(new PacketSetMovement(pitch, roll, rotationalSpeed, thrust, hover), false);
         }
 
         public void SendBlink() {

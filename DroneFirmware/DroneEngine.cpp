@@ -24,10 +24,10 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 }
 
 
-void DroneEngine::arm(){
-	if(_state == StateIdle) {
+void DroneEngine::arm() {
+	if (_state == StateIdle) {
 		gyro->setAsZero();
-		setTargetMovement(0, 0, 0);
+		setTargetMovement(0, 0, 0, 0);
 		servos->setAllServos(config->ServoIdle);
 
 		_state = StateArmed;
@@ -38,6 +38,7 @@ void DroneEngine::arm(){
 
 void DroneEngine::disarm() {
 	if (_state == StateArmed || _state == StateFlying) {
+		setTargetMovement(0, 0, 0, 0);
 		servos->setAllServos(config->ServoMin);
 
 		_state = StateIdle;
@@ -50,7 +51,7 @@ void DroneEngine::stop(StopReason reason) {
 
 	_stopReason = reason;
 	_state = StateStopped;
-	Log::info("Engine", "Stopped!");
+	Log::info("Engine", "Stopped! reason: %d", reason);
 }
 
 void DroneEngine::clearStatus() {
@@ -75,7 +76,10 @@ void DroneEngine::handle() {
 			return;
 		}
 
-		handleInternal();
+		if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
+			handleInternal();
+			lastPhysicsCalc = millis();
+		}
 	}
 }
 
@@ -117,34 +121,18 @@ float DroneEngine::getMaxRotationSpeed() const {
 }
 
 
-void DroneEngine::setTargetMovement(float pitch, float roll, float yaw) {
+void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpeed, float verticalSpeed) {
 	if (_state != StateArmed && _state != StateFlying)
 		return;
 
-	setTargetPitch(pitch);
-	setTargetRoll(roll);
-	setTargetRotarySpeed(yaw);
+	// Werte in richtigen Bereich bringen und setzen
+	targetPitch = MathHelper::fixValue(MathHelper::clampValue(pitch, -maxTilt, maxTilt), -M_PI_2, M_PI_2);
+	targetRoll = MathHelper::fixValue(MathHelper::clampValue(roll, -maxTilt, maxTilt), -M_PI_2, M_PI_2);
+	targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
+	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 1);
+
+	// in den Fliegen Modus gehen
 	_state = StateFlying;
-	lastMovementUpdate = millis();
-}
-
-void DroneEngine::setTargetPitch(float pitch) {
-	targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
-	lastMovementUpdate = millis();
-}
-
-void DroneEngine::setTargetRoll(float roll) {
-	targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
-	lastMovementUpdate = millis();
-}
-
-void DroneEngine::setTargetRotarySpeed(float yaw) {
-	targetRotationSpeed = MathHelper::clampValue(yaw, -maxRotationSpeed, maxRotationSpeed);
-	lastMovementUpdate = millis();
-}
-
-void DroneEngine::setTargetVerticalSpeed(float vertical) {
-	targetVerticalSpeed = MathHelper::clampValue(vertical, -1, 1);
 	lastMovementUpdate = millis();
 }
 
@@ -156,12 +144,8 @@ float DroneEngine::getTargetRoll() const {
 	return targetRoll;
 }
 
-float DroneEngine::getTargetYaw() const {
-	return targetYaw;
-}
-
-float DroneEngine::getTargetRotarySpeed() const {
-	return targetRotationSpeed;
+float DroneEngine::getTargetRotationalSpeed() const {
+	return targetRotationalSpeed;
 }
 
 float DroneEngine::getTargetVerticalSpeed() const {

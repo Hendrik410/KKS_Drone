@@ -13,7 +13,7 @@ float MathHelper::clampValue(float value, float min, float max) {
 }
 
 float MathHelper::mapRatio(float ratio, float min, float max, float center) {
-	clampValue(ratio, -1, 1);
+	ratio = clampValue(ratio, -1, 1);
 
 	if(ratio == 0)
 		return center;
@@ -25,8 +25,25 @@ float MathHelper::mapRatio(float ratio, float min, float max, float center) {
 	}
 }
 
+// Workaround für:
+// ef_fmod.c*:(.text+0x36): undefined reference to `__ieee754_remainderf
+// https://github.com/esp8266/Arduino/issues/1385
+// https://github.com/esp8266/Arduino/issues/612
+float MathHelper::_fmod(float a, float b) {
+	return (a - b * floor(a / b));
+}
+
 float MathHelper::angleDifference(float a, float b) {
-	return fmodf(fmodf(a - b, 360) + 540, 360) - 180;
+	return _fmod(_fmod(a - b, 360) + 540, 360) - 180;
+}
+
+float MathHelper::fixValue(float value, float begin, float end) {
+	float range = end - begin;
+	while (value < begin)
+		value += range;
+	while (value > end)
+		value -= range;
+	return value;
 }
 
 float MathHelper::mixMotor(Config* config, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation) {

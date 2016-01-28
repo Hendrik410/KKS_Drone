@@ -35,11 +35,16 @@ enum DroneState {
 
 class DroneEngine
 {
+ private:
+	long lastPhysicsCalc;
+	long lastMovementUpdate;
+
+	float maxTilt;
+	float maxRotationSpeed;
+
  protected:
 	 Config* config;
-	 long lastPhysicsCalc;
-	 long lastYawTargetCalc;
-	 long lastMovementUpdate;
+	 
 
 	 DroneState _state;
 	 StopReason _stopReason;
@@ -47,14 +52,10 @@ class DroneEngine
 	 Gyro* gyro;
 	 ServoManager* servos;
 
-	 float maxTilt;
-	 float maxRotationSpeed;
-
-	 float targetVerticalSpeed;
 	 double targetPitch;
 	 double targetRoll;
-	 double targetYaw;
-	 double targetRotationSpeed;
+	 float targetRotationalSpeed;
+	 float targetVerticalSpeed;
 
 	 float frontLeftRatio;
 	 float frontRightRatio;
@@ -84,16 +85,11 @@ class DroneEngine
 	float getMaxTilt() const;
 	float getMaxRotationSpeed() const;
 
-	void setTargetMovement(float pitch, float roll, float yaw);
-	void setTargetPitch(float pitch);
-	void setTargetRoll(float roll);
-	void setTargetRotarySpeed(float yaw);
-	void setTargetVerticalSpeed(float vertical);
+	void setTargetMovement(float pitch, float roll, float rotationalSpeed, float verticalSpeed);
 
 	float getTargetPitch() const;
 	float getTargetRoll() const;
-	float getTargetYaw() const;
-	float getTargetRotarySpeed() const;
+	float getTargetRotationalSpeed() const;
 	float getTargetVerticalSpeed() const;
 
 	float getFrontLeftRatio() const;

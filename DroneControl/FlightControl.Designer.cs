@@ -25,8 +25,8 @@
         private void InitializeComponent() {
             this.maxRollLabel = new System.Windows.Forms.Label();
             this.maxRollNumeric = new System.Windows.Forms.NumericUpDown();
-            this.maxYawLabel = new System.Windows.Forms.Label();
-            this.maxYawNumeric = new System.Windows.Forms.NumericUpDown();
+            this.maxRotationalSpeedLabel = new System.Windows.Forms.Label();
+            this.maxRotationSpeedNumeric = new System.Windows.Forms.NumericUpDown();
             this.maxPitchLabel = new System.Windows.Forms.Label();
             this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -34,11 +34,11 @@
             this.activeCheckBox = new System.Windows.Forms.CheckBox();
             this.targetPitchLabel = new System.Windows.Forms.Label();
             this.targetRollLabel = new System.Windows.Forms.Label();
-            this.targetYawLabel = new System.Windows.Forms.Label();
+            this.rotationalSpeedLabel = new System.Windows.Forms.Label();
             this.targetThrustLabel = new System.Windows.Forms.Label();
             this.ratioDataLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxYawNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,38 +79,38 @@
             0,
             0});
             // 
-            // maxYawLabel
+            // maxRotationalSpeedLabel
             // 
-            this.maxYawLabel.AutoSize = true;
-            this.maxYawLabel.Location = new System.Drawing.Point(3, 120);
-            this.maxYawLabel.Name = "maxYawLabel";
-            this.maxYawLabel.Size = new System.Drawing.Size(74, 13);
-            this.maxYawLabel.TabIndex = 13;
-            this.maxYawLabel.Text = "Max Yaw [°/s]";
+            this.maxRotationalSpeedLabel.AutoSize = true;
+            this.maxRotationalSpeedLabel.Location = new System.Drawing.Point(3, 120);
+            this.maxRotationalSpeedLabel.Name = "maxRotationalSpeedLabel";
+            this.maxRotationalSpeedLabel.Size = new System.Drawing.Size(135, 13);
+            this.maxRotationalSpeedLabel.TabIndex = 13;
+            this.maxRotationalSpeedLabel.Text = "Max Rotational Speed [°/s]";
             // 
-            // maxYawNumeric
+            // maxRotationSpeedNumeric
             // 
-            this.maxYawNumeric.DecimalPlaces = 1;
-            this.maxYawNumeric.Increment = new decimal(new int[] {
+            this.maxRotationSpeedNumeric.DecimalPlaces = 1;
+            this.maxRotationSpeedNumeric.Increment = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.maxYawNumeric.Location = new System.Drawing.Point(6, 136);
-            this.maxYawNumeric.Maximum = new decimal(new int[] {
+            this.maxRotationSpeedNumeric.Location = new System.Drawing.Point(6, 136);
+            this.maxRotationSpeedNumeric.Maximum = new decimal(new int[] {
             180,
             0,
             0,
             0});
-            this.maxYawNumeric.Minimum = new decimal(new int[] {
+            this.maxRotationSpeedNumeric.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.maxYawNumeric.Name = "maxYawNumeric";
-            this.maxYawNumeric.Size = new System.Drawing.Size(54, 20);
-            this.maxYawNumeric.TabIndex = 12;
-            this.maxYawNumeric.Value = new decimal(new int[] {
+            this.maxRotationSpeedNumeric.Name = "maxRotationSpeedNumeric";
+            this.maxRotationSpeedNumeric.Size = new System.Drawing.Size(54, 20);
+            this.maxRotationSpeedNumeric.TabIndex = 12;
+            this.maxRotationSpeedNumeric.Value = new decimal(new int[] {
             60,
             0,
             0,
@@ -201,15 +201,15 @@
             this.targetRollLabel.TabIndex = 18;
             this.targetRollLabel.Text = "Target Roll: {0}";
             // 
-            // targetYawLabel
+            // rotationalSpeedLabel
             // 
-            this.targetYawLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetYawLabel.AutoSize = true;
-            this.targetYawLabel.Location = new System.Drawing.Point(305, 40);
-            this.targetYawLabel.Name = "targetYawLabel";
-            this.targetYawLabel.Size = new System.Drawing.Size(82, 13);
-            this.targetYawLabel.TabIndex = 19;
-            this.targetYawLabel.Text = "Target Yaw: {0}";
+            this.rotationalSpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotationalSpeedLabel.AutoSize = true;
+            this.rotationalSpeedLabel.Location = new System.Drawing.Point(278, 40);
+            this.rotationalSpeedLabel.Name = "rotationalSpeedLabel";
+            this.rotationalSpeedLabel.Size = new System.Drawing.Size(109, 13);
+            this.rotationalSpeedLabel.TabIndex = 19;
+            this.rotationalSpeedLabel.Text = "Rotational Speed: {0}";
             // 
             // targetThrustLabel
             // 
@@ -237,14 +237,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ratioDataLabel);
             this.Controls.Add(this.targetThrustLabel);
-            this.Controls.Add(this.targetYawLabel);
+            this.Controls.Add(this.rotationalSpeedLabel);
             this.Controls.Add(this.targetRollLabel);
             this.Controls.Add(this.targetPitchLabel);
             this.Controls.Add(this.activeCheckBox);
             this.Controls.Add(this.maxRollLabel);
             this.Controls.Add(this.maxRollNumeric);
-            this.Controls.Add(this.maxYawLabel);
-            this.Controls.Add(this.maxYawNumeric);
+            this.Controls.Add(this.maxRotationalSpeedLabel);
+            this.Controls.Add(this.maxRotationSpeedNumeric);
             this.Controls.Add(this.maxPitchLabel);
             this.Controls.Add(this.maxPitchNumeric);
             this.Controls.Add(this.label1);
@@ -252,7 +252,7 @@
             this.Name = "FlightControl";
             this.Size = new System.Drawing.Size(457, 160);
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxYawNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -263,8 +263,8 @@
 
         private System.Windows.Forms.Label maxRollLabel;
         private System.Windows.Forms.NumericUpDown maxRollNumeric;
-        private System.Windows.Forms.Label maxYawLabel;
-        private System.Windows.Forms.NumericUpDown maxYawNumeric;
+        private System.Windows.Forms.Label maxRotationalSpeedLabel;
+        private System.Windows.Forms.NumericUpDown maxRotationSpeedNumeric;
         private System.Windows.Forms.Label maxPitchLabel;
         private System.Windows.Forms.NumericUpDown maxPitchNumeric;
         private System.Windows.Forms.Label label1;
@@ -272,7 +272,7 @@
         private System.Windows.Forms.CheckBox activeCheckBox;
         private System.Windows.Forms.Label targetPitchLabel;
         private System.Windows.Forms.Label targetRollLabel;
-        private System.Windows.Forms.Label targetYawLabel;
+        private System.Windows.Forms.Label rotationalSpeedLabel;
         private System.Windows.Forms.Label targetThrustLabel;
         private System.Windows.Forms.Label ratioDataLabel;
     }

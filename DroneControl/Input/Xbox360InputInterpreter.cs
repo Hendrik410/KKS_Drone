@@ -86,7 +86,7 @@ namespace DroneControl.Input
 
             float targetPitch = (state.Gamepad.LeftThumbY / (float)short.MaxValue) * MaxPitch;
             float targetRoll = (state.Gamepad.LeftThumbX / (float)short.MaxValue) * MaxRoll;
-            float targetYaw = (state.Gamepad.RightThumbX / (float)short.MaxValue) * MaxYaw;
+            float targetRotationalSpeed = (state.Gamepad.RightThumbX / (float)short.MaxValue) * MaxYaw;
             float targetThrust = (state.Gamepad.RightThumbY / (float)short.MaxValue);
 
             targetPitch *= -1;
@@ -96,14 +96,14 @@ namespace DroneControl.Input
                 targetPitch = 0;
             if (Math.Abs(targetRoll) < 1)
                 targetRoll = 0;
-            if (Math.Abs(targetYaw) < 4)
-                targetYaw = 0;
+            if (Math.Abs(targetRotationalSpeed) < 10)
+                targetRotationalSpeed = 0;
             if (Math.Abs(targetThrust) < 0.1)
                 targetThrust = 0;
 
             
 
-            TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetYaw, targetThrust);
+            TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetRotationalSpeed, targetThrust);
 
             CheckButton(lastState, state, GamepadButtonFlags.Start, ControlButtonType.ToggleArm);
             CheckButton(lastState, state, GamepadButtonFlags.Y, ControlButtonType.Stop);

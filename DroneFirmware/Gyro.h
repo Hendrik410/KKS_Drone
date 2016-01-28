@@ -4,6 +4,7 @@
 #define _GYRO_h
 
 #include "arduino.h"
+#include "MathHelper.h"
 #include "Config.h"
 #include "Log.h"
 

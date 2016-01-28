@@ -14,6 +14,8 @@ class PidDroneEngine : public DroneEngine
 	 PID* pidRoll;
 	 PID* pidYaw;
 
+	 double targetYaw;
+
 
 	 double inputPitch, inputRoll, inputYaw;
 	 double outputPitch, outputRoll, outputYaw;

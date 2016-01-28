@@ -102,7 +102,7 @@ namespace DroneControl.Input {
 
             float targetPitch = ((float)(state.Y - controllerMaxValue) / controllerMaxValue) * MaxPitch;
             float targetRoll = ((float)(state.X - controllerMaxValue) / controllerMaxValue) * MaxRoll;
-            float targetYaw = ((float)(state.Z - controllerMaxValue) / controllerMaxValue) * MaxYaw;
+            float targetRotationalSpeed = ((float)(state.Z - controllerMaxValue) / controllerMaxValue) * MaxYaw;
             float targetThrust = (float)(state.RotationZ - controllerMaxValue) / controllerMaxValue;
 
             targetThrust *= -1;
@@ -111,12 +111,12 @@ namespace DroneControl.Input {
                 targetPitch = 0;
             if(Math.Abs(targetRoll) < 0.1)
                 targetRoll = 0;
-            if(Math.Abs(targetYaw) < 0.1)
-                targetYaw = 0;
+            if(Math.Abs(targetRotationalSpeed) < 0.1)
+                targetRotationalSpeed = 0;
             if(Math.Abs(targetThrust) < 0.05)
                 targetThrust = 0;
 
-            TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetYaw, targetThrust);
+            TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetRotationalSpeed, targetThrust);
 
             for(int i = 0; i < state.Buttons.Length; i++) {
                 if(state.Buttons[i] && (!buttonPressedTimes.ContainsKey(i) || buttonPressedTimes[i] == -1))

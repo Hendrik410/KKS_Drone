@@ -154,12 +154,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		float pitch = readBuffer->readFloat();
 		float roll = readBuffer->readFloat();
-		float yaw = readBuffer->readFloat();
+		float rotationalSpeed = readBuffer->readFloat();
 		float thrust = readBuffer->readFloat();
 
-		engine->setTargetMovement(pitch, roll, yaw);
-		engine->setTargetVerticalSpeed(thrust);
-
+		engine->setTargetMovement(pitch, roll, rotationalSpeed, thrust);
 	}
 	break;
 	case RawSetPacket: {
