@@ -34,10 +34,12 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 }
 
 void NetworkManager::handlePackets() {
-	if (beginParse(helloUDP))
+	int helloPackets = 0;
+	while (beginParse(helloUDP) && helloPackets++ < 2)
 		handleHello(helloUDP);
 
-	if (beginParse(controlUDP))
+	int controlPackets = 0;
+	while (beginParse(controlUDP) && controlPackets++ < 5)
 		handleControl(controlUDP);
 
 	handleData(dataUDP);
