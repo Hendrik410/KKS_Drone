@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraphForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -108,6 +109,7 @@
             this.frontLeftRatio.Name = "frontLeftRatio";
             this.frontLeftRatio.Size = new System.Drawing.Size(429, 242);
             this.frontLeftRatio.TabIndex = 0;
+            this.frontLeftRatio.Titel = "Left Front";
             // 
             // frontRightRatio
             // 
@@ -116,6 +118,7 @@
             this.frontRightRatio.Name = "frontRightRatio";
             this.frontRightRatio.Size = new System.Drawing.Size(482, 242);
             this.frontRightRatio.TabIndex = 0;
+            this.frontRightRatio.Titel = "Right Front";
             // 
             // backLeftRatio
             // 
@@ -124,6 +127,7 @@
             this.backLeftRatio.Name = "backLeftRatio";
             this.backLeftRatio.Size = new System.Drawing.Size(429, 271);
             this.backLeftRatio.TabIndex = 0;
+            this.backLeftRatio.Titel = "Left Back";
             // 
             // backRightRatio
             // 
@@ -132,6 +136,7 @@
             this.backRightRatio.Name = "backRightRatio";
             this.backRightRatio.Size = new System.Drawing.Size(482, 271);
             this.backRightRatio.TabIndex = 0;
+            this.backRightRatio.Titel = "Right Back";
             // 
             // GraphForm
             // 
@@ -139,8 +144,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(915, 517);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GraphForm";
-            this.Text = "GraphForm";
+            this.Text = "Debug - Graphs";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
