@@ -8,40 +8,36 @@ using System.Threading;
 using System.Threading.Tasks;
 using DroneLibrary;
 using DroneLibrary.Protocol;
+using TestStand;
 
 namespace DroneTest {
     class Program {
         static void Main(string[] args) {
-            Console.WriteLine("DroneTest");
-            Config config = new Config {
-                IgnorePacketsWhenOffline = false,
-                VerbosePacketSending = true,
-                VerbosePacketReceive = true
-            };
-            Drone drone = new Drone(IPAddress.Parse("192.168.4.1"), config);
-            while(!drone.IsConnected) {
-                drone.SendPing();
-                Thread.Sleep(16);
-                Console.WriteLine("ping!");
+            Console.WriteLine("Test Stand");
+            Controller controller = new Controller();
+            Console.WriteLine("Started");
+
+            controller.SendMotorValues(1200, 1200, 1200, 1200);
+
+            bool repeat = true;
+
+            while(repeat) {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                switch(keyInfo.Key) {
+                    case ConsoleKey.Q:
+                        repeat = false;
+                        break;
+
+                    case ConsoleKey.R:
+                        controller.CalibrateGyro();
+                        break;
+
+                    case ConsoleKey.V:
+                        Console.WriteLine("PID Output: P: {0}, R: {1}, Y: {2}", controller.outPitch, 0, 0);
+                        break;
+                }
             }
-
-            Console.WriteLine("Ping: {0}ms", drone.Ping);
-            drone.SendPacket(new PacketResetRevision(), false);
-
-            Console.WriteLine("Press Key to arm");
-            Console.ReadKey(true);
-            drone.SendArm();
-
-            Console.WriteLine("Press Key to start motors");
-            Console.ReadKey(true);
-            drone.SendPacket(new PacketSetRawValues(1900, 1900, 1900, 1900), false);
-
-            Console.WriteLine("Press Key to stop");
-            Console.ReadKey(true);
-            drone.SendStop();
-            
-
-            Console.ReadKey(true);
+            controller.Stop();
         }
     }
 }
