@@ -36,6 +36,20 @@ namespace DroneControl
 
             this.drone = drone;
             drone.OnDataChange += OnDroneDataChange;
+            drone.OnSettingsChange += Drone_OnSettingsChange;
+            
+            UpdateValueBounds(drone.Settings);
+        }
+
+        private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<SettingsChangedEventArgs>(Drone_OnSettingsChange), sender, e);
+                return;
+            }
+
+            UpdateValueBounds(e.Settings);
         }
 
         private void OnDroneDataChange(object sender, DataChangedEventArgs args)
@@ -61,6 +75,21 @@ namespace DroneControl
                 rightBackTextBox.Text = motorValues.BackRight.ToString();
         }
 
+        private void UpdateValueBounds(DroneSettings settings)
+        {
+            leftFrontTextBox.Minimum = settings.ServoMin;
+            rightFrontTextBox.Minimum = settings.ServoMin;
+            leftBackTextBox.Minimum = settings.ServoMin;
+            rightBackTextBox.Minimum = settings.ServoMin;
+            servoValueNumericUpDown.Minimum = settings.ServoMin;
+
+            leftFrontTextBox.Maximum = settings.ServoMax;
+            rightFrontTextBox.Maximum = settings.ServoMax;
+            leftBackTextBox.Maximum = settings.ServoMax;
+            rightBackTextBox.Maximum = settings.ServoMax;
+            servoValueNumericUpDown.Maximum = settings.ServoMax;
+        }
+
         private void setValuesButton_Click(object sender, EventArgs e)
         {
             if (!SendValues())
@@ -69,10 +98,10 @@ namespace DroneControl
 
         private bool SendValues()
         {
-            ushort leftFront = ushort.Parse(leftFrontTextBox.Text);
-            ushort rightFront = ushort.Parse(rightFrontTextBox.Text);
-            ushort leftBack = ushort.Parse(leftBackTextBox.Text);
-            ushort rightBack = ushort.Parse(rightBackTextBox.Text);
+            ushort leftFront = (ushort)leftFrontTextBox.Value;
+            ushort rightFront = (ushort)rightFrontTextBox.Value;
+            ushort leftBack = (ushort)leftBackTextBox.Value;
+            ushort rightBack = (ushort)rightBackTextBox.Value;
 
             servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
             if (drone.IsConnected && drone.Data.State == DroneState.Armed)
@@ -95,10 +124,10 @@ namespace DroneControl
             if (e.KeyCode == Keys.Enter)
             {
                 changingValues = true;
-                leftFrontTextBox.Text = servoValueNumericUpDown.Value.ToString();
-                rightFrontTextBox.Text = servoValueNumericUpDown.Value.ToString();
-                leftBackTextBox.Text = servoValueNumericUpDown.Value.ToString();
-                rightBackTextBox.Text = servoValueNumericUpDown.Value.ToString();
+                leftFrontTextBox.Value = servoValueNumericUpDown.Value;
+                rightFrontTextBox.Value = servoValueNumericUpDown.Value;
+                leftBackTextBox.Value = servoValueNumericUpDown.Value;
+                rightBackTextBox.Value = servoValueNumericUpDown.Value;
                 changingValues = false;
 
                 SendValues();

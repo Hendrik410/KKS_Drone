@@ -35,16 +35,20 @@
             this.motorsGroupBox = new System.Windows.Forms.GroupBox();
             this.setValuesButton = new System.Windows.Forms.Button();
             this.servoValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.rightBackTextBox = new System.Windows.Forms.TextBox();
-            this.rightFrontTextBox = new System.Windows.Forms.TextBox();
-            this.leftBackTextBox = new System.Windows.Forms.TextBox();
-            this.leftFrontTextBox = new System.Windows.Forms.TextBox();
+            this.rightBackTextBox = new System.Windows.Forms.NumericUpDown();
+            this.rightFrontTextBox = new System.Windows.Forms.NumericUpDown();
+            this.leftBackTextBox = new System.Windows.Forms.NumericUpDown();
+            this.leftFrontTextBox = new System.Windows.Forms.NumericUpDown();
             rightBackLabel = new System.Windows.Forms.Label();
             rightFrontLabel = new System.Windows.Forms.Label();
             leftBackLabel = new System.Windows.Forms.Label();
             leftFrontLabel = new System.Windows.Forms.Label();
             this.motorsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightBackTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightFrontTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leftBackTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leftFrontTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // rightBackLabel
@@ -121,24 +125,9 @@
             0,
             0});
             this.servoValueNumericUpDown.Location = new System.Drawing.Point(305, 23);
-            this.servoValueNumericUpDown.Maximum = new decimal(new int[] {
-            2000,
-            0,
-            0,
-            0});
-            this.servoValueNumericUpDown.Minimum = new decimal(new int[] {
-            900,
-            0,
-            0,
-            0});
             this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
             this.servoValueNumericUpDown.Size = new System.Drawing.Size(53, 20);
             this.servoValueNumericUpDown.TabIndex = 8;
-            this.servoValueNumericUpDown.Value = new decimal(new int[] {
-            1500,
-            0,
-            0,
-            0});
             this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.servoValueNumericUpDown_KeyUp);
             // 
             // rightBackTextBox
@@ -183,6 +172,10 @@
             this.motorsGroupBox.ResumeLayout(false);
             this.motorsGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightBackTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rightFrontTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leftBackTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leftFrontTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,10 +183,10 @@
         #endregion
 
         private System.Windows.Forms.GroupBox motorsGroupBox;
-        private System.Windows.Forms.TextBox rightBackTextBox;
-        private System.Windows.Forms.TextBox rightFrontTextBox;
-        private System.Windows.Forms.TextBox leftBackTextBox;
-        private System.Windows.Forms.TextBox leftFrontTextBox;
+        private System.Windows.Forms.NumericUpDown rightBackTextBox;
+        private System.Windows.Forms.NumericUpDown rightFrontTextBox;
+        private System.Windows.Forms.NumericUpDown leftBackTextBox;
+        private System.Windows.Forms.NumericUpDown leftFrontTextBox;
         private System.Windows.Forms.NumericUpDown servoValueNumericUpDown;
         private System.Windows.Forms.Button setValuesButton;
     }
