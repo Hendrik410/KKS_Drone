@@ -33,6 +33,7 @@
             System.Windows.Forms.Label leftBackLabel;
             System.Windows.Forms.Label leftFrontLabel;
             this.motorsGroupBox = new System.Windows.Forms.GroupBox();
+            this.valueTrackBar = new System.Windows.Forms.TrackBar();
             this.setValuesButton = new System.Windows.Forms.Button();
             this.servoValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.rightBackTextBox = new System.Windows.Forms.NumericUpDown();
@@ -44,6 +45,7 @@
             leftBackLabel = new System.Windows.Forms.Label();
             leftFrontLabel = new System.Windows.Forms.Label();
             this.motorsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.valueTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightBackTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightFrontTextBox)).BeginInit();
@@ -89,6 +91,7 @@
             // 
             // motorsGroupBox
             // 
+            this.motorsGroupBox.Controls.Add(this.valueTrackBar);
             this.motorsGroupBox.Controls.Add(this.setValuesButton);
             this.motorsGroupBox.Controls.Add(this.servoValueNumericUpDown);
             this.motorsGroupBox.Controls.Add(this.rightBackTextBox);
@@ -102,10 +105,22 @@
             this.motorsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.motorsGroupBox.Location = new System.Drawing.Point(0, 0);
             this.motorsGroupBox.Name = "motorsGroupBox";
-            this.motorsGroupBox.Size = new System.Drawing.Size(364, 92);
+            this.motorsGroupBox.Size = new System.Drawing.Size(363, 128);
             this.motorsGroupBox.TabIndex = 4;
             this.motorsGroupBox.TabStop = false;
             this.motorsGroupBox.Text = "Motors";
+            // 
+            // valueTrackBar
+            // 
+            this.valueTrackBar.BackColor = System.Drawing.Color.White;
+            this.valueTrackBar.LargeChange = 30;
+            this.valueTrackBar.Location = new System.Drawing.Point(6, 77);
+            this.valueTrackBar.Name = "valueTrackBar";
+            this.valueTrackBar.Size = new System.Drawing.Size(351, 45);
+            this.valueTrackBar.SmallChange = 10;
+            this.valueTrackBar.TabIndex = 10;
+            this.valueTrackBar.TickFrequency = 50;
+            this.valueTrackBar.ValueChanged += new System.EventHandler(this.valueTrackBar_ValueChanged);
             // 
             // setValuesButton
             // 
@@ -168,9 +183,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.motorsGroupBox);
             this.Name = "MotorControl";
-            this.Size = new System.Drawing.Size(364, 92);
+            this.Size = new System.Drawing.Size(363, 128);
             this.motorsGroupBox.ResumeLayout(false);
             this.motorsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.valueTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.servoValueNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightBackTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rightFrontTextBox)).EndInit();
@@ -189,5 +205,6 @@
         private System.Windows.Forms.NumericUpDown leftFrontTextBox;
         private System.Windows.Forms.NumericUpDown servoValueNumericUpDown;
         private System.Windows.Forms.Button setValuesButton;
+        private System.Windows.Forms.TrackBar valueTrackBar;
     }
 }

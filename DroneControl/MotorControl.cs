@@ -39,6 +39,7 @@ namespace DroneControl
             drone.OnSettingsChange += Drone_OnSettingsChange;
             
             UpdateValueBounds(drone.Settings);
+            UpdateServoValue();
         }
 
         private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
@@ -73,6 +74,8 @@ namespace DroneControl
 
             if (!rightBackTextBox.Focused)
                 rightBackTextBox.Text = motorValues.BackRight.ToString();
+
+            UpdateServoValue();
         }
 
         private void UpdateValueBounds(DroneSettings settings)
@@ -82,18 +85,34 @@ namespace DroneControl
             leftBackTextBox.Minimum = settings.ServoMin;
             rightBackTextBox.Minimum = settings.ServoMin;
             servoValueNumericUpDown.Minimum = settings.ServoMin;
+            valueTrackBar.Minimum = settings.ServoMin;
 
             leftFrontTextBox.Maximum = settings.ServoMax;
             rightFrontTextBox.Maximum = settings.ServoMax;
             leftBackTextBox.Maximum = settings.ServoMax;
             rightBackTextBox.Maximum = settings.ServoMax;
             servoValueNumericUpDown.Maximum = settings.ServoMax;
+            valueTrackBar.Maximum = settings.ServoMax;
         }
 
         private void setValuesButton_Click(object sender, EventArgs e)
         {
             if (!SendValues())
                 MessageBox.Show("The drone has to be armed, before setting the motors!");
+        }
+
+        private void UpdateServoValue()
+        {
+            ushort leftFront = (ushort)leftFrontTextBox.Value;
+            ushort rightFront = (ushort)rightFrontTextBox.Value;
+            ushort leftBack = (ushort)leftBackTextBox.Value;
+            ushort rightBack = (ushort)rightBackTextBox.Value;
+
+            if (!servoValueNumericUpDown.Focused)
+                servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
+
+            if (!valueTrackBar.Focused)
+                valueTrackBar.Value = (ushort)servoValueNumericUpDown.Value;
         }
 
         private bool SendValues()
@@ -103,7 +122,6 @@ namespace DroneControl
             ushort leftBack = (ushort)leftBackTextBox.Value;
             ushort rightBack = (ushort)rightBackTextBox.Value;
 
-            servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
             if (drone.IsConnected && drone.Data.State == DroneState.Armed)
             {
                 drone.SendPacket(
@@ -116,22 +134,42 @@ namespace DroneControl
         private void OnEnter(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && !changingValues)
+            {
+                UpdateServoValue();
                 SendValues();
+            }
+        }
+
+        private void SetServoValueToAll()
+        {
+            changingValues = true;
+            leftFrontTextBox.Value = servoValueNumericUpDown.Value;
+            rightFrontTextBox.Value = servoValueNumericUpDown.Value;
+            leftBackTextBox.Value = servoValueNumericUpDown.Value;
+            rightBackTextBox.Value = servoValueNumericUpDown.Value;
+            changingValues = false;
         }
 
         private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                changingValues = true;
-                leftFrontTextBox.Value = servoValueNumericUpDown.Value;
-                rightFrontTextBox.Value = servoValueNumericUpDown.Value;
-                leftBackTextBox.Value = servoValueNumericUpDown.Value;
-                rightBackTextBox.Value = servoValueNumericUpDown.Value;
-                changingValues = false;
-
+            if (e.KeyCode == Keys.Enter && !changingValues)
+            {          
+                SetServoValueToAll();
                 SendValues();
             }
+        }
+
+        private void valueTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (changingValues)
+                return;
+
+            changingValues = true;
+            servoValueNumericUpDown.Value = valueTrackBar.Value;
+            SetServoValueToAll();
+
+
+            SendValues();
         }
     }
 }
