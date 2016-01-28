@@ -166,22 +166,22 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
 
-		if (fl >= config->ServoMax) {
+		if (fl > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for fl");
 			return;
 		}
 
-		if (fr >= config->ServoMax) {
+		if (fr > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for fr");
 			return;
 		}
 
-		if (bl >= config->ServoMax) {
+		if (bl > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for bl");
 			return;
 		}
 
-		if (br >= config->ServoMax) {
+		if (br > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for br");
 			return;
 		}
@@ -255,6 +255,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
+		servos->setAllServos(config->ServoMin);
+
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			gyro->setAsZero();
 		break;
