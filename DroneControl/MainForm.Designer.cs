@@ -106,7 +106,7 @@
             // wifiRssiLabel
             // 
             this.wifiRssiLabel.AutoSize = true;
-            this.wifiRssiLabel.Location = new System.Drawing.Point(118, 30);
+            this.wifiRssiLabel.Location = new System.Drawing.Point(123, 30);
             this.wifiRssiLabel.Name = "wifiRssiLabel";
             this.wifiRssiLabel.Size = new System.Drawing.Size(53, 13);
             this.wifiRssiLabel.TabIndex = 20;
@@ -169,13 +169,14 @@
             // statusArmedLabel
             // 
             this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.statusArmedLabel.AutoSize = true;
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(481, 10);
+            this.statusArmedLabel.Location = new System.Drawing.Point(411, 10);
             this.statusArmedLabel.Name = "statusArmedLabel";
-            this.statusArmedLabel.Size = new System.Drawing.Size(57, 13);
+            this.statusArmedLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.statusArmedLabel.Size = new System.Drawing.Size(167, 13);
             this.statusArmedLabel.TabIndex = 14;
             this.statusArmedLabel.Text = "Status: {0}";
+            this.statusArmedLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // pingLabel
             // 
@@ -350,6 +351,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(752, 517);
             this.Controls.Add(dronePingSplitContainer);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Drone Control";
