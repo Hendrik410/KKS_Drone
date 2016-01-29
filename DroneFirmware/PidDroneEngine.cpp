@@ -68,9 +68,14 @@ void PidDroneEngine::handleInternal() {
 	}
 
 	if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
-		pidPitch->Compute();
-		pidRoll->Compute();
-		pidYaw->Compute();
+		bool computedNothing = false;
+		computedNothing |= !pidPitch->Compute();
+		computedNothing |= !pidRoll->Compute();
+		computedNothing |= !pidYaw->Compute();
+
+		if(computedNothing) {
+			Log::info("Engine", "Computed nothing with PID's");
+		}
 
 		frontLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
 		frontRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
