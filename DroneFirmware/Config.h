@@ -23,7 +23,7 @@ struct Config {
 
 	// Name des WiFi Netzwerks
 	// leerer String bedeutet es wird keine Verbindung zu einem Netzwerk aufgebaut
-	char NetworkSSID[20];
+	char NetworkSSID[30];
 
 	//The password of the WiFi network
 	char NetworkPassword[30];

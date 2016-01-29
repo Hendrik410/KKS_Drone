@@ -124,10 +124,10 @@ void setup() {
 	if (openOwnNetwork) {
 		Log::info("Boot", "Creating own network...");
 
-		char ssid[20];
-		strcpy(ssid, config.DroneName);
-		strcat(ssid, "-");
-		strcat(ssid, serialCode);
+		char ssid[30];
+		strncpy(ssid, config.DroneName, sizeof(ssid));
+		strncat(ssid, "-", sizeof(ssid));
+		strncat(ssid, serialCode, sizeof(ssid));
 
 		Log::info("Boot", "Network SSID: %s", ssid);
 
