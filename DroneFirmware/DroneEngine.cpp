@@ -27,7 +27,6 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
 		gyro->setAsZero();
-		setTargetMovement(0, 0, 0, 0);
 		servos->setAllServos(config->ServoIdle);
 
 		_state = StateArmed;
@@ -38,7 +37,6 @@ void DroneEngine::arm() {
 
 void DroneEngine::disarm() {
 	if (_state == StateArmed || _state == StateFlying) {
-		setTargetMovement(0, 0, 0, 0);
 		servos->setAllServos(config->ServoMin);
 
 		_state = StateIdle;
@@ -65,10 +63,6 @@ void DroneEngine::handle() {
 	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED();
 
-		if (_state == StateFlying && millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
-			stop(NoData);
-			return;
-		}
 
 		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
 			stop(NoPing);
@@ -80,9 +74,16 @@ void DroneEngine::handle() {
 			return;
 		}
 
-		if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
-			handleInternal();
-			lastPhysicsCalc = millis();
+		if (_state == StateFlying) {
+			if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
+				stop(NoData);
+				return;
+			}
+
+			if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
+				handleInternal();
+				lastPhysicsCalc = millis();
+			}
 		}
 	}
 }

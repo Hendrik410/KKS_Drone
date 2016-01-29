@@ -64,6 +64,7 @@ namespace DroneControl
 
             QuadMotorValues motorValues = args.Data.MotorValues;
 
+            changingValues = true;
             if (!leftFrontTextBox.Focused)
                 leftFrontTextBox.Text = motorValues.FrontLeft.ToString();
 
@@ -78,6 +79,7 @@ namespace DroneControl
 
             UpdateServoValue();
             UpdateEnabled(args.Data.State == DroneState.Armed);
+            changingValues = false;
         }
 
         private void UpdateEnabled(bool enabled)
@@ -120,27 +122,29 @@ namespace DroneControl
             ushort leftBack = (ushort)leftBackTextBox.Value;
             ushort rightBack = (ushort)rightBackTextBox.Value;
 
+            changingValues = true;
             if (!servoValueNumericUpDown.Focused)
                 servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
 
             if (!valueTrackBar.Focused)
                 valueTrackBar.Value = (ushort)servoValueNumericUpDown.Value;
+            changingValues = false;
         }
 
         private bool SendValues()
         {
+            if (!drone.IsConnected || drone.Data.State != DroneState.Armed)
+                return false;
+
             ushort leftFront = (ushort)leftFrontTextBox.Value;
             ushort rightFront = (ushort)rightFrontTextBox.Value;
             ushort leftBack = (ushort)leftBackTextBox.Value;
             ushort rightBack = (ushort)rightBackTextBox.Value;
 
-            if (drone.IsConnected && drone.Data.State == DroneState.Armed)
-            {
-                drone.SendPacket(
-                    new PacketSetRawValues(new QuadMotorValues(leftFront, rightFront, leftBack, rightBack)), true);
-                return true;
-            }
-            return false;
+
+            drone.SendPacket(
+                new PacketSetRawValues(new QuadMotorValues(leftFront, rightFront, leftBack, rightBack)), true);
+            return true;
         }
 
         private void OnEnter(object sender, KeyEventArgs e)

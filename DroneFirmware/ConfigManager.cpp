@@ -87,7 +87,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 512;
-	config.MaximumNetworkTimeout = 500;
+	config.MaximumNetworkTimeout = 700;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
