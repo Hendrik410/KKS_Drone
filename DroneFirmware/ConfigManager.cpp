@@ -77,16 +77,18 @@ void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
 Config ConfigManager::getDefault() {
 	Config config;
 
-	memcpy(config.DroneName, "koalaDrone", 11);
+	strncpy(config.DroneName, "koalaDrone", sizeof(config.DroneName));
 
-	memcpy(config.NetworkSSID, "Drone", 6);
-	memcpy(config.NetworkPassword, "12345678", 9);
+	// leerer String, siehe NetworkSSID
+	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID)); 
+
+	strncpy(config.NetworkPassword, "12345678", sizeof(config.NetworkPassword));
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 512;
-	config.MaximumNetworkTimeout = 500;
+	config.MaximumNetworkTimeout = 700;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
@@ -97,9 +99,9 @@ Config ConfigManager::getDefault() {
 	config.TrimThrottle = 0;
 
 	config.ServoMin = 900;
-	config.ServoMax = 1400;
-	config.ServoIdle = 1200;
-	config.ServoHover = 1280;
+	config.ServoMax = 2000;
+	config.ServoIdle = 975;
+	config.ServoHover = 1200;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;
@@ -112,11 +114,11 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.03f;
-	config.RotaryDegree2Ratio = 0.03f;
+	config.Degree2Ratio = 0.05f;
+	config.RotaryDegree2Ratio = 0.05f;
 	config.PhysicsCalcDelay = 20;
 
-	config.EngineType = EnginePID;
+	config.EngineType = EngineLinear;
 
 	config.PitchPidSettings.Kp = 1;
 	config.PitchPidSettings.Ki = 0.05;
@@ -131,7 +133,10 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kd = 0.25;
 
 	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0.4f;
+	config.CorrectionFactor = 0;
+
+	config.SafePitch = 35;
+	config.SafeRoll = 35;
 	
 
 	Log::info("Config", "Using default config");

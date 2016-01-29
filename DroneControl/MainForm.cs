@@ -46,7 +46,7 @@ namespace DroneControl
             flightControl1.Init(drone);
             sensorControl1.Init(drone);
 
-            ipInfoLabel.Text = string.Format(ipInfoLabel.Text, drone.Address);
+            ipInfoLabel.Text = string.Format("Connecting to \"{0}\"", drone.Address);
             UpdatePing(drone.IsConnected, drone.Ping);
             UpdateInfo(drone.Info);
             UpdateData(drone.Data);
@@ -57,7 +57,7 @@ namespace DroneControl
         {
             if (timer != null)
                 timer.Stop();
-            
+
             flightControl1.Close();
 
             if (drone != null)
@@ -101,15 +101,24 @@ namespace DroneControl
         private void UpdatePing(bool isConnected, int ping)
         {
             if (!isConnected)
+            {
                 pingLabel.Text = "Not connected";
+                ipInfoLabel.Text = string.Format("IP-Address: \"{0}\"", drone.Address);
+            }
             else
+            {
                 pingLabel.Text = string.Format("Ping: {0}ms", drone.Ping);
+                ipInfoLabel.Text = string.Format("Connected to \"{0}\"", drone.Address);
+            }
 
             if (!isConnected || ping > 50)
                 pingLabel.ForeColor = Color.Red;
             else
                 pingLabel.ForeColor = Color.Green;
-        }
+
+            if (!isConnected)
+                UpdateData(drone.Data);
+        } 
 
         private void UpdateInfo(DroneInfo info)
         {
@@ -126,35 +135,63 @@ namespace DroneControl
         {
             if (!drone.IsConnected)
             {
+                statusArmedLabel.ForeColor = Color.Red;
                 statusArmedLabel.Text = "Status: not connected";
+                if (data.State != DroneState.Unkown)
+                    statusArmedLabel.Text += string.Format(" (last: {0})", data.State);
+
                 statusButton.Enabled = false;
             }
             else
             {
                 statusButton.Enabled = true;
 
-                switch(drone.Data.State)
+                switch (drone.Data.State)
                 {
                     case DroneState.Unkown:
                         statusButton.Enabled = false;
+                        statusArmedLabel.ForeColor = Color.DarkRed;
                         statusButton.Text = "Unkown";
                         break;
                     case DroneState.Stopped:
                     case DroneState.Reset:
+                        statusArmedLabel.ForeColor = Color.Green;
                         statusButton.Text = "Clear";
                         break;
                     case DroneState.Idle:
+                        statusArmedLabel.ForeColor = Color.DarkGreen;
                         statusButton.Text = "Arm";
                         break;
                     case DroneState.Armed:
                     case DroneState.Flying:
+                        statusArmedLabel.ForeColor = Color.DarkOrange;
                         statusButton.Text = "Disarm";
                         break;
                 }
 
                 statusArmedLabel.Text = $"Status: {data.State}";
 
-                wifiRssiLabel.Text = $"Wifi signal: {data.WifiRssi}dBm";
+                // RSSI ist immer unter 0, wenn die Drohne mit einem Netzwerk verbunden ist
+                wifiRssiLabel.Visible = data.WifiRssi < 0;
+
+                wifiRssiLabel.Text = "WiFi signal: ";
+                if (data.WifiRssi > -40)
+                {
+                    wifiRssiLabel.Text += "very good";
+                    wifiRssiLabel.ForeColor = Color.DarkGreen;
+                }
+                else if (data.WifiRssi > -70)
+                {
+                    wifiRssiLabel.Text += "good";
+                    wifiRssiLabel.ForeColor = Color.Green;
+                }
+                else
+                {
+                    wifiRssiLabel.Text += "bad";
+                    wifiRssiLabel.ForeColor = Color.DarkRed;
+                }
+
+                wifiRssiLabel.Text += " " + data.WifiRssi + "dBm";
             }
         }
 

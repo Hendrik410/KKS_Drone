@@ -90,7 +90,6 @@ void setup() {
 	// Log setzen
 	Log::setPrintToSerial(config.VerboseSerialLog);
 
-
 	//setup servos
 	servos = new ServoManager(&config);
 	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
@@ -99,24 +98,43 @@ void setup() {
 
 	setupLED(&config);
 
-	WiFi.mode(WIFI_STA);
-	WiFi.begin(config.NetworkSSID, config.NetworkPassword);
-	int connectStartTime = millis();
-	while(WiFi.waitForConnectResult() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
-		delay(20);
+	bool openOwnNetwork = true;
+
+	// versuchen mit dem eingestellen AP zu verbinden
+	if (strlen(config.NetworkSSID) > 0) {
+		Log::info("Boot", "Trying to connect to %s", config.NetworkSSID);
+
+		WiFi.mode(WIFI_STA);
+		WiFi.begin(config.NetworkSSID, config.NetworkPassword);
+		int connectStartTime = millis();
+		while (WiFi.waitForConnectResult() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
+			delay(20);
+		}
+		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED;
+
+		if (openOwnNetwork)
+			Log::info("Boot", "Access point not found!");
+		else {
+			Log::info("Boot", "Successfully connected to access point");
+			Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
+		}
 	}
 
-	if(WiFi.waitForConnectResult() != WL_CONNECTED) {
-		Log::info("Boot", "Access point not found, creating own ...");
+	// eigenen AP erstellen
+	if (openOwnNetwork) {
+		Log::info("Boot", "Creating own network...");
+
+		char ssid[30];
+		strncpy(ssid, config.DroneName, sizeof(ssid));
+		strncat(ssid, "-", sizeof(ssid));
+		strncat(ssid, serialCode, sizeof(ssid));
+
+		Log::info("Boot", "Network SSID: %s", ssid);
 
 		WiFi.mode(WIFI_AP);
-		WiFi.softAP(config.NetworkSSID, config.NetworkPassword);
+		WiFi.softAP(ssid, config.NetworkPassword);
 
 		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
-	} 
-	else {
-		Log::info("Boot", "Successfully connected to access point");
-		Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
 	}
 
 

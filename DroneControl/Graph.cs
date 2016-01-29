@@ -13,6 +13,7 @@ namespace DroneControl
 {
     public partial class Graph : UserControl
     {
+        public string Titel { get; set; }
         public DataHistory History { get; private set; }
 
         public Graph()
@@ -46,21 +47,25 @@ namespace DroneControl
         {
             e.Graphics.Clear(Color.White);
 
-            if (DesignMode || History == null)
-                return;
-
-            Pen pen = new Pen(Color.Black);
-            int lastY = 0;
-            for (int i = 0; i < History.ValueCount; i++)
+            if (!DesignMode && History != null)
             {
-                int y = GetValue(i);
-                if (i == 0)
-                    e.Graphics.DrawLine(pen, 0, y, 0, y);
-                else
-                    e.Graphics.DrawLine(pen, i - 1, lastY, i, y);
+                Pen pen = new Pen(Color.Black);
+                int lastY = 0;
+                for (int i = 0; i < History.ValueCount; i++)
+                {
+                    int y = GetValue(i);
+                    if (i == 0)
+                        e.Graphics.DrawLine(pen, 0, y, 0, y);
+                    else
+                        e.Graphics.DrawLine(pen, i - 1, lastY, i, y);
 
-                lastY = y;
+                    lastY = y;
+                }
             }
+
+            
+            if (!string.IsNullOrWhiteSpace(Titel))
+                e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.DarkGray), 8, 8);
 
             base.OnPaint(e);
         }

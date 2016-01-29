@@ -23,6 +23,7 @@ namespace DroneControl
 
             for (int i = 0; i < 4; i++)
                 oldValues[i] += (newValues[i] - oldValues[i]) * settings.InterpolationFactor;
+
             return oldValues;
         }
 
@@ -31,12 +32,14 @@ namespace DroneControl
             return ((((a - b) % 360) + 540) % 360) - 180;
         }
 
-        private static float GetTargetRatio(DroneSettings settings, bool isFront, bool isLeft, bool isClockwise, TargetMovementData target, DroneData data)
+        private float GetTargetRatio(DroneSettings settings, bool isFront, bool isLeft, bool isClockwise, TargetMovementData target, DroneData data)
         {
             float ratio = target.TargetThrust;
 
-            ratio += GetTargetRatio(settings, isFront, isLeft, isClockwise, target.TargetPitch, target.TargetRoll, 0);
-            ratio -= settings.CorrectionFactor * GetTargetRatio(settings, isFront, isLeft, isClockwise, data.Gyro.Pitch, data.Gyro.Roll, 0);
+            float deltaYaw = 0; // AngleDifference(data.Gyro.Yaw, targetYaw);
+
+            ratio += GetTargetRatio(settings, isFront, isLeft, isClockwise, target.TargetPitch, target.TargetRoll, target.TargetRotationalSpeed);
+            ratio -= settings.CorrectionFactor * GetTargetRatio(settings, isFront, isLeft, isClockwise, data.Gyro.Pitch, data.Gyro.Roll, deltaYaw);
             return ratio;
         }
 

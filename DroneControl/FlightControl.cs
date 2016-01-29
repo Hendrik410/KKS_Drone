@@ -24,9 +24,7 @@ namespace DroneControl
 
         public FlightControl()
         {
-
             InitializeComponent();
-
 
             foreach (string s in Enum.GetNames(typeof(InputInterpreterType)))
                 inputTypeComboBox.Items.Add(s);
@@ -35,7 +33,7 @@ namespace DroneControl
 
             maxPitchNumeric.ValueChanged += OnTiltLimitInputChange;
             maxRollNumeric.ValueChanged += OnTiltLimitInputChange;
-            maxYawNumeric.ValueChanged += OnTiltLimitInputChange;
+            maxRotationSpeedNumeric.ValueChanged += OnTiltLimitInputChange;
 
             targetRatio = new LinearTargetRatio();
         }
@@ -50,12 +48,14 @@ namespace DroneControl
             OnTiltLimitInputChange(this, EventArgs.Empty);
 
             this.drone.OnDataChange += Drone_OnDataChange;
+
+            UpdateTarget();
         }
 
         public void Close()
         {
             if (inputController != null)
-                inputController.Stop(); // NPE
+                inputController.Stop();
         }
 
 
@@ -84,11 +84,20 @@ namespace DroneControl
                 Invoke(new EventHandler(DeviceInterpreterOnTargetMovementChange), this, eventArgs);
                 return;
             }
-            TargetMovementData target = inputController.DeviceInterpreter.TargetMovementData;
+
+            UpdateTarget();
+        }
+
+        private void UpdateTarget()
+        {
+            TargetMovementData target = new TargetMovementData();
+            
+            if (inputController != null)
+                target = inputController.DeviceInterpreter.TargetMovementData;
 
             targetPitchLabel.Text = $"Target Pitch: {target.TargetPitch}";
             targetRollLabel.Text = $"Target Roll: {target.TargetRoll}";
-            targetYawLabel.Text = $"Target Yaw: {target.TargetYaw}";
+            rotationalSpeedLabel.Text = $"Rotational Speed: {target.TargetRotationalSpeed}";
             targetThrustLabel.Text = $"Target Thrust: {target.TargetThrust}";
 
             UpdateTargetRatio(drone.Data);
@@ -100,7 +109,7 @@ namespace DroneControl
 
             inputController.DeviceInterpreter.MaxPitch = (float)maxPitchNumeric.Value;
             inputController.DeviceInterpreter.MaxRoll = (float)maxRollNumeric.Value;
-            inputController.DeviceInterpreter.MaxYaw = (float)maxYawNumeric.Value;
+            inputController.DeviceInterpreter.MaxYaw = (float)maxRotationSpeedNumeric.Value;
         }
 
         private void activeCheckBox_CheckedChanged(object sender, EventArgs e)

@@ -80,6 +80,7 @@ public:
 	void write(uint8_t* buffer, int offset, int length);
 
 	void writeString(char* str);
+	void writeString(const char* str);
 };
 #endif
 

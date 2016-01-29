@@ -227,3 +227,7 @@ void PacketBuffer::writeString(char* str) {
 	uint8_t* dest = this->data + addAndAssertPosition(size);
 	memcpy(dest, str, size);
 }
+
+void PacketBuffer::writeString(const char* str) {
+	writeString((char*)str);
+}

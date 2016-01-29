@@ -24,7 +24,7 @@ namespace DroneControl
 
             droneList.OnDroneFound += DroneList_OnDroneFound;
 
-            searchTimer.Interval = 2000; // 2 Sekunden
+            searchTimer.Interval = 500;
             searchTimer.Tick += (object sender, EventArgs args) =>
             {
                 droneList.SendHello();

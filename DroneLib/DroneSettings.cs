@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace DroneLibrary
 {
-    [StructLayout(LayoutKind.Sequential, Size = 176, Pack = 0, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 0, CharSet = CharSet.Ansi)]
     [TypeConverter(typeof(DroneSettingsTypeConverter))]
     public unsafe struct DroneSettings 
     {
@@ -18,7 +18,7 @@ namespace DroneLibrary
         public string DroneName;
 
         //The name of the WiFi network
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
         [Category("Network")]
         public string NetworkSSID;
 
@@ -151,6 +151,12 @@ namespace DroneLibrary
 
         [Category("Flying")]
         public float CorrectionFactor;
+
+        [Category("Flying")]
+        public float SafePitch;
+
+        [Category("Flying")]
+        public float SafeRoll;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

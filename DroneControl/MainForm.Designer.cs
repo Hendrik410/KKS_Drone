@@ -106,7 +106,7 @@
             // wifiRssiLabel
             // 
             this.wifiRssiLabel.AutoSize = true;
-            this.wifiRssiLabel.Location = new System.Drawing.Point(118, 30);
+            this.wifiRssiLabel.Location = new System.Drawing.Point(123, 30);
             this.wifiRssiLabel.Name = "wifiRssiLabel";
             this.wifiRssiLabel.Size = new System.Drawing.Size(53, 13);
             this.wifiRssiLabel.TabIndex = 20;
@@ -169,13 +169,14 @@
             // statusArmedLabel
             // 
             this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.statusArmedLabel.AutoSize = true;
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(481, 10);
+            this.statusArmedLabel.Location = new System.Drawing.Point(385, 10);
             this.statusArmedLabel.Name = "statusArmedLabel";
-            this.statusArmedLabel.Size = new System.Drawing.Size(57, 13);
+            this.statusArmedLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.statusArmedLabel.Size = new System.Drawing.Size(193, 13);
             this.statusArmedLabel.TabIndex = 14;
             this.statusArmedLabel.Text = "Status: {0}";
+            this.statusArmedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pingLabel
             // 
@@ -228,7 +229,7 @@
             // 
             motorsSensorSplitContainer.Panel2.Controls.Add(this.sensorControl1);
             motorsSensorSplitContainer.Size = new System.Drawing.Size(473, 462);
-            motorsSensorSplitContainer.SplitterDistance = 177;
+            motorsSensorSplitContainer.SplitterDistance = 186;
             motorsSensorSplitContainer.TabIndex = 0;
             // 
             // mainViewTabs
@@ -239,7 +240,7 @@
             this.mainViewTabs.Location = new System.Drawing.Point(0, 0);
             this.mainViewTabs.Name = "mainViewTabs";
             this.mainViewTabs.SelectedIndex = 0;
-            this.mainViewTabs.Size = new System.Drawing.Size(473, 177);
+            this.mainViewTabs.Size = new System.Drawing.Size(473, 186);
             this.mainViewTabs.TabIndex = 15;
             // 
             // manualControlPage
@@ -248,7 +249,7 @@
             this.manualControlPage.Location = new System.Drawing.Point(4, 22);
             this.manualControlPage.Name = "manualControlPage";
             this.manualControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.manualControlPage.Size = new System.Drawing.Size(465, 151);
+            this.manualControlPage.Size = new System.Drawing.Size(465, 160);
             this.manualControlPage.TabIndex = 0;
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
@@ -259,7 +260,7 @@
             this.flightControlPage.Location = new System.Drawing.Point(4, 22);
             this.flightControlPage.Name = "flightControlPage";
             this.flightControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.flightControlPage.Size = new System.Drawing.Size(465, 151);
+            this.flightControlPage.Size = new System.Drawing.Size(465, 160);
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
@@ -326,7 +327,7 @@
             // 
             this.motorControl1.Location = new System.Drawing.Point(6, 3);
             this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 92);
+            this.motorControl1.Size = new System.Drawing.Size(364, 132);
             this.motorControl1.TabIndex = 3;
             // 
             // flightControl1
@@ -341,7 +342,7 @@
             this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sensorControl1.Location = new System.Drawing.Point(0, 0);
             this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(473, 281);
+            this.sensorControl1.Size = new System.Drawing.Size(473, 272);
             this.sensorControl1.TabIndex = 17;
             // 
             // MainForm
@@ -350,6 +351,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(752, 517);
             this.Controls.Add(dronePingSplitContainer);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Drone Control";

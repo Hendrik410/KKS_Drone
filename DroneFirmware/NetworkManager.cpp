@@ -34,10 +34,12 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 }
 
 void NetworkManager::handlePackets() {
-	if (beginParse(helloUDP))
+	int helloPackets = 0;
+	while (beginParse(helloUDP) && helloPackets++ < 2)
 		handleHello(helloUDP);
 
-	if (beginParse(controlUDP))
+	int controlPackets = 0;
+	while (beginParse(controlUDP) && controlPackets++ < 5)
 		handleControl(controlUDP);
 
 	handleData(dataUDP);
@@ -152,12 +154,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		float pitch = readBuffer->readFloat();
 		float roll = readBuffer->readFloat();
-		float yaw = readBuffer->readFloat();
+		float rotationalSpeed = readBuffer->readFloat();
 		float thrust = readBuffer->readFloat();
 
-		engine->setTargetMovement(pitch, roll, yaw);
-		engine->setTargetVerticalSpeed(thrust);
-
+		engine->setTargetMovement(pitch, roll, rotationalSpeed, thrust);
 	}
 	break;
 	case RawSetPacket: {
@@ -166,22 +166,22 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
 
-		if (fl >= config->ServoMax) {
+		if (fl > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for fl");
 			return;
 		}
 
-		if (fr >= config->ServoMax) {
+		if (fr > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for fr");
 			return;
 		}
 
-		if (bl >= config->ServoMax) {
+		if (bl > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for bl");
 			return;
 		}
 
-		if (br >= config->ServoMax) {
+		if (br > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for br");
 			return;
 		}
@@ -206,6 +206,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case PingPacket:
 		echoPacket(udp);
+
+		engine->heartbeat();
 		break;
 	case BlinkPacket:
 		blinkLED();
@@ -255,6 +257,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
+		servos->setAllServos(config->ServoMin);
+
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			gyro->setAsZero();
 		break;
