@@ -88,7 +88,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 512;
-	config.MaximumNetworkTimeout = 700;
+	config.MaximumNetworkTimeout = 1500;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
@@ -101,7 +101,7 @@ Config ConfigManager::getDefault() {
 	config.ServoMin = 900;
 	config.ServoMax = 2000;
 	config.ServoIdle = 975;
-	config.ServoHover = 1200;
+	config.ServoHover = 1100;
 
 	config.DMPOffsetX = 220;
 	config.DMPOffsetY = 76;
@@ -114,8 +114,8 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.05f;
-	config.RotaryDegree2Ratio = 0.05f;
+	config.Degree2Ratio = 0.01f;
+	config.RotaryDegree2Ratio = 0.01f;
 	config.PhysicsCalcDelay = 20;
 
 	config.EngineType = EngineLinear;
@@ -133,7 +133,7 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kd = 0.25;
 
 	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0;
+	config.CorrectionFactor = 0.5f;
 
 	config.SafePitch = 35;
 	config.SafeRoll = 35;

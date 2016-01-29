@@ -40,6 +40,10 @@ namespace DroneControl
             ratioDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
                 data.FrontLeftRatio, data.FrontRightRatio,
                 data.BackLeftRatio, data.BackRightRatio);
+
+            correctionDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
+                data.FrontLeftCorrection, data.FrontRightCorrection,
+                data.BackLeftCorrection, data.BackRightCorrection);
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)

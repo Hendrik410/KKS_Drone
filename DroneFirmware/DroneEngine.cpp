@@ -174,3 +174,19 @@ float DroneEngine::getBackLeftRatio() const {
 float DroneEngine::getBackRightRatio() const {
 	return backRightRatio;
 }
+
+float DroneEngine::getFrontLeftCorrection() const {
+	return frontLeftCorrection;
+}
+
+float DroneEngine::getFrontRightCorrection() const {
+	return frontRightCorrection;
+}
+
+float DroneEngine::getBackLeftCorrection() const {
+	return backLeftCorrection;
+}
+
+float DroneEngine::getBackRightCorrection() const {
+	return backRightCorrection;
+}

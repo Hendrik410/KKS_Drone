@@ -11,6 +11,9 @@ namespace DroneControl
     public class LinearTargetRatio
     {
         private float[] oldValues = new float[4];
+        private float lastYaw;
+        private long tickCount;
+        private const long tickRange = (1000 / 20);
 
         public float[] Calculate(DroneSettings settings, TargetMovementData target, DroneData data)
         {
@@ -24,6 +27,8 @@ namespace DroneControl
             for (int i = 0; i < 4; i++)
                 oldValues[i] += (newValues[i] - oldValues[i]) * settings.InterpolationFactor;
 
+            if (tickCount++ % tickRange == 0)
+                lastYaw = data.Gyro.Yaw;
             return oldValues;
         }
 
@@ -36,10 +41,12 @@ namespace DroneControl
         {
             float ratio = target.TargetThrust;
 
-            float deltaYaw = 0; // AngleDifference(data.Gyro.Yaw, targetYaw);
+            float deltaYaw = AngleDifference(data.Gyro.Yaw, lastYaw); // / ((1000 / settings.PhysicsCalcDelay) * tickRange);
+            if (Math.Abs(deltaYaw) > 0.5f)
+                deltaYaw = 0.5f;
 
             ratio += GetTargetRatio(settings, isFront, isLeft, isClockwise, target.TargetPitch, target.TargetRoll, target.TargetRotationalSpeed);
-            ratio -= settings.CorrectionFactor * GetTargetRatio(settings, isFront, isLeft, isClockwise, data.Gyro.Pitch, data.Gyro.Roll, deltaYaw);
+            ratio -= settings.CorrectionFactor * GetTargetRatio(settings, isFront, isLeft, isClockwise, 0, 0, deltaYaw);
             return ratio;
         }
 

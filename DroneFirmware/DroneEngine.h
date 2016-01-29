@@ -63,6 +63,11 @@ class DroneEngine
 	 float backLeftRatio;
 	 float backRightRatio;
 
+	 float frontLeftCorrection;
+	 float frontRightCorrection;
+	 float backLeftCorrection;
+	 float backRightCorrection;
+
  public:
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
 
@@ -99,6 +104,11 @@ class DroneEngine
 	float getFrontRightRatio() const;
 	float getBackLeftRatio() const;
 	float getBackRightRatio() const;
+
+	float getFrontLeftCorrection() const;
+	float getFrontRightCorrection() const;
+	float getBackLeftCorrection() const;
+	float getBackRightCorrection() const;
 };
 
 #endif

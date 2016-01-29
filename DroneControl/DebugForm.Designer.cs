@@ -32,6 +32,7 @@
             this.resetButton = new System.Windows.Forms.Button();
             this.ratioDataLabel = new System.Windows.Forms.Label();
             this.blinkButton = new System.Windows.Forms.Button();
+            this.correctionDataLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // resetButton
@@ -64,11 +65,22 @@
             this.blinkButton.UseVisualStyleBackColor = true;
             this.blinkButton.Click += new System.EventHandler(this.blinkButton_Click);
             // 
+            // correctionDataLabel
+            // 
+            this.correctionDataLabel.AutoSize = true;
+            this.correctionDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.correctionDataLabel.Location = new System.Drawing.Point(13, 165);
+            this.correctionDataLabel.Name = "correctionDataLabel";
+            this.correctionDataLabel.Size = new System.Drawing.Size(97, 13);
+            this.correctionDataLabel.TabIndex = 3;
+            this.correctionDataLabel.Text = "Correction data";
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(357, 315);
+            this.Controls.Add(this.correctionDataLabel);
             this.Controls.Add(this.blinkButton);
             this.Controls.Add(this.ratioDataLabel);
             this.Controls.Add(this.resetButton);
@@ -85,5 +97,6 @@
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Label ratioDataLabel;
         private System.Windows.Forms.Button blinkButton;
+        private System.Windows.Forms.Label correctionDataLabel;
     }
 }

@@ -21,17 +21,27 @@ void LinearDroneEngine::handleInternal() {
 
 
 	float data[3];
-	data[0] = gyro->getPitch();
-	data[1] = gyro->getRoll();
-	data[2] = 0; // MathHelper::angleDifference(gyro->getYaw(), targetYaw);
+	data[0] = 0; // gyro->getPitch();
+	data[1] = 0; // gyro->getRoll();
+	data[2] = 0; //  MathHelper::angleDifference(gyro->getYaw(), lastYaw); // / (1000 / config->PhysicsCalcDelay);
 
-	newValues[0] = getTargetRatio(Position_Front | Position_Left, Counterclockwise, target, data);
-	newValues[1] = getTargetRatio(Position_Front | Position_Right, Clockwise, target, data);
-	newValues[2] = getTargetRatio(Position_Back | Position_Left, Clockwise, target, data);
-	newValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, target, data);
+	if (abs(data[2]) > 0.5f)
+		data[2] = 0.5;
 
-	for (int i = 0; i < 4; i++)
+	newValues[0] = getTargetRatio(Position_Front | Position_Left, Counterclockwise, target);
+	newValues[1] = getTargetRatio(Position_Front | Position_Right, Clockwise, target);
+	newValues[2] = getTargetRatio(Position_Back | Position_Left, Clockwise, target);
+	newValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, target);
+
+	correctionValues[0] = getTargetRatio(Position_Front | Position_Left, Counterclockwise, data);
+	correctionValues[1] = getTargetRatio(Position_Front | Position_Right, Clockwise, data);
+	correctionValues[2] = getTargetRatio(Position_Back | Position_Left, Clockwise, data);
+	correctionValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, data);
+
+	for (int i = 0; i < 4; i++) {
+		newValues[i] -= correctionValues[i];
 		oldValues[i] += (newValues[i] - oldValues[i]) * config->InterpolationFactor;
+	}
 
 	servos->setRatio(oldValues[0], oldValues[1], oldValues[2], oldValues[3]);
 
@@ -39,13 +49,17 @@ void LinearDroneEngine::handleInternal() {
 	frontRightRatio = oldValues[1];
 	backLeftRatio = oldValues[2];
 	backRightRatio = oldValues[3];
+
+	frontLeftCorrection = correctionValues[0];
+	frontRightCorrection = correctionValues[1];
+	backLeftCorrection = correctionValues[2];
+	backRightCorrection = correctionValues[3];
+
+	if (tickCount++ % 50 == 0)
+		lastYaw = gyro->getYaw();
 }
 
-float LinearDroneEngine::getTargetRatio(MotorPosition position, MotorRotation rotation, float* target, float* data)
+float LinearDroneEngine::getTargetRatio(MotorPosition position, MotorRotation rotation, float* values)
 {
-	float ratio = targetVerticalSpeed;
-
-	ratio += MathHelper::mixMotor(config, target[0], target[1], target[2], 0, position, rotation);
-	ratio -= config->CorrectionFactor * MathHelper::mixMotor(config, data[0], data[1], data[2], 0, position, rotation);
-	return ratio;
+	return MathHelper::mixMotor(config, values[0], values[1], values[2], 0, position, rotation);
 }

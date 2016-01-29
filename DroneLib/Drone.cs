@@ -221,7 +221,7 @@ namespace DroneLibrary
                 bool changed;
                 lock (dataLock)
                 {
-                    changed = value != debugData;
+                    changed = !value.Equals(debugData);
                     if (changed)
                         debugData = value;
                 }
@@ -808,7 +808,12 @@ namespace DroneLibrary
                             FrontLeftRatio = buffer.ReadFloat(),
                             FrontRightRatio = buffer.ReadFloat(),
                             BackLeftRatio = buffer.ReadFloat(),
-                            BackRightRatio = buffer.ReadFloat()
+                            BackRightRatio = buffer.ReadFloat(),
+
+                            FrontLeftCorrection = buffer.ReadFloat(),
+                            FrontRightCorrection = buffer.ReadFloat(),
+                            BackLeftCorrection = buffer.ReadFloat(),
+                            BackRightCorrection = buffer.ReadFloat()
                         };
 
                         lastDataDebugRevision = revision;
