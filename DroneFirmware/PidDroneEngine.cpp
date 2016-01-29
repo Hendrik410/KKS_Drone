@@ -38,9 +38,14 @@ PidDroneEngine::PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config)
 
 
 void PidDroneEngine::handleInternal() {
-	inputPitch = gyro->getPitch();
-	inputRoll = gyro->getRoll();
-	inputYaw = gyro->getYaw();
+	bool computedNothing = false;
+	computedNothing |= !pidPitch->Compute();
+	computedNothing |= !pidRoll->Compute();
+	computedNothing |= !pidYaw->Compute();
+
+	if(computedNothing) {
+		Log::info("Engine", "Computed nothing with PID's");
+	}
 
 	pidRoll->SetTunings(config->RollPidSettings.Kp,
 		config->RollPidSettings.Ki,
