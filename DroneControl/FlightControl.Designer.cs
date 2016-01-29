@@ -37,9 +37,15 @@
             this.rotationalSpeedLabel = new System.Windows.Forms.Label();
             this.targetThrustLabel = new System.Windows.Forms.Label();
             this.ratioDataLabel = new System.Windows.Forms.Label();
+            this.rotationalSpeedOffsetTextBox = new System.Windows.Forms.NumericUpDown();
+            this.rollOffsetTextBox = new System.Windows.Forms.NumericUpDown();
+            this.pitchOffsetTextBox = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotationalSpeedOffsetTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // maxRollLabel
@@ -74,7 +80,7 @@
             this.maxRollNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxRollNumeric.TabIndex = 14;
             this.maxRollNumeric.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
@@ -111,7 +117,7 @@
             this.maxRotationSpeedNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxRotationSpeedNumeric.TabIndex = 12;
             this.maxRotationSpeedNumeric.Value = new decimal(new int[] {
-            60,
+            30,
             0,
             0,
             0});
@@ -148,7 +154,7 @@
             this.maxPitchNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxPitchNumeric.TabIndex = 10;
             this.maxPitchNumeric.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
@@ -231,10 +237,70 @@
             this.ratioDataLabel.TabIndex = 21;
             this.ratioDataLabel.Text = "Ratio data";
             // 
+            // rotationalSpeedOffsetTextBox
+            // 
+            this.rotationalSpeedOffsetTextBox.DecimalPlaces = 2;
+            this.rotationalSpeedOffsetTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.rotationalSpeedOffsetTextBox.Location = new System.Drawing.Point(166, 136);
+            this.rotationalSpeedOffsetTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.rotationalSpeedOffsetTextBox.Name = "rotationalSpeedOffsetTextBox";
+            this.rotationalSpeedOffsetTextBox.Size = new System.Drawing.Size(59, 20);
+            this.rotationalSpeedOffsetTextBox.TabIndex = 22;
+            this.rotationalSpeedOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            // 
+            // rollOffsetTextBox
+            // 
+            this.rollOffsetTextBox.DecimalPlaces = 2;
+            this.rollOffsetTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.rollOffsetTextBox.Location = new System.Drawing.Point(166, 94);
+            this.rollOffsetTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.rollOffsetTextBox.Name = "rollOffsetTextBox";
+            this.rollOffsetTextBox.Size = new System.Drawing.Size(59, 20);
+            this.rollOffsetTextBox.TabIndex = 23;
+            this.rollOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            // 
+            // pitchOffsetTextBox
+            // 
+            this.pitchOffsetTextBox.DecimalPlaces = 2;
+            this.pitchOffsetTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.pitchOffsetTextBox.Location = new System.Drawing.Point(166, 56);
+            this.pitchOffsetTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.pitchOffsetTextBox.Name = "pitchOffsetTextBox";
+            this.pitchOffsetTextBox.Size = new System.Drawing.Size(59, 20);
+            this.pitchOffsetTextBox.TabIndex = 24;
+            this.pitchOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pitchOffsetTextBox);
+            this.Controls.Add(this.rollOffsetTextBox);
+            this.Controls.Add(this.rotationalSpeedOffsetTextBox);
             this.Controls.Add(this.ratioDataLabel);
             this.Controls.Add(this.targetThrustLabel);
             this.Controls.Add(this.rotationalSpeedLabel);
@@ -254,6 +320,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotationalSpeedOffsetTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetTextBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,5 +344,8 @@
         private System.Windows.Forms.Label rotationalSpeedLabel;
         private System.Windows.Forms.Label targetThrustLabel;
         private System.Windows.Forms.Label ratioDataLabel;
+        private System.Windows.Forms.NumericUpDown rotationalSpeedOffsetTextBox;
+        private System.Windows.Forms.NumericUpDown rollOffsetTextBox;
+        private System.Windows.Forms.NumericUpDown pitchOffsetTextBox;
     }
 }

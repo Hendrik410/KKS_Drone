@@ -89,19 +89,21 @@ namespace DroneControl.Input
             float targetRotationalSpeed = (state.Gamepad.RightThumbX / (float)short.MaxValue) * MaxYaw;
             float targetThrust = (state.Gamepad.RightThumbY / (float)short.MaxValue);
 
-            targetPitch *= -1;
-            targetRoll *= -1;
-
-            if (Math.Abs(targetPitch) < 1)
+            /*if (Math.Abs(targetPitch) < 1)
                 targetPitch = 0;
             if (Math.Abs(targetRoll) < 1)
                 targetRoll = 0;
-            if (Math.Abs(targetRotationalSpeed) < 10)
-                targetRotationalSpeed = 0;
+            //if (Math.Abs(targetRotationalSpeed) < 10)
+            //    targetRotationalSpeed = 0;
             if (Math.Abs(targetThrust) < 0.1)
-                targetThrust = 0;
+                targetThrust = 0;*/
 
-            
+            targetPitch += PitchOffset;
+            targetRoll += RollOffset;
+            targetRotationalSpeed += RotationalSpeedOffset;
+
+            if (targetThrust >= 0)
+                targetThrust *= 0.5f;
 
             TargetMovementData = new TargetMovementData(targetPitch, targetRoll, targetRotationalSpeed, targetThrust);
 

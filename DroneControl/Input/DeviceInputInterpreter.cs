@@ -33,6 +33,10 @@ namespace DroneControl.Input {
             set;
         } = 45;
 
+        public float PitchOffset { get; set; }
+        public float RollOffset { get; set; }
+        public float RotationalSpeedOffset { get; set; } = 0;
+
         //TODO use ControlButtonEventArgs
         public delegate void ControlButtenPressedEventHandler(object sender, ControlButtonType type);
 

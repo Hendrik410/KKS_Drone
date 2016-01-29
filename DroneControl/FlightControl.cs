@@ -77,11 +77,11 @@ namespace DroneControl
             UpdateTargetRatio(e.Data);
         }
 
-        private void DeviceInterpreterOnTargetMovementChange(object sender, EventArgs eventArgs)
+        private void DeviceInterpreterOnTargetMovementChange(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler(DeviceInterpreterOnTargetMovementChange), this, eventArgs);
+                Invoke(new EventHandler(DeviceInterpreterOnTargetMovementChange), this, e);
                 return;
             }
 
@@ -110,6 +110,9 @@ namespace DroneControl
             inputController.DeviceInterpreter.MaxPitch = (float)maxPitchNumeric.Value;
             inputController.DeviceInterpreter.MaxRoll = (float)maxRollNumeric.Value;
             inputController.DeviceInterpreter.MaxYaw = (float)maxRotationSpeedNumeric.Value;
+            inputController.DeviceInterpreter.PitchOffset = (float)pitchOffsetTextBox.Value;
+            inputController.DeviceInterpreter.RollOffset = (float)rollOffsetTextBox.Value;
+            inputController.DeviceInterpreter.RotationalSpeedOffset = (float)rotationalSpeedOffsetTextBox.Value;
         }
 
         private void activeCheckBox_CheckedChanged(object sender, EventArgs e)
