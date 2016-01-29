@@ -38,9 +38,14 @@ PidDroneEngine::PidDroneEngine(Gyro* gyro, ServoManager* servos, Config* config)
 
 
 void PidDroneEngine::handleInternal() {
-	inputPitch = gyro->getPitch();
-	inputRoll = gyro->getRoll();
-	inputYaw = gyro->getYaw();
+	bool computedNothing = false;
+	computedNothing |= !pidPitch->Compute();
+	computedNothing |= !pidRoll->Compute();
+	computedNothing |= !pidYaw->Compute();
+
+	if(computedNothing) {
+		Log::info("Engine", "Computed nothing with PID's");
+	}
 
 	pidRoll->SetTunings(config->RollPidSettings.Kp,
 		config->RollPidSettings.Ki,
@@ -57,12 +62,12 @@ void PidDroneEngine::handleInternal() {
 	pidRoll->Compute();
 	pidYaw->Compute();
 
-	frontLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
-	frontRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
-	backLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
-	backRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+		frontLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
+		frontRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
+		backLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
+		backRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
 
-	servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
+		servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
 }
 
 
