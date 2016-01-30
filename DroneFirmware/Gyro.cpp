@@ -14,6 +14,12 @@ Gyro::Gyro(Config* config) {
 	this->accelerationXOffset = 0;
 	this->accelerationYOffset = 0;
 	this->accelerationZOffset = 0;
+
+	this->ypr[0] = 0;
+	this->ypr[1] = 0;
+	this->ypr[2] = 0;
+
+	this->_dirty = false;
 }
 
 void Gyro::init() {

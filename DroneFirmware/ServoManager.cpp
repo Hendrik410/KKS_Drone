@@ -11,6 +11,7 @@ ServoManager::ServoManager(Config* config) {
 	servoFRValue = config->ServoMin;
 	servoBLValue = config->ServoMin;
 	servoBRValue = config->ServoMin;
+	this->_dirty = true;
 }
 
 

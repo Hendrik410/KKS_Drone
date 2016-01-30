@@ -8,12 +8,20 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->gyro = gyro;
 	this->servos = servos;
 	this->config = config;
+
+	this->lastHeartbeat = 0;
+	this->lastMovementUpdate = 0;
 	this->lastPhysicsCalc = 0;
 
 	this->frontLeftRatio = 0;
 	this->frontRightRatio = 0;
 	this->backLeftRatio = 0;
 	this->backRightRatio = 0;
+
+	this->frontLeftCorrection = 0;
+	this->frontRightCorrection = 0;
+	this->backLeftCorrection = 0;
+	this->backRightCorrection = 0;
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);

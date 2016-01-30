@@ -76,8 +76,10 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 	}
 
 	int size = snprintf(message, messageSize, "$ [%8ds] %s [%s]", millis() / 1000, getLevelString(level), tag);
-	if (size < 0 || size > messageSize)
+	if (size < 0 || size > messageSize) {
+		free(message);
 		return;
+	}
 
 	// Padding
 	int startLength = strlen(message);
@@ -90,8 +92,10 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 	}
 
 	size = vsnprintf(message + strlen(message), messageSize, format, args);
-	if (size < 0 || size > messageSize)
+	if (size < 0 || size > messageSize) {
+		free(message);
 		return;
+	}
 
 
 	if (printToSerial)
