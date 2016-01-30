@@ -174,24 +174,28 @@ namespace DroneControl
                 // RSSI ist immer unter 0, wenn die Drohne mit einem Netzwerk verbunden ist
                 wifiRssiLabel.Visible = data.WifiRssi < 0;
 
-                wifiRssiLabel.Text = "WiFi signal: ";
+                StringBuilder wifiText = new StringBuilder();
+                wifiText.Append("WiFi signal: ");
                 if (data.WifiRssi > -40)
                 {
-                    wifiRssiLabel.Text += "very good";
+                    wifiText.Append("very good");
                     wifiRssiLabel.ForeColor = Color.DarkGreen;
                 }
                 else if (data.WifiRssi > -70)
                 {
-                    wifiRssiLabel.Text += "good";
+                    wifiText.Append("good");
                     wifiRssiLabel.ForeColor = Color.Green;
                 }
                 else
                 {
-                    wifiRssiLabel.Text += "bad";
+                    wifiText.Append("bad");
                     wifiRssiLabel.ForeColor = Color.DarkRed;
                 }
 
-                wifiRssiLabel.Text += " " + data.WifiRssi + "dBm";
+                wifiText.Append(' ');
+                wifiText.Append(data.WifiRssi);
+                wifiText.Append("dBm");
+                wifiRssiLabel.Text = wifiText.ToString();
             }
         }
 
