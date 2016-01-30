@@ -88,7 +88,7 @@ void DroneEngine::handle() {
 				return;
 			}
 
-			if (millis() - lastPhysicsCalc >= config->PhysicsCalcDelay) {
+			if (millis() - lastPhysicsCalc >= config->PhysicsCalculationInterval) {
 				handleInternal();
 				lastPhysicsCalc = millis();
 			}

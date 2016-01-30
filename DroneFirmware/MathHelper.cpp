@@ -69,10 +69,10 @@ float MathHelper::mixMotor(Config* config, float pitchDelta, float rollDelta, fl
 
 	if (abs(yawDelta) >= 0.02) {
 		if (rotation == Clockwise) {
-			targetMotorRatio -= yawDelta * config->RotaryDegree2Ratio;
+			targetMotorRatio -= yawDelta * config->RotationalDegree2Ratio;
 		}
 		else {
-			targetMotorRatio += yawDelta * config->RotaryDegree2Ratio;
+			targetMotorRatio += yawDelta * config->RotationalDegree2Ratio;
 		}
 	}
 

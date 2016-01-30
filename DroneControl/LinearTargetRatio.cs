@@ -72,9 +72,9 @@ namespace DroneControl
             if (Math.Abs(yaw) >= 0.02)
             {
                 if (isClockwise)
-                    targetMotorRatio -= yaw * settings.RotaryDegree2Ratio;
+                    targetMotorRatio -= yaw * settings.RotationalDegree2Ratio;
                 else
-                    targetMotorRatio += yaw * settings.RotaryDegree2Ratio;
+                    targetMotorRatio += yaw * settings.RotationalDegree2Ratio;
             }
 
             return targetMotorRatio;

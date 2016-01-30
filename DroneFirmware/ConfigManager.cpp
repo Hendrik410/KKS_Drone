@@ -93,20 +93,10 @@ Config ConfigManager::getDefault() {
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
 
-	config.TrimPitch = 0;
-	config.TrimRoll = 0;
-	config.TrimYaw = 0;
-	config.TrimThrottle = 0;
-
 	config.ServoMin = 900;
 	config.ServoMax = 2000;
 	config.ServoIdle = 975;
 	config.ServoHover = 1100;
-
-	config.DMPOffsetX = 220;
-	config.DMPOffsetY = 76;
-	config.DMPOffsetZ = -85;
-	config.DMPOffsetAccel = 1788;
 
 	config.PinFrontLeft = 12;
 	config.PinFrontRight = 13;
@@ -115,8 +105,8 @@ Config ConfigManager::getDefault() {
 	config.PinLed = 0;
 
 	config.Degree2Ratio = 0.01f;
-	config.RotaryDegree2Ratio = 0.01f;
-	config.PhysicsCalcDelay = 20;
+	config.RotationalDegree2Ratio = 0.01f;
+	config.PhysicsCalculationInterval = 20;
 
 	config.EngineType = EngineLinear;
 

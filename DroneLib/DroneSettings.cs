@@ -12,144 +12,118 @@ namespace DroneLibrary
     [TypeConverter(typeof(DroneSettingsTypeConverter))]
     public unsafe struct DroneSettings 
     {
-        //A user-friendly name for the drone
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
         [Category("Drone")]
+        [Description("User-friendly name for the drone")]
         public string DroneName;
 
-        //The name of the WiFi network
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
         [Category("Network")]
+        [Description("The SIID of the WiFi network")]
         public string NetworkSSID;
 
-        //The password of the WiFi network
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
         [Category("Network")]
+        [Description("The password of the WiFi network")]
         public string NetworkPassword;
 
-        //The UDP-Port for the hello packets
         [Category("Network")]
+        [Description("The UDP port for the hello packets")]
         public ushort NetworkHelloPort;
 
-        //The UDP-Port for the control packets
         [Category("Network")]
+        [Description("The UDP port for the control packets")]
         public ushort NetworkControlPort;
-        //The UDP-Port for the data packets
 
         [Category("Network")]
+        [Description("The UDP port for the data packets")]
         public ushort NetworkDataPort;
-        //The size of the buffer for incoming packets
+        
 
         [Category("Network")]
+        [Description("The size of the buffer for incoming packets")]
         public ushort NetworkPacketBufferSize;
 
-        //The time, after when the drone stopps without any action sent
+        
         [Category("Network")]
+        [Description("Time before the drone stops without any action sent")]
         public uint MaximumNetworkTimeout;
 
-        //Toogles the debug output on Serial
         [MarshalAs(UnmanagedType.U1)]
         [Category("Debug")]
+        [Description("Enables or disables the output of log messages to the serial port")]
         public bool VerboseSerialLog;
-        //The temperature, at which the drone starts to decent on turn off
 
         [Category("Drone")]
+        [Description("The temperature, at which the drone starts to decent on turn off")]
         public float MaxTemperature;
 
-        //A offset value for the pitch
-        [Category("Flying")]
-        public ushort TrimPitch;
-
-        //A offset value for the roll
-        [Category("Flying")]
-        public ushort TrimRoll;
-
-        //A offset value for the yaw
-        [Category("Flying")]
-        public ushort TrimYaw;
-
-        //A offset value for the throttle
-        [Category("Flying")]
-        public ushort TrimThrottle;
-
-        //The minumum output value for the ESC's
         [Category("Motors")]
+        [Description("Minimum value for the servo motors")]
         public ushort ServoMin;
 
-        //The maximum output value for the ESC's
         [Category("Motors")]
+        [Description("Maximum value for the servo motors")]
         public ushort ServoMax;
 
-        //The output value for the ESC's, at which they start to turn
         [Category("Motors")]
+        [Description("Value when the servo motors begin to start")]
         public ushort ServoIdle;
 
-        //The output value for the ESC's, at which the drone hovers
         [Category("Motors")]
+        [Description("Value when the drone begins to hover")]
         public ushort ServoHover;
 
-        //The X gyro offset value for the DMP
-        [Category("Gyro")]
-        public short DMPOffsetX;
-
-        //The Y gyro offset value for the DMP
-        [Category("Gyro")]
-        public short DMPOffsetY;
-
-        //The Z gyro offset value for the DMP
-        [Category("Gyro")]
-        public short DMPOffsetZ;
-
-        //The acceleration offset value for the DMP
-        [Category("Gyro")]
-        public ushort DMPOffsetAccel;
-
-        //The pin of the front-left motor
         [Category("Pins")]
+        [Description("The pin of the front-left motor")]
         public byte PinFrontLeft;
 
-        //The pin of the front-right motor
         [Category("Pins")]
+        [Description("The pin of the front-right motor")]
         public byte PinFrontRight;
 
-        //The pin of the back-left motor
         [Category("Pins")]
+        [Description("The pin of the back-left motor")]
         public byte PinBackLeft;
 
-        //The pin of the back-right motor
         [Category("Pins")]
+        [Description("The pin of the back-right motor")]
         public byte PinBackRight;
 
-        //The pin of the LED
         [Category("Pins")]
+        [Description("The pin of the LED")]
         public byte PinLed;
 
         [Category("Flying")]
+        [Description("Value for the conversion between degree and ratio")]
         public float Degree2Ratio;
 
         [Category("Flying")]
-        public float RotaryDegree2Ratio;
+        [Description("Value for the conversion between rotational degree and ratio")]
+        public float RotationalDegree2Ratio;
 
         [Category("Flying")]
-        public ushort PhysicsCalcDelay;
+        [Description("Interval between the physics calculations")]
+        public ushort PhysicsCalculationInterval;
 
-        [Category("Flying")]
         [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        [Description("Type of the drone engine to use")]
         public EngineType EngineType;
 
-        [Category("Flying")]
+        [Category("PID Flying")]
         public PidSettings PitchPidSettings;
 
-        [Category("Flying")]
+        [Category("PIDFlying")]
         public PidSettings RollPidSettings;
 
-        [Category("Flying")]
+        [Category("PID Flying")]
         public PidSettings YawPidSettings;
 
-        [Category("Flying")]
+        [Category("Linear Flying")]
         public float InterpolationFactor;
 
-        [Category("Flying")]
+        [Category("Linear Flying")]
         public float CorrectionFactor;
 
         [Category("Flying")]
