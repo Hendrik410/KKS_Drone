@@ -95,10 +95,10 @@ namespace DroneControl
             if (inputController != null)
                 target = inputController.DeviceInterpreter.TargetMovementData;
 
-            targetPitchLabel.Text = $"Target Pitch: {target.TargetPitch}";
-            targetRollLabel.Text = $"Target Roll: {target.TargetRoll}";
-            rotationalSpeedLabel.Text = $"Rotational Speed: {target.TargetRotationalSpeed}";
-            targetThrustLabel.Text = $"Target Thrust: {target.TargetThrust}";
+            targetPitchLabel.Text = "Target Pitch: " + Formatting.FormatDecimal(target.TargetPitch, 2);
+            targetRollLabel.Text = "Target Roll: " + Formatting.FormatDecimal(target.TargetRoll, 2);
+            rotationalSpeedLabel.Text = "Rotational Speed: " + Formatting.FormatDecimal(target.TargetRotationalSpeed, 2);
+            targetThrustLabel.Text = "Target Thrust: " + Formatting.FormatDecimal(target.TargetThrust, 2);
 
             UpdateTargetRatio(drone.Data);
         }
@@ -158,9 +158,16 @@ namespace DroneControl
             MotorRatios actualMotorRatios = data.MotorRatios;
 
             float[] ratios = targetRatio.Calculate(drone.Settings, target, data);
-            ratioDataLabel.Text = string.Format("FL: {0:0.00} ({4:0.00})\nFR: {1:0.00} ({5:0.00})\nBL: {2:0.00} ({6:0.00})\nBR: {3:0.00} ({7:0.00})",
-                ratios[0], ratios[1], ratios[2], ratios[3],
-                actualMotorRatios.FrontLeft, actualMotorRatios.FrontRight, actualMotorRatios.BackLeft, actualMotorRatios.BackRight);
+            ratioDataLabel.Text = string.Format("FL: {0} ({4})\nFR: {1} ({5})\nBL: {2} ({6})\nBR: {3} ({7})",
+                Formatting.FormatRatio(ratios[0]),
+                Formatting.FormatRatio(ratios[1]),
+                Formatting.FormatRatio(ratios[2]),
+                Formatting.FormatRatio(ratios[3]),
+
+                Formatting.FormatRatio(actualMotorRatios.FrontLeft),
+                Formatting.FormatRatio(actualMotorRatios.FrontRight),
+                Formatting.FormatRatio(actualMotorRatios.BackLeft),
+                Formatting.FormatRatio(actualMotorRatios.BackRight));
 
             if (OnRatioChanged != null)
                 OnRatioChanged(this, ratios);

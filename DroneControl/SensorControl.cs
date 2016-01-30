@@ -53,19 +53,20 @@ namespace DroneControl
             calibrateGyroButton.Enabled = e.Data.State != DroneState.Armed && e.Data.State != DroneState.Flying;
 
             gyroDataLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
-                e.Data.Gyro.Roll.ToString("0.00").PadLeft(6, ' '),
-                e.Data.Gyro.Pitch.ToString("0.00").PadLeft(6, ' '),
-                e.Data.Gyro.Yaw.ToString("0.00").PadLeft(6, ' '));
+                Formatting.FormatDecimal(e.Data.Gyro.Roll, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.Pitch, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.Yaw, 2));
 
             accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2}",
-                (e.Data.Gyro.AccelerationX / 100).ToString("0.00").PadLeft(6, ' '),
-                (e.Data.Gyro.AccelerationY / 100).ToString("0.00").PadLeft(6, ' '),
-                (e.Data.Gyro.AccelerationZ / 100).ToString("0.00").PadLeft(6, ' '));
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationX / 100, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationY / 100, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationZ / 100, 2));
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
-                e.Data.Gyro.Temperature.ToString("0.00").PadLeft(6, ' '));
+                Formatting.FormatDecimal(e.Data.Gyro.Temperature, 2));
 
-            batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V", e.Data.BatteryVoltage.ToString("0.00").PadLeft(6, ' '));
+            batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V",
+                Formatting.FormatDecimal(e.Data.BatteryVoltage, 2));
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)

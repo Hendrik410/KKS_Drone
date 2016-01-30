@@ -111,6 +111,7 @@
     <Compile Include="FlightControl.Designer.cs">
       <DependentUpon>FlightControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formatting.cs" />
     <Compile Include="Graph.cs">
       <SubType>UserControl</SubType>
     </Compile>

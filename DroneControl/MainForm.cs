@@ -176,6 +176,9 @@ namespace DroneControl
 
                 StringBuilder wifiText = new StringBuilder();
                 wifiText.Append("WiFi signal: ");
+                wifiText.Append(data.WifiRssi);
+                wifiText.Append("dBm ");
+
                 if (data.WifiRssi > -40)
                 {
                     wifiText.Append("very good");
@@ -192,9 +195,6 @@ namespace DroneControl
                     wifiRssiLabel.ForeColor = Color.DarkRed;
                 }
 
-                wifiText.Append(' ');
-                wifiText.Append(data.WifiRssi);
-                wifiText.Append("dBm");
                 wifiRssiLabel.Text = wifiText.ToString();
             }
         }

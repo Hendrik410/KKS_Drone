@@ -39,7 +39,6 @@ namespace DroneLibrary
         [Description("The UDP port for the data packets")]
         public ushort NetworkDataPort;
         
-
         [Category("Network")]
         [Description("The size of the buffer for incoming packets")]
         public ushort NetworkPacketBufferSize;
