@@ -112,7 +112,7 @@ namespace DroneControl
         private void setValuesButton_Click(object sender, EventArgs e)
         {
             if (!SendValues())
-                MessageBox.Show("The drone has to be armed, before setting the motors!");
+                MessageBox.Show(this, "Setting the motors is only allowed when the drone is armed.", "Not armed", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void UpdateServoValue()
