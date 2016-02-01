@@ -38,16 +38,16 @@ namespace DroneControl
         private void UpdateDebugData(DebugData data)
         {
             ratioDataLabel.Text = string.Format("FL: {0}\nFR: {1}\nBL: {2}\nBR: {3}",
-                Formatting.FormatRatio(data.FrontLeftRatio),
-                Formatting.FormatRatio(data.FrontRightRatio),
-                Formatting.FormatRatio(data.BackLeftRatio),
-                Formatting.FormatRatio(data.BackRightRatio));
+                Formatting.FormatRatio(data.Real.FrontLeft),
+                Formatting.FormatRatio(data.Real.FrontRight),
+                Formatting.FormatRatio(data.Real.BackLeft),
+                Formatting.FormatRatio(data.Real.BackRight));
 
             correctionDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
-                Formatting.FormatRatio(data.FrontLeftCorrection),
-                Formatting.FormatRatio(data.FrontRightCorrection),
-                Formatting.FormatRatio(data.BackLeftCorrection),
-                Formatting.FormatRatio(data.BackRightCorrection));
+                Formatting.FormatRatio(data.Correction.FrontLeft),
+                Formatting.FormatRatio(data.Correction.FrontRight),
+                Formatting.FormatRatio(data.Correction.BackLeft),
+                Formatting.FormatRatio(data.Correction.BackRight));
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)

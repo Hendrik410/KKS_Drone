@@ -43,10 +43,10 @@ namespace DroneControl
 
             if (Drone.Data.State == DroneState.Armed || Drone.Data.State == DroneState.Flying)
             {
-                frontLeftRatio.UpdateValue(e.DebugData.FrontLeftRatio);
-                frontRightRatio.UpdateValue(e.DebugData.FrontRightRatio);
-                backLeftRatio.UpdateValue(e.DebugData.BackLeftRatio);
-                backRightRatio.UpdateValue(e.DebugData.BackRightRatio);
+                frontLeftRatio.UpdateValue(e.DebugData.Real.FrontLeft);
+                frontRightRatio.UpdateValue(e.DebugData.Real.FrontRight);
+                backLeftRatio.UpdateValue(e.DebugData.Real.BackLeft);
+                backRightRatio.UpdateValue(e.DebugData.Real.BackRight);
             }
         }
 

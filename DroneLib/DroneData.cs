@@ -15,10 +15,6 @@ namespace DroneLibrary {
             get;
         }
 
-        public MotorRatios MotorRatios {
-            get;
-        }
-
         public GyroData Gyro {
             get;
         }
@@ -29,10 +25,9 @@ namespace DroneLibrary {
 
         public int WifiRssi { get; }
 
-        public DroneData(DroneState state, QuadMotorValues motorValues, MotorRatios motorRatios, GyroData gyro, float batteryVoltage, int wifiRssi) {
+        public DroneData(DroneState state, QuadMotorValues motorValues, GyroData gyro, float batteryVoltage, int wifiRssi) {
             this.State = state;
             this.MotorValues = motorValues;
-            this.MotorRatios = motorRatios;
             this.Gyro = gyro;
             this.BatteryVoltage = batteryVoltage;
             this.WifiRssi = wifiRssi;

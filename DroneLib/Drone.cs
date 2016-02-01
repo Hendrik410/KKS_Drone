@@ -774,10 +774,7 @@ namespace DroneLibrary
 
                         int wifiRssi = buffer.ReadInt();
 
-                        MotorRatios motorRatios = new MotorRatios(buffer.ReadFloat(), buffer.ReadFloat(),
-                            buffer.ReadFloat(), buffer.ReadFloat());
-
-                        Data = new DroneData(state, motorValues, motorRatios, gyro, batteryVoltage, wifiRssi);
+                        Data = new DroneData(state, motorValues, gyro, batteryVoltage, wifiRssi);
 
                         lastDataDroneRevision = revision;
                         break;
@@ -805,15 +802,8 @@ namespace DroneLibrary
 
                         DebugData = new DebugData()
                         {
-                            FrontLeftRatio = buffer.ReadFloat(),
-                            FrontRightRatio = buffer.ReadFloat(),
-                            BackLeftRatio = buffer.ReadFloat(),
-                            BackRightRatio = buffer.ReadFloat(),
-
-                            FrontLeftCorrection = buffer.ReadFloat(),
-                            FrontRightCorrection = buffer.ReadFloat(),
-                            BackLeftCorrection = buffer.ReadFloat(),
-                            BackRightCorrection = buffer.ReadFloat()
+                            Real = new MotorRatios(buffer),
+                            Correction = new MotorRatios(buffer)
                         };
 
                         lastDataDebugRevision = revision;
