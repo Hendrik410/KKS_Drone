@@ -27,9 +27,8 @@ void Gyro::init() {
 
 	mpu.reset();
 	mpu.initialize();
-	if (mpu.testConnection()) {
+	if (mpu.testConnection()) 
 		Log::error("Gyro", "testConnection() failed!");
-	}
 	else
 		Log::info("Gyro", "testConnection() OK");
 

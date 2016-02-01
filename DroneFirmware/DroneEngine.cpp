@@ -61,6 +61,11 @@ void DroneEngine::stop(StopReason reason) {
 }
 
 void DroneEngine::clearStatus() {
+	if (_state == StateStopped) {
+		Log::info("Engine", "Reseting gyro, because clearStatus()");
+		gyro->init();
+	}
+
 	if (_state == StateReset || _state == StateStopped) {
 		_state = StateIdle;
 		Log::info("Engine", "Status cleared");
