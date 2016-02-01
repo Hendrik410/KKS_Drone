@@ -24,15 +24,12 @@ namespace DroneControl
             this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
 
             this.FlightControl = flightControl;
-            this.FlightControl.OnRatioChanged += FlightControl_OnRatioChanged;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (this.Drone != null)
                 this.Drone.OnDebugDataChange -= Drone_OnDebugDataChange;
-            if (this.FlightControl != null)
-                this.FlightControl.OnRatioChanged -= FlightControl_OnRatioChanged;
             base.OnFormClosed(e);
         }
 

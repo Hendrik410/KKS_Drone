@@ -113,7 +113,7 @@ namespace DroneLibrary
         [Category("PID Flying")]
         public PidSettings PitchPidSettings;
 
-        [Category("PIDFlying")]
+        [Category("PID Flying")]
         public PidSettings RollPidSettings;
 
         [Category("PID Flying")]

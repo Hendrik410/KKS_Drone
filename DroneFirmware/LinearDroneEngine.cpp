@@ -39,6 +39,7 @@ void LinearDroneEngine::handleInternal() {
 	correctionValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, data);
 
 	for (int i = 0; i < 4; i++) {
+		newValues[i] += targetVerticalSpeed;
 		newValues[i] -= correctionValues[i];
 		oldValues[i] += (newValues[i] - oldValues[i]) * config->InterpolationFactor;
 	}

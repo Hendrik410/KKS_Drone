@@ -124,15 +124,15 @@
     <Compile Include="GraphForm.Designer.cs">
       <DependentUpon>GraphForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Input\ControlButtonType.cs" />
-    <Compile Include="Input\DeviceInputInterpreter.cs" />
-    <Compile Include="Input\GamepadInputInterpreter.cs" />
-    <Compile Include="Input\InputController.cs" />
-    <Compile Include="Input\InputInterpreterType.cs" />
-    <Compile Include="Input\PrecisionControllerInputInterpreter.cs" />
-    <Compile Include="Input\TargetMovementData.cs" />
-    <Compile Include="Input\Xbox360InputInterpreter.cs" />
-    <Compile Include="LinearTargetRatio.cs" />
+    <Compile Include="Input\BatteryInfo.cs" />
+    <Compile Include="Input\BatteryLevel.cs" />
+    <Compile Include="Input\DeadZone.cs" />
+    <Compile Include="Input\IDeviceFinder.cs" />
+    <Compile Include="Input\IInputDevice.cs" />
+    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\TargetData.cs" />
+    <Compile Include="Input\XboxController.cs" />
+    <Compile Include="Input\XboxDeviceFinder.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>

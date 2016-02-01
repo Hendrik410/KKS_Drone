@@ -42,13 +42,13 @@
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
+            this.motorControl1 = new DroneControl.MotorControl();
             this.flightControlPage = new System.Windows.Forms.TabPage();
+            this.flightControl1 = new DroneControl.FlightControl();
+            this.sensorControl1 = new DroneControl.SensorControl();
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.motorControl1 = new DroneControl.MotorControl();
-            this.flightControl1 = new DroneControl.FlightControl();
-            this.sensorControl1 = new DroneControl.SensorControl();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -99,7 +99,7 @@
             // dronePingSplitContainer.Panel2
             // 
             dronePingSplitContainer.Panel2.Controls.Add(motorsInfoSplitContainer);
-            dronePingSplitContainer.Size = new System.Drawing.Size(752, 517);
+            dronePingSplitContainer.Size = new System.Drawing.Size(1047, 737);
             dronePingSplitContainer.SplitterDistance = 51;
             dronePingSplitContainer.TabIndex = 18;
             // 
@@ -137,7 +137,7 @@
             this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.stopButton.BackColor = System.Drawing.Color.DarkRed;
             this.stopButton.ForeColor = System.Drawing.Color.White;
-            this.stopButton.Location = new System.Drawing.Point(665, 5);
+            this.stopButton.Location = new System.Drawing.Point(960, 5);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(75, 23);
             this.stopButton.TabIndex = 17;
@@ -158,7 +158,7 @@
             // statusButton
             // 
             this.statusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.statusButton.Location = new System.Drawing.Point(584, 5);
+            this.statusButton.Location = new System.Drawing.Point(879, 5);
             this.statusButton.Name = "statusButton";
             this.statusButton.Size = new System.Drawing.Size(75, 23);
             this.statusButton.TabIndex = 15;
@@ -170,7 +170,7 @@
             // 
             this.statusArmedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.statusArmedLabel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusArmedLabel.Location = new System.Drawing.Point(385, 10);
+            this.statusArmedLabel.Location = new System.Drawing.Point(680, 10);
             this.statusArmedLabel.Name = "statusArmedLabel";
             this.statusArmedLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.statusArmedLabel.Size = new System.Drawing.Size(193, 13);
@@ -210,8 +210,8 @@
             // motorsInfoSplitContainer.Panel2
             // 
             motorsInfoSplitContainer.Panel2.Controls.Add(infoTabControl);
-            motorsInfoSplitContainer.Size = new System.Drawing.Size(752, 462);
-            motorsInfoSplitContainer.SplitterDistance = 473;
+            motorsInfoSplitContainer.Size = new System.Drawing.Size(1047, 682);
+            motorsInfoSplitContainer.SplitterDistance = 657;
             motorsInfoSplitContainer.TabIndex = 18;
             // 
             // motorsSensorSplitContainer
@@ -228,8 +228,8 @@
             // motorsSensorSplitContainer.Panel2
             // 
             motorsSensorSplitContainer.Panel2.Controls.Add(this.sensorControl1);
-            motorsSensorSplitContainer.Size = new System.Drawing.Size(473, 462);
-            motorsSensorSplitContainer.SplitterDistance = 186;
+            motorsSensorSplitContainer.Size = new System.Drawing.Size(657, 682);
+            motorsSensorSplitContainer.SplitterDistance = 273;
             motorsSensorSplitContainer.TabIndex = 0;
             // 
             // mainViewTabs
@@ -240,7 +240,7 @@
             this.mainViewTabs.Location = new System.Drawing.Point(0, 0);
             this.mainViewTabs.Name = "mainViewTabs";
             this.mainViewTabs.SelectedIndex = 0;
-            this.mainViewTabs.Size = new System.Drawing.Size(473, 186);
+            this.mainViewTabs.Size = new System.Drawing.Size(657, 273);
             this.mainViewTabs.TabIndex = 15;
             // 
             // manualControlPage
@@ -249,10 +249,17 @@
             this.manualControlPage.Location = new System.Drawing.Point(4, 22);
             this.manualControlPage.Name = "manualControlPage";
             this.manualControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.manualControlPage.Size = new System.Drawing.Size(465, 160);
+            this.manualControlPage.Size = new System.Drawing.Size(649, 247);
             this.manualControlPage.TabIndex = 0;
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
+            // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(6, 3);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 132);
+            this.motorControl1.TabIndex = 3;
             // 
             // flightControlPage
             // 
@@ -260,10 +267,27 @@
             this.flightControlPage.Location = new System.Drawing.Point(4, 22);
             this.flightControlPage.Name = "flightControlPage";
             this.flightControlPage.Padding = new System.Windows.Forms.Padding(3);
-            this.flightControlPage.Size = new System.Drawing.Size(465, 160);
+            this.flightControlPage.Size = new System.Drawing.Size(649, 247);
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
+            // 
+            // flightControl1
+            // 
+            this.flightControl1.AutoScroll = true;
+            this.flightControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flightControl1.Location = new System.Drawing.Point(3, 3);
+            this.flightControl1.Name = "flightControl1";
+            this.flightControl1.Size = new System.Drawing.Size(643, 241);
+            this.flightControl1.TabIndex = 0;
+            // 
+            // sensorControl1
+            // 
+            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(657, 405);
+            this.sensorControl1.TabIndex = 17;
             // 
             // infoTabControl
             // 
@@ -273,7 +297,7 @@
             infoTabControl.Location = new System.Drawing.Point(0, 0);
             infoTabControl.Name = "infoTabControl";
             infoTabControl.SelectedIndex = 0;
-            infoTabControl.Size = new System.Drawing.Size(275, 462);
+            infoTabControl.Size = new System.Drawing.Size(386, 682);
             infoTabControl.TabIndex = 0;
             // 
             // infoTabPage
@@ -282,7 +306,7 @@
             infoTabPage.Location = new System.Drawing.Point(4, 22);
             infoTabPage.Name = "infoTabPage";
             infoTabPage.Padding = new System.Windows.Forms.Padding(3);
-            infoTabPage.Size = new System.Drawing.Size(267, 436);
+            infoTabPage.Size = new System.Drawing.Size(378, 656);
             infoTabPage.TabIndex = 0;
             infoTabPage.Text = "Info";
             infoTabPage.UseVisualStyleBackColor = true;
@@ -294,7 +318,7 @@
             this.droneInfoPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.droneInfoPropertyGrid.Name = "droneInfoPropertyGrid";
             this.droneInfoPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.droneInfoPropertyGrid.Size = new System.Drawing.Size(261, 430);
+            this.droneInfoPropertyGrid.Size = new System.Drawing.Size(372, 650);
             this.droneInfoPropertyGrid.TabIndex = 0;
             // 
             // settingsTabPage
@@ -303,7 +327,7 @@
             settingsTabPage.Location = new System.Drawing.Point(4, 22);
             settingsTabPage.Name = "settingsTabPage";
             settingsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            settingsTabPage.Size = new System.Drawing.Size(267, 436);
+            settingsTabPage.Size = new System.Drawing.Size(296, 472);
             settingsTabPage.TabIndex = 1;
             settingsTabPage.Text = "Settings";
             settingsTabPage.UseVisualStyleBackColor = true;
@@ -315,7 +339,7 @@
             this.droneSettingsPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.droneSettingsPropertyGrid.Name = "droneSettingsPropertyGrid";
             this.droneSettingsPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.droneSettingsPropertyGrid.Size = new System.Drawing.Size(261, 430);
+            this.droneSettingsPropertyGrid.Size = new System.Drawing.Size(290, 466);
             this.droneSettingsPropertyGrid.TabIndex = 0;
             this.droneSettingsPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.droneSettingsPropertyGrid_PropertyValueChanged);
             // 
@@ -323,33 +347,11 @@
             // 
             this.timer.Enabled = true;
             // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(6, 3);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 132);
-            this.motorControl1.TabIndex = 3;
-            // 
-            // flightControl1
-            // 
-            this.flightControl1.Location = new System.Drawing.Point(-3, 0);
-            this.flightControl1.Name = "flightControl1";
-            this.flightControl1.Size = new System.Drawing.Size(457, 160);
-            this.flightControl1.TabIndex = 0;
-            // 
-            // sensorControl1
-            // 
-            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
-            this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(473, 272);
-            this.sensorControl1.TabIndex = 17;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(752, 517);
+            this.ClientSize = new System.Drawing.Size(1047, 737);
             this.Controls.Add(dronePingSplitContainer);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

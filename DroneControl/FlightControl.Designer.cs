@@ -23,39 +23,318 @@
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent() {
-            this.maxRollLabel = new System.Windows.Forms.Label();
-            this.maxRollNumeric = new System.Windows.Forms.NumericUpDown();
-            this.maxRotationalSpeedLabel = new System.Windows.Forms.Label();
-            this.maxRotationSpeedNumeric = new System.Windows.Forms.NumericUpDown();
-            this.maxPitchLabel = new System.Windows.Forms.Label();
-            this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.inputTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.activeCheckBox = new System.Windows.Forms.CheckBox();
-            this.targetPitchLabel = new System.Windows.Forms.Label();
-            this.targetRollLabel = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.GroupBox deviceGroupBox;
+            System.Windows.Forms.GroupBox dataGroupBox;
+            System.Windows.Forms.GroupBox inputConfigGroupBox;
+            System.Windows.Forms.Label rotationalOffsetLabel;
+            System.Windows.Forms.Label rollOffsetLabel;
+            System.Windows.Forms.Label pitchOffsetLabel;
+            System.Windows.Forms.Label maxRollLabel;
+            System.Windows.Forms.Label maxRotationalSpeedLabel;
+            System.Windows.Forms.Label maxPitchLabel;
+            System.Windows.Forms.Label maxThrustNegativeLabel;
+            System.Windows.Forms.Label maxThrustPositiveLabel;
+            this.searchDeviceButton = new System.Windows.Forms.Button();
+            this.deviceBatteryLabel = new System.Windows.Forms.Label();
+            this.deviceConnectionLabel = new System.Windows.Forms.Label();
+            this.inputDeviceComboBox = new System.Windows.Forms.ComboBox();
+            this.rollLabel = new System.Windows.Forms.Label();
+            this.pitchLabel = new System.Windows.Forms.Label();
             this.rotationalSpeedLabel = new System.Windows.Forms.Label();
-            this.targetThrustLabel = new System.Windows.Forms.Label();
+            this.thrustLabel = new System.Windows.Forms.Label();
             this.ratioDataLabel = new System.Windows.Forms.Label();
-            this.rotationalSpeedOffsetTextBox = new System.Windows.Forms.NumericUpDown();
-            this.rollOffsetTextBox = new System.Windows.Forms.NumericUpDown();
-            this.pitchOffsetTextBox = new System.Windows.Forms.NumericUpDown();
+            this.deadZoneCheckBox = new System.Windows.Forms.CheckBox();
+            this.pitchOffsetNumeric = new System.Windows.Forms.NumericUpDown();
+            this.rollOffsetNumeric = new System.Windows.Forms.NumericUpDown();
+            this.rotationalOffsetNumeric = new System.Windows.Forms.NumericUpDown();
+            this.maxRollNumeric = new System.Windows.Forms.NumericUpDown();
+            this.maxRotationalSpeedNumeric = new System.Windows.Forms.NumericUpDown();
+            this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
+            this.searchTimer = new System.Windows.Forms.Timer(this.components);
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.thrustPositiveNumeric = new System.Windows.Forms.NumericUpDown();
+            this.thrustNegativeNumeric = new System.Windows.Forms.NumericUpDown();
+            deviceGroupBox = new System.Windows.Forms.GroupBox();
+            dataGroupBox = new System.Windows.Forms.GroupBox();
+            inputConfigGroupBox = new System.Windows.Forms.GroupBox();
+            rotationalOffsetLabel = new System.Windows.Forms.Label();
+            rollOffsetLabel = new System.Windows.Forms.Label();
+            pitchOffsetLabel = new System.Windows.Forms.Label();
+            maxRollLabel = new System.Windows.Forms.Label();
+            maxRotationalSpeedLabel = new System.Windows.Forms.Label();
+            maxPitchLabel = new System.Windows.Forms.Label();
+            maxThrustNegativeLabel = new System.Windows.Forms.Label();
+            maxThrustPositiveLabel = new System.Windows.Forms.Label();
+            deviceGroupBox.SuspendLayout();
+            dataGroupBox.SuspendLayout();
+            inputConfigGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRotationalSpeedNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rotationalSpeedOffsetTextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetTextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).BeginInit();
             this.SuspendLayout();
+            // 
+            // deviceGroupBox
+            // 
+            deviceGroupBox.Controls.Add(this.searchDeviceButton);
+            deviceGroupBox.Controls.Add(this.deviceBatteryLabel);
+            deviceGroupBox.Controls.Add(this.deviceConnectionLabel);
+            deviceGroupBox.Controls.Add(this.inputDeviceComboBox);
+            deviceGroupBox.Location = new System.Drawing.Point(10, 14);
+            deviceGroupBox.Name = "deviceGroupBox";
+            deviceGroupBox.Size = new System.Drawing.Size(215, 154);
+            deviceGroupBox.TabIndex = 25;
+            deviceGroupBox.TabStop = false;
+            deviceGroupBox.Text = "Input Device";
+            // 
+            // searchDeviceButton
+            // 
+            this.searchDeviceButton.Location = new System.Drawing.Point(11, 21);
+            this.searchDeviceButton.Name = "searchDeviceButton";
+            this.searchDeviceButton.Size = new System.Drawing.Size(75, 23);
+            this.searchDeviceButton.TabIndex = 12;
+            this.searchDeviceButton.Text = "Search";
+            this.searchDeviceButton.UseVisualStyleBackColor = true;
+            this.searchDeviceButton.Click += new System.EventHandler(this.searchDeviceButton_Click);
+            // 
+            // deviceBatteryLabel
+            // 
+            this.deviceBatteryLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deviceBatteryLabel.AutoSize = true;
+            this.deviceBatteryLabel.Location = new System.Drawing.Point(6, 133);
+            this.deviceBatteryLabel.Name = "deviceBatteryLabel";
+            this.deviceBatteryLabel.Size = new System.Drawing.Size(76, 13);
+            this.deviceBatteryLabel.TabIndex = 11;
+            this.deviceBatteryLabel.Text = "Device battery";
+            // 
+            // deviceConnectionLabel
+            // 
+            this.deviceConnectionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deviceConnectionLabel.AutoSize = true;
+            this.deviceConnectionLabel.Location = new System.Drawing.Point(6, 120);
+            this.deviceConnectionLabel.Name = "deviceConnectionLabel";
+            this.deviceConnectionLabel.Size = new System.Drawing.Size(95, 13);
+            this.deviceConnectionLabel.TabIndex = 10;
+            this.deviceConnectionLabel.Text = "Device connected";
+            // 
+            // inputDeviceComboBox
+            // 
+            this.inputDeviceComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputDeviceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inputDeviceComboBox.FormattingEnabled = true;
+            this.inputDeviceComboBox.Location = new System.Drawing.Point(11, 50);
+            this.inputDeviceComboBox.Name = "inputDeviceComboBox";
+            this.inputDeviceComboBox.Size = new System.Drawing.Size(132, 21);
+            this.inputDeviceComboBox.Sorted = true;
+            this.inputDeviceComboBox.TabIndex = 8;
+            this.inputDeviceComboBox.SelectedIndexChanged += new System.EventHandler(this.inputDeviceComboBox_SelectedIndexChanged);
+            // 
+            // dataGroupBox
+            // 
+            dataGroupBox.Controls.Add(this.rollLabel);
+            dataGroupBox.Controls.Add(this.pitchLabel);
+            dataGroupBox.Controls.Add(this.rotationalSpeedLabel);
+            dataGroupBox.Controls.Add(this.thrustLabel);
+            dataGroupBox.Controls.Add(this.ratioDataLabel);
+            dataGroupBox.Location = new System.Drawing.Point(231, 14);
+            dataGroupBox.Name = "dataGroupBox";
+            dataGroupBox.Size = new System.Drawing.Size(223, 154);
+            dataGroupBox.TabIndex = 26;
+            dataGroupBox.TabStop = false;
+            dataGroupBox.Text = "Data";
+            // 
+            // rollLabel
+            // 
+            this.rollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rollLabel.AutoSize = true;
+            this.rollLabel.Font = new System.Drawing.Font("Consolas", 9F);
+            this.rollLabel.Location = new System.Drawing.Point(90, 33);
+            this.rollLabel.Name = "rollLabel";
+            this.rollLabel.Size = new System.Drawing.Size(70, 14);
+            this.rollLabel.TabIndex = 18;
+            this.rollLabel.Text = "Roll: {0}";
+            // 
+            // pitchLabel
+            // 
+            this.pitchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pitchLabel.AutoSize = true;
+            this.pitchLabel.Font = new System.Drawing.Font("Consolas", 9F);
+            this.pitchLabel.Location = new System.Drawing.Point(83, 21);
+            this.pitchLabel.Name = "pitchLabel";
+            this.pitchLabel.Size = new System.Drawing.Size(77, 14);
+            this.pitchLabel.TabIndex = 17;
+            this.pitchLabel.Text = "Pitch: {0}";
+            // 
+            // rotationalSpeedLabel
+            // 
+            this.rotationalSpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotationalSpeedLabel.AutoSize = true;
+            this.rotationalSpeedLabel.Font = new System.Drawing.Font("Consolas", 9F);
+            this.rotationalSpeedLabel.Location = new System.Drawing.Point(6, 47);
+            this.rotationalSpeedLabel.Name = "rotationalSpeedLabel";
+            this.rotationalSpeedLabel.Size = new System.Drawing.Size(154, 14);
+            this.rotationalSpeedLabel.TabIndex = 19;
+            this.rotationalSpeedLabel.Text = "Rotational Speed: {0}";
+            // 
+            // thrustLabel
+            // 
+            this.thrustLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.thrustLabel.AutoSize = true;
+            this.thrustLabel.Font = new System.Drawing.Font("Consolas", 9F);
+            this.thrustLabel.Location = new System.Drawing.Point(76, 61);
+            this.thrustLabel.Name = "thrustLabel";
+            this.thrustLabel.Size = new System.Drawing.Size(84, 14);
+            this.thrustLabel.TabIndex = 20;
+            this.thrustLabel.Text = "Thrust: {0}";
+            // 
+            // ratioDataLabel
+            // 
+            this.ratioDataLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ratioDataLabel.AutoSize = true;
+            this.ratioDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ratioDataLabel.Location = new System.Drawing.Point(6, 87);
+            this.ratioDataLabel.Name = "ratioDataLabel";
+            this.ratioDataLabel.Size = new System.Drawing.Size(67, 13);
+            this.ratioDataLabel.TabIndex = 21;
+            this.ratioDataLabel.Text = "Ratio data";
+            // 
+            // inputConfigGroupBox
+            // 
+            inputConfigGroupBox.Controls.Add(maxThrustPositiveLabel);
+            inputConfigGroupBox.Controls.Add(maxThrustNegativeLabel);
+            inputConfigGroupBox.Controls.Add(this.thrustNegativeNumeric);
+            inputConfigGroupBox.Controls.Add(this.thrustPositiveNumeric);
+            inputConfigGroupBox.Controls.Add(this.deadZoneCheckBox);
+            inputConfigGroupBox.Controls.Add(rotationalOffsetLabel);
+            inputConfigGroupBox.Controls.Add(rollOffsetLabel);
+            inputConfigGroupBox.Controls.Add(pitchOffsetLabel);
+            inputConfigGroupBox.Controls.Add(this.pitchOffsetNumeric);
+            inputConfigGroupBox.Controls.Add(this.rollOffsetNumeric);
+            inputConfigGroupBox.Controls.Add(this.rotationalOffsetNumeric);
+            inputConfigGroupBox.Controls.Add(maxRollLabel);
+            inputConfigGroupBox.Controls.Add(this.maxRollNumeric);
+            inputConfigGroupBox.Controls.Add(maxRotationalSpeedLabel);
+            inputConfigGroupBox.Controls.Add(this.maxRotationalSpeedNumeric);
+            inputConfigGroupBox.Controls.Add(maxPitchLabel);
+            inputConfigGroupBox.Controls.Add(this.maxPitchNumeric);
+            inputConfigGroupBox.Location = new System.Drawing.Point(10, 174);
+            inputConfigGroupBox.Name = "inputConfigGroupBox";
+            inputConfigGroupBox.Size = new System.Drawing.Size(444, 152);
+            inputConfigGroupBox.TabIndex = 27;
+            inputConfigGroupBox.TabStop = false;
+            inputConfigGroupBox.Text = "Input Config";
+            // 
+            // deadZoneCheckBox
+            // 
+            this.deadZoneCheckBox.AutoSize = true;
+            this.deadZoneCheckBox.Checked = true;
+            this.deadZoneCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.deadZoneCheckBox.Location = new System.Drawing.Point(288, 41);
+            this.deadZoneCheckBox.Name = "deadZoneCheckBox";
+            this.deadZoneCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.deadZoneCheckBox.TabIndex = 36;
+            this.deadZoneCheckBox.Text = "Dead Zone";
+            this.deadZoneCheckBox.UseVisualStyleBackColor = true;
+            this.deadZoneCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // rotationalOffsetLabel
+            // 
+            rotationalOffsetLabel.AutoSize = true;
+            rotationalOffsetLabel.Location = new System.Drawing.Point(168, 102);
+            rotationalOffsetLabel.Name = "rotationalOffsetLabel";
+            rotationalOffsetLabel.Size = new System.Drawing.Size(107, 13);
+            rotationalOffsetLabel.TabIndex = 35;
+            rotationalOffsetLabel.Text = "Rotational offset [°/s]";
+            // 
+            // rollOffsetLabel
+            // 
+            rollOffsetLabel.AutoSize = true;
+            rollOffsetLabel.Location = new System.Drawing.Point(168, 63);
+            rollOffsetLabel.Name = "rollOffsetLabel";
+            rollOffsetLabel.Size = new System.Drawing.Size(67, 13);
+            rollOffsetLabel.TabIndex = 34;
+            rollOffsetLabel.Text = "Roll offset [°]";
+            // 
+            // pitchOffsetLabel
+            // 
+            pitchOffsetLabel.AutoSize = true;
+            pitchOffsetLabel.Location = new System.Drawing.Point(168, 25);
+            pitchOffsetLabel.Name = "pitchOffsetLabel";
+            pitchOffsetLabel.Size = new System.Drawing.Size(73, 13);
+            pitchOffsetLabel.TabIndex = 33;
+            pitchOffsetLabel.Text = "Pitch offset [°]";
+            // 
+            // pitchOffsetNumeric
+            // 
+            this.pitchOffsetNumeric.DecimalPlaces = 3;
+            this.pitchOffsetNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.pitchOffsetNumeric.Location = new System.Drawing.Point(171, 41);
+            this.pitchOffsetNumeric.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.pitchOffsetNumeric.Name = "pitchOffsetNumeric";
+            this.pitchOffsetNumeric.Size = new System.Drawing.Size(59, 20);
+            this.pitchOffsetNumeric.TabIndex = 32;
+            this.pitchOffsetNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // rollOffsetNumeric
+            // 
+            this.rollOffsetNumeric.DecimalPlaces = 3;
+            this.rollOffsetNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.rollOffsetNumeric.Location = new System.Drawing.Point(171, 79);
+            this.rollOffsetNumeric.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.rollOffsetNumeric.Name = "rollOffsetNumeric";
+            this.rollOffsetNumeric.Size = new System.Drawing.Size(59, 20);
+            this.rollOffsetNumeric.TabIndex = 31;
+            this.rollOffsetNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // rotationalOffsetNumeric
+            // 
+            this.rotationalOffsetNumeric.DecimalPlaces = 3;
+            this.rotationalOffsetNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.rotationalOffsetNumeric.Location = new System.Drawing.Point(171, 118);
+            this.rotationalOffsetNumeric.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.rotationalOffsetNumeric.Name = "rotationalOffsetNumeric";
+            this.rotationalOffsetNumeric.Size = new System.Drawing.Size(59, 20);
+            this.rotationalOffsetNumeric.TabIndex = 30;
+            this.rotationalOffsetNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
             // maxRollLabel
             // 
-            this.maxRollLabel.AutoSize = true;
-            this.maxRollLabel.Location = new System.Drawing.Point(3, 78);
-            this.maxRollLabel.Name = "maxRollLabel";
-            this.maxRollLabel.Size = new System.Drawing.Size(61, 13);
-            this.maxRollLabel.TabIndex = 15;
-            this.maxRollLabel.Text = "Max Roll [°]";
+            maxRollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            maxRollLabel.AutoSize = true;
+            maxRollLabel.Location = new System.Drawing.Point(8, 64);
+            maxRollLabel.Name = "maxRollLabel";
+            maxRollLabel.Size = new System.Drawing.Size(61, 13);
+            maxRollLabel.TabIndex = 15;
+            maxRollLabel.Text = "Max Roll [°]";
             // 
             // maxRollNumeric
             // 
@@ -65,7 +344,7 @@
             0,
             0,
             0});
-            this.maxRollNumeric.Location = new System.Drawing.Point(6, 94);
+            this.maxRollNumeric.Location = new System.Drawing.Point(11, 79);
             this.maxRollNumeric.Maximum = new decimal(new int[] {
             70,
             0,
@@ -78,58 +357,60 @@
             0});
             this.maxRollNumeric.Name = "maxRollNumeric";
             this.maxRollNumeric.Size = new System.Drawing.Size(54, 20);
-            this.maxRollNumeric.TabIndex = 14;
+            this.maxRollNumeric.TabIndex = 29;
             this.maxRollNumeric.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // maxRotationalSpeedLabel
-            // 
-            this.maxRotationalSpeedLabel.AutoSize = true;
-            this.maxRotationalSpeedLabel.Location = new System.Drawing.Point(3, 120);
-            this.maxRotationalSpeedLabel.Name = "maxRotationalSpeedLabel";
-            this.maxRotationalSpeedLabel.Size = new System.Drawing.Size(135, 13);
-            this.maxRotationalSpeedLabel.TabIndex = 13;
-            this.maxRotationalSpeedLabel.Text = "Max Rotational Speed [°/s]";
-            // 
-            // maxRotationSpeedNumeric
-            // 
-            this.maxRotationSpeedNumeric.DecimalPlaces = 1;
-            this.maxRotationSpeedNumeric.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.maxRotationSpeedNumeric.Location = new System.Drawing.Point(6, 136);
-            this.maxRotationSpeedNumeric.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.maxRotationSpeedNumeric.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.maxRotationSpeedNumeric.Name = "maxRotationSpeedNumeric";
-            this.maxRotationSpeedNumeric.Size = new System.Drawing.Size(54, 20);
-            this.maxRotationSpeedNumeric.TabIndex = 12;
-            this.maxRotationSpeedNumeric.Value = new decimal(new int[] {
+            this.maxRollNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // maxRotationalSpeedLabel
+            // 
+            maxRotationalSpeedLabel.AutoSize = true;
+            maxRotationalSpeedLabel.Location = new System.Drawing.Point(8, 102);
+            maxRotationalSpeedLabel.Name = "maxRotationalSpeedLabel";
+            maxRotationalSpeedLabel.Size = new System.Drawing.Size(135, 13);
+            maxRotationalSpeedLabel.TabIndex = 28;
+            maxRotationalSpeedLabel.Text = "Max Rotational Speed [°/s]";
+            // 
+            // maxRotationalSpeedNumeric
+            // 
+            this.maxRotationalSpeedNumeric.DecimalPlaces = 1;
+            this.maxRotationalSpeedNumeric.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.maxRotationalSpeedNumeric.Location = new System.Drawing.Point(11, 118);
+            this.maxRotationalSpeedNumeric.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.maxRotationalSpeedNumeric.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.maxRotationalSpeedNumeric.Name = "maxRotationalSpeedNumeric";
+            this.maxRotationalSpeedNumeric.Size = new System.Drawing.Size(54, 20);
+            this.maxRotationalSpeedNumeric.TabIndex = 27;
+            this.maxRotationalSpeedNumeric.Value = new decimal(new int[] {
             30,
             0,
             0,
             0});
+            this.maxRotationalSpeedNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
             // maxPitchLabel
             // 
-            this.maxPitchLabel.AutoSize = true;
-            this.maxPitchLabel.Location = new System.Drawing.Point(3, 40);
-            this.maxPitchLabel.Name = "maxPitchLabel";
-            this.maxPitchLabel.Size = new System.Drawing.Size(67, 13);
-            this.maxPitchLabel.TabIndex = 11;
-            this.maxPitchLabel.Text = "Max Pitch [°]";
+            maxPitchLabel.AutoSize = true;
+            maxPitchLabel.Location = new System.Drawing.Point(8, 25);
+            maxPitchLabel.Name = "maxPitchLabel";
+            maxPitchLabel.Size = new System.Drawing.Size(67, 13);
+            maxPitchLabel.TabIndex = 26;
+            maxPitchLabel.Text = "Max Pitch [°]";
             // 
             // maxPitchNumeric
             // 
@@ -139,7 +420,7 @@
             0,
             0,
             0});
-            this.maxPitchNumeric.Location = new System.Drawing.Point(6, 56);
+            this.maxPitchNumeric.Location = new System.Drawing.Point(11, 41);
             this.maxPitchNumeric.Maximum = new decimal(new int[] {
             70,
             0,
@@ -152,200 +433,140 @@
             0});
             this.maxPitchNumeric.Name = "maxPitchNumeric";
             this.maxPitchNumeric.Size = new System.Drawing.Size(54, 20);
-            this.maxPitchNumeric.TabIndex = 10;
+            this.maxPitchNumeric.TabIndex = 25;
             this.maxPitchNumeric.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});
+            this.maxPitchNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
-            // label1
+            // searchTimer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Input Device Type";
+            this.searchTimer.Enabled = true;
+            this.searchTimer.Interval = 1000;
+            this.searchTimer.Tick += new System.EventHandler(this.searchTimer_Tick);
             // 
-            // inputTypeComboBox
+            // updateTimer
             // 
-            this.inputTypeComboBox.FormattingEnabled = true;
-            this.inputTypeComboBox.Location = new System.Drawing.Point(104, 8);
-            this.inputTypeComboBox.Name = "inputTypeComboBox";
-            this.inputTypeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.inputTypeComboBox.TabIndex = 8;
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Interval = 16;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
-            // activeCheckBox
+            // thrustPositiveNumeric
             // 
-            this.activeCheckBox.AutoSize = true;
-            this.activeCheckBox.Location = new System.Drawing.Point(231, 10);
-            this.activeCheckBox.Name = "activeCheckBox";
-            this.activeCheckBox.Size = new System.Drawing.Size(55, 17);
-            this.activeCheckBox.TabIndex = 16;
-            this.activeCheckBox.Text = "active";
-            this.activeCheckBox.UseVisualStyleBackColor = true;
-            this.activeCheckBox.CheckedChanged += new System.EventHandler(this.activeCheckBox_CheckedChanged);
-            // 
-            // targetPitchLabel
-            // 
-            this.targetPitchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPitchLabel.AutoSize = true;
-            this.targetPitchLabel.Location = new System.Drawing.Point(302, 14);
-            this.targetPitchLabel.Name = "targetPitchLabel";
-            this.targetPitchLabel.Size = new System.Drawing.Size(85, 13);
-            this.targetPitchLabel.TabIndex = 17;
-            this.targetPitchLabel.Text = "Target Pitch: {0}";
-            // 
-            // targetRollLabel
-            // 
-            this.targetRollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetRollLabel.AutoSize = true;
-            this.targetRollLabel.Location = new System.Drawing.Point(308, 27);
-            this.targetRollLabel.Name = "targetRollLabel";
-            this.targetRollLabel.Size = new System.Drawing.Size(79, 13);
-            this.targetRollLabel.TabIndex = 18;
-            this.targetRollLabel.Text = "Target Roll: {0}";
-            // 
-            // rotationalSpeedLabel
-            // 
-            this.rotationalSpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationalSpeedLabel.AutoSize = true;
-            this.rotationalSpeedLabel.Location = new System.Drawing.Point(278, 40);
-            this.rotationalSpeedLabel.Name = "rotationalSpeedLabel";
-            this.rotationalSpeedLabel.Size = new System.Drawing.Size(109, 13);
-            this.rotationalSpeedLabel.TabIndex = 19;
-            this.rotationalSpeedLabel.Text = "Rotational Speed: {0}";
-            // 
-            // targetThrustLabel
-            // 
-            this.targetThrustLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetThrustLabel.AutoSize = true;
-            this.targetThrustLabel.Location = new System.Drawing.Point(296, 53);
-            this.targetThrustLabel.Name = "targetThrustLabel";
-            this.targetThrustLabel.Size = new System.Drawing.Size(91, 13);
-            this.targetThrustLabel.TabIndex = 20;
-            this.targetThrustLabel.Text = "Target Thrust: {0}";
-            // 
-            // ratioDataLabel
-            // 
-            this.ratioDataLabel.AutoSize = true;
-            this.ratioDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ratioDataLabel.Location = new System.Drawing.Point(296, 79);
-            this.ratioDataLabel.Name = "ratioDataLabel";
-            this.ratioDataLabel.Size = new System.Drawing.Size(67, 13);
-            this.ratioDataLabel.TabIndex = 21;
-            this.ratioDataLabel.Text = "Ratio data";
-            // 
-            // rotationalSpeedOffsetTextBox
-            // 
-            this.rotationalSpeedOffsetTextBox.DecimalPlaces = 2;
-            this.rotationalSpeedOffsetTextBox.Increment = new decimal(new int[] {
+            this.thrustPositiveNumeric.DecimalPlaces = 2;
+            this.thrustPositiveNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.thrustPositiveNumeric.Location = new System.Drawing.Point(307, 79);
+            this.thrustPositiveNumeric.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustPositiveNumeric.Name = "thrustPositiveNumeric";
+            this.thrustPositiveNumeric.Size = new System.Drawing.Size(47, 20);
+            this.thrustPositiveNumeric.TabIndex = 37;
+            this.thrustPositiveNumeric.Value = new decimal(new int[] {
             5,
             0,
             0,
             65536});
-            this.rotationalSpeedOffsetTextBox.Location = new System.Drawing.Point(166, 136);
-            this.rotationalSpeedOffsetTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.rotationalSpeedOffsetTextBox.Name = "rotationalSpeedOffsetTextBox";
-            this.rotationalSpeedOffsetTextBox.Size = new System.Drawing.Size(59, 20);
-            this.rotationalSpeedOffsetTextBox.TabIndex = 22;
-            this.rotationalSpeedOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            this.thrustPositiveNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
-            // rollOffsetTextBox
+            // thrustNegativeNumeric
             // 
-            this.rollOffsetTextBox.DecimalPlaces = 2;
-            this.rollOffsetTextBox.Increment = new decimal(new int[] {
-            5,
+            this.thrustNegativeNumeric.DecimalPlaces = 2;
+            this.thrustNegativeNumeric.Increment = new decimal(new int[] {
+            1,
             0,
             0,
-            65536});
-            this.rollOffsetTextBox.Location = new System.Drawing.Point(166, 94);
-            this.rollOffsetTextBox.Minimum = new decimal(new int[] {
-            100,
+            131072});
+            this.thrustNegativeNumeric.Location = new System.Drawing.Point(307, 118);
+            this.thrustNegativeNumeric.Maximum = new decimal(new int[] {
+            1,
             0,
             0,
-            -2147483648});
-            this.rollOffsetTextBox.Name = "rollOffsetTextBox";
-            this.rollOffsetTextBox.Size = new System.Drawing.Size(59, 20);
-            this.rollOffsetTextBox.TabIndex = 23;
-            this.rollOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            0});
+            this.thrustNegativeNumeric.Name = "thrustNegativeNumeric";
+            this.thrustNegativeNumeric.Size = new System.Drawing.Size(47, 20);
+            this.thrustNegativeNumeric.TabIndex = 38;
+            this.thrustNegativeNumeric.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustNegativeNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
-            // pitchOffsetTextBox
+            // maxThrustNegativeLabel
             // 
-            this.pitchOffsetTextBox.DecimalPlaces = 2;
-            this.pitchOffsetTextBox.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.pitchOffsetTextBox.Location = new System.Drawing.Point(166, 56);
-            this.pitchOffsetTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.pitchOffsetTextBox.Name = "pitchOffsetTextBox";
-            this.pitchOffsetTextBox.Size = new System.Drawing.Size(59, 20);
-            this.pitchOffsetTextBox.TabIndex = 24;
-            this.pitchOffsetTextBox.ValueChanged += new System.EventHandler(this.OnTiltLimitInputChange);
+            maxThrustNegativeLabel.AutoSize = true;
+            maxThrustNegativeLabel.Location = new System.Drawing.Point(304, 102);
+            maxThrustNegativeLabel.Name = "maxThrustNegativeLabel";
+            maxThrustNegativeLabel.Size = new System.Drawing.Size(66, 13);
+            maxThrustNegativeLabel.TabIndex = 39;
+            maxThrustNegativeLabel.Text = "Max Thrust -";
+            // 
+            // maxThrustPositiveLabel
+            // 
+            maxThrustPositiveLabel.AutoSize = true;
+            maxThrustPositiveLabel.Location = new System.Drawing.Point(304, 63);
+            maxThrustPositiveLabel.Name = "maxThrustPositiveLabel";
+            maxThrustPositiveLabel.Size = new System.Drawing.Size(69, 13);
+            maxThrustPositiveLabel.TabIndex = 40;
+            maxThrustPositiveLabel.Text = "Max Thrust +";
             // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pitchOffsetTextBox);
-            this.Controls.Add(this.rollOffsetTextBox);
-            this.Controls.Add(this.rotationalSpeedOffsetTextBox);
-            this.Controls.Add(this.ratioDataLabel);
-            this.Controls.Add(this.targetThrustLabel);
-            this.Controls.Add(this.rotationalSpeedLabel);
-            this.Controls.Add(this.targetRollLabel);
-            this.Controls.Add(this.targetPitchLabel);
-            this.Controls.Add(this.activeCheckBox);
-            this.Controls.Add(this.maxRollLabel);
-            this.Controls.Add(this.maxRollNumeric);
-            this.Controls.Add(this.maxRotationalSpeedLabel);
-            this.Controls.Add(this.maxRotationSpeedNumeric);
-            this.Controls.Add(this.maxPitchLabel);
-            this.Controls.Add(this.maxPitchNumeric);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.inputTypeComboBox);
+            this.Controls.Add(inputConfigGroupBox);
+            this.Controls.Add(dataGroupBox);
+            this.Controls.Add(deviceGroupBox);
+            this.DoubleBuffered = true;
             this.Name = "FlightControl";
-            this.Size = new System.Drawing.Size(457, 160);
+            this.Size = new System.Drawing.Size(457, 360);
+            deviceGroupBox.ResumeLayout(false);
+            deviceGroupBox.PerformLayout();
+            dataGroupBox.ResumeLayout(false);
+            dataGroupBox.PerformLayout();
+            inputConfigGroupBox.ResumeLayout(false);
+            inputConfigGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxRotationSpeedNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRotationalSpeedNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rotationalSpeedOffsetTextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rollOffsetTextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label maxRollLabel;
-        private System.Windows.Forms.NumericUpDown maxRollNumeric;
-        private System.Windows.Forms.Label maxRotationalSpeedLabel;
-        private System.Windows.Forms.NumericUpDown maxRotationSpeedNumeric;
-        private System.Windows.Forms.Label maxPitchLabel;
-        private System.Windows.Forms.NumericUpDown maxPitchNumeric;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox inputTypeComboBox;
-        private System.Windows.Forms.CheckBox activeCheckBox;
-        private System.Windows.Forms.Label targetPitchLabel;
-        private System.Windows.Forms.Label targetRollLabel;
+        private System.Windows.Forms.ComboBox inputDeviceComboBox;
+        private System.Windows.Forms.Label pitchLabel;
+        private System.Windows.Forms.Label rollLabel;
         private System.Windows.Forms.Label rotationalSpeedLabel;
-        private System.Windows.Forms.Label targetThrustLabel;
+        private System.Windows.Forms.Label thrustLabel;
         private System.Windows.Forms.Label ratioDataLabel;
-        private System.Windows.Forms.NumericUpDown rotationalSpeedOffsetTextBox;
-        private System.Windows.Forms.NumericUpDown rollOffsetTextBox;
-        private System.Windows.Forms.NumericUpDown pitchOffsetTextBox;
+        private System.Windows.Forms.Button searchDeviceButton;
+        private System.Windows.Forms.Label deviceBatteryLabel;
+        private System.Windows.Forms.Label deviceConnectionLabel;
+        private System.Windows.Forms.NumericUpDown maxPitchNumeric;
+        private System.Windows.Forms.NumericUpDown maxRotationalSpeedNumeric;
+        private System.Windows.Forms.NumericUpDown maxRollNumeric;
+        private System.Windows.Forms.NumericUpDown rotationalOffsetNumeric;
+        private System.Windows.Forms.NumericUpDown rollOffsetNumeric;
+        private System.Windows.Forms.NumericUpDown pitchOffsetNumeric;
+        private System.Windows.Forms.Timer searchTimer;
+        private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.CheckBox deadZoneCheckBox;
+        private System.Windows.Forms.NumericUpDown thrustNegativeNumeric;
+        private System.Windows.Forms.NumericUpDown thrustPositiveNumeric;
     }
 }

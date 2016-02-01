@@ -10,7 +10,11 @@ namespace DroneControl
     {
         public static string FormatDecimal(float value, int places)
         {
-            return value.ToString("0." + new string('0', places)).PadLeft(places + 3);
+            return FormatDecimal(value, places, 1);
+        }
+        public static string FormatDecimal(float value, int places, int integerPlaces)
+        {
+            return value.ToString("0." + new string('0', places)).PadLeft(places + 3 + (integerPlaces - 1));
         }
 
         public static string FormatRatio(float value)

@@ -58,8 +58,6 @@ namespace DroneControl
             if (timer != null)
                 timer.Stop();
 
-            flightControl1.Close();
-
             if (drone != null)
             {
                 drone.OnInfoChange -= Drone_OnInfoChange;
