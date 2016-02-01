@@ -27,14 +27,14 @@
             System.Windows.Forms.GroupBox deviceGroupBox;
             System.Windows.Forms.GroupBox dataGroupBox;
             System.Windows.Forms.GroupBox inputConfigGroupBox;
+            System.Windows.Forms.Label maxThrustPositiveLabel;
+            System.Windows.Forms.Label maxThrustNegativeLabel;
             System.Windows.Forms.Label rotationalOffsetLabel;
             System.Windows.Forms.Label rollOffsetLabel;
             System.Windows.Forms.Label pitchOffsetLabel;
             System.Windows.Forms.Label maxRollLabel;
             System.Windows.Forms.Label maxRotationalSpeedLabel;
             System.Windows.Forms.Label maxPitchLabel;
-            System.Windows.Forms.Label maxThrustNegativeLabel;
-            System.Windows.Forms.Label maxThrustPositiveLabel;
             this.searchDeviceButton = new System.Windows.Forms.Button();
             this.deviceBatteryLabel = new System.Windows.Forms.Label();
             this.deviceConnectionLabel = new System.Windows.Forms.Label();
@@ -44,6 +44,8 @@
             this.rotationalSpeedLabel = new System.Windows.Forms.Label();
             this.thrustLabel = new System.Windows.Forms.Label();
             this.ratioDataLabel = new System.Windows.Forms.Label();
+            this.thrustNegativeNumeric = new System.Windows.Forms.NumericUpDown();
+            this.thrustPositiveNumeric = new System.Windows.Forms.NumericUpDown();
             this.deadZoneCheckBox = new System.Windows.Forms.CheckBox();
             this.pitchOffsetNumeric = new System.Windows.Forms.NumericUpDown();
             this.rollOffsetNumeric = new System.Windows.Forms.NumericUpDown();
@@ -53,30 +55,28 @@
             this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.thrustPositiveNumeric = new System.Windows.Forms.NumericUpDown();
-            this.thrustNegativeNumeric = new System.Windows.Forms.NumericUpDown();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
+            maxThrustPositiveLabel = new System.Windows.Forms.Label();
+            maxThrustNegativeLabel = new System.Windows.Forms.Label();
             rotationalOffsetLabel = new System.Windows.Forms.Label();
             rollOffsetLabel = new System.Windows.Forms.Label();
             pitchOffsetLabel = new System.Windows.Forms.Label();
             maxRollLabel = new System.Windows.Forms.Label();
             maxRotationalSpeedLabel = new System.Windows.Forms.Label();
             maxPitchLabel = new System.Windows.Forms.Label();
-            maxThrustNegativeLabel = new System.Windows.Forms.Label();
-            maxThrustPositiveLabel = new System.Windows.Forms.Label();
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRotationalSpeedNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // deviceGroupBox
@@ -229,6 +229,72 @@
             inputConfigGroupBox.TabStop = false;
             inputConfigGroupBox.Text = "Input Config";
             // 
+            // maxThrustPositiveLabel
+            // 
+            maxThrustPositiveLabel.AutoSize = true;
+            maxThrustPositiveLabel.Location = new System.Drawing.Point(304, 63);
+            maxThrustPositiveLabel.Name = "maxThrustPositiveLabel";
+            maxThrustPositiveLabel.Size = new System.Drawing.Size(69, 13);
+            maxThrustPositiveLabel.TabIndex = 40;
+            maxThrustPositiveLabel.Text = "Max Thrust +";
+            // 
+            // maxThrustNegativeLabel
+            // 
+            maxThrustNegativeLabel.AutoSize = true;
+            maxThrustNegativeLabel.Location = new System.Drawing.Point(304, 102);
+            maxThrustNegativeLabel.Name = "maxThrustNegativeLabel";
+            maxThrustNegativeLabel.Size = new System.Drawing.Size(66, 13);
+            maxThrustNegativeLabel.TabIndex = 39;
+            maxThrustNegativeLabel.Text = "Max Thrust -";
+            // 
+            // thrustNegativeNumeric
+            // 
+            this.thrustNegativeNumeric.DecimalPlaces = 2;
+            this.thrustNegativeNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.thrustNegativeNumeric.Location = new System.Drawing.Point(307, 118);
+            this.thrustNegativeNumeric.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustNegativeNumeric.Name = "thrustNegativeNumeric";
+            this.thrustNegativeNumeric.Size = new System.Drawing.Size(47, 20);
+            this.thrustNegativeNumeric.TabIndex = 38;
+            this.thrustNegativeNumeric.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustNegativeNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // thrustPositiveNumeric
+            // 
+            this.thrustPositiveNumeric.DecimalPlaces = 2;
+            this.thrustPositiveNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.thrustPositiveNumeric.Location = new System.Drawing.Point(307, 79);
+            this.thrustPositiveNumeric.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustPositiveNumeric.Name = "thrustPositiveNumeric";
+            this.thrustPositiveNumeric.Size = new System.Drawing.Size(47, 20);
+            this.thrustPositiveNumeric.TabIndex = 37;
+            this.thrustPositiveNumeric.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.thrustPositiveNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
             // deadZoneCheckBox
             // 
             this.deadZoneCheckBox.AutoSize = true;
@@ -350,11 +416,6 @@
             0,
             0,
             0});
-            this.maxRollNumeric.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
             this.maxRollNumeric.Name = "maxRollNumeric";
             this.maxRollNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxRollNumeric.TabIndex = 29;
@@ -385,11 +446,6 @@
             this.maxRotationalSpeedNumeric.Location = new System.Drawing.Point(11, 118);
             this.maxRotationalSpeedNumeric.Maximum = new decimal(new int[] {
             180,
-            0,
-            0,
-            0});
-            this.maxRotationalSpeedNumeric.Minimum = new decimal(new int[] {
-            10,
             0,
             0,
             0});
@@ -426,11 +482,6 @@
             0,
             0,
             0});
-            this.maxPitchNumeric.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
             this.maxPitchNumeric.Name = "maxPitchNumeric";
             this.maxPitchNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxPitchNumeric.TabIndex = 25;
@@ -453,72 +504,6 @@
             this.updateTimer.Interval = 16;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
-            // thrustPositiveNumeric
-            // 
-            this.thrustPositiveNumeric.DecimalPlaces = 2;
-            this.thrustPositiveNumeric.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.thrustPositiveNumeric.Location = new System.Drawing.Point(307, 79);
-            this.thrustPositiveNumeric.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustPositiveNumeric.Name = "thrustPositiveNumeric";
-            this.thrustPositiveNumeric.Size = new System.Drawing.Size(47, 20);
-            this.thrustPositiveNumeric.TabIndex = 37;
-            this.thrustPositiveNumeric.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.thrustPositiveNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
-            // 
-            // thrustNegativeNumeric
-            // 
-            this.thrustNegativeNumeric.DecimalPlaces = 2;
-            this.thrustNegativeNumeric.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.thrustNegativeNumeric.Location = new System.Drawing.Point(307, 118);
-            this.thrustNegativeNumeric.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustNegativeNumeric.Name = "thrustNegativeNumeric";
-            this.thrustNegativeNumeric.Size = new System.Drawing.Size(47, 20);
-            this.thrustNegativeNumeric.TabIndex = 38;
-            this.thrustNegativeNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustNegativeNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
-            // 
-            // maxThrustNegativeLabel
-            // 
-            maxThrustNegativeLabel.AutoSize = true;
-            maxThrustNegativeLabel.Location = new System.Drawing.Point(304, 102);
-            maxThrustNegativeLabel.Name = "maxThrustNegativeLabel";
-            maxThrustNegativeLabel.Size = new System.Drawing.Size(66, 13);
-            maxThrustNegativeLabel.TabIndex = 39;
-            maxThrustNegativeLabel.Text = "Max Thrust -";
-            // 
-            // maxThrustPositiveLabel
-            // 
-            maxThrustPositiveLabel.AutoSize = true;
-            maxThrustPositiveLabel.Location = new System.Drawing.Point(304, 63);
-            maxThrustPositiveLabel.Name = "maxThrustPositiveLabel";
-            maxThrustPositiveLabel.Size = new System.Drawing.Size(69, 13);
-            maxThrustPositiveLabel.TabIndex = 40;
-            maxThrustPositiveLabel.Text = "Max Thrust +";
-            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -535,14 +520,14 @@
             dataGroupBox.PerformLayout();
             inputConfigGroupBox.ResumeLayout(false);
             inputConfigGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRollNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRotationalSpeedNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPitchNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).EndInit();
             this.ResumeLayout(false);
 
         }

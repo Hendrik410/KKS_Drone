@@ -76,7 +76,6 @@ namespace DroneControl.Input
             target.Thurst = DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
 
             target.Roll *= -1;
-            target.Pitch *= -1;
 
             manager.SendTargetData(target);
 

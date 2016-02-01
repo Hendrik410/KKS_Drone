@@ -23,10 +23,12 @@ void LinearDroneEngine::handleInternal() {
 	float data[3];
 	data[0] = 0; // gyro->getPitch();
 	data[1] = 0; // gyro->getRoll();
-	data[2] = 0; //  MathHelper::angleDifference(gyro->getYaw(), lastYaw); // / (1000 / config->PhysicsCalcDelay);
+	data[2] = MathHelper::angleDifference(gyro->getYaw(), 0); 
 
-	if (abs(data[2]) > 0.5f)
+	if (data[2] > 0.5f)
 		data[2] = 0.5;
+	else if (data[2] < 0.5f)
+		data[2] = -0.5f;
 
 	newValues[0] = getTargetRatio(Position_Front | Position_Left, Counterclockwise, target);
 	newValues[1] = getTargetRatio(Position_Front | Position_Right, Clockwise, target);
@@ -39,8 +41,11 @@ void LinearDroneEngine::handleInternal() {
 	correctionValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, data);
 
 	for (int i = 0; i < 4; i++) {
+		correctionValues[i] *= config->CorrectionFactor;
+
 		newValues[i] += targetVerticalSpeed;
 		newValues[i] -= correctionValues[i];
+
 		oldValues[i] += (newValues[i] - oldValues[i]) * config->InterpolationFactor;
 	}
 

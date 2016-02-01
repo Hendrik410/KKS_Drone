@@ -89,10 +89,12 @@ namespace DroneControl.Avionics
             pe.Graphics.DrawImage(bmpCadran, 0, 0, (float)(bmpCadran.Width * scale), (float)(bmpCadran.Height * scale));
 
             // display HeadingWeel
-            RotateImage(pe,bmpHedingWeel, alphaHeadingWeel, ptImgHeadingWeel, ptRotation, scale);
+            pe.Graphics.DrawImage(bmpHedingWeel, (int)(ptImgHeadingWeel.X * scale), (int)(ptImgHeadingWeel.Y * scale), (float)(bmpHedingWeel.Width * scale), (float)(bmpHedingWeel.Height * scale));
+            //RotateImage(pe,bmpHedingWeel, alphaHeadingWeel, ptImgHeadingWeel, ptRotation, scale);
 
             // display aircraft
-            pe.Graphics.DrawImage(bmpAircaft, (int)(ptImgAircraft.X*scale), (int)(ptImgAircraft.Y*scale), (float)(bmpAircaft.Width * scale), (float)(bmpAircaft.Height * scale));
+            RotateImage(pe, bmpAircaft, alphaHeadingWeel, ptImgAircraft, ptRotation, scale);
+            //pe.Graphics.DrawImage(bmpAircaft, (int)(ptImgAircraft.X*scale), (int)(ptImgAircraft.Y*scale), (float)(bmpAircaft.Width * scale), (float)(bmpAircaft.Height * scale));
 
         }
 

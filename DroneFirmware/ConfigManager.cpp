@@ -123,10 +123,10 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kd = 0.25;
 
 	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0.5f;
+	config.CorrectionFactor = 0.0001f;
 
-	config.SafePitch = 35;
-	config.SafeRoll = 35;
+	config.SafePitch = 99;
+	config.SafeRoll = 99;
 	
 
 	Log::info("Config", "Using default config");

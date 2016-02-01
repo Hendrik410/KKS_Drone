@@ -85,7 +85,7 @@ void setup() {
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	Log::info("Boot", "Serial code: %s", serialCode);
 
-	config = ConfigManager::loadConfig();
+	config = ConfigManager::getDefault(); // ConfigManager::loadConfig();
 
 	// Log setzen
 	Log::setPrintToSerial(config.VerboseSerialLog);
