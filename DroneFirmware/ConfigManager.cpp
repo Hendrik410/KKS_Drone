@@ -104,7 +104,7 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.01f;
+	config.Degree2Ratio = 0.1f;
 	config.RotationalDegree2Ratio = 0.01f;
 	config.PhysicsCalculationInterval = 20;
 
@@ -123,11 +123,13 @@ Config ConfigManager::getDefault() {
 	config.YawPidSettings.Kd = 0.25;
 
 	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0.0001f;
+	config.CorrectionFactor = 0.005f;
 
-	config.SafePitch = 99;
-	config.SafeRoll = 99;
+	config.SafePitch = 60;
+	config.SafeRoll = 60;
+	config.SafeServoValue = 1500;
 	
+	config.RotationalCorrectionMax = 5;
 
 	Log::info("Config", "Using default config");
 	return config;

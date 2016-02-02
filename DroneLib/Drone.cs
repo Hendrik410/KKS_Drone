@@ -218,16 +218,12 @@ namespace DroneLibrary
             }
             set
             {
-                bool changed;
                 lock (dataLock)
                 {
-                    changed = !value.Equals(debugData);
-                    if (changed)
-                        debugData = value;
+                    debugData = value;
                 }
 
-                if (changed)
-                    OnDebugDataChange?.Invoke(this, new DebugDataChangedEventArgs(this));
+                OnDebugDataChange?.Invoke(this, new DebugDataChangedEventArgs(this));
             }
         }
 

@@ -30,6 +30,18 @@ void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
 	servoBLValue = forceWrite ? bl : MathHelper::clampValue(bl, config->ServoMin, config->ServoMax);
 	servoBRValue = forceWrite ? br : MathHelper::clampValue(br, config->ServoMin, config->ServoMax);
 
+	if (servoFLValue > config->SafeServoValue)
+		servoFLValue = config->SafeServoValue;
+
+	if (servoFRValue > config->SafeServoValue)
+		servoFRValue = config->SafeServoValue;
+
+	if (servoBLValue > config->SafeServoValue)
+		servoBLValue = config->SafeServoValue;
+
+	if (servoBRValue > config->SafeServoValue)
+		servoBRValue = config->SafeServoValue;
+
 	frontLeft.writeMicroseconds(servoFLValue);
 	frontRight.writeMicroseconds(servoFRValue);
 	backLeft.writeMicroseconds(servoBLValue);

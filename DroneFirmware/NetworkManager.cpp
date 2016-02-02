@@ -277,7 +277,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::info("Network", "Config set.");
 		Log::setPrintToSerial(config->VerboseSerialLog);
 
-		ConfigManager::saveConfig(*config);
+		//ConfigManager::saveConfig(*config);
 		}
 		break;
 	case ClearStatus:

@@ -25,10 +25,10 @@ void LinearDroneEngine::handleInternal() {
 	data[1] = 0; // gyro->getRoll();
 	data[2] = MathHelper::angleDifference(gyro->getYaw(), 0); 
 
-	if (data[2] > 0.5f)
-		data[2] = 0.5;
-	else if (data[2] < 0.5f)
-		data[2] = -0.5f;
+	if (data[2] > config->RotationalCorrectionMax)
+		data[2] = config->RotationalCorrectionMax;
+	else if (data[2] < -config->RotationalCorrectionMax)
+		data[2] = -config->RotationalCorrectionMax;
 
 	newValues[0] = getTargetRatio(Position_Front | Position_Left, Counterclockwise, target);
 	newValues[1] = getTargetRatio(Position_Front | Position_Right, Clockwise, target);
@@ -46,7 +46,7 @@ void LinearDroneEngine::handleInternal() {
 		newValues[i] += targetVerticalSpeed;
 		newValues[i] -= correctionValues[i];
 
-		oldValues[i] += (newValues[i] - oldValues[i]) * config->InterpolationFactor;
+		oldValues[i] = newValues[i]; // (newValues[i] - oldValues[i]) * config->InterpolationFactor;
 	}
 
 	servos->setRatio(oldValues[0], oldValues[1], oldValues[2], oldValues[3]);

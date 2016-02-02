@@ -131,6 +131,11 @@ namespace DroneLibrary
         [Category("Flying")]
         public float SafeRoll;
 
+        [Category("Flying")]
+        public float SafeServoValue;
+
+        public float RotationalCorrectionMax;
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));

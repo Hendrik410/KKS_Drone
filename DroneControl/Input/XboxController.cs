@@ -75,8 +75,6 @@ namespace DroneControl.Input
             target.RotationalSpeed = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
             target.Thurst = DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
 
-            target.Roll *= -1;
-
             manager.SendTargetData(target);
 
             lastState = currentState;

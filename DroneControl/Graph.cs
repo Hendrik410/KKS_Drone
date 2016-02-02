@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using DroneLibrary;
 
 namespace DroneControl
@@ -39,12 +40,17 @@ namespace DroneControl
 
         private int GetValue(int x)
         {
-            int v = (Height - 1) - (int)(((History[x] - History.FullMin) / (History.FullMax - History.FullMin)) * Height);
+            int v = (int)((1.0f - (History[x] + 1.0f) / 1.5f) * (Height - 1));
+                
+                //(Height - 1) - (int)(((History[x] - History.FullMin) / (History.FullMax - History.FullMin)) * Height);
             return Math.Min(Height, Math.Max(0, v));
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             e.Graphics.Clear(Color.White);
 
             if (!DesignMode && History != null)
@@ -66,6 +72,9 @@ namespace DroneControl
             
             if (!string.IsNullOrWhiteSpace(Titel))
                 e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.DarkGray), 8, 8);
+
+            sw.Stop();
+            e.Graphics.DrawString("Time: " + sw.ElapsedMilliseconds + "ms", new Font(FontFamily.GenericSansSerif, 8), new SolidBrush(Color.DarkGray), 8, 26);
 
             base.OnPaint(e);
         }
