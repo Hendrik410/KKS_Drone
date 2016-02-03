@@ -24,8 +24,23 @@ namespace DroneControl.Avionics
     {
         #region Fields
 
+
+        private bool rotateAircraft = false;
+        public bool RotateAircraft
+        {
+            get { return rotateAircraft; }
+            set
+            {
+                if (value != rotateAircraft)
+                {
+                    rotateAircraft = value;
+                    Refresh();
+                }
+            }
+        }
+
         // Parameters
-        int Heading; 
+        int Heading = 30; 
 
         // Images
         Bitmap bmpCadran = new Bitmap(AvionicsInstrumentsControlsRessources.HeadingIndicator_Background);
@@ -89,13 +104,16 @@ namespace DroneControl.Avionics
             pe.Graphics.DrawImage(bmpCadran, 0, 0, (float)(bmpCadran.Width * scale), (float)(bmpCadran.Height * scale));
 
             // display HeadingWeel
-            pe.Graphics.DrawImage(bmpHedingWeel, (int)(ptImgHeadingWeel.X * scale), (int)(ptImgHeadingWeel.Y * scale), (float)(bmpHedingWeel.Width * scale), (float)(bmpHedingWeel.Height * scale));
-            //RotateImage(pe,bmpHedingWeel, alphaHeadingWeel, ptImgHeadingWeel, ptRotation, scale);
+            if (RotateAircraft)
+                pe.Graphics.DrawImage(bmpHedingWeel, (int)(ptImgHeadingWeel.X * scale), (int)(ptImgHeadingWeel.Y * scale), (float)(bmpHedingWeel.Width * scale), (float)(bmpHedingWeel.Height * scale));
+            else
+                RotateImage(pe,bmpHedingWeel, alphaHeadingWeel, ptImgHeadingWeel, ptRotation, scale);
 
             // display aircraft
-            RotateImage(pe, bmpAircaft, alphaHeadingWeel, ptImgAircraft, ptRotation, scale);
-            //pe.Graphics.DrawImage(bmpAircaft, (int)(ptImgAircraft.X*scale), (int)(ptImgAircraft.Y*scale), (float)(bmpAircaft.Width * scale), (float)(bmpAircaft.Height * scale));
-
+            if (RotateAircraft)
+                RotateImage(pe, bmpAircaft, -alphaHeadingWeel, ptImgAircraft, ptRotation, scale);
+            else
+                pe.Graphics.DrawImage(bmpAircaft, (int)(ptImgAircraft.X*scale), (int)(ptImgAircraft.Y*scale), (float)(bmpAircaft.Width * scale), (float)(bmpAircaft.Height * scale));
         }
 
         #endregion
