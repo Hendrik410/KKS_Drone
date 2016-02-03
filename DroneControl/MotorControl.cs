@@ -43,7 +43,7 @@ namespace DroneControl
 
             UpdateValueBounds(drone.Settings);
             UpdateServoValue();
-            UpdateEnabled(drone.Data.State == DroneState.Armed);
+            UpdateEnabled(drone.Data.State);
         }
 
         private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
@@ -69,7 +69,7 @@ namespace DroneControl
 
             SetServoValues(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
             UpdateServoValue(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
-            UpdateEnabled(args.Data.State == DroneState.Armed);
+            UpdateEnabled(args.Data.State);
         }
 
         private void setValuesButton_Click(object sender, EventArgs e)
@@ -132,7 +132,12 @@ namespace DroneControl
             SendValues();
         }
 
-        private void UpdateEnabled(bool enabled)
+        private void UpdateEnabled(DroneState state)
+        {
+            UpdateEnabled(state == DroneState.Armed, state != DroneState.Flying);
+        }
+
+        private void UpdateEnabled(bool enabled, bool enabledSet)
         {
             leftFrontTextBox.Enabled = enabled;
             rightFrontTextBox.Enabled = enabled;
@@ -140,6 +145,7 @@ namespace DroneControl
             rightBackTextBox.Enabled = enabled;
             servoValueNumericUpDown.Enabled = enabled;
             valueTrackBar.Enabled = enabled;
+            setValuesButton.Enabled = enabledSet;
         }
 
         private void UpdateValueBounds(DroneSettings settings)
