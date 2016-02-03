@@ -51,9 +51,6 @@ namespace DroneControl.Input
 
         public void Update(InputManager manager)
         {
-            if (!IsConnected)
-                return;
-
             currentState = controller.GetState();
 
             if (CheckButtonPressed(GamepadButtonFlags.A))

@@ -11,7 +11,7 @@ namespace DroneControl.Input
     public class InputManager : IDisposable
     {
         private Drone drone;
-        private List<IInputDevice> lastDevices = new List<IInputDevice>();
+        private List<IInputDevice> devices = new List<IInputDevice>();
 
         private bool lastConnected;
         private BatteryInfo lastBattery;
@@ -50,7 +50,7 @@ namespace DroneControl.Input
 
         public void Dispose()
         {
-            foreach (IInputDevice device in lastDevices)
+            foreach (IInputDevice device in devices)
                 device.Dispose(); 
         }
 
@@ -60,6 +60,8 @@ namespace DroneControl.Input
         /// <returns>Array mit allen IInputDevices die gefunden wurden.</returns>
         public IInputDevice[] FindDevices(out bool changed)
         {
+            int lastDeviceCount = devices.Count;
+
             // alle IDeviceFinder Types in diesem Code suchen
             var finderTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => t.GetInterfaces().Contains(typeof(IDeviceFinder)))
@@ -70,23 +72,25 @@ namespace DroneControl.Input
 
             // Geräte suchen
             foreach (IDeviceFinder finder in finders)
-                lastDevices.AddRange(finder.FindDevices());
+                devices.AddRange(finder.FindDevices());
 
             // doppelte Geräte entfernen
-            var newDevices = lastDevices.Distinct();
+            devices = devices.Distinct().ToList();
 
-            // schauen ob neue Geräte hinzugefügt wurden
-            changed = newDevices.Count() > lastDevices.Count;
 
-            lastDevices = newDevices.ToList();
-            return lastDevices.ToArray();
+            // hat sich verändert, wenn Geräte dazugekommen sind
+            changed = devices.Count > lastDeviceCount;
+            return devices.ToArray();
         }
 
         public void Update()
         {
             if (CurrentDevice != null)
             {
-                CurrentDevice.Update(this);
+                if (CurrentDevice.IsConnected)
+                    CurrentDevice.Update(this);
+                else
+                    SendTargetData(new TargetData(0, 0, 0, 0));
 
                 // schauen ob sich Informationen vom Gerät geändert haben
                 bool dirty = CurrentDevice.IsConnected != lastConnected || !CurrentDevice.Battery.Equals(lastBattery);
