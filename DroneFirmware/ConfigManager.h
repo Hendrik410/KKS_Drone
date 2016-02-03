@@ -21,7 +21,7 @@ void * memcpy(void * destination, const void * source, int num);
 #include "PacketBuffer.h"
 
 #define CONFIG_MAGIC_VALUE 124
-#define CONFIG_VERSION 2
+#define CONFIG_VERSION 3
 
 class ConfigManager
 {

@@ -83,8 +83,7 @@ struct Config {
 
 	float SafePitch;
 	float SafeRoll;
-
-	float SafeServoValue;
+	int SafeServoValue;
 
 	float RotationalCorrectionMax;
 };

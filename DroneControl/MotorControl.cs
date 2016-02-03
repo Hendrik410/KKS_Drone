@@ -25,7 +25,10 @@ namespace DroneControl
         protected override void OnHandleDestroyed(EventArgs e)
         {
             if (drone != null)
+            {
                 drone.OnDataChange -= OnDroneDataChange;
+                drone.OnSettingsChange -= Drone_OnSettingsChange;
+            }
             base.OnHandleDestroyed(e);
         }
 
@@ -37,7 +40,7 @@ namespace DroneControl
             this.drone = drone;
             drone.OnDataChange += OnDroneDataChange;
             drone.OnSettingsChange += Drone_OnSettingsChange;
-            
+
             UpdateValueBounds(drone.Settings);
             UpdateServoValue();
             UpdateEnabled(drone.Data.State == DroneState.Armed);
@@ -64,22 +67,69 @@ namespace DroneControl
 
             QuadMotorValues motorValues = args.Data.MotorValues;
 
-            changingValues = true;
-            if (!leftFrontTextBox.Focused)
-                leftFrontTextBox.Text = motorValues.FrontLeft.ToString();
-
-            if (!rightFrontTextBox.Focused)
-                rightFrontTextBox.Text = motorValues.FrontRight.ToString();
-
-            if (!leftBackTextBox.Focused)
-                leftBackTextBox.Text = motorValues.BackLeft.ToString();
-
-            if (!rightBackTextBox.Focused)
-                rightBackTextBox.Text = motorValues.BackRight.ToString();
-
-            UpdateServoValue();
+            SetServoValues(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
+            UpdateServoValue(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
             UpdateEnabled(args.Data.State == DroneState.Armed);
+        }
+
+        private void setValuesButton_Click(object sender, EventArgs e)
+        {
+            if (!SendValues())
+                MessageBox.Show(this, "Setting the motors is only allowed when the drone is armed.", "Not armed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void UpdateServoValue()
+        {
+            int leftFront = (int)leftFrontTextBox.Value;
+            int rightFront = (int)rightFrontTextBox.Value;
+            int leftBack = (int)leftBackTextBox.Value;
+            int rightBack = (int)rightBackTextBox.Value;
+            UpdateServoValue(leftFront, rightFront, leftBack, rightBack);
+        }
+
+        private void UpdateServoValue(int leftFront, int rightFront, int leftBack, int rightBack)
+        {
+            int average = (leftFront + rightFront + leftBack + rightBack) / 4;
+
+            changingValues = true;
+
+            if (!servoValueNumericUpDown.Focused)
+                servoValueNumericUpDown.Value = average;
+            if (!valueTrackBar.Focused)
+                valueTrackBar.Value = average;
+
             changingValues = false;
+        }
+
+        private void OnEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && !changingValues)
+            {
+                CheckNumericUpDown((NumericUpDown)sender);
+                UpdateServoValue();
+                SendValues();
+            }
+        }
+
+        private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && !changingValues)
+            {
+                CheckNumericUpDown((NumericUpDown)sender);
+                SetServoValueToAll();
+                SendValues();
+            }
+        }
+
+        private void valueTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (changingValues)
+                return;
+
+            changingValues = true;
+            servoValueNumericUpDown.Value = valueTrackBar.Value;
+            SetServoValueToAll();
+            SendValues();
         }
 
         private void UpdateEnabled(bool enabled)
@@ -94,47 +144,23 @@ namespace DroneControl
 
         private void UpdateValueBounds(DroneSettings settings)
         {
-            leftFrontTextBox.Minimum = settings.ServoMin;
-            rightFrontTextBox.Minimum = settings.ServoMin;
-            leftBackTextBox.Minimum = settings.ServoMin;
-            rightBackTextBox.Minimum = settings.ServoMin;
-            servoValueNumericUpDown.Minimum = settings.ServoMin;
             valueTrackBar.Minimum = settings.ServoMin;
-
-            leftFrontTextBox.Maximum = settings.ServoMax;
-            rightFrontTextBox.Maximum = settings.ServoMax;
-            leftBackTextBox.Maximum = settings.ServoMax;
-            rightBackTextBox.Maximum = settings.ServoMax;
-            servoValueNumericUpDown.Maximum = settings.ServoMax;
             valueTrackBar.Maximum = settings.ServoMax;
+            valueTrackBar.Value = settings.ServoMin;
+            servoValueNumericUpDown.Value = settings.ServoMin;
+            SetServoValueToAll();
         }
 
-        private void setValuesButton_Click(object sender, EventArgs e)
-        {
-            if (!SendValues())
-                MessageBox.Show(this, "Setting the motors is only allowed when the drone is armed.", "Not armed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void UpdateServoValue()
-        {
-            ushort leftFront = (ushort)leftFrontTextBox.Value;
-            ushort rightFront = (ushort)rightFrontTextBox.Value;
-            ushort leftBack = (ushort)leftBackTextBox.Value;
-            ushort rightBack = (ushort)rightBackTextBox.Value;
-
-            changingValues = true;
-            if (!servoValueNumericUpDown.Focused)
-                servoValueNumericUpDown.Value = (leftFront + rightFront + leftBack + rightBack) / 4;
-
-            if (!valueTrackBar.Focused)
-                valueTrackBar.Value = (ushort)servoValueNumericUpDown.Value;
-            changingValues = false;
-        }
 
         private bool SendValues()
         {
             if (!drone.IsConnected || drone.Data.State != DroneState.Armed)
                 return false;
+
+            CheckNumericUpDown(leftFrontTextBox);
+            CheckNumericUpDown(rightFrontTextBox);
+            CheckNumericUpDown(leftBackTextBox);
+            CheckNumericUpDown(rightBackTextBox);
 
             ushort leftFront = (ushort)leftFrontTextBox.Value;
             ushort rightFront = (ushort)rightFrontTextBox.Value;
@@ -147,45 +173,36 @@ namespace DroneControl
             return true;
         }
 
-        private void OnEnter(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && !changingValues)
-            {
-                UpdateServoValue();
-                SendValues();
-            }
-        }
-
         private void SetServoValueToAll()
         {
+            int value = (int)servoValueNumericUpDown.Value;
+            SetServoValues(value, value, value, value);
+        }
+
+        private void SetServoValues(int leftFront, int rightFront, int leftBack, int rightBack)
+        {
             changingValues = true;
-            leftFrontTextBox.Value = servoValueNumericUpDown.Value;
-            rightFrontTextBox.Value = servoValueNumericUpDown.Value;
-            leftBackTextBox.Value = servoValueNumericUpDown.Value;
-            rightBackTextBox.Value = servoValueNumericUpDown.Value;
+            if (!leftFrontTextBox.Focused)
+                leftFrontTextBox.Value = leftFront;
+
+            if (!rightFrontTextBox.Focused)
+                rightFrontTextBox.Value = rightFront;
+
+            if (!leftBackTextBox.Focused)
+                leftBackTextBox.Value = leftBack;
+
+            if (!rightBackTextBox.Focused)
+                rightBackTextBox.Value = rightBack;
             changingValues = false;
         }
 
-        private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
+        private void CheckNumericUpDown(NumericUpDown box)
         {
-            if (e.KeyCode == Keys.Enter && !changingValues)
-            {          
-                SetServoValueToAll();
-                SendValues();
-            }
-        }
-
-        private void valueTrackBar_ValueChanged(object sender, EventArgs e)
-        {
-            if (changingValues)
-                return;
-
-            changingValues = true;
-            servoValueNumericUpDown.Value = valueTrackBar.Value;
-            SetServoValueToAll();
-
-
-            SendValues();
+            int max = Math.Min(drone.Settings.ServoMax, drone.Settings.SafeServoValue);
+            if (box.Value < drone.Settings.ServoMin)
+                box.Value = drone.Settings.ServoMin;
+            if (box.Value > max)
+                box.Value = max;
         }
     }
 }

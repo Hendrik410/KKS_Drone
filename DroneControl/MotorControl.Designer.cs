@@ -115,6 +115,7 @@
             this.valueTrackBar.BackColor = System.Drawing.Color.White;
             this.valueTrackBar.LargeChange = 30;
             this.valueTrackBar.Location = new System.Drawing.Point(6, 77);
+            this.valueTrackBar.Maximum = 1000000;
             this.valueTrackBar.Name = "valueTrackBar";
             this.valueTrackBar.Size = new System.Drawing.Size(351, 45);
             this.valueTrackBar.SmallChange = 10;
@@ -134,12 +135,12 @@
             // 
             // servoValueNumericUpDown
             // 
-            this.servoValueNumericUpDown.Increment = new decimal(new int[] {
-            10,
+            this.servoValueNumericUpDown.Location = new System.Drawing.Point(305, 23);
+            this.servoValueNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
             0,
             0,
             0});
-            this.servoValueNumericUpDown.Location = new System.Drawing.Point(305, 23);
             this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
             this.servoValueNumericUpDown.Size = new System.Drawing.Size(53, 20);
             this.servoValueNumericUpDown.TabIndex = 8;
@@ -148,6 +149,11 @@
             // rightBackTextBox
             // 
             this.rightBackTextBox.Location = new System.Drawing.Point(146, 48);
+            this.rightBackTextBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.rightBackTextBox.Name = "rightBackTextBox";
             this.rightBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightBackTextBox.TabIndex = 7;
@@ -156,6 +162,11 @@
             // rightFrontTextBox
             // 
             this.rightFrontTextBox.Location = new System.Drawing.Point(146, 22);
+            this.rightFrontTextBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.rightFrontTextBox.Name = "rightFrontTextBox";
             this.rightFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightFrontTextBox.TabIndex = 5;
@@ -164,6 +175,11 @@
             // leftBackTextBox
             // 
             this.leftBackTextBox.Location = new System.Drawing.Point(79, 48);
+            this.leftBackTextBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.leftBackTextBox.Name = "leftBackTextBox";
             this.leftBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftBackTextBox.TabIndex = 3;
@@ -172,6 +188,11 @@
             // leftFrontTextBox
             // 
             this.leftFrontTextBox.Location = new System.Drawing.Point(79, 22);
+            this.leftFrontTextBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.leftFrontTextBox.Name = "leftFrontTextBox";
             this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftFrontTextBox.TabIndex = 1;

@@ -132,7 +132,7 @@ namespace DroneLibrary
         public float SafeRoll;
 
         [Category("Flying")]
-        public float SafeServoValue;
+        public int SafeServoValue;
 
         public float RotationalCorrectionMax;
 
