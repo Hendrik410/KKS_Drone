@@ -17,6 +17,10 @@ namespace DroneControl
         public string Titel { get; set; }
         public DataHistory History { get; private set; }
 
+        private const int gridSize = 30;
+        private int offsetX = 15;
+        private const int offsetY = 15;
+
         public Graph()
         {
             InitializeComponent();
@@ -40,10 +44,11 @@ namespace DroneControl
 
         private int GetValue(int x)
         {
-            int v = (int)((1.0f - (History[x] + 1.0f) / 1.5f) * (Height - 1));
-                
-                //(Height - 1) - (int)(((History[x] - History.FullMin) / (History.FullMax - History.FullMin)) * Height);
-            return Math.Min(Height, Math.Max(0, v));
+            double value = (History[x] - History.FullMin) / (History.FullMax - History.FullMin);
+            value = 1 - value;
+
+            int y = (int)(value * (Height - 1));
+            return Math.Min(Height, Math.Max(0, y));
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -52,6 +57,14 @@ namespace DroneControl
             sw.Start();
 
             e.Graphics.Clear(Color.White);
+
+            Color gridColor = Color.FromArgb(0x50B3B3B3);
+            Pen gridPen = new Pen(gridColor);
+
+            for (int x = 0; x < Width; x += gridSize)
+                e.Graphics.DrawLine(gridPen, offsetX + x, 0, offsetX + x, Height);
+            for (int y = 0; y < Height; y+= gridSize)
+                e.Graphics.DrawLine(gridPen, 0, offsetY + y, Width, offsetY + y);
 
             if (!DesignMode && History != null)
             {
@@ -74,13 +87,21 @@ namespace DroneControl
                 e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.DarkGray), 8, 8);
 
             sw.Stop();
-            e.Graphics.DrawString("Time: " + sw.ElapsedMilliseconds + "ms", new Font(FontFamily.GenericSansSerif, 8), new SolidBrush(Color.DarkGray), 8, 26);
+            e.Graphics.DrawString(string.Format("Time: {0}ms", sw.ElapsedMilliseconds), new Font(FontFamily.GenericSansSerif, 8), new SolidBrush(Color.DarkGray), 8, 26);
 
             base.OnPaint(e);
         }
 
         public void UpdateValue(double value)
         {
+            // wenn unsere History nicht mehr Daten fassen kann, dann Grid verschieben
+            if (History.Count == History.ValueCount)
+            {
+                offsetX--;
+                if (offsetX < 0)
+                    offsetX = gridSize - 1;
+            }
+
             History.UpdateValue(value);
             Refresh();
         }
