@@ -59,6 +59,7 @@ void Log::addMessage(char* message) {
 
 	// alte Log Einträge verschieben
 	if (bufferLines >= LOG_BUFFER_LINES) {
+		free(buffer[0]);
 		for (int i = 1; i < LOG_BUFFER_LINES; i++)
 			buffer[i - 1] = buffer[i];
 		bufferLines = LOG_BUFFER_LINES - 1;
