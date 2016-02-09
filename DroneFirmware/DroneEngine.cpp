@@ -73,6 +73,7 @@ void DroneEngine::clearStatus() {
 }
 
 void DroneEngine::handle() {
+	Profiler::begin("DroneEngine::handle()");
 	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED();
 
@@ -99,6 +100,7 @@ void DroneEngine::handle() {
 			}
 		}
 	}
+	Profiler::end();
 }
 
 void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite) const {

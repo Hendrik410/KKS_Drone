@@ -796,12 +796,7 @@ namespace DroneLibrary
                         if (!CheckRevision(lastDataDebugRevision, revision))
                             return;
 
-                        DebugData = new DebugData()
-                        {
-                            Real = new MotorRatios(buffer),
-                            Correction = new MotorRatios(buffer)
-                        };
-
+                        DebugData = new DebugData(buffer);
                         lastDataDebugRevision = revision;
                         break;
                 }

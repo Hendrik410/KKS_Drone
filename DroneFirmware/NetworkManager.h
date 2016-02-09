@@ -70,6 +70,7 @@ public:
 	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
 
 	void handlePackets();
+	void handleData();
 };
 
 #endif

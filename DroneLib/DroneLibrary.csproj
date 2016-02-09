@@ -50,6 +50,7 @@
     <Compile Include="DataHistory.cs" />
     <Compile Include="DebugData.cs" />
     <Compile Include="DebugDataChangedEventArgs.cs" />
+    <Compile Include="DebugProfiler.cs" />
     <Compile Include="Drone.cs" />
     <Compile Include="DroneData.cs" />
     <Compile Include="DroneEntry.cs" />

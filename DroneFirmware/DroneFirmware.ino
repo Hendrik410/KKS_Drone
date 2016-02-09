@@ -23,6 +23,7 @@
 #include "PidDroneEngine.h"
 #include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
+#include "Profiler.h"
 
 #define byte unsigned char
 
@@ -50,6 +51,7 @@
 #include "PidDroneEngine.h"
 #include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
+#include "Profiler.h"
 #endif
 
 
@@ -161,10 +163,14 @@ void setup() {
 	//start network
 	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
 
+	//start profiler
+	Profiler::init();
+
 	Log::info("Boot", "done booting. ready.");
 }
 
 void loop() {
+	Profiler::begin("loop()");
 	//keep gyro data updated
 	gyro->update();
 
@@ -174,8 +180,11 @@ void loop() {
 	// handle LED
 	handleBlink();
 
+	network->handlePackets();
+	Profiler::end();
+
 	if(millis() - lastLoopTime >= delayTime) {
-		network->handlePackets();
+		network->handleData();
 		
 		lastLoopTime = millis();
 	}

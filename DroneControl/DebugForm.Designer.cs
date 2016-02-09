@@ -33,6 +33,7 @@
             this.ratioDataLabel = new System.Windows.Forms.Label();
             this.blinkButton = new System.Windows.Forms.Button();
             this.correctionDataLabel = new System.Windows.Forms.Label();
+            this.profilerData = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // resetButton
@@ -75,11 +76,23 @@
             this.correctionDataLabel.TabIndex = 3;
             this.correctionDataLabel.Text = "Correction data";
             // 
+            // profilerData
+            // 
+            this.profilerData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.profilerData.AutoSize = true;
+            this.profilerData.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profilerData.Location = new System.Drawing.Point(168, 43);
+            this.profilerData.Name = "profilerData";
+            this.profilerData.Size = new System.Drawing.Size(85, 13);
+            this.profilerData.TabIndex = 4;
+            this.profilerData.Text = "Profiler data";
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 315);
+            this.ClientSize = new System.Drawing.Size(419, 315);
+            this.Controls.Add(this.profilerData);
             this.Controls.Add(this.correctionDataLabel);
             this.Controls.Add(this.blinkButton);
             this.Controls.Add(this.ratioDataLabel);
@@ -98,5 +111,6 @@
         private System.Windows.Forms.Label ratioDataLabel;
         private System.Windows.Forms.Button blinkButton;
         private System.Windows.Forms.Label correctionDataLabel;
+        private System.Windows.Forms.Label profilerData;
     }
 }

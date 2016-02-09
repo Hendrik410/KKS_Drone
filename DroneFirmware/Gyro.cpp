@@ -47,21 +47,21 @@ void Gyro::init() {
 }
 
 void Gyro::update() {
-	if (!mpu.getIntDataReadyStatus())
-		return;
-
-	uint16_t fifoCount = mpu.getFIFOCount();
-	if (mpu.getIntFIFOBufferOverflowStatus() || fifoCount == 1024) {
+	if (mpu.getIntFIFOBufferOverflowStatus()) {
 		mpu.resetFIFO();
 
 		Log::error("Gyro", "FIFO overflow!");
 		return;
 	}
 
-	while (fifoCount < packetSize)
-		fifoCount = mpu.getFIFOCount();
+	if (!mpu.dmpPacketAvailable())
+		return;
 
-	mpu.getFIFOBytes(fifoBuffer, packetSize);
+	Profiler::begin("Gyro::update()");
+
+	Profiler::begin("getFIFOBytes()");
+	mpu.getFIFOBytes(fifoBuffer, mpu.dmpGetFIFOPacketSize());
+	Profiler::end();
 
 	// Gyro Werte
 	mpu.dmpGetQuaternion(&q, fifoBuffer);
@@ -73,6 +73,7 @@ void Gyro::update() {
 	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
 
 	_dirty = true;
+	Profiler::end();
 }
 
 float Gyro::getTemperature() {

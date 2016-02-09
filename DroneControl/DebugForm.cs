@@ -48,6 +48,16 @@ namespace DroneControl
                 Formatting.FormatRatio(data.Correction.FrontRight),
                 Formatting.FormatRatio(data.Correction.BackLeft),
                 Formatting.FormatRatio(data.Correction.BackRight));
+
+            StringBuilder profilerString = new StringBuilder();
+
+            for (int i = 0; i < data.Profiler.Entries.Length; i++)
+                profilerString.AppendFormat("{0} {1}ms{2}", 
+                    data.Profiler.Entries[i].Name.PadLeft(25), 
+                    Formatting.FormatDecimal(data.Profiler.Entries[i].Time.TotalMilliseconds, 1, 4),
+                    Environment.NewLine);
+
+            profilerData.Text = profilerString.ToString();
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)

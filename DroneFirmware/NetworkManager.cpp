@@ -34,6 +34,7 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 }
 
 void NetworkManager::handlePackets() {
+	Profiler::begin("readPackets()");
 	int helloPackets = 0;
 	while (beginParse(helloUDP) && helloPackets++ < 2)
 		handleHello(helloUDP);
@@ -41,7 +42,10 @@ void NetworkManager::handlePackets() {
 	int controlPackets = 0;
 	while (beginParse(controlUDP) && controlPackets++ < 5)
 		handleControl(controlUDP);
+	Profiler::end();
+}
 
+void NetworkManager::handleData() {
 	handleData(dataUDP);
 }
 
@@ -290,10 +294,13 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	if (!_dataFeedSubscribed)
 		return;
 
+	Profiler::begin("handleData()");
 	sendDroneData(udp);
 
 	if (tickCount % 4 == 0)
 		sendLog(udp);
+
+	Profiler::end();
 
 	if (tickCount % 8 == 0)
 		sendDebugData(udp);
@@ -364,6 +371,8 @@ void NetworkManager::sendDebugData(WiFiUDP udp) {
 	writeBuffer->write(engine->getFrontRightCorrection());
 	writeBuffer->write(engine->getBackLeftCorrection());
 	writeBuffer->write(engine->getBackRightCorrection());
+
+	Profiler::write(writeBuffer);
 
 	sendData(udp);
 }

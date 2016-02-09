@@ -146,6 +146,11 @@ namespace DroneLibrary
                 OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
         }
 
+        private bool CheckDroneTimeout()
+        {
+            return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds > 10).Count() > 0;
+        }
+
         public DroneEntry[] GetDrones()
         {
             lock(foundDrones)

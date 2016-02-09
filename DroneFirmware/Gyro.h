@@ -7,6 +7,7 @@
 #include "MathHelper.h"
 #include "Config.h"
 #include "Log.h"
+#include "Profiler.h"
 
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include <Wire/Wire.h>

@@ -12,6 +12,7 @@
 #include "Log.h"
 #include "LED.h"
 #include "StopReason.h"
+#include "Profiler.h"
 
 #define byte unsigned char
 #else
@@ -22,6 +23,7 @@
 #include "Log.h"
 #include "LED.h"
 #include "StopReason.h"
+#include "Profiler.h"
 #endif
 
 enum DroneState {
