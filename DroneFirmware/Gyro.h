@@ -26,8 +26,8 @@ class Gyro
 	 Config* config;
 
 	 MPU6050 mpu;
-	 int packetSize = 0;
-	 byte fifoBuffer[64];
+	 byte* fifoBuffer;
+	 int fifoOffset;
 
 	 // orientation/motion vars
 	 Quaternion q;           // [w, x, y, z]         quaternion container
@@ -52,6 +52,8 @@ class Gyro
 
 	void init();
 	void update();
+
+	void reset();
 
 	float getTemperature();
 

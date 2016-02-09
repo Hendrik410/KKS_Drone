@@ -40,7 +40,7 @@ void Gyro::init() {
 
 	Log::info("Gyro", "done with init");
 
-	packetSize = mpu.dmpPacketSize;
+	fifoBuffer = (byte*)malloc(sizeof(byte) * mpu.dmpGetFIFOPacketSize());
 
 	mpu.setDMPEnabled(true);
 	mpu.resetFIFO();
@@ -74,6 +74,10 @@ void Gyro::update() {
 
 	_dirty = true;
 	Profiler::end();
+}
+
+void Gyro::reset() {
+	mpu.resetSensors();
 }
 
 float Gyro::getTemperature() {
