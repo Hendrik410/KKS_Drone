@@ -22,22 +22,23 @@ namespace DroneControl
 
             droneList = new DroneList(new Config());
 
-            droneList.OnDroneFound += DroneList_OnDroneFound;
+            droneList.OnListChanged += DroneList_OnListChanged;
 
-            searchTimer.Interval = 500;
+            searchTimer.Interval = 500; // Millisekunden
             searchTimer.Tick += (object sender, EventArgs args) =>
             {
                 droneList.SendHello();
             };
             searchTimer.Start();
 
+            droneList.TimeoutSeconds = 2; // Sekunden
             droneList.SendHello();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (droneList != null)
-                droneList.OnDroneFound -= DroneList_OnDroneFound;
+                droneList.OnListChanged -= DroneList_OnListChanged;
 
             searchTimer.Stop();
             base.OnFormClosing(e);
@@ -70,10 +71,10 @@ namespace DroneControl
             connectButton.Enabled = true;
         }
 
-        private void DroneList_OnDroneFound(object sender, DroneListChangedEventArgs e)
+        private void DroneList_OnListChanged(object sender, DroneListChangedEventArgs e)
         {
             if (InvokeRequired)
-                Invoke(new EventHandler<DroneListChangedEventArgs>(DroneList_OnDroneFound), sender, e);
+                Invoke(new EventHandler<DroneListChangedEventArgs>(DroneList_OnListChanged), sender, e);
             else
             {
                 if (e.Entries.Length == 0)

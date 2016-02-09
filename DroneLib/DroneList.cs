@@ -20,7 +20,9 @@ namespace DroneLibrary
         private UdpClient client;
         private List<DroneEntry> foundDrones = new List<DroneEntry>();
 
-        public event EventHandler<DroneListChangedEventArgs> OnDroneFound;
+        public int TimeoutSeconds { get; set; } = 10;
+
+        public event EventHandler<DroneListChangedEventArgs> OnListChanged;
 
         public DroneList(Config config)
         {
@@ -42,6 +44,7 @@ namespace DroneLibrary
             if (addresses == null)
                 return;
 
+            RemoveTimeoutDrones();
 
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
@@ -105,6 +108,24 @@ namespace DroneLibrary
             }
         }
 
+        private void RemoveTimeoutDrones()
+        {
+            bool removed = false;
+            lock (foundDrones)
+            {
+                for (int i = 0; i < foundDrones.Count; i++)
+                {
+                    if ((DateTime.Now - foundDrones[i].LastFound).TotalSeconds >= TimeoutSeconds)
+                    {
+                        foundDrones.RemoveAt(i--);
+                        removed = true;
+                    }
+                }
+            }
+            if (removed)
+                InvokeEvent();
+        }
+
         private void RemoveDrone(IPAddress address)
         {
             for (int i = 0; i < foundDrones.Count; i++)
@@ -121,8 +142,8 @@ namespace DroneLibrary
                 {
                     foundDrones[i] = DroneEntry.UpdateEntry(entry);
 
-                    if (!e.Equals(entry) && OnDroneFound != null)
-                        OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
+                    if (!e.Equals(entry))
+                        InvokeEvent();
                     return true;
                 }
             }
@@ -142,20 +163,20 @@ namespace DroneLibrary
                 foundDrones.Add(entry);
             }
 
-            if (OnDroneFound != null)
-                OnDroneFound(this, new DroneListChangedEventArgs(GetDrones()));
+            InvokeEvent();
         }
 
-        private bool CheckDroneTimeout()
+        private void InvokeEvent()
         {
-            return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds > 10).Count() > 0;
+            if (OnListChanged != null)
+                OnListChanged(this, new DroneListChangedEventArgs(GetDrones()));
         }
 
         public DroneEntry[] GetDrones()
         {
             lock(foundDrones)
             {
-                return foundDrones.Where((e) => (DateTime.Now - e.LastFound).TotalSeconds < 10).ToArray();
+                return foundDrones.ToArray();
             }
         }
     }
