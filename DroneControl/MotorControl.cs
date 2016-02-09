@@ -93,6 +93,17 @@ namespace DroneControl
 
             changingValues = true;
 
+            // in bestimmten Fällen kann es passieren, dass die DroneData Werte vor den Einstellungen
+            // geschickt werden, dann stimmten die Min und Max Werte nicht mehr
+            // wir müssen daher die Werte anpassen
+            int max = (int)Math.Min(servoValueNumericUpDown.Maximum, valueTrackBar.Maximum);
+            int min = (int)Math.Max(servoValueNumericUpDown.Minimum, valueTrackBar.Minimum);
+
+            if (average > max)
+                average = max;
+            if (average < min)
+                average = min;
+
             if (!servoValueNumericUpDown.Focused)
                 servoValueNumericUpDown.Value = average;
             if (!valueTrackBar.Focused)
@@ -150,11 +161,13 @@ namespace DroneControl
 
         private void UpdateValueBounds(DroneSettings settings)
         {
+            changingValues = true;
             valueTrackBar.Minimum = settings.ServoMin;
             valueTrackBar.Maximum = settings.ServoMax;
             valueTrackBar.Value = settings.ServoMin;
             servoValueNumericUpDown.Value = settings.ServoMin;
             SetServoValueToAll();
+            changingValues = false;
         }
 
 
