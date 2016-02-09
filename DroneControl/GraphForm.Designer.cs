@@ -29,148 +29,120 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraphForm));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.frontLeftRatio = new DroneControl.Graph();
-            this.frontRightRatio = new DroneControl.Graph();
-            this.backLeftRatio = new DroneControl.Graph();
-            this.backRightRatio = new DroneControl.Graph();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.ratioTabPage = new System.Windows.Forms.TabPage();
+            this.ratiosGraph = new DroneControl.QuadGraphControl();
+            this.correctionTabPage = new System.Windows.Forms.TabPage();
+            this.correctionGraph = new DroneControl.QuadGraphControl();
+            this.motorTabPage = new System.Windows.Forms.TabPage();
+            this.profilerTabPage = new System.Windows.Forms.TabPage();
+            this.tabControl1.SuspendLayout();
+            this.ratioTabPage.SuspendLayout();
+            this.correctionTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
-            // splitContainer1
+            // tabControl1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.tabControl1.Controls.Add(this.ratioTabPage);
+            this.tabControl1.Controls.Add(this.correctionTabPage);
+            this.tabControl1.Controls.Add(this.motorTabPage);
+            this.tabControl1.Controls.Add(this.profilerTabPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(915, 517);
+            this.tabControl1.TabIndex = 0;
             // 
-            // splitContainer1.Panel1
+            // ratioTabPage
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.ratioTabPage.Controls.Add(this.ratiosGraph);
+            this.ratioTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ratioTabPage.Name = "ratioTabPage";
+            this.ratioTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.ratioTabPage.Size = new System.Drawing.Size(907, 491);
+            this.ratioTabPage.TabIndex = 0;
+            this.ratioTabPage.Text = "Ratios";
+            this.ratioTabPage.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1.Panel2
+            // ratiosGraph
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(915, 517);
-            this.splitContainer1.SplitterDistance = 242;
-            this.splitContainer1.TabIndex = 0;
+            this.ratiosGraph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ratiosGraph.LeftBottomName = "Left bottom";
+            this.ratiosGraph.LeftTopName = "Left front";
+            this.ratiosGraph.Location = new System.Drawing.Point(3, 3);
+            this.ratiosGraph.Name = "ratiosGraph";
+            this.ratiosGraph.RightBottomName = "Right bottom";
+            this.ratiosGraph.RightTopName = "Right front";
+            this.ratiosGraph.Size = new System.Drawing.Size(901, 485);
+            this.ratiosGraph.TabIndex = 1;
             // 
-            // splitContainer2
+            // correctionTabPage
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
+            this.correctionTabPage.Controls.Add(this.correctionGraph);
+            this.correctionTabPage.Location = new System.Drawing.Point(4, 22);
+            this.correctionTabPage.Name = "correctionTabPage";
+            this.correctionTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.correctionTabPage.Size = new System.Drawing.Size(907, 491);
+            this.correctionTabPage.TabIndex = 1;
+            this.correctionTabPage.Text = "Correction";
+            this.correctionTabPage.UseVisualStyleBackColor = true;
             // 
-            // splitContainer2.Panel1
+            // correctionGraph
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.frontLeftRatio);
+            this.correctionGraph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.correctionGraph.LeftBottomName = "Left bottom";
+            this.correctionGraph.LeftTopName = "Left front";
+            this.correctionGraph.Location = new System.Drawing.Point(3, 3);
+            this.correctionGraph.Name = "correctionGraph";
+            this.correctionGraph.RightBottomName = "Right bottom";
+            this.correctionGraph.RightTopName = "Right front";
+            this.correctionGraph.Size = new System.Drawing.Size(901, 485);
+            this.correctionGraph.TabIndex = 1;
             // 
-            // splitContainer2.Panel2
+            // motorTabPage
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.frontRightRatio);
-            this.splitContainer2.Size = new System.Drawing.Size(915, 242);
-            this.splitContainer2.SplitterDistance = 429;
-            this.splitContainer2.TabIndex = 0;
+            this.motorTabPage.Location = new System.Drawing.Point(4, 22);
+            this.motorTabPage.Name = "motorTabPage";
+            this.motorTabPage.Size = new System.Drawing.Size(907, 491);
+            this.motorTabPage.TabIndex = 2;
+            this.motorTabPage.Text = "Motor";
+            this.motorTabPage.UseVisualStyleBackColor = true;
+            this.motorTabPage.Click += new System.EventHandler(this.motorTabPage_Click);
             // 
-            // splitContainer3
+            // profilerTabPage
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.backLeftRatio);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.backRightRatio);
-            this.splitContainer3.Size = new System.Drawing.Size(915, 271);
-            this.splitContainer3.SplitterDistance = 429;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // frontLeftRatio
-            // 
-            this.frontLeftRatio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frontLeftRatio.Location = new System.Drawing.Point(0, 0);
-            this.frontLeftRatio.Name = "frontLeftRatio";
-            this.frontLeftRatio.Size = new System.Drawing.Size(429, 242);
-            this.frontLeftRatio.TabIndex = 0;
-            this.frontLeftRatio.Titel = "Left Front";
-            // 
-            // frontRightRatio
-            // 
-            this.frontRightRatio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frontRightRatio.Location = new System.Drawing.Point(0, 0);
-            this.frontRightRatio.Name = "frontRightRatio";
-            this.frontRightRatio.Size = new System.Drawing.Size(482, 242);
-            this.frontRightRatio.TabIndex = 0;
-            this.frontRightRatio.Titel = "Right Front";
-            // 
-            // backLeftRatio
-            // 
-            this.backLeftRatio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.backLeftRatio.Location = new System.Drawing.Point(0, 0);
-            this.backLeftRatio.Name = "backLeftRatio";
-            this.backLeftRatio.Size = new System.Drawing.Size(429, 271);
-            this.backLeftRatio.TabIndex = 0;
-            this.backLeftRatio.Titel = "Left Back";
-            // 
-            // backRightRatio
-            // 
-            this.backRightRatio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.backRightRatio.Location = new System.Drawing.Point(0, 0);
-            this.backRightRatio.Name = "backRightRatio";
-            this.backRightRatio.Size = new System.Drawing.Size(482, 271);
-            this.backRightRatio.TabIndex = 0;
-            this.backRightRatio.Titel = "Right Back";
+            this.profilerTabPage.Location = new System.Drawing.Point(4, 22);
+            this.profilerTabPage.Name = "profilerTabPage";
+            this.profilerTabPage.Size = new System.Drawing.Size(907, 491);
+            this.profilerTabPage.TabIndex = 3;
+            this.profilerTabPage.Text = "Profiler";
+            this.profilerTabPage.UseVisualStyleBackColor = true;
             // 
             // GraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(915, 517);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GraphForm";
             this.Text = "Debug - Graphs";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.ratioTabPage.ResumeLayout(false);
+            this.correctionTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private Graph frontLeftRatio;
-        private Graph frontRightRatio;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private Graph backLeftRatio;
-        private Graph backRightRatio;
+        private System.Windows.Forms.TabPage ratioTabPage;
+        private System.Windows.Forms.TabPage correctionTabPage;
+        private System.Windows.Forms.TabPage motorTabPage;
+        private System.Windows.Forms.TabPage profilerTabPage;
+        private System.Windows.Forms.TabControl tabControl1;
+        private QuadGraphControl correctionGraph;
+        private QuadGraphControl ratiosGraph;
     }
 }

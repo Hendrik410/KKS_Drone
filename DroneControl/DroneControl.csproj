@@ -153,6 +153,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuadGraphControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QuadGraphControl.Designer.cs">
+      <DependentUpon>QuadGraphControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SensorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -200,6 +206,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="QuadGraphControl.resx">
+      <DependentUpon>QuadGraphControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SensorControl.resx">
       <DependentUpon>SensorControl.cs</DependentUpon>
     </EmbeddedResource>

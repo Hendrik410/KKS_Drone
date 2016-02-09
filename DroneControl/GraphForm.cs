@@ -43,28 +43,35 @@ namespace DroneControl
 
             if (Drone.Data.State == DroneState.Armed || Drone.Data.State == DroneState.Flying)
             {
-                frontLeftRatio.UpdateValue(e.DebugData.Real.FrontLeft);
-                frontRightRatio.UpdateValue(e.DebugData.Real.FrontRight);
-                backLeftRatio.UpdateValue(e.DebugData.Real.BackLeft);
-                backRightRatio.UpdateValue(e.DebugData.Real.BackRight);
+                UpdateGraph(ratiosGraph, e.DebugData.Real);
+                UpdateGraph(correctionGraph, e.DebugData.Correction);
             }
         }
 
-        private void FlightControl_OnRatioChanged(object sender, float[] e)
+        private void FlightControl_OnRatioChanged(object sender, MotorRatios e)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler<float[]>(FlightControl_OnRatioChanged), sender, e);
+                Invoke(new EventHandler<MotorRatios>(FlightControl_OnRatioChanged), sender, e);
                 return;
             }
 
+            // nur Werte zeigen, wenn die Drohne keinen echten Werte berechnet und ausführt
             if (Drone.Data.State != DroneState.Armed && Drone.Data.State != DroneState.Flying)
             {
-                frontLeftRatio.UpdateValue(e[0]);
-                frontRightRatio.UpdateValue(e[1]);
-                backLeftRatio.UpdateValue(e[2]);
-                backRightRatio.UpdateValue(e[3]);
+                UpdateGraph(ratiosGraph, e);
+                UpdateGraph(correctionGraph, new MotorRatios());
             }
+        }
+
+        private void UpdateGraph(QuadGraphControl graph, MotorRatios values)
+        {
+            graph.UpdateValues(values.FrontLeft, values.FrontRight, values.BackLeft, values.BackRight);
+        }
+
+        private void motorTabPage_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
