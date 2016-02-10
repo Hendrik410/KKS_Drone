@@ -9,53 +9,36 @@
 #include "Log.h"
 #include "Profiler.h"
 
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include <Wire/Wire.h>
-#include <I2Cdev/I2Cdev.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
-
-#define byte unsigned char
-#else
-#include <Wire/Wire.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
-#include <I2Cdev/I2Cdev.h>
-#endif
 class Gyro
 {
  protected:
 	 Config* config;
+	 
+	 float pitch = 0;
+	 float roll = 0;
+	 float yaw = 0;
 
-	 MPU6050 mpu;
-	 byte* fifoBuffer;
-	 int fifoOffset;
+	 float pitchOffset = 0;
+	 float rollOffset = 0;
+	 float yawOffset = 0;
 
-	 // orientation/motion vars
-	 Quaternion q;           // [w, x, y, z]         quaternion container
-	 VectorInt16 aa;         // [x, y, z]            accel sensor measurements
-	 VectorInt16 aaReal;     // [x, y, z]            gravity-free accel sensor measurements
-	 VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements
-	 VectorFloat gravity;    // [x, y, z]            gravity vector
-	 float ypr[3];
+	 float accX = 0;
+	 float accY = 0;
+	 float accZ = 0;
 
-	 float pitchOffset;
-	 float rollOffset;
-	 float yawOffset;
-
-	 float accelerationXOffset;
-	 float accelerationYOffset;
-	 float accelerationZOffset;
+	 float accelerationXOffset = 0;
+	 float accelerationYOffset = 0;
+	 float accelerationZOffset = 0;
 
 	 bool _dirty;
 
  public:
 	explicit Gyro(Config* config);
 
-	void init();
-	void update();
-
-	void reset();
-
-	float getTemperature();
+	virtual void init() = 0;
+	virtual void update() = 0;
+	virtual void reset() = 0;
+	virtual float getTemperature() = 0;
 
 	void setAsZero();
 

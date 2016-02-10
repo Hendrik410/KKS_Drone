@@ -2,8 +2,8 @@
 #ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include <Wire/Wire.h>
 #include <I2Cdev/I2Cdev.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <Servo/src/Servo.h>
+#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <ESP8266WiFi/src/WiFiUdp.h>
 #include <ESP8266WiFi/src/ESP8266WiFi.h>
 #include <EEPROM/EEPROM.h>
@@ -24,12 +24,13 @@
 #include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
+//#include "Gyro6050.h"
+#include "Gyro9150.h"
 
 #define byte unsigned char
 
 #else
 #include <Wire.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev/I2Cdev.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
@@ -52,6 +53,8 @@
 #include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
+//#include "Gyro6050.h"
+#include "Gyro9150.h"
 #endif
 
 
@@ -140,9 +143,8 @@ void setup() {
 	}
 
 
-	//setup MPU6050
-	gyro = new Gyro(&config);
-	Wire.begin(SDA, SCL);
+	//setup Gyro
+	gyro = new Gyro6050(&config);
 	gyro->init();
 
 	//setup battery input reader
