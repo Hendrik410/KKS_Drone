@@ -83,6 +83,9 @@ void hang() {
 
 void setup() {
 	Serial.begin(74880);
+	Serial.println();
+
+	Log::info("Boot", "=====================");
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
 	Log::info("Boot", "Model: %s, Build: %s", MODEL_NAME, BUILD_NAME);
 
@@ -144,7 +147,7 @@ void setup() {
 
 
 	//setup Gyro
-	gyro = new Gyro6050(&config);
+	gyro = new Gyro9150(&config);
 	gyro->init();
 
 	//setup battery input reader
