@@ -25,6 +25,12 @@
     <Filter Include="Header Files\math">
       <UniqueIdentifier>{54cba317-ddab-4b6f-bdb9-971bcce241a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\mpu9150">
+      <UniqueIdentifier>{1ede1aa2-b555-4832-a818-f707af262b8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mpu9150">
+      <UniqueIdentifier>{b7cb4ded-5d50-4d4f-90c7-121bda644a64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />
@@ -107,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Gyro9150.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mpu9150.h">
+      <Filter>Header Files\mpu9150</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
