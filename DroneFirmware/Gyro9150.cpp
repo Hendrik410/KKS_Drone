@@ -18,7 +18,7 @@ void Gyro9150::init() {
 void Gyro9150::update() {
 	Profiler::begin("Gyro::update()");
 	if (mpuOK)
-		mpu.update(&roll, &pitch, &yaw); // Pitch und Roll umgedreht
+		mpu.update(&pitch, &roll, &yaw); // Pitch und Roll umgedreht
 	Profiler::end();
 }
 

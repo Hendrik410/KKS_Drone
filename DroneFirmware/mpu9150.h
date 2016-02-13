@@ -10,6 +10,7 @@
 
 #include "Log.h"
 
+
 /* MPU9150 Basic Example Code
 by: Kris Winer
 date: March 1, 2014
@@ -316,16 +317,28 @@ public:
 			getAres();
 
 			// Now we'll calculate the accleration value into actual g's
-			ax = (float)accelCount[0] * aRes;  // get actual g value, this depends on scale being set
+			// get actual g value, this depends on scale being set
+#if MPU9150_SWITCH_XY
+			ay = (float)accelCount[0] * aRes; 
+			ax = (float)accelCount[1] * aRes;
+#else
+			ax = (float)accelCount[0] * aRes;
 			ay = (float)accelCount[1] * aRes;
+#endif
 			az = (float)accelCount[2] * aRes;
 
 			readGyroData(gyroCount);  // Read the x/y/z adc values
 			getGres();
 
 			// Calculate the gyro value into actual degrees per second
-			gx = (float)gyroCount[0] * gRes;  // get actual gyro value, this depends on scale being set
+			// get actual gyro value, this depends on scale being set
+#if MPU9150_SWITCH_XY
+			gy = (float)gyroCount[0] * gRes;  
+			gx = (float)gyroCount[1] * gRes;
+#else
+			gx = (float)gyroCount[0] * gRes;
 			gy = (float)gyroCount[1] * gRes;
+#endif
 			gz = (float)gyroCount[2] * gRes;
 
 			mcount++;
@@ -334,14 +347,21 @@ public:
 				mRes = 10.*1229. / 4096.; // Conversion from 1229 microTesla full scale (4096) to 12.29 Gauss full scale
 										  // So far, magnetometer bias is calculated and subtracted here manually, should construct an algorithm to do it automatically
 										  // like the gyro and accelerometer biases
+				/*
 				magbias[0] = -5.;   // User environmental x-axis correction in milliGauss
 				magbias[1] = -95.;  // User environmental y-axis correction in milliGauss
-				magbias[2] = -260.; // User environmental z-axis correction in milliGauss
+				magbias[2] = -260.; // User environmental z-axis correction in milliGauss*/
 
-									// Calculate the magnetometer values in milliGauss
-									// Include factory calibration per data sheet and user environmental corrections
-				mx = (float)magCount[0] * mRes*magCalibration[0] - magbias[0];  // get actual magnetometer value, this depends on scale being set
+				// Calculate the magnetometer values in milliGauss
+				// Include factory calibration per data sheet and user environmental corrections
+				// get actual magnetometer value, this depends on scale being set
+#if MPU9150_SWITCH_XY
+				my = (float)magCount[0] * mRes*magCalibration[0] - magbias[0];  
+				mx = (float)magCount[1] * mRes*magCalibration[1] - magbias[1];
+#else
+				mx = (float)magCount[0] * mRes*magCalibration[0] - magbias[0];
 				my = (float)magCount[1] * mRes*magCalibration[1] - magbias[1];
+#endif
 				mz = (float)magCount[2] * mRes*magCalibration[2] - magbias[2];
 				mcount = 0;
 			}

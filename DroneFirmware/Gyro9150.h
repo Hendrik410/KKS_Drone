@@ -3,6 +3,7 @@
 
 #include "Gyro.h"
 
+#define MPU9150_SWITCH_XY 1
 #include "mpu9150.h"
 
 class Gyro9150 : public Gyro
