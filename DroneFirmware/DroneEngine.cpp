@@ -52,6 +52,16 @@ void DroneEngine::disarm() {
 	}
 }
 
+void DroneEngine::fly() {
+	// entweder schon im Flying Zustand
+	// oder nicht Armed
+	if (_state != StateArmed)
+		return;
+
+	_state = StateFlying;
+	Log::info("Engine", "Flying");
+}
+
 void DroneEngine::stop(StopReason reason) {
 	disarm();
 
@@ -154,7 +164,7 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpe
 	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 1);
 
 	// in den Fliegen Modus gehen
-	_state = StateFlying;
+	fly();
 	lastMovementUpdate = millis();
 }
 

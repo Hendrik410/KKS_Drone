@@ -75,6 +75,7 @@ class DroneEngine
 
 	void arm();
 	void disarm();
+	void fly();
 	void stop(StopReason reason);
 	void clearStatus();
 
