@@ -39,6 +39,8 @@ class Gyro
 	virtual void update() = 0;
 	virtual void reset() = 0;
 	virtual float getTemperature() = 0;
+	virtual bool hasMagnetometer() = 0;
+	virtual bool hasCompass() = 0;
 
 	void setAsZero();
 

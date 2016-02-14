@@ -74,3 +74,11 @@ void Gyro6050::reset() {
 float Gyro6050::getTemperature() {
 	return mpu.getTemperature() / 340.00 + 36.53;
 }
+
+bool Gyro6050::hasMagnetometer() {
+	return false;
+}
+
+bool Gyro6050::hasCompass() {
+	return false;
+}

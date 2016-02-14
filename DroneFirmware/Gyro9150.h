@@ -20,6 +20,8 @@ public:
 	void reset();
 
 	float getTemperature();
+	bool hasMagnetometer();
+	bool hasCompass();
 };
 
 #endif

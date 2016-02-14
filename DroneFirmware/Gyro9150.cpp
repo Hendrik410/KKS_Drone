@@ -31,3 +31,11 @@ float Gyro9150::getTemperature() {
 		return mpu.readTempData() / 340.00 + 36.53;
 	return 0;
 }
+
+bool Gyro9150::hasMagnetometer() {
+	return true;
+}
+
+bool Gyro9150::hasCompass() {
+	return true;
+}
