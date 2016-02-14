@@ -28,9 +28,6 @@
     <Filter Include="Header Files\mpu9150">
       <UniqueIdentifier>{1ede1aa2-b555-4832-a818-f707af262b8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\mpu9150">
-      <UniqueIdentifier>{b7cb4ded-5d50-4d4f-90c7-121bda644a64}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />

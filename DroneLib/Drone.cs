@@ -749,22 +749,8 @@ namespace DroneLibrary
 
                         DroneState state = (DroneState)buffer.ReadByte();
 
-                        QuadMotorValues motorValues = new QuadMotorValues(buffer.ReadUShort(), buffer.ReadUShort(),
-                            buffer.ReadUShort(), buffer.ReadUShort());
-
-                        GyroData gyro = new GyroData(
-                            // Pitch, Roll, Yaw
-                            buffer.ReadFloat(),
-                            buffer.ReadFloat(),
-                            buffer.ReadFloat(),
-
-                            // Acceleration X, Y, Z
-                            buffer.ReadFloat(),
-                            buffer.ReadFloat(),
-                            buffer.ReadFloat(),
-
-                            // Temperature
-                            buffer.ReadFloat());
+                        QuadMotorValues motorValues = new QuadMotorValues(buffer);
+                        GyroData gyro = new GyroData(buffer);
 
                         float batteryVoltage = buffer.ReadFloat();
 

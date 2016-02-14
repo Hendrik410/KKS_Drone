@@ -30,20 +30,24 @@
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
             this.batteryVoltageLabel = new System.Windows.Forms.Label();
-            this.gyroDataLabel = new System.Windows.Forms.Label();
+            this.orientationLabel = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.accelerationLabel = new System.Windows.Forms.Label();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
+            this.rotationLabel = new System.Windows.Forms.Label();
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
+            this.magnetLabel = new System.Windows.Forms.Label();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.magnetLabel);
+            sensorGroupBox.Controls.Add(this.rotationLabel);
             sensorGroupBox.Controls.Add(this.batteryVoltageLabel);
-            sensorGroupBox.Controls.Add(this.gyroDataLabel);
+            sensorGroupBox.Controls.Add(this.orientationLabel);
             sensorGroupBox.Controls.Add(this.temperatureLabel);
             sensorGroupBox.Controls.Add(this.accelerationLabel);
             sensorGroupBox.Controls.Add(this.headingIndicator);
@@ -60,25 +64,25 @@
             // batteryVoltageLabel
             // 
             this.batteryVoltageLabel.AutoSize = true;
-            this.batteryVoltageLabel.Location = new System.Drawing.Point(212, 223);
+            this.batteryVoltageLabel.Location = new System.Drawing.Point(212, 214);
             this.batteryVoltageLabel.Name = "batteryVoltageLabel";
             this.batteryVoltageLabel.Size = new System.Drawing.Size(78, 13);
             this.batteryVoltageLabel.TabIndex = 20;
             this.batteryVoltageLabel.Text = "Battery voltage";
             // 
-            // gyroDataLabel
+            // orientationLabel
             // 
-            this.gyroDataLabel.AutoSize = true;
-            this.gyroDataLabel.Location = new System.Drawing.Point(6, 201);
-            this.gyroDataLabel.Name = "gyroDataLabel";
-            this.gyroDataLabel.Size = new System.Drawing.Size(53, 13);
-            this.gyroDataLabel.TabIndex = 19;
-            this.gyroDataLabel.Text = "Gyro data";
+            this.orientationLabel.AutoSize = true;
+            this.orientationLabel.Location = new System.Drawing.Point(6, 201);
+            this.orientationLabel.Name = "orientationLabel";
+            this.orientationLabel.Size = new System.Drawing.Size(58, 13);
+            this.orientationLabel.TabIndex = 19;
+            this.orientationLabel.Text = "Orientation";
             // 
             // temperatureLabel
             // 
             this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(6, 223);
+            this.temperatureLabel.Location = new System.Drawing.Point(211, 227);
             this.temperatureLabel.Name = "temperatureLabel";
             this.temperatureLabel.Size = new System.Drawing.Size(67, 13);
             this.temperatureLabel.TabIndex = 18;
@@ -103,6 +107,15 @@
             this.calibrateGyroButton.UseVisualStyleBackColor = true;
             this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
             // 
+            // rotationLabel
+            // 
+            this.rotationLabel.AutoSize = true;
+            this.rotationLabel.Location = new System.Drawing.Point(6, 214);
+            this.rotationLabel.Name = "rotationLabel";
+            this.rotationLabel.Size = new System.Drawing.Size(47, 13);
+            this.rotationLabel.TabIndex = 21;
+            this.rotationLabel.Text = "Rotation";
+            // 
             // headingIndicator
             // 
             this.headingIndicator.CausesValidation = false;
@@ -120,6 +133,15 @@
             this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
+            // 
+            // magnetLabel
+            // 
+            this.magnetLabel.AutoSize = true;
+            this.magnetLabel.Location = new System.Drawing.Point(6, 227);
+            this.magnetLabel.Name = "magnetLabel";
+            this.magnetLabel.Size = new System.Drawing.Size(43, 13);
+            this.magnetLabel.TabIndex = 22;
+            this.magnetLabel.Text = "Magnet";
             // 
             // SensorControl
             // 
@@ -141,7 +163,9 @@
         private Avionics.HeadingIndicatorInstrumentControl headingIndicator;
         private System.Windows.Forms.Button calibrateGyroButton;
         private Avionics.AttitudeIndicatorInstrumentControl artificialHorizon;
-        private System.Windows.Forms.Label gyroDataLabel;
+        private System.Windows.Forms.Label orientationLabel;
         private System.Windows.Forms.Label batteryVoltageLabel;
+        private System.Windows.Forms.Label rotationLabel;
+        private System.Windows.Forms.Label magnetLabel;
     }
 }

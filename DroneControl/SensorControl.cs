@@ -52,15 +52,25 @@ namespace DroneControl
 
             calibrateGyroButton.Enabled = e.Data.State != DroneState.Armed && e.Data.State != DroneState.Flying;
 
-            gyroDataLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
+            orientationLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
                 Formatting.FormatDecimal(e.Data.Gyro.Roll, 2),
                 Formatting.FormatDecimal(e.Data.Gyro.Pitch, 2),
                 Formatting.FormatDecimal(e.Data.Gyro.Yaw, 2));
 
+            rotationLabel.Text = string.Format("Rotation x: {0} y: {1} z: {2}",
+                Formatting.FormatDecimal(e.Data.Gyro.GyroX, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.GyroY, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.GyroZ, 2));
+
             accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2}",
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationX / 100, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationY / 100, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationZ / 100, 2));
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationX, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationY, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.AccelerationZ, 2));
+
+            magnetLabel.Text = string.Format("Magnet x: {0} y: {1} z: {2}",
+                Formatting.FormatDecimal(e.Data.Gyro.MagnetX, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.MagnetY, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.MagnetZ, 2));
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
                 Formatting.FormatDecimal(e.Data.Gyro.Temperature, 2));

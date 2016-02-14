@@ -22,6 +22,10 @@ class Gyro
 	 float rollOffset = 0;
 	 float yawOffset = 0;
 
+	 float gyroX = 0;
+	 float gyroY = 0;
+	 float gyroZ = 0;
+
 	 float accX = 0;
 	 float accY = 0;
 	 float accZ = 0;
@@ -29,6 +33,10 @@ class Gyro
 	 float accelerationXOffset = 0;
 	 float accelerationYOffset = 0;
 	 float accelerationZOffset = 0;
+
+	 float magnetX = 0;
+	 float magnetY = 0;
+	 float magnetZ = 0;
 
 	 bool _dirty;
 
@@ -52,9 +60,17 @@ class Gyro
 	float getRollRad() const;
 	float getYawRad() const;
 
+	float getGyroX() const;
+	float getGyroY() const;
+	float getGyroZ() const;
+
 	float getAccelerationX() const;
 	float getAccelerationY() const;
 	float getAccelerationZ() const;
+
+	float getMagnetX() const;
+	float getMagnetY() const;
+	float getMagnetZ() const;
 
 	// Gibt zurück ob die Daten sich geändert haben und setzt dann dirty wieder zurück
 	bool dirty() {

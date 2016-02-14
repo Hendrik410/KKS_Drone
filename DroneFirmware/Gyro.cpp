@@ -6,7 +6,6 @@
 
 Gyro::Gyro(Config* config) {
 	this->config = config;
-
 	this->_dirty = false;
 }
 
@@ -48,11 +47,11 @@ float Gyro::getYawRad() const {
 	return MathHelper::fixValue(yaw, 0, M_TWOPI);
 }
 
-
 float Gyro::getRollRad() const {
 	float roll = this->roll - rollOffset;
 	return MathHelper::fixValue(roll, -M_PI_2, M_PI_2);
 }
+
 
 float Gyro::getGyroX() const {
 	return gyroX;
@@ -76,4 +75,16 @@ float Gyro::getAccelerationY() const {
 
 float Gyro::getAccelerationZ() const {
 	return accZ - accelerationZOffset;
+}
+
+float Gyro::getMagnetX() const {
+	return magnetX;
+}
+
+float Gyro::getMagnetY() const {
+	return magnetY;
+}
+
+float Gyro::getMagnetZ() const {
+	return magnetZ;
 }

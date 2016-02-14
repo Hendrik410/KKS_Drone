@@ -13,9 +13,6 @@ protected:
 	float newValues[4];
 	float correctionValues[4];
 
-	float lastYaw;
-	int32_t tickCount;
-
 	float getTargetRatio(MotorPosition position, MotorRotation rotation, float* values);
 
 public:

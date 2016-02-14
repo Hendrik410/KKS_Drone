@@ -261,8 +261,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
-		servos->setAllServos(config->ServoMin);
-
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
 			gyro->setAsZero();
 		break;
@@ -324,9 +322,17 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(gyro->getRoll());
 		writeBuffer->write(gyro->getYaw());
 
+		writeBuffer->write(gyro->getGyroX());
+		writeBuffer->write(gyro->getGyroY());
+		writeBuffer->write(gyro->getGyroZ());
+
 		writeBuffer->write(gyro->getAccelerationX());
 		writeBuffer->write(gyro->getAccelerationY());
 		writeBuffer->write(gyro->getAccelerationZ());
+
+		writeBuffer->write(gyro->getMagnetX());
+		writeBuffer->write(gyro->getMagnetY());
+		writeBuffer->write(gyro->getMagnetZ());
 
 		writeBuffer->write(gyro->getTemperature());
 		writeBuffer->write(voltageReader->readVoltage());

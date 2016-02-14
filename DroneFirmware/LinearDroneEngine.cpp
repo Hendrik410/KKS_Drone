@@ -23,7 +23,7 @@ void LinearDroneEngine::handleInternal() {
 	float data[3];
 	data[0] = 0; // gyro->getPitch();
 	data[1] = 0; // gyro->getRoll();
-	data[2] = MathHelper::angleDifference(gyro->getYaw(), 0); 
+	data[2] = gyro->getGyroZ();
 
 	if (data[2] > config->RotationalCorrectionMax)
 		data[2] = config->RotationalCorrectionMax;
@@ -60,9 +60,6 @@ void LinearDroneEngine::handleInternal() {
 	frontRightCorrection = correctionValues[1];
 	backLeftCorrection = correctionValues[2];
 	backRightCorrection = correctionValues[3];
-
-	if (tickCount++ % 50 == 0)
-		lastYaw = gyro->getYaw();
 }
 
 float LinearDroneEngine::getTargetRatio(MotorPosition position, MotorRotation rotation, float* values)

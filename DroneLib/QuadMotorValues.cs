@@ -50,6 +50,14 @@ namespace DroneLibrary {
             this.FrontRight = all;
         }
 
+        public QuadMotorValues(PacketBuffer buffer)
+        {
+            this.FrontLeft = buffer.ReadUShort();
+            this.FrontRight = buffer.ReadUShort();
+            this.BackLeft = buffer.ReadUShort();
+            this.BackRight = buffer.ReadUShort();
+        }
+
         public QuadMotorValues(ushort fl, ushort fr, ushort bl, ushort br) : this() {
             this.FrontLeft = fl;
             this.FrontRight = fr;

@@ -25,18 +25,34 @@ void Gyro6050::init() {
 
 	fifoBuffer = (byte*)malloc(sizeof(byte) * mpu.dmpGetFIFOPacketSize());
 
-	mpu.setDMPEnabled(true);
+	//mpu.setDMPEnabled(true);
 	mpu.resetFIFO();
 }
 
 void Gyro6050::update() {
-	if (mpu.getIntFIFOBufferOverflowStatus()) {
+	/*if (mpu.getIntFIFOBufferOverflowStatus() || mpu.getFIFOCount() == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
 		mpu.resetFIFO();
 
 		Log::error("Gyro", "FIFO overflow!");
 		return;
-	}
+	}*/
 
+	Profiler::begin("Gyro::update()");
+	int16_t values[6];
+	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
+
+	accX = (float)values[0];
+	accY = (float)values[1];
+	accZ = (float)values[2];
+
+	gyroX = (float)values[3];
+	gyroY = (float)values[4];
+	gyroZ = (float)values[5];
+	_dirty = true;
+
+	Profiler::end();
+
+	/*
 	if (!mpu.dmpPacketAvailable())
 		return;
 
@@ -64,7 +80,7 @@ void Gyro6050::update() {
 	accZ = aaReal.z;
 
 	_dirty = true;
-	Profiler::end();
+	Profiler::end();*/
 }
 
 void Gyro6050::reset() {
