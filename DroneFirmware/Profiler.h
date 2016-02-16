@@ -11,6 +11,7 @@ class Profiler
 private:
 	static char** names;
 	static uint32_t* times;
+	static uint32_t* currentTimes;
 	static uint32_t length;
 
 	static uint32_t* stack;

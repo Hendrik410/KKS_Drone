@@ -2,6 +2,7 @@
 
 char** Profiler::names = NULL;
 uint32_t* Profiler::times = NULL;
+uint32_t* Profiler::currentTimes = NULL;
 uint32_t Profiler::length = 0;
 
 uint32_t* Profiler::stack = NULL;
@@ -10,6 +11,7 @@ uint32_t Profiler::stackCurrent = 0;
 void Profiler::init() {
 	names = (char**)malloc(sizeof(char*) * PROFILE_SIZE);
 	times = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
+	currentTimes = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
 	length = 0;
 
 	stack = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
@@ -39,10 +41,11 @@ void Profiler::begin(const char* name) {
 
 		index = length;
 		names[index] = (char*)name;
+		times[index] = 0;
 		length++;
 	}
 
-	times[index] = micros();
+	currentTimes[index] = micros();
 	stack[stackCurrent++] = index;
 }
 
@@ -57,7 +60,7 @@ void Profiler::end() {
 	}
 
 	uint32_t index = stack[--stackCurrent];
-	times[index] = micros() - times[index];
+	times[index] += micros() - currentTimes[index];
 }
 
 void Profiler::write(PacketBuffer* buffer) {
@@ -71,5 +74,8 @@ void Profiler::write(PacketBuffer* buffer) {
 	for (int i = 0; i < length; i++) {
 		buffer->writeString(names[i]);
 		buffer->write((uint32_t)times[i]);
+
+		// Zeit zurücksetzen
+		times[i] = 0;
 	}
 }
