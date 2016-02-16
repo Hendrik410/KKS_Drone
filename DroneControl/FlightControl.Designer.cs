@@ -129,7 +129,7 @@
             this.inputDeviceComboBox.FormattingEnabled = true;
             this.inputDeviceComboBox.Location = new System.Drawing.Point(11, 50);
             this.inputDeviceComboBox.Name = "inputDeviceComboBox";
-            this.inputDeviceComboBox.Size = new System.Drawing.Size(132, 21);
+            this.inputDeviceComboBox.Size = new System.Drawing.Size(198, 21);
             this.inputDeviceComboBox.Sorted = true;
             this.inputDeviceComboBox.TabIndex = 8;
             this.inputDeviceComboBox.SelectedIndexChanged += new System.EventHandler(this.inputDeviceComboBox_SelectedIndexChanged);

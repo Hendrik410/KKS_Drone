@@ -72,10 +72,9 @@ namespace DroneControl.Input
 
             // Geräte suchen
             foreach (IDeviceFinder finder in finders)
-                devices.AddRange(finder.FindDevices());
-
-            // doppelte Geräte entfernen
-            devices = devices.Distinct().ToList();
+                foreach (IInputDevice device in finder.FindDevices())
+                    if (!devices.Contains(device))
+                        devices.Add(device);
 
 
             // hat sich verändert, wenn Geräte dazugekommen sind

@@ -100,9 +100,8 @@ namespace DroneControl
 
             // Liste erstellen
             inputDeviceComboBox.Items.Clear();
-            inputDeviceComboBox.Items.Add("None");
-            foreach (IInputDevice device in devices)
-                inputDeviceComboBox.Items.AddRange(devices);
+            inputDeviceComboBox.Items.Add("\nNone"); // \n damit der Eintrag ganz am Anfang kommt
+            inputDeviceComboBox.Items.AddRange(devices);
 
             // Gerät auswählen
             if (inputManager.CurrentDevice == null)
