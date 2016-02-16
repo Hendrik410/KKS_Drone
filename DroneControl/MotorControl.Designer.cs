@@ -40,6 +40,10 @@
             this.rightFrontTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftBackTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftFrontTextBox = new System.Windows.Forms.NumericUpDown();
+            this.leftFrontTick = new System.Windows.Forms.CheckBox();
+            this.leftBackTick = new System.Windows.Forms.CheckBox();
+            this.rightFrontTick = new System.Windows.Forms.CheckBox();
+            this.rightBackTick = new System.Windows.Forms.CheckBox();
             rightBackLabel = new System.Windows.Forms.Label();
             rightFrontLabel = new System.Windows.Forms.Label();
             leftBackLabel = new System.Windows.Forms.Label();
@@ -65,7 +69,7 @@
             // rightFrontLabel
             // 
             rightFrontLabel.AutoSize = true;
-            rightFrontLabel.Location = new System.Drawing.Point(213, 25);
+            rightFrontLabel.Location = new System.Drawing.Point(213, 26);
             rightFrontLabel.Name = "rightFrontLabel";
             rightFrontLabel.Size = new System.Drawing.Size(56, 13);
             rightFrontLabel.TabIndex = 4;
@@ -74,7 +78,7 @@
             // leftBackLabel
             // 
             leftBackLabel.AutoSize = true;
-            leftBackLabel.Location = new System.Drawing.Point(13, 51);
+            leftBackLabel.Location = new System.Drawing.Point(21, 51);
             leftBackLabel.Name = "leftBackLabel";
             leftBackLabel.Size = new System.Drawing.Size(52, 13);
             leftBackLabel.TabIndex = 2;
@@ -83,7 +87,7 @@
             // leftFrontLabel
             // 
             leftFrontLabel.AutoSize = true;
-            leftFrontLabel.Location = new System.Drawing.Point(13, 25);
+            leftFrontLabel.Location = new System.Drawing.Point(24, 24);
             leftFrontLabel.Name = "leftFrontLabel";
             leftFrontLabel.Size = new System.Drawing.Size(49, 13);
             leftFrontLabel.TabIndex = 0;
@@ -91,6 +95,10 @@
             // 
             // motorsGroupBox
             // 
+            this.motorsGroupBox.Controls.Add(this.rightBackTick);
+            this.motorsGroupBox.Controls.Add(this.rightFrontTick);
+            this.motorsGroupBox.Controls.Add(this.leftBackTick);
+            this.motorsGroupBox.Controls.Add(this.leftFrontTick);
             this.motorsGroupBox.Controls.Add(this.valueTrackBar);
             this.motorsGroupBox.Controls.Add(this.setValuesButton);
             this.motorsGroupBox.Controls.Add(this.servoValueNumericUpDown);
@@ -198,6 +206,46 @@
             this.leftFrontTextBox.TabIndex = 1;
             this.leftFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
             // 
+            // leftFrontTick
+            // 
+            this.leftFrontTick.AutoSize = true;
+            this.leftFrontTick.Location = new System.Drawing.Point(6, 25);
+            this.leftFrontTick.Name = "leftFrontTick";
+            this.leftFrontTick.Size = new System.Drawing.Size(15, 14);
+            this.leftFrontTick.TabIndex = 11;
+            this.leftFrontTick.UseVisualStyleBackColor = true;
+            this.leftFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // leftBackTick
+            // 
+            this.leftBackTick.AutoSize = true;
+            this.leftBackTick.Location = new System.Drawing.Point(6, 51);
+            this.leftBackTick.Name = "leftBackTick";
+            this.leftBackTick.Size = new System.Drawing.Size(15, 14);
+            this.leftBackTick.TabIndex = 12;
+            this.leftBackTick.UseVisualStyleBackColor = true;
+            this.leftBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // rightFrontTick
+            // 
+            this.rightFrontTick.AutoSize = true;
+            this.rightFrontTick.Location = new System.Drawing.Point(275, 26);
+            this.rightFrontTick.Name = "rightFrontTick";
+            this.rightFrontTick.Size = new System.Drawing.Size(15, 14);
+            this.rightFrontTick.TabIndex = 13;
+            this.rightFrontTick.UseVisualStyleBackColor = true;
+            this.rightFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // rightBackTick
+            // 
+            this.rightBackTick.AutoSize = true;
+            this.rightBackTick.Location = new System.Drawing.Point(275, 51);
+            this.rightBackTick.Name = "rightBackTick";
+            this.rightBackTick.Size = new System.Drawing.Size(15, 14);
+            this.rightBackTick.TabIndex = 14;
+            this.rightBackTick.UseVisualStyleBackColor = true;
+            this.rightBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
             // MotorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -227,5 +275,9 @@
         private System.Windows.Forms.NumericUpDown servoValueNumericUpDown;
         private System.Windows.Forms.Button setValuesButton;
         private System.Windows.Forms.TrackBar valueTrackBar;
+        private System.Windows.Forms.CheckBox rightBackTick;
+        private System.Windows.Forms.CheckBox rightFrontTick;
+        private System.Windows.Forms.CheckBox leftBackTick;
+        private System.Windows.Forms.CheckBox leftFrontTick;
     }
 }

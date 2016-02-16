@@ -185,6 +185,10 @@ void loop() {
 	// handle LED
 	handleBlink();
 
+	// handle servo tick
+	if (engine->state() == StateArmed)
+		servos->handleTick();
+
 	network->handlePackets();
 	Profiler::end();
 

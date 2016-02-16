@@ -87,8 +87,8 @@ class DroneEngine
 
 	void heartbeat();
 
-	void setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite = false) const;
-	void setRawServoValues(int all, bool forceWrite = false) const;
+	void setRawServoValues(int fl, int fr, int bl, int br) const;
+	void setRawServoValues(int all) const;
 
 	void setMaxTilt(float tilt);
 	void setMaxRotationSpeed(float rotaionSpeed);

@@ -113,13 +113,13 @@ void DroneEngine::handle() {
 	Profiler::end();
 }
 
-void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br, bool forceWrite) const {
+void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br) const {
 	if(_state == StateArmed)
-		servos->setServos(fl, fr, bl, br, forceWrite);
+		servos->setServos(fl, fr, bl, br);
 }
 
-void DroneEngine::setRawServoValues(int all, bool forceWrite) const {
-	setRawServoValues(all, all, all, all, forceWrite);
+void DroneEngine::setRawServoValues(int all) const {
+	setRawServoValues(all, all, all, all);
 }
 
 void DroneEngine::heartbeat() {

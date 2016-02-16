@@ -21,14 +21,31 @@ void ServoManager::init(int pinFL, int pinFR, int pinBL, int pinBR) {
 	backLeft.attach(pinBL);
 	backRight.attach(pinBR);
 
-	setAllServos(config->ServoMin, true);
+	setAllServos(config->ServoMin);
 }
 
-void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
-	servoFLValue = forceWrite ? fl : MathHelper::clampValue(fl, config->ServoMin, config->ServoMax);
-	servoFRValue = forceWrite ? fr : MathHelper::clampValue(fr, config->ServoMin, config->ServoMax);
-	servoBLValue = forceWrite ? bl : MathHelper::clampValue(bl, config->ServoMin, config->ServoMax);
-	servoBRValue = forceWrite ? br : MathHelper::clampValue(br, config->ServoMin, config->ServoMax);
+void ServoManager::handleTick() {
+	int value = config->ServoMin;
+	
+	// für 50 Millisekunden alle 500 Millisekunden ticken
+	if (millis() % 500 < 50)
+		value = config->ServoIdle;
+
+	if (servoFLValue == 1)
+		frontLeft.writeMicroseconds(value);
+	if (servoFRValue == 1)
+		frontRight.writeMicroseconds(value);
+	if (servoBLValue == 1)
+		backLeft.writeMicroseconds(value);
+	if (servoBRValue == 1)
+		backRight.writeMicroseconds(value);
+}
+
+void ServoManager::setServos(int fl, int fr, int bl, int br) {
+	servoFLValue = fl == 1 ? 1 : MathHelper::clampValue(fl, config->ServoMin, config->ServoMax);
+	servoFRValue = fr == 1 ? 1 : MathHelper::clampValue(fr, config->ServoMin, config->ServoMax);
+	servoBLValue = bl == 1 ? 1 : MathHelper::clampValue(bl, config->ServoMin, config->ServoMax);
+	servoBRValue = br == 1 ? 1 : MathHelper::clampValue(br, config->ServoMin, config->ServoMax);
 
 	if (servoFLValue > config->SafeServoValue)
 		servoFLValue = config->SafeServoValue;
@@ -42,17 +59,21 @@ void ServoManager::setServos(int fl, int fr, int bl, int br, bool forceWrite) {
 	if (servoBRValue > config->SafeServoValue)
 		servoBRValue = config->SafeServoValue;
 
-	frontLeft.writeMicroseconds(servoFLValue);
-	frontRight.writeMicroseconds(servoFRValue);
-	backLeft.writeMicroseconds(servoBLValue);
-	backRight.writeMicroseconds(servoBRValue);
+	if (servoFLValue != 1)
+		frontLeft.writeMicroseconds(servoFLValue);
+	if (servoFRValue != 1)
+		frontRight.writeMicroseconds(servoFRValue);
+	if (servoBLValue != 1)
+		backLeft.writeMicroseconds(servoBLValue);
+	if (servoBRValue != 1)
+		backRight.writeMicroseconds(servoBRValue);
 
 	_dirty = true;
 }
 
 
-void ServoManager::setAllServos(int val, bool forceWrite) {
-	setServos(val, val, val, val, forceWrite);
+void ServoManager::setAllServos(int val) {
+	setServos(val, val, val, val);
 }
 
 void ServoManager::setRatio(float fl, float fr, float bl, float br) {

@@ -154,8 +154,15 @@ namespace DroneControl
             rightFrontTextBox.Enabled = enabled;
             leftBackTextBox.Enabled = enabled;
             rightBackTextBox.Enabled = enabled;
+
+            leftFrontTick.Enabled = enabled;
+            rightFrontTick.Enabled = enabled;
+            leftBackTick.Enabled = enabled;
+            rightBackTick.Enabled = enabled;
+
             servoValueNumericUpDown.Enabled = enabled;
             valueTrackBar.Enabled = enabled;
+
             setValuesButton.Enabled = enabledSet;
         }
 
@@ -176,15 +183,28 @@ namespace DroneControl
             if (!drone.IsConnected || drone.Data.State != DroneState.Armed)
                 return false;
 
-            CheckNumericUpDown(leftFrontTextBox);
-            CheckNumericUpDown(rightFrontTextBox);
-            CheckNumericUpDown(leftBackTextBox);
-            CheckNumericUpDown(rightBackTextBox);
+            if (!leftFrontTick.Checked)
+                CheckNumericUpDown(leftFrontTextBox);
+            if (!rightFrontTick.Checked)
+                CheckNumericUpDown(rightFrontTextBox);
+            if (!leftBackTick.Checked)
+                CheckNumericUpDown(leftBackTextBox);
+            if (!rightBackTick.Checked)
+                CheckNumericUpDown(rightBackTextBox);
 
             ushort leftFront = (ushort)leftFrontTextBox.Value;
             ushort rightFront = (ushort)rightFrontTextBox.Value;
             ushort leftBack = (ushort)leftBackTextBox.Value;
             ushort rightBack = (ushort)rightBackTextBox.Value;
+
+            if (leftFrontTick.Checked)
+                leftFront = 1;
+            if (rightFrontTick.Checked)
+                rightFront = 1;
+            if (leftBackTick.Checked)
+                leftBack = 1;
+            if (rightBackTick.Checked)
+                rightBack = 1;
 
 
             drone.SendPacket(
@@ -212,6 +232,19 @@ namespace DroneControl
 
             if (!rightBackTextBox.Focused)
                 rightBackTextBox.Value = rightBack;
+
+            if (!leftFrontTick.Focused)
+                leftFrontTick.Checked = (leftFront == 1);
+
+            if (!rightFrontTick.Focused)
+                rightFrontTick.Checked = (rightFront == 1);
+
+            if (!leftBackTick.Focused)
+                leftBackTick.Checked = (leftBack == 1);
+
+            if (!rightBackTick.Focused)
+                rightBackTick.Checked = (rightBack == 1);
+
             changingValues = false;
         }
 
