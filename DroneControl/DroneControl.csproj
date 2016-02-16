@@ -127,6 +127,8 @@
     <Compile Include="Input\BatteryInfo.cs" />
     <Compile Include="Input\BatteryLevel.cs" />
     <Compile Include="Input\DeadZone.cs" />
+    <Compile Include="Input\GamePad.cs" />
+    <Compile Include="Input\GamePadFinder.cs" />
     <Compile Include="Input\IDeviceFinder.cs" />
     <Compile Include="Input\IInputDevice.cs" />
     <Compile Include="Input\InputManager.cs" />
