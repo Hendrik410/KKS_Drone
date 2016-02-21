@@ -304,6 +304,7 @@ namespace DroneLibrary
 
                 // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
                 packetsToAcknowledge.Clear();
+                packetSendTime.Clear();
 
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
