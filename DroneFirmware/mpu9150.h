@@ -220,9 +220,6 @@ protected:
 	uint8_t Ascale = AFS_2G;
 	float aRes, gRes, mRes; // scale resolutions per LSB for the sensors
 
-							// Pin definitions
-	int intPin = 12;  // These can be changed, 2 and 3 are the Arduinos ext int pins
-
 	int16_t accelCount[3];  // Stores the 16-bit signed accelerometer sensor output
 	int16_t gyroCount[3];   // Stores the 16-bit signed gyro sensor output
 	int16_t magCount[3];    // Stores the 16-bit signed magnetometer sensor output
@@ -264,10 +261,6 @@ protected:
 public:
 	InitError init()
 	{
-		// Set up the interrupt pin, its set as active high, push-pull
-		pinMode(intPin, INPUT);
-		digitalWrite(intPin, LOW);
-
 		// Read the WHO_AM_I register, this is a good test of communication
 		uint8_t c = readByte(MPU9150_ADDRESS, WHO_AM_I_MPU9150);  // Read WHO_AM_I register for MPU-9150
 
