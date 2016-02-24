@@ -41,23 +41,20 @@ void ServoManager::handleTick() {
 		backRight.writeMicroseconds(value);
 }
 
+int ServoManager::getValue(int value) {
+	if (value == 1)
+		return value;
+	value = MathHelper::clampValue(value, config->ServoMin, config->ServoMax);
+	if (value > config->SafeServoValue)
+		return config->SafeServoValue;
+	return value;
+}
+
 void ServoManager::setServos(int fl, int fr, int bl, int br) {
-	servoFLValue = fl == 1 ? 1 : MathHelper::clampValue(fl, config->ServoMin, config->ServoMax);
-	servoFRValue = fr == 1 ? 1 : MathHelper::clampValue(fr, config->ServoMin, config->ServoMax);
-	servoBLValue = bl == 1 ? 1 : MathHelper::clampValue(bl, config->ServoMin, config->ServoMax);
-	servoBRValue = br == 1 ? 1 : MathHelper::clampValue(br, config->ServoMin, config->ServoMax);
-
-	if (servoFLValue > config->SafeServoValue)
-		servoFLValue = config->SafeServoValue;
-
-	if (servoFRValue > config->SafeServoValue)
-		servoFRValue = config->SafeServoValue;
-
-	if (servoBLValue > config->SafeServoValue)
-		servoBLValue = config->SafeServoValue;
-
-	if (servoBRValue > config->SafeServoValue)
-		servoBRValue = config->SafeServoValue;
+	servoFLValue = getValue(fl);
+	servoFRValue = getValue(fr);
+	servoBLValue = getValue(bl);
+	servoBRValue = getValue(br);
 
 	if (servoFLValue != 1)
 		frontLeft.writeMicroseconds(servoFLValue);
