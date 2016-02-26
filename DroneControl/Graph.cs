@@ -17,6 +17,9 @@ namespace DroneControl
         public string Titel { get; set; }
         public DataHistory History { get; private set; }
 
+        public bool ShowBaseLine { get; set; } = false;
+        public double BaseLine { get; set; } = 0;
+
         private const int gridSize = 30;
         private int offsetX = 15;
         private const int offsetY = 15;
@@ -42,9 +45,18 @@ namespace DroneControl
             base.OnResize(e);
         }
 
-        private int GetValue(int x)
+        private int ConvertValue(double historyValue)
         {
-            double value = (History[x] - History.FullMin) / (History.FullMax - History.FullMin);
+            double min = History.FullMin;
+            double max = History.FullMax;
+
+            if (min == max)
+            {
+                min--;
+                max++;
+            }
+
+            double value = (historyValue - min) / (max - min);
             value = 1 - value;
 
             int y = (int)(value * (Height - 1));
@@ -53,9 +65,6 @@ namespace DroneControl
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             e.Graphics.Clear(Color.White);
 
             Color gridColor = Color.FromArgb(0x50B3B3B3);
@@ -66,13 +75,21 @@ namespace DroneControl
             for (int y = 0; y < Height; y+= gridSize)
                 e.Graphics.DrawLine(gridPen, 0, offsetY + y, Width, offsetY + y);
 
+            if (ShowBaseLine)
+            {
+                Color baseLineColor = Color.FromArgb(0x79, 0x55, 0x48);
+                Pen baseLinePen = new Pen(baseLineColor);
+                int baseLineValue = ConvertValue(BaseLine);
+                e.Graphics.DrawLine(baseLinePen, 0, baseLineValue, Width, baseLineValue);
+            }
+
             if (!DesignMode && History != null)
             {
                 Pen pen = new Pen(Color.Black);
                 int lastY = 0;
                 for (int i = 0; i < History.ValueCount; i++)
                 {
-                    int y = GetValue(i);
+                    int y = ConvertValue(History[i]);
                     if (i == 0)
                         e.Graphics.DrawLine(pen, 0, y, 0, y);
                     else
@@ -85,10 +102,6 @@ namespace DroneControl
             
             if (!string.IsNullOrWhiteSpace(Titel))
                 e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.DarkGray), 8, 8);
-
-            sw.Stop();
-            e.Graphics.DrawString(string.Format("Time: {0}ms", sw.ElapsedMilliseconds), new Font(FontFamily.GenericSansSerif, 8), new SolidBrush(Color.DarkGray), 8, 26);
-
             base.OnPaint(e);
         }
 

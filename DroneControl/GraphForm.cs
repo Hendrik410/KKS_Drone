@@ -21,16 +21,51 @@ namespace DroneControl
             InitializeComponent();
 
             this.Drone = drone;
+            this.Drone.OnSettingsChange += Drone_OnSettingsChange;
+            this.Drone.OnDataChange += Drone_OnDataChange;
             this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
 
             this.FlightControl = flightControl;
+
+            UpdateSettings(Drone.Settings);
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (this.Drone != null)
+            {
+                this.Drone.OnSettingsChange -= Drone_OnSettingsChange;
+                this.Drone.OnDataChange -= Drone_OnDataChange;
                 this.Drone.OnDebugDataChange -= Drone_OnDebugDataChange;
+            }
             base.OnFormClosed(e);
+        }
+
+        private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<SettingsChangedEventArgs>(Drone_OnSettingsChange), sender, e);
+                return;
+            }
+
+            UpdateSettings(e.Settings);
+        }
+
+        private void UpdateSettings(DroneSettings settings)
+        {
+            servoGraph.BaseLine = settings.ServoHover;
+        }
+
+        private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), sender, e);
+                return;
+            }
+
+            UpdateGraph(servoGraph, e.Data.MotorValues);
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
@@ -65,6 +100,11 @@ namespace DroneControl
         }
 
         private void UpdateGraph(QuadGraphControl graph, MotorRatios values)
+        {
+            graph.UpdateValues(values.FrontLeft, values.FrontRight, values.BackLeft, values.BackRight);
+        }
+
+        private void UpdateGraph(QuadGraphControl graph, QuadMotorValues values)
         {
             graph.UpdateValues(values.FrontLeft, values.FrontRight, values.BackLeft, values.BackRight);
         }

@@ -30,9 +30,9 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.leftTop = new DroneControl.Graph();
             this.rightTop = new DroneControl.Graph();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.leftBottom = new DroneControl.Graph();
             this.rightBottom = new DroneControl.Graph();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -84,24 +84,6 @@
             this.splitContainer2.SplitterDistance = 422;
             this.splitContainer2.TabIndex = 0;
             // 
-            // leftTop
-            // 
-            this.leftTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.leftTop.Location = new System.Drawing.Point(0, 0);
-            this.leftTop.Name = "leftTop";
-            this.leftTop.Size = new System.Drawing.Size(422, 227);
-            this.leftTop.TabIndex = 0;
-            this.leftTop.Titel = "Left top";
-            // 
-            // rightTop
-            // 
-            this.rightTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rightTop.Location = new System.Drawing.Point(0, 0);
-            this.rightTop.Name = "rightTop";
-            this.rightTop.Size = new System.Drawing.Size(475, 227);
-            this.rightTop.TabIndex = 0;
-            this.rightTop.Titel = "Right top";
-            // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -119,20 +101,46 @@
             this.splitContainer3.SplitterDistance = 422;
             this.splitContainer3.TabIndex = 0;
             // 
+            // leftTop
+            // 
+            this.leftTop.BaseLine = 0D;
+            this.leftTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.leftTop.Location = new System.Drawing.Point(0, 0);
+            this.leftTop.Name = "leftTop";
+            this.leftTop.ShowBaseLine = false;
+            this.leftTop.Size = new System.Drawing.Size(422, 227);
+            this.leftTop.TabIndex = 0;
+            this.leftTop.Titel = "Left top";
+            // 
+            // rightTop
+            // 
+            this.rightTop.BaseLine = 0D;
+            this.rightTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rightTop.Location = new System.Drawing.Point(0, 0);
+            this.rightTop.Name = "rightTop";
+            this.rightTop.ShowBaseLine = false;
+            this.rightTop.Size = new System.Drawing.Size(475, 227);
+            this.rightTop.TabIndex = 0;
+            this.rightTop.Titel = "Right top";
+            // 
             // leftBottom
             // 
+            this.leftBottom.BaseLine = 0D;
             this.leftBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.leftBottom.Location = new System.Drawing.Point(0, 0);
             this.leftBottom.Name = "leftBottom";
+            this.leftBottom.ShowBaseLine = false;
             this.leftBottom.Size = new System.Drawing.Size(422, 254);
             this.leftBottom.TabIndex = 0;
             this.leftBottom.Titel = "Left bottom";
             // 
             // rightBottom
             // 
+            this.rightBottom.BaseLine = 0D;
             this.rightBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rightBottom.Location = new System.Drawing.Point(0, 0);
             this.rightBottom.Name = "rightBottom";
+            this.rightBottom.ShowBaseLine = false;
             this.rightBottom.Size = new System.Drawing.Size(475, 254);
             this.rightBottom.TabIndex = 0;
             this.rightBottom.Titel = "Right bottom";

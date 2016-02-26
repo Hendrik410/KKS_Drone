@@ -36,6 +36,38 @@ namespace DroneControl
             set { rightBottom.Titel = value; }
         }
 
+        private bool showBaseLine;
+
+        public bool ShowBaseLine
+        {
+            get { return showBaseLine; }
+            set
+            {
+                showBaseLine = value;
+
+                leftTop.ShowBaseLine = showBaseLine;
+                rightTop.ShowBaseLine = showBaseLine;
+                leftBottom.ShowBaseLine = showBaseLine;
+                rightBottom.ShowBaseLine = showBaseLine;
+            }
+        }
+
+        private double baseLine;
+
+        public double BaseLine
+        {
+            get { return baseLine; }
+            set
+            {
+                baseLine = value;
+
+                leftTop.BaseLine = baseLine;
+                rightTop.BaseLine = baseLine;
+                leftBottom.BaseLine = baseLine;
+                rightBottom.BaseLine = baseLine;
+            }
+        }
+
         public QuadGraphControl()
         {
             InitializeComponent();

@@ -35,10 +35,12 @@
             this.correctionTabPage = new System.Windows.Forms.TabPage();
             this.correctionGraph = new DroneControl.QuadGraphControl();
             this.motorTabPage = new System.Windows.Forms.TabPage();
+            this.servoGraph = new DroneControl.QuadGraphControl();
             this.profilerTabPage = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.ratioTabPage.SuspendLayout();
             this.correctionTabPage.SuspendLayout();
+            this.motorTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -67,6 +69,7 @@
             // 
             // ratiosGraph
             // 
+            this.ratiosGraph.BaseLine = 0D;
             this.ratiosGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ratiosGraph.LeftBottomName = "Left bottom";
             this.ratiosGraph.LeftTopName = "Left front";
@@ -74,6 +77,7 @@
             this.ratiosGraph.Name = "ratiosGraph";
             this.ratiosGraph.RightBottomName = "Right bottom";
             this.ratiosGraph.RightTopName = "Right front";
+            this.ratiosGraph.ShowBaseLine = true;
             this.ratiosGraph.Size = new System.Drawing.Size(901, 485);
             this.ratiosGraph.TabIndex = 1;
             // 
@@ -90,6 +94,7 @@
             // 
             // correctionGraph
             // 
+            this.correctionGraph.BaseLine = 0D;
             this.correctionGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.correctionGraph.LeftBottomName = "Left bottom";
             this.correctionGraph.LeftTopName = "Left front";
@@ -97,11 +102,13 @@
             this.correctionGraph.Name = "correctionGraph";
             this.correctionGraph.RightBottomName = "Right bottom";
             this.correctionGraph.RightTopName = "Right front";
+            this.correctionGraph.ShowBaseLine = false;
             this.correctionGraph.Size = new System.Drawing.Size(901, 485);
             this.correctionGraph.TabIndex = 1;
             // 
             // motorTabPage
             // 
+            this.motorTabPage.Controls.Add(this.servoGraph);
             this.motorTabPage.Location = new System.Drawing.Point(4, 22);
             this.motorTabPage.Name = "motorTabPage";
             this.motorTabPage.Size = new System.Drawing.Size(907, 491);
@@ -109,6 +116,20 @@
             this.motorTabPage.Text = "Motor";
             this.motorTabPage.UseVisualStyleBackColor = true;
             this.motorTabPage.Click += new System.EventHandler(this.motorTabPage_Click);
+            // 
+            // servoGraph
+            // 
+            this.servoGraph.BaseLine = 0D;
+            this.servoGraph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.servoGraph.LeftBottomName = "Left bottom";
+            this.servoGraph.LeftTopName = "Left front";
+            this.servoGraph.Location = new System.Drawing.Point(0, 0);
+            this.servoGraph.Name = "servoGraph";
+            this.servoGraph.RightBottomName = "Right bottom";
+            this.servoGraph.RightTopName = "Right front";
+            this.servoGraph.ShowBaseLine = true;
+            this.servoGraph.Size = new System.Drawing.Size(907, 491);
+            this.servoGraph.TabIndex = 2;
             // 
             // profilerTabPage
             // 
@@ -131,6 +152,7 @@
             this.tabControl1.ResumeLayout(false);
             this.ratioTabPage.ResumeLayout(false);
             this.correctionTabPage.ResumeLayout(false);
+            this.motorTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -144,5 +166,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private QuadGraphControl correctionGraph;
         private QuadGraphControl ratiosGraph;
+        private QuadGraphControl servoGraph;
     }
 }
