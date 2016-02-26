@@ -17,6 +17,7 @@ const char* Log::getLevelString(LogLevel level) {
 	case Debug:
 		return "[Debug]";
 	}
+	return "[UNKWN]";
 }
 
 uint32_t Log::getBufferLines() {
@@ -31,7 +32,7 @@ char** Log::getBuffer() {
 
 void Log::clearBuffer() {
 	char** buffer = getBuffer();
-	for (int i = 0; i < bufferLines; i++)
+	for (uint32_t i = 0; i < bufferLines; i++)
 	{
 		free(buffer[i]);
 		buffer[i] = NULL;
@@ -46,7 +47,7 @@ char* Log::popMessage() {
 	char** buffer = getBuffer();
 	char* msg = buffer[0];
 
-	for (int i = 1; i < bufferLines; i++)
+	for (uint32_t i = 1; i < bufferLines; i++)
 		buffer[i - 1] = buffer[i];
 
 	bufferLines--;
@@ -76,7 +77,7 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 		return;
 	}
 
-	int size = snprintf(message, messageSize, "$ [%8ds] %s [%s]", millis() / 1000, getLevelString(level), tag);
+	int size = snprintf(message, messageSize, "$ [%8us] %s [%s]", millis() / 1000, getLevelString(level), tag);
 	if (size < 0 || size > messageSize) {
 		free(message);
 		return;
