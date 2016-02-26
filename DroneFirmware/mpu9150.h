@@ -264,7 +264,7 @@ public:
 		// Read the WHO_AM_I register, this is a good test of communication
 		uint8_t c = readByte(MPU9150_ADDRESS, WHO_AM_I_MPU9150);  // Read WHO_AM_I register for MPU-9150
 
-		Log::debug("MPU9150", "who am i: 0x%x \r\n", c); // none of your business
+		Log::debug("MPU9150", "who am i: 0x%x", c); // none of your business
 
 		if (c != 0x68) // WHO_AM_I should always be 0x68
 			return IError_WrongID;
@@ -291,7 +291,7 @@ public:
 		// Read the WHO_AM_I register of the magnetometer, this is a good test of communication
 		c = readByte(AK8975A_ADDRESS, WHO_AM_I_AK8975A);  // Read WHO_AM_I register for AK8975A
 
-		Log::debug("AK8975A", "who am i: 0x%x \r\n", c);
+		Log::debug("AK8975A", "who am i: 0x%x", c);
 
 		if (c != 0x48)
 			return IError_WrongID_Magnetometer;
