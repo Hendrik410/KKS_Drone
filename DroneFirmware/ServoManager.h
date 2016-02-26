@@ -4,18 +4,11 @@
 #define _SERVOMANAGER_h
 
 #include "arduino.h"
+#include <Servo.h>
 #include "Config.h"
 #include "Log.h"
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include <Servo/src/Servo.h>
 #include "MathHelper.h"
 
-#define byte unsigned char
-#else
-#include <Servo.h>
-#include "MathHelper.h"
-#endif
 
 class ServoManager
 {
@@ -36,6 +29,7 @@ class ServoManager
 
 	 bool _dirty;
 
+	 int getValue(int servoValue);
 
  public:
 	 explicit ServoManager(Config* config);

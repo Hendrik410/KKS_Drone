@@ -3,15 +3,7 @@
 #ifndef _MEMORYADAPTER_h
 #define _MEMORYADAPTER_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#define byte unsigned char
-#endif
+#include "arduino.h"
 
 class MemoryAdaptor {
 protected:

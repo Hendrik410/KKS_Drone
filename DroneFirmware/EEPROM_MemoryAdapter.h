@@ -3,21 +3,8 @@
 #ifndef _EEPROM_MEMORYADAPTER_h
 #define _EEPROM_MEMORYADAPTER_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include <EEPROM/EEPROM.h>
-
-#define byte unsigned char
-void * memcpy(void * destination, const void * source, int num);
-#else
+#include "arduino.h"
 #include <EEPROM.h>
-#endif
-
 #include "MemoryAdapter.h"
 #include "Log.h"
 

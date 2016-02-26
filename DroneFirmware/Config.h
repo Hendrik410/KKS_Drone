@@ -6,12 +6,6 @@
 #include "arduino.h"
 #include "PID_Settings.h"
 
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-
-#define byte unsigned char
-#else
-#endif
-
 enum DroneEngineType : byte {
 	EngineLinear,
 	EnginePID

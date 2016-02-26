@@ -1,35 +1,3 @@
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include <Wire/Wire.h>
-#include <I2Cdev/I2Cdev.h>
-#include <Servo/src/Servo.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
-#include <ESP8266WiFi/src/WiFiUdp.h>
-#include <ESP8266WiFi/src/ESP8266WiFi.h>
-#include <EEPROM/EEPROM.h>
-#include "Build.h"
-#include "Log.h"
-#include "NetworkManager.h"
-#include "Config.h"
-#include "ConfigManager.h"
-#include "EEPROM_MemoryAdapter.h"
-#include "MemoryAdapter.h"
-#include "MotorEnums.h"
-#include "MathHelper.h"
-#include "DroneEngine.h"
-#include "ServoManager.h"
-#include "BinaryHelper.h"
-#include "LED.h"
-#include "PidDroneEngine.h"
-#include "LinearDroneEngine.h"
-#include "VoltageInputReader.h"
-#include "Profiler.h"
-//#include "Gyro6050.h"
-#include "Gyro9150.h"
-
-#define byte unsigned char
-
-#else
 #include <Wire.h>
 #include <I2Cdev/I2Cdev.h>
 #include <WiFiUdp.h>
@@ -53,14 +21,9 @@
 #include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
-//#include "Gyro6050.h"
+#include "Gyro6050.h"
 #include "Gyro9150.h"
-#endif
 
-
-// #################### Global Variables #####################
-
-//The configuration of the drone
 Config config;
 
 VoltageInputReader* voltageReader;
@@ -69,17 +32,8 @@ ServoManager* servos;
 DroneEngine* engine;
 NetworkManager* network;
 
-
 int lastLoopTime = 0;
 short delayTime = 10;
-
-//######################### Methods
-
-void hang() {
-	while(true) wdt_reset();
-}
-
-
 
 void setup() {
 	Serial.begin(74880);
@@ -89,6 +43,7 @@ void setup() {
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
 	Log::info("Boot", "Model: %s, Build: %s", MODEL_NAME, BUILD_NAME);
 
+	// Serialnummer schreiben
 	char serialCode[32];
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	Log::info("Boot", "Serial code: %s", serialCode);
@@ -98,7 +53,7 @@ void setup() {
 	// Log setzen
 	Log::setPrintToSerial(config.VerboseSerialLog);
 
-	//setup servos
+	// ServoManager initialisieren
 	servos = new ServoManager(&config);
 	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
 
@@ -146,14 +101,14 @@ void setup() {
 	}
 
 
-	//setup Gyro
+	// Gyro Sensor initialisieren
 	gyro = new Gyro9150(&config);
 	gyro->init();
 
-	//setup battery input reader
+	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);
 
-	//setup calculation engine
+	// DroneEngine laden
 	switch(config.EngineType) {
 		case EnginePID:
 			engine = new PidDroneEngine(gyro, servos, &config);
@@ -165,10 +120,10 @@ void setup() {
 			return;
 	}
 
-	//start network
+	// Netzwerkmanager starten
 	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
 
-	//start profiler
+	// Profiler laden
 	Profiler::init();
 
 	Log::info("Boot", "done booting. ready.");
@@ -176,20 +131,16 @@ void setup() {
 
 void loop() {
 	Profiler::begin("loop()");
-	//keep gyro data updated
+	
 	gyro->update();
-
-	//handle drone physics
 	engine->handle();
-
-	// handle LED
 	handleBlink();
 
-	// handle servo tick
 	if (engine->state() == StateArmed)
 		servos->handleTick();
 
 	network->handlePackets();
+
 	Profiler::end();
 
 	if(millis() - lastLoopTime >= delayTime) {
