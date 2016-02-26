@@ -48,6 +48,7 @@ Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
 }
 
 void ConfigManager::saveConfig(const Config config) {
+	Profiler::begin("saveConfig()");
 	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
 
 	adapter->begin();
@@ -55,6 +56,7 @@ void ConfigManager::saveConfig(const Config config) {
 	adapter->end();
 
 	delete adapter;
+	Profiler::end();
 }
 
 void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
