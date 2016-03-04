@@ -580,8 +580,8 @@ public:
 		// Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
 		writeByte(MPU9150_ADDRESS, SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
 
-													   // Set gyroscope full scale range
-													   // Range selects FS_SEL and AFS_SEL are 0 - 3, so 2-bit values are left-shifted into positions 4:3
+		// Set gyroscope full scale range
+		// Range selects FS_SEL and AFS_SEL are 0 - 3, so 2-bit values are left-shifted into positions 4:3
 		uint8_t c = readByte(MPU9150_ADDRESS, GYRO_CONFIG);
 		writeByte(MPU9150_ADDRESS, GYRO_CONFIG, c & ~0xE0); // Clear self-test bits [7:5] 
 		writeByte(MPU9150_ADDRESS, GYRO_CONFIG, c & ~0x18); // Clear AFS bits [4:3]
@@ -659,7 +659,7 @@ public:
 		uint16_t  gyrosensitivity = 131;   // = 131 LSB/degrees/sec
 		uint16_t  accelsensitivity = 16384;  // = 16384 LSB/g
 
-											 // Configure FIFO to capture accelerometer and gyro data for bias calculation
+		// Configure FIFO to capture accelerometer and gyro data for bias calculation
 		writeByte(MPU9150_ADDRESS, USER_CTRL, 0x40);   // Enable FIFO  
 		writeByte(MPU9150_ADDRESS, FIFO_EN, 0x78);     // Enable gyro and accelerometer sensors for FIFO  (max size 1024 bytes in MPU-6050)
 		delay(80); // accumulate 80 samples in 80 milliseconds = 960 bytes

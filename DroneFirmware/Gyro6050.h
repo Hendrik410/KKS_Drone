@@ -1,18 +1,19 @@
 #ifndef _GYRO6050_h
 #define _GYRO6050_h
 #include "Build.h"
-#if !USE_MPU9150
-
-
 #include "Gyro.h"
 
 #include <Wire/Wire.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev/I2Cdev.h>
 
+#define USE_DMP true
+
 class Gyro6050 : public Gyro
 {
 protected:
+	bool mpuOK;
+
 	MPU6050 mpu;
 	byte* fifoBuffer;
 	int fifoOffset;
@@ -27,7 +28,7 @@ protected:
 public:
 	explicit Gyro6050(Config* config);
 
-	void init();
+	bool init();
 	void update();
 	void reset();
 
@@ -37,5 +38,4 @@ public:
 	bool hasCompass();
 };
 
-#endif
 #endif

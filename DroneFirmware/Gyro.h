@@ -43,7 +43,7 @@ class Gyro
  public:
 	explicit Gyro(Config* config);
 
-	virtual void init() = 0;
+	virtual bool init() = 0;
 	virtual void update() = 0;
 	virtual void reset() = 0;
 	virtual float getTemperature() = 0;

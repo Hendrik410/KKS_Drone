@@ -3,20 +3,21 @@
 Gyro9150::Gyro9150(Config* config) : Gyro(config) {
 }
 
-void Gyro9150::init() {
-	Log::info("Gyro", "init()");
+bool Gyro9150::init() {
+	Log::info("Gyro9150", "init()");
 
 	Wire.begin(SCL, SDA);
 	mpuOK = mpu.init() == IError_None;
 
 	if (mpuOK)
-		Log::info("Gyro", "Success");
+		Log::info("Gyro9150", "Success");
 	else
-		Log::error("Gyro", "Failure");
+		Log::error("Gyro9150", "Failure");
+	return mpuOK;
 }
 
 void Gyro9150::update() {
-	Profiler::begin("Gyro::update()");
+	Profiler::begin("Gyro9150::update()");
 	if (mpuOK) {
 		mpu.update(	&gyroX, &gyroY, &gyroZ, 
 					&accX, &accY, &accY, 

@@ -15,7 +15,7 @@ protected:
 public:
 	explicit Gyro9150(Config* config);
 
-	void init();
+	bool init();
 	void update();
 	void reset();
 

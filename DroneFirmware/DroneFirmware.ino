@@ -1,7 +1,8 @@
 #include <Wire.h>
-#include <I2Cdev/I2Cdev.h>
+#include <I2Cdev.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
+#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <Servo.h>
 #include <EEPROM.h>
 #include "Build.h"
@@ -103,7 +104,13 @@ void setup() {
 
 	// Gyro Sensor initialisieren
 	gyro = new Gyro9150(&config);
-	gyro->init();
+	if (!gyro->init()) { // Gyro9150 Init fehlgeschlagen
+		delete gyro; 
+
+		// versuchen Gyro6050 zu initalisieren
+		gyro = new Gyro6050(&config);
+		gyro->init();
+	}
 
 	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);

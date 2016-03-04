@@ -3,62 +3,66 @@
 Gyro6050::Gyro6050(Config* config) : Gyro(config) {
 }
 
-void Gyro6050::init() {
-	Log::info("Gyro", "init()");
+bool Gyro6050::init() {
+	Log::info("Gyro6050", "init()");
 
 	Wire.begin(SDA, SCL);
 
+	Log::debug("Gyro6050", "mpu.reset()");
 	mpu.reset();
+
+	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
-	if (mpu.testConnection())
-		Log::error("Gyro", "testConnection() failed!");
-	else
-		Log::info("Gyro", "testConnection() OK");
 
-	Log::info("Gyro", "dmpInitialize()");
+	Log::debug("Gyro6050", "mpu.testConnection()");
+	if (!mpu.testConnection()) {
+		Log::error("Gyro6050", "testConnection() failed!");
+		mpuOK = false;
+		return false;
+	}
 
+	Log::info("Gyro6050", "dmpInitialize()");
+
+#if USE_DMP
 	int result = mpu.dmpInitialize();
-	if (result)
-		Log::error("Gyro", "result: %d", result);
-
-	Log::info("Gyro", "done with init");
+	if (result != 0) {
+		Log::error("Gyro6050", "failure: %d", result);
+		mpuOK = false;
+		return false;
+	}
 
 	fifoBuffer = (byte*)malloc(sizeof(byte) * mpu.dmpGetFIFOPacketSize());
 
-	//mpu.setDMPEnabled(true);
+	mpu.setDMPEnabled(true);
 	mpu.resetFIFO();
+#endif
+	Log::info("Gyro6050", "done with init");
+
+	mpuOK = true;
+	return mpuOK;
 }
 
 void Gyro6050::update() {
-	/*if (mpu.getIntFIFOBufferOverflowStatus() || mpu.getFIFOCount() == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
+	if (!mpuOK)
+		return;
+
+	Profiler::begin("Gyro6050::update()");
+#if USE_DMP
+	if (mpu.getIntFIFOBufferOverflowStatus() || mpu.getFIFOCount() == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
 		mpu.resetFIFO();
 
-		Log::error("Gyro", "FIFO overflow!");
+		Log::error("Gyro6050", "FIFO overflow!");
+		Profiler::end();
 		return;
-	}*/
+	}
 
-	Profiler::begin("Gyro::update()");
-	int16_t values[6];
-	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
-
-	accX = (float)values[0];
-	accY = (float)values[1];
-	accZ = (float)values[2];
-
-	gyroX = (float)values[3];
-	gyroY = (float)values[4];
-	gyroZ = (float)values[5];
-	_dirty = true;
-
-	Profiler::end();
-
-	/*
-	if (!mpu.dmpPacketAvailable())
+	if (!mpu.dmpPacketAvailable()) {
+		Profiler::end();
 		return;
+	}
 
-	Profiler::begin("Gyro::update()");
-
-	Profiler::begin("getFIFOBytes()");
+	
+	Profiler::begin("Gyro6050::getFIFOBytes()");
 	mpu.getFIFOBytes(fifoBuffer, mpu.dmpGetFIFOPacketSize());
 	Profiler::end();
 
@@ -78,17 +82,32 @@ void Gyro6050::update() {
 	accX = aaReal.x;
 	accY = aaReal.y;
 	accZ = aaReal.z;
+#else
+	int16_t values[6];
+	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
+
+	accX = (float)values[0];
+	accY = (float)values[1];
+	accZ = (float)values[2];
+
+	gyroX = (float)values[3];
+	gyroY = (float)values[4];
+	gyroZ = (float)values[5];
+#endif
 
 	_dirty = true;
-	Profiler::end();*/
+	Profiler::end();
 }
 
 void Gyro6050::reset() {
-	mpu.resetSensors();
+	if (mpuOK)
+		mpu.resetSensors();
 }
 
 float Gyro6050::getTemperature() {
-	return mpu.getTemperature() / 340.00 + 36.53;
+	if (mpuOK)
+		return mpu.getTemperature() / 340.00 + 36.53;
+	return 0;
 }
 
 bool Gyro6050::hasMagnetometer() {
