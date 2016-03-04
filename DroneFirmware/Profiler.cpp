@@ -44,6 +44,8 @@ void Profiler::begin(const char* name) {
 		times[index] = 0;
 		length++;
 	}
+	else if (currentTimes[index] == 0) 
+		times[index] = 0;  // Zeit zurücksetzen
 
 	currentTimes[index] = micros();
 	stack[stackCurrent++] = index;
@@ -75,7 +77,7 @@ void Profiler::write(PacketBuffer* buffer) {
 		buffer->writeString(names[i]);
 		buffer->write((uint32_t)times[i]);
 
-		// Zeit zurücksetzen
-		times[i] = 0;
+		// anfangen mit Zeit zurücksetzen
+		currentTimes[i] = 0;
 	}
 }
