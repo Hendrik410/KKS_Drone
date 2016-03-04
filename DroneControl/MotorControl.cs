@@ -74,7 +74,7 @@ namespace DroneControl
 
         private void setValuesButton_Click(object sender, EventArgs e)
         {
-            if (!SendValues())
+            if (!changingValues && !SendValues())
                 MessageBox.Show(this, "Setting the motors is only allowed when the drone is armed.", "Not armed", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -89,7 +89,12 @@ namespace DroneControl
 
         private void UpdateServoValue(int leftFront, int rightFront, int leftBack, int rightBack)
         {
-            int average = (leftFront + rightFront + leftBack + rightBack) / 4;
+            int[] values = new int[] { leftFront, rightFront, leftBack, rightBack };
+            var filteredValues = values.Where(v => v != 1);
+
+            int average = drone.Settings.ServoMin;
+            if (filteredValues.Count() > 0)
+                average = (int)filteredValues.Average();
 
             changingValues = true;
 

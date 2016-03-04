@@ -33,6 +33,10 @@
             System.Windows.Forms.Label leftBackLabel;
             System.Windows.Forms.Label leftFrontLabel;
             this.motorsGroupBox = new System.Windows.Forms.GroupBox();
+            this.rightBackTick = new System.Windows.Forms.CheckBox();
+            this.rightFrontTick = new System.Windows.Forms.CheckBox();
+            this.leftBackTick = new System.Windows.Forms.CheckBox();
+            this.leftFrontTick = new System.Windows.Forms.CheckBox();
             this.valueTrackBar = new System.Windows.Forms.TrackBar();
             this.setValuesButton = new System.Windows.Forms.Button();
             this.servoValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -40,10 +44,6 @@
             this.rightFrontTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftBackTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftFrontTextBox = new System.Windows.Forms.NumericUpDown();
-            this.leftFrontTick = new System.Windows.Forms.CheckBox();
-            this.leftBackTick = new System.Windows.Forms.CheckBox();
-            this.rightFrontTick = new System.Windows.Forms.CheckBox();
-            this.rightBackTick = new System.Windows.Forms.CheckBox();
             rightBackLabel = new System.Windows.Forms.Label();
             rightFrontLabel = new System.Windows.Forms.Label();
             leftBackLabel = new System.Windows.Forms.Label();
@@ -87,7 +87,7 @@
             // leftFrontLabel
             // 
             leftFrontLabel.AutoSize = true;
-            leftFrontLabel.Location = new System.Drawing.Point(24, 24);
+            leftFrontLabel.Location = new System.Drawing.Point(21, 26);
             leftFrontLabel.Name = "leftFrontLabel";
             leftFrontLabel.Size = new System.Drawing.Size(49, 13);
             leftFrontLabel.TabIndex = 0;
@@ -117,6 +117,46 @@
             this.motorsGroupBox.TabIndex = 4;
             this.motorsGroupBox.TabStop = false;
             this.motorsGroupBox.Text = "Motors";
+            // 
+            // rightBackTick
+            // 
+            this.rightBackTick.AutoSize = true;
+            this.rightBackTick.Location = new System.Drawing.Point(275, 51);
+            this.rightBackTick.Name = "rightBackTick";
+            this.rightBackTick.Size = new System.Drawing.Size(15, 14);
+            this.rightBackTick.TabIndex = 14;
+            this.rightBackTick.UseVisualStyleBackColor = true;
+            this.rightBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // rightFrontTick
+            // 
+            this.rightFrontTick.AutoSize = true;
+            this.rightFrontTick.Location = new System.Drawing.Point(275, 26);
+            this.rightFrontTick.Name = "rightFrontTick";
+            this.rightFrontTick.Size = new System.Drawing.Size(15, 14);
+            this.rightFrontTick.TabIndex = 13;
+            this.rightFrontTick.UseVisualStyleBackColor = true;
+            this.rightFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // leftBackTick
+            // 
+            this.leftBackTick.AutoSize = true;
+            this.leftBackTick.Location = new System.Drawing.Point(6, 51);
+            this.leftBackTick.Name = "leftBackTick";
+            this.leftBackTick.Size = new System.Drawing.Size(15, 14);
+            this.leftBackTick.TabIndex = 12;
+            this.leftBackTick.UseVisualStyleBackColor = true;
+            this.leftBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
+            // 
+            // leftFrontTick
+            // 
+            this.leftFrontTick.AutoSize = true;
+            this.leftFrontTick.Location = new System.Drawing.Point(6, 25);
+            this.leftFrontTick.Name = "leftFrontTick";
+            this.leftFrontTick.Size = new System.Drawing.Size(15, 14);
+            this.leftFrontTick.TabIndex = 11;
+            this.leftFrontTick.UseVisualStyleBackColor = true;
+            this.leftFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
             // 
             // valueTrackBar
             // 
@@ -150,7 +190,7 @@
             0,
             0});
             this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
-            this.servoValueNumericUpDown.Size = new System.Drawing.Size(53, 20);
+            this.servoValueNumericUpDown.Size = new System.Drawing.Size(52, 20);
             this.servoValueNumericUpDown.TabIndex = 8;
             this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.servoValueNumericUpDown_KeyUp);
             // 
@@ -205,46 +245,6 @@
             this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftFrontTextBox.TabIndex = 1;
             this.leftFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
-            // 
-            // leftFrontTick
-            // 
-            this.leftFrontTick.AutoSize = true;
-            this.leftFrontTick.Location = new System.Drawing.Point(6, 25);
-            this.leftFrontTick.Name = "leftFrontTick";
-            this.leftFrontTick.Size = new System.Drawing.Size(15, 14);
-            this.leftFrontTick.TabIndex = 11;
-            this.leftFrontTick.UseVisualStyleBackColor = true;
-            this.leftFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
-            // 
-            // leftBackTick
-            // 
-            this.leftBackTick.AutoSize = true;
-            this.leftBackTick.Location = new System.Drawing.Point(6, 51);
-            this.leftBackTick.Name = "leftBackTick";
-            this.leftBackTick.Size = new System.Drawing.Size(15, 14);
-            this.leftBackTick.TabIndex = 12;
-            this.leftBackTick.UseVisualStyleBackColor = true;
-            this.leftBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
-            // 
-            // rightFrontTick
-            // 
-            this.rightFrontTick.AutoSize = true;
-            this.rightFrontTick.Location = new System.Drawing.Point(275, 26);
-            this.rightFrontTick.Name = "rightFrontTick";
-            this.rightFrontTick.Size = new System.Drawing.Size(15, 14);
-            this.rightFrontTick.TabIndex = 13;
-            this.rightFrontTick.UseVisualStyleBackColor = true;
-            this.rightFrontTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
-            // 
-            // rightBackTick
-            // 
-            this.rightBackTick.AutoSize = true;
-            this.rightBackTick.Location = new System.Drawing.Point(275, 51);
-            this.rightBackTick.Name = "rightBackTick";
-            this.rightBackTick.Size = new System.Drawing.Size(15, 14);
-            this.rightBackTick.TabIndex = 14;
-            this.rightBackTick.UseVisualStyleBackColor = true;
-            this.rightBackTick.CheckedChanged += new System.EventHandler(this.setValuesButton_Click);
             // 
             // MotorControl
             // 
