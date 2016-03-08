@@ -27,8 +27,8 @@ void ServoManager::init(int pinFL, int pinFR, int pinBL, int pinBR) {
 void ServoManager::handleTick() {
 	int value = config->ServoMin;
 	
-	// für 50 Millisekunden alle 500 Millisekunden ticken
-	if (millis() % 500 < 50)
+	// alle 1000 Millisekunden für 150 Millisekunden kurz Motor drehen
+	if (millis() % 1000 < 150)
 		value = config->ServoIdle;
 
 	if (servoFLValue == 1)
