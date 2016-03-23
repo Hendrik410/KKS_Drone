@@ -111,8 +111,6 @@
     <Compile Include="FlightControl.Designer.cs">
       <DependentUpon>FlightControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Flight\IRatioCalculator.cs" />
-    <Compile Include="Flight\RatioOutput.cs" />
     <Compile Include="Formatting.cs" />
     <Compile Include="Graph.cs">
       <SubType>UserControl</SubType>
