@@ -20,6 +20,18 @@ namespace DroneControl
         public bool ShowBaseLine { get; set; } = false;
         public double BaseLine { get; set; } = 0;
 
+        public double ValueMin
+        {
+            get { return History.FullMin; }
+            set { History.FullMin = value; }
+        }
+
+        public double ValueMax
+        {
+            get { return History.FullMax; }
+            set { History.FullMax = value; }
+        }
+
         private const int gridSize = 30;
         private int offsetX = 15;
         private const int offsetY = 15;
@@ -37,6 +49,9 @@ namespace DroneControl
                 return;
 
             DataHistory newHistory = new DataHistory(Width);
+            newHistory.FullMin = ValueMin;
+            newHistory.FullMax = ValueMax;
+
             foreach (double value in History)
                 newHistory.UpdateValue(value);
 
@@ -101,7 +116,7 @@ namespace DroneControl
 
             
             if (!string.IsNullOrWhiteSpace(Titel))
-                e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.DarkGray), 8, 8);
+                e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 14), new SolidBrush(Color.DarkGray), 8, 8);
             base.OnPaint(e);
         }
 

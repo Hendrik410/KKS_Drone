@@ -28,6 +28,18 @@ namespace DroneControl
             this.FlightControl = flightControl;
 
             UpdateSettings(Drone.Settings);
+
+            ratiosGraph.ValueMin = -1;
+            ratiosGraph.ValueMax = 1;
+
+            orientationGraphList.ValueMinimums = new double[] { -90, -90, 0 };
+            orientationGraphList.ValueMaximums = new double[] { 90, 90, 360 };
+
+            rotationGraphList.ValueMinimums = new double[] { -100, -100, -100 };
+            rotationGraphList.ValueMaximums = new double[] { 100, 100, 100 };
+
+            accelerationGraphList.ValueMinimums = new double[] { -5, -5, -5 };
+            accelerationGraphList.ValueMaximums = new double[] { 5, 5, 5 };
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -55,6 +67,8 @@ namespace DroneControl
         private void UpdateSettings(DroneSettings settings)
         {
             servoGraph.BaseLine = settings.ServoHover;
+            servoGraph.ValueMin = 0;
+            servoGraph.ValueMax = settings.ServoMax;
         }
 
         private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
@@ -66,6 +80,10 @@ namespace DroneControl
             }
 
             UpdateGraph(servoGraph, e.Data.MotorValues);
+
+            orientationGraphList.UpdateValue(e.Data.Gyro.Roll, e.Data.Gyro.Pitch, e.Data.Gyro.Yaw);
+            rotationGraphList.UpdateValue(e.Data.Gyro.GyroX, e.Data.Gyro.GyroY, e.Data.Gyro.GyroZ);
+            accelerationGraphList.UpdateValue(e.Data.Gyro.AccelerationX, e.Data.Gyro.AccelerationY, e.Data.Gyro.AccelerationZ);
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)

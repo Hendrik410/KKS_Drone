@@ -12,6 +12,11 @@ namespace DroneControl
 {
     public partial class QuadGraphControl : UserControl
     {
+        public Graph LeftTop { get { return leftTop; } }
+        public Graph RightTop { get { return rightTop; } }
+        public Graph LeftBottom { get { return leftBottom; } }
+        public Graph RightBottom { get { return rightBottom; } }
+
         public string LeftTopName
         {
             get { return leftTop.Titel; }
@@ -65,6 +70,36 @@ namespace DroneControl
                 rightTop.BaseLine = baseLine;
                 leftBottom.BaseLine = baseLine;
                 rightBottom.BaseLine = baseLine;
+            }
+        }
+
+        private double valueMin, valueMax;
+
+        public double ValueMin
+        {
+            get { return valueMin; }
+            set
+            {
+                valueMin = value;
+
+                leftTop.ValueMin = value;
+                leftBottom.ValueMin = value;
+                rightTop.ValueMin = value;
+                rightBottom.ValueMin = value;
+            }
+        }
+
+        public double ValueMax
+        {
+            get { return valueMax; }
+            set
+            {
+                valueMax = value;
+
+                leftTop.ValueMax = value;
+                leftBottom.ValueMax = value;
+                rightTop.ValueMax = value;
+                rightBottom.ValueMax = value;
             }
         }
 

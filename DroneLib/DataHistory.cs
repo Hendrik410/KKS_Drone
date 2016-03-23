@@ -54,8 +54,8 @@ namespace DroneLibrary
             get { return values.Count; }
         }
 
-        public double FullMin { get; private set; } = double.MaxValue;
-        public double FullMax { get; private set; } = double.MinValue;
+        public double FullMin { get; set; } = double.MaxValue;
+        public double FullMax { get; set; } = double.MinValue;
 
         public double this[int value]
         {

@@ -37,10 +37,19 @@
             this.motorTabPage = new System.Windows.Forms.TabPage();
             this.servoGraph = new DroneControl.QuadGraphControl();
             this.profilerTabPage = new System.Windows.Forms.TabPage();
+            this.orientationTabPage = new System.Windows.Forms.TabPage();
+            this.orientationGraphList = new DroneControl.GraphListControl();
+            this.rotationTabPage = new System.Windows.Forms.TabPage();
+            this.rotationGraphList = new DroneControl.GraphListControl();
+            this.accelerationTabPage = new System.Windows.Forms.TabPage();
+            this.accelerationGraphList = new DroneControl.GraphListControl();
             this.tabControl1.SuspendLayout();
             this.ratioTabPage.SuspendLayout();
             this.correctionTabPage.SuspendLayout();
             this.motorTabPage.SuspendLayout();
+            this.orientationTabPage.SuspendLayout();
+            this.rotationTabPage.SuspendLayout();
+            this.accelerationTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -49,6 +58,9 @@
             this.tabControl1.Controls.Add(this.correctionTabPage);
             this.tabControl1.Controls.Add(this.motorTabPage);
             this.tabControl1.Controls.Add(this.profilerTabPage);
+            this.tabControl1.Controls.Add(this.orientationTabPage);
+            this.tabControl1.Controls.Add(this.rotationTabPage);
+            this.tabControl1.Controls.Add(this.accelerationTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -61,7 +73,6 @@
             this.ratioTabPage.Controls.Add(this.ratiosGraph);
             this.ratioTabPage.Location = new System.Drawing.Point(4, 22);
             this.ratioTabPage.Name = "ratioTabPage";
-            this.ratioTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.ratioTabPage.Size = new System.Drawing.Size(907, 491);
             this.ratioTabPage.TabIndex = 0;
             this.ratioTabPage.Text = "Ratios";
@@ -73,20 +84,21 @@
             this.ratiosGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ratiosGraph.LeftBottomName = "Left bottom";
             this.ratiosGraph.LeftTopName = "Left front";
-            this.ratiosGraph.Location = new System.Drawing.Point(3, 3);
+            this.ratiosGraph.Location = new System.Drawing.Point(0, 0);
             this.ratiosGraph.Name = "ratiosGraph";
             this.ratiosGraph.RightBottomName = "Right bottom";
             this.ratiosGraph.RightTopName = "Right front";
             this.ratiosGraph.ShowBaseLine = true;
-            this.ratiosGraph.Size = new System.Drawing.Size(901, 485);
+            this.ratiosGraph.Size = new System.Drawing.Size(907, 491);
             this.ratiosGraph.TabIndex = 1;
+            this.ratiosGraph.ValueMax = 1D;
+            this.ratiosGraph.ValueMin = -1D;
             // 
             // correctionTabPage
             // 
             this.correctionTabPage.Controls.Add(this.correctionGraph);
             this.correctionTabPage.Location = new System.Drawing.Point(4, 22);
             this.correctionTabPage.Name = "correctionTabPage";
-            this.correctionTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.correctionTabPage.Size = new System.Drawing.Size(907, 491);
             this.correctionTabPage.TabIndex = 1;
             this.correctionTabPage.Text = "Correction";
@@ -98,13 +110,15 @@
             this.correctionGraph.Dock = System.Windows.Forms.DockStyle.Fill;
             this.correctionGraph.LeftBottomName = "Left bottom";
             this.correctionGraph.LeftTopName = "Left front";
-            this.correctionGraph.Location = new System.Drawing.Point(3, 3);
+            this.correctionGraph.Location = new System.Drawing.Point(0, 0);
             this.correctionGraph.Name = "correctionGraph";
             this.correctionGraph.RightBottomName = "Right bottom";
             this.correctionGraph.RightTopName = "Right front";
-            this.correctionGraph.ShowBaseLine = false;
-            this.correctionGraph.Size = new System.Drawing.Size(901, 485);
+            this.correctionGraph.ShowBaseLine = true;
+            this.correctionGraph.Size = new System.Drawing.Size(907, 491);
             this.correctionGraph.TabIndex = 1;
+            this.correctionGraph.ValueMax = 2D;
+            this.correctionGraph.ValueMin = -2D;
             // 
             // motorTabPage
             // 
@@ -130,6 +144,8 @@
             this.servoGraph.ShowBaseLine = true;
             this.servoGraph.Size = new System.Drawing.Size(907, 491);
             this.servoGraph.TabIndex = 2;
+            this.servoGraph.ValueMax = 0D;
+            this.servoGraph.ValueMin = 0D;
             // 
             // profilerTabPage
             // 
@@ -139,6 +155,108 @@
             this.profilerTabPage.TabIndex = 3;
             this.profilerTabPage.Text = "Profiler";
             this.profilerTabPage.UseVisualStyleBackColor = true;
+            // 
+            // orientationTabPage
+            // 
+            this.orientationTabPage.Controls.Add(this.orientationGraphList);
+            this.orientationTabPage.Location = new System.Drawing.Point(4, 22);
+            this.orientationTabPage.Name = "orientationTabPage";
+            this.orientationTabPage.Size = new System.Drawing.Size(907, 491);
+            this.orientationTabPage.TabIndex = 4;
+            this.orientationTabPage.Text = "Orientation";
+            this.orientationTabPage.UseVisualStyleBackColor = true;
+            // 
+            // orientationGraphList
+            // 
+            this.orientationGraphList.AutoScroll = true;
+            this.orientationGraphList.BaseLine = 0D;
+            this.orientationGraphList.Count = 3;
+            this.orientationGraphList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.orientationGraphList.Location = new System.Drawing.Point(0, 0);
+            this.orientationGraphList.Name = "orientationGraphList";
+            this.orientationGraphList.Names = new string[] {
+        "Roll",
+        "Pitch",
+        "Yaw"};
+            this.orientationGraphList.ShowBaseLine = true;
+            this.orientationGraphList.Size = new System.Drawing.Size(907, 491);
+            this.orientationGraphList.TabIndex = 3;
+            this.orientationGraphList.ValueMaximums = new double[] {
+        90D,
+        90D,
+        360D};
+            this.orientationGraphList.ValueMinimums = new double[] {
+        -90D,
+        -90D,
+        0D};
+            // 
+            // rotationTabPage
+            // 
+            this.rotationTabPage.Controls.Add(this.rotationGraphList);
+            this.rotationTabPage.Location = new System.Drawing.Point(4, 22);
+            this.rotationTabPage.Name = "rotationTabPage";
+            this.rotationTabPage.Size = new System.Drawing.Size(907, 491);
+            this.rotationTabPage.TabIndex = 5;
+            this.rotationTabPage.Text = "Rotation";
+            this.rotationTabPage.UseVisualStyleBackColor = true;
+            // 
+            // rotationGraphList
+            // 
+            this.rotationGraphList.AutoScroll = true;
+            this.rotationGraphList.BaseLine = 0D;
+            this.rotationGraphList.Count = 3;
+            this.rotationGraphList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rotationGraphList.Location = new System.Drawing.Point(0, 0);
+            this.rotationGraphList.Name = "rotationGraphList";
+            this.rotationGraphList.Names = new string[] {
+        "X",
+        "Y",
+        "Z"};
+            this.rotationGraphList.ShowBaseLine = true;
+            this.rotationGraphList.Size = new System.Drawing.Size(907, 491);
+            this.rotationGraphList.TabIndex = 2;
+            this.rotationGraphList.ValueMaximums = new double[] {
+        -1.7976931348623157E+308D,
+        -1.7976931348623157E+308D,
+        -1.7976931348623157E+308D};
+            this.rotationGraphList.ValueMinimums = new double[] {
+        1.7976931348623157E+308D,
+        1.7976931348623157E+308D,
+        1.7976931348623157E+308D};
+            // 
+            // accelerationTabPage
+            // 
+            this.accelerationTabPage.Controls.Add(this.accelerationGraphList);
+            this.accelerationTabPage.Location = new System.Drawing.Point(4, 22);
+            this.accelerationTabPage.Name = "accelerationTabPage";
+            this.accelerationTabPage.Size = new System.Drawing.Size(907, 491);
+            this.accelerationTabPage.TabIndex = 6;
+            this.accelerationTabPage.Text = "Acceleration";
+            this.accelerationTabPage.UseVisualStyleBackColor = true;
+            // 
+            // accelerationGraphList
+            // 
+            this.accelerationGraphList.AutoScroll = true;
+            this.accelerationGraphList.BaseLine = 0D;
+            this.accelerationGraphList.Count = 3;
+            this.accelerationGraphList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.accelerationGraphList.Location = new System.Drawing.Point(0, 0);
+            this.accelerationGraphList.Name = "accelerationGraphList";
+            this.accelerationGraphList.Names = new string[] {
+        "X",
+        "Y",
+        "Z"};
+            this.accelerationGraphList.ShowBaseLine = true;
+            this.accelerationGraphList.Size = new System.Drawing.Size(907, 491);
+            this.accelerationGraphList.TabIndex = 3;
+            this.accelerationGraphList.ValueMaximums = new double[] {
+        -1.7976931348623157E+308D,
+        -1.7976931348623157E+308D,
+        -1.7976931348623157E+308D};
+            this.accelerationGraphList.ValueMinimums = new double[] {
+        1.7976931348623157E+308D,
+        1.7976931348623157E+308D,
+        1.7976931348623157E+308D};
             // 
             // GraphForm
             // 
@@ -153,6 +271,9 @@
             this.ratioTabPage.ResumeLayout(false);
             this.correctionTabPage.ResumeLayout(false);
             this.motorTabPage.ResumeLayout(false);
+            this.orientationTabPage.ResumeLayout(false);
+            this.rotationTabPage.ResumeLayout(false);
+            this.accelerationTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -167,5 +288,11 @@
         private QuadGraphControl correctionGraph;
         private QuadGraphControl ratiosGraph;
         private QuadGraphControl servoGraph;
+        private System.Windows.Forms.TabPage orientationTabPage;
+        private System.Windows.Forms.TabPage rotationTabPage;
+        private System.Windows.Forms.TabPage accelerationTabPage;
+        private GraphListControl accelerationGraphList;
+        private GraphListControl rotationGraphList;
+        private GraphListControl orientationGraphList;
     }
 }

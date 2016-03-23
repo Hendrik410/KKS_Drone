@@ -111,6 +111,8 @@
     <Compile Include="FlightControl.Designer.cs">
       <DependentUpon>FlightControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Flight\IRatioCalculator.cs" />
+    <Compile Include="Flight\RatioOutput.cs" />
     <Compile Include="Formatting.cs" />
     <Compile Include="Graph.cs">
       <SubType>UserControl</SubType>
@@ -155,6 +157,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GraphListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GraphListControl.Designer.cs">
+      <DependentUpon>GraphListControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="QuadGraphControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,6 +216,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="GraphListControl.resx">
+      <DependentUpon>GraphListControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="QuadGraphControl.resx">
       <DependentUpon>QuadGraphControl.cs</DependentUpon>
     </EmbeddedResource>
