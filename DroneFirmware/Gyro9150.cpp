@@ -20,7 +20,7 @@ void Gyro9150::update() {
 	Profiler::begin("Gyro9150::update()");
 	if (mpuOK) {
 		mpu.update(	&gyroX, &gyroY, &gyroZ, 
-					&accX, &accY, &accY, 
+					&accX, &accY, &accZ, 
 					&magnetX, &magnetY, &magnetZ, 
 					&pitch, &roll, &yaw);
 		_dirty = true;
