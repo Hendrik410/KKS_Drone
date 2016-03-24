@@ -34,7 +34,7 @@ float MathHelper::_fmod(float a, float b) {
 }
 
 float MathHelper::angleDifference(float a, float b) {
-	return _fmod(_fmod(a - b, 360) + 540, 360) - 180;
+	return (float)fmod(fmod(a - b, 360) + 540, 360) - 180;
 }
 
 float MathHelper::fixValue(float value, float begin, float end) {

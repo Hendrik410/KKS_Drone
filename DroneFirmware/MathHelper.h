@@ -19,8 +19,6 @@ class MathHelper
 	 static float mapRatio(float ratio, float min, float max, float center);
 	 static float fixValue(float value, float begin, float end);
 
-	 static float _fmod(float a, float b);
-
 	 static float angleDifference(float a, float b);
 	 static float mixMotor(Config* config,float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation);
 };
