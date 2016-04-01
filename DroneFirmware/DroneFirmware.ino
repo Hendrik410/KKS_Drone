@@ -42,7 +42,8 @@ void setup() {
 
 	Log::info("Boot", "=====================");
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
-	Log::info("Boot", "Model: %s, Build: %s", MODEL_NAME, BUILD_NAME);
+	Log::info("Boot", "Model: %s", MODEL_NAME);
+	Log::info("Boot", "Build: %s", BUILD_NAME);
 
 	// Serialnummer schreiben
 	char serialCode[32];
@@ -64,17 +65,29 @@ void setup() {
 
 	bool openOwnNetwork = true;
 
+	// Hostname setzen
+	char name[30];
+	strncpy(name, config.DroneName, sizeof(name));
+	strncat(name, "-", sizeof(name));
+	strncat(name, serialCode, sizeof(name));
+
+	WiFi.persistent(false);
+	WiFi.hostname(name);
+	WiFi.setOutputPower(20.5f);
+	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
+
 	// versuchen mit dem eingestellen AP zu verbinden
 	if (strlen(config.NetworkSSID) > 0) {
 		Log::info("Boot", "Trying to connect to %s", config.NetworkSSID);
 
 		WiFi.mode(WIFI_STA);
 		WiFi.begin(config.NetworkSSID, config.NetworkPassword);
+
 		int connectStartTime = millis();
-		while (WiFi.waitForConnectResult() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
+		while (WiFi.status() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
 			delay(20);
 		}
-		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED;
+		openOwnNetwork = WiFi.status() != WL_CONNECTED;
 
 		if (openOwnNetwork)
 			Log::info("Boot", "Access point not found!");
@@ -88,15 +101,10 @@ void setup() {
 	if (openOwnNetwork) {
 		Log::info("Boot", "Creating own network...");
 
-		char ssid[30];
-		strncpy(ssid, config.DroneName, sizeof(ssid));
-		strncat(ssid, "-", sizeof(ssid));
-		strncat(ssid, serialCode, sizeof(ssid));
-
-		Log::info("Boot", "Network SSID: %s", ssid);
+		Log::info("Boot", "Network SSID: %s", name);
 
 		WiFi.mode(WIFI_AP);
-		WiFi.softAP(ssid, config.NetworkPassword);
+		WiFi.softAP(name, config.NetworkPassword);
 
 		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
 	}
