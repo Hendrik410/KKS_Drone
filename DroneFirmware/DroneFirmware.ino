@@ -59,38 +59,44 @@ void setup() {
 	servos = new ServoManager(&config);
 	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
 
-	Log::info("Boot", "Init network...");
-
 	setupLED(&config);
 
+	Log::info("Boot", "Init network...");
 	bool openOwnNetwork = true;
 
-	// Hostname setzen
+	// Hostname generieren
 	char name[30];
 	strncpy(name, config.DroneName, sizeof(name));
 	strncat(name, "-", sizeof(name));
 	strncat(name, serialCode, sizeof(name));
 
+	// WiFi Einstellungen setzen
 	WiFi.persistent(false);
 	WiFi.hostname(name);
 	WiFi.setOutputPower(20.5f);
-	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
+	WiFi.setPhyMode(WIFI_PHY_MODE_11N); 
 
-	// versuchen mit dem eingestellen AP zu verbinden
+	// versuchen mit dem in der Config gespeicherten AP zu verbinden
 	if (strlen(config.NetworkSSID) > 0) {
 		Log::info("Boot", "Trying to connect to %s", config.NetworkSSID);
 
 		WiFi.mode(WIFI_STA);
-		WiFi.begin(config.NetworkSSID, config.NetworkPassword);
+		if (WiFi.begin(config.NetworkSSID, config.NetworkPassword) == WL_CONNECT_FAILED)
+			Log::error("Boot", "WiFi.begin() failed");
+		if (WiFi.status() == WL_IDLE_STATUS) // begin() verbindet nicht wenn die Einstellungen sich nicht geändert haben
+			WiFi.begin(); // daher erneut probieren
 
+		// auf Verbindung warten
 		int connectStartTime = millis();
-		while (WiFi.status() != WL_CONNECTED && millis() - connectStartTime >= 5000) {
+		while (WiFi.status() != WL_CONNECTED && millis() - connectStartTime < 5000) {
 			delay(20);
 		}
 		openOwnNetwork = WiFi.status() != WL_CONNECTED;
 
-		if (openOwnNetwork)
-			Log::info("Boot", "Access point not found!");
+		if (openOwnNetwork) {
+			Log::error("Boot", "Could not connect to the access point!");
+			Log::error("Boot", "Status: %d", WiFi.status());
+		}
 		else {
 			Log::info("Boot", "Successfully connected to access point");
 			Log::info("Boot", "IP address: %s", WiFi.localIP().toString().c_str());
@@ -100,7 +106,6 @@ void setup() {
 	// eigenen AP erstellen
 	if (openOwnNetwork) {
 		Log::info("Boot", "Creating own network...");
-
 		Log::info("Boot", "Network SSID: %s", name);
 
 		WiFi.mode(WIFI_AP);
