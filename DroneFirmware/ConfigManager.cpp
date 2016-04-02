@@ -81,10 +81,10 @@ Config ConfigManager::getDefault() {
 
 	strncpy(config.DroneName, "koalaDrone", sizeof(config.DroneName));
 
-	// leerer String, siehe NetworkSSID
-	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID)); 
+	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID));
+	strncpy(config.NetworkPassword, "", sizeof(config.NetworkPassword));
 
-	strncpy(config.NetworkPassword, "12345678", sizeof(config.NetworkPassword));
+	strncpy(config.AccessPointPassword, "12345678", sizeof(config.AccessPointPassword));
 
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;

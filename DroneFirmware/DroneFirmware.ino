@@ -109,7 +109,7 @@ void setup() {
 		Log::info("Boot", "Network SSID: %s", name);
 
 		WiFi.mode(WIFI_AP);
-		WiFi.softAP(name, config.NetworkPassword);
+		WiFi.softAP(name, config.AccessPointPassword);
 
 		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
 	}
