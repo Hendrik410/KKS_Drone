@@ -25,14 +25,6 @@ float MathHelper::mapRatio(float ratio, float min, float max, float center) {
 	}
 }
 
-// Workaround für:
-// ef_fmod.c*:(.text+0x36): undefined reference to `__ieee754_remainderf
-// https://github.com/esp8266/Arduino/issues/1385
-// https://github.com/esp8266/Arduino/issues/612
-float MathHelper::_fmod(float a, float b) {
-	return (a - b * floor(a / b));
-}
-
 float MathHelper::angleDifference(float a, float b) {
 	return (float)fmod(fmod(a - b, 360) + 540, 360) - 180;
 }

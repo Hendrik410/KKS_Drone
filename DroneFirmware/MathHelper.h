@@ -1,14 +1,7 @@
-// MathHelper.h
-
 #ifndef _MATHHELPER_h
 #define _MATHHELPER_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
+#include "arduino.h"
 #include "MotorEnums.h"
 #include "Config.h"
 

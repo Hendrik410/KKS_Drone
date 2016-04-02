@@ -3,25 +3,12 @@
 #ifndef _BINARYHELPER_h
 #define _BINARYHELPER_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#define byte unsigned char
-void * memcpy(void * destination, const void * source, int num);
-#endif
+#include "arduino.h"
 
 class BinaryHelper
 {
- protected:
-	 static bool BigEndian;
-	 static bool swappingNeeded();
-
  public:
-	 static void changeByteOrder(unsigned char* buffer, int start, int length);
+	 static void changeByteOrder(byte* buffer, int start, int length);
 
 	 static void writeInt16(byte* buf, int offset, int16_t val);
 	 static int16_t readInt16(byte* buf, int offset);

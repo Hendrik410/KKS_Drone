@@ -4,15 +4,7 @@
 #define _CONFIGMANAGER_h
 
 #include "arduino.h"
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
-#include <EEPROM/EEPROM.h>
-
-#define byte unsigned char
-void * memcpy(void * destination, const void * source, int num);
-#else
 #include <EEPROM.h>
-#endif
 
 #include "MemoryAdapter.h"
 #include "Config.h"

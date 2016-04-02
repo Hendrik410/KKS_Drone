@@ -27,6 +27,11 @@ namespace DroneLibrary
         [Description("The password of the WiFi network")]
         public string NetworkPassword;
 
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        [Category("Network")]
+        [Description("The password of the WiFi access point")]
+        public string AccessPointPassword;
+
         [Category("Network")]
         [Description("The UDP port for the hello packets")]
         public ushort NetworkHelloPort;
@@ -134,6 +139,7 @@ namespace DroneLibrary
         [Category("Flying")]
         public int SafeServoValue;
 
+        [Category("Linear Flying")]
         public float RotationalCorrectionMax;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
