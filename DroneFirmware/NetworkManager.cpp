@@ -50,7 +50,9 @@ void NetworkManager::handleData() {
 }
 
 bool NetworkManager::beginParse(WiFiUDP udp) {
+	Profiler::begin("parsePacket()");
 	int size = udp.parsePacket();
+	Profiler::end();
 
 	if (size == 0)
 		return false;
@@ -101,11 +103,13 @@ void NetworkManager::sendAck(WiFiUDP udp, int32_t revision) {
 }
 
 void NetworkManager::sendData(WiFiUDP udp) {
+	Profiler::begin("sendData()");
 	udp.beginPacket(_dataFeedSubscriptor, config->NetworkDataPort);
 	udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
 	udp.endPacket();
 
 	writeBuffer->resetPosition();
+	Profiler::end();
 }
 
 void NetworkManager::echoPacket(WiFiUDP udp) {
