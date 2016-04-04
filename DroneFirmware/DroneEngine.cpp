@@ -58,6 +58,11 @@ void DroneEngine::fly() {
 	if (_state != StateArmed)
 		return;
 
+	frontLeftRatio = 0;
+	frontRightRatio = 0;
+	backLeftRatio = 0;
+	backRightRatio = 0;
+
 	_state = StateFlying;
 	Log::info("Engine", "Flying");
 }
@@ -158,8 +163,8 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpe
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen
-	targetPitch = MathHelper::fixValue(MathHelper::clampValue(pitch, -maxTilt, maxTilt), -M_PI_2, M_PI_2);
-	targetRoll = MathHelper::fixValue(MathHelper::clampValue(roll, -maxTilt, maxTilt), -M_PI_2, M_PI_2);
+	targetPitch = MathHelper::fixValue(MathHelper::clampValue(pitch, -maxTilt, maxTilt), -90, 90);
+	targetRoll = MathHelper::fixValue(MathHelper::clampValue(roll, -maxTilt, maxTilt), -90, 90);
 	targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
 	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 1);
 
