@@ -82,6 +82,8 @@ namespace DroneControl
         {
             e.Graphics.Clear(Color.White);
 
+            Font font = new Font(FontFamily.GenericSansSerif, 14);
+            Font valueFont = new Font(FontFamily.GenericMonospace, 8);
             Color gridColor = Color.FromArgb(0x50B3B3B3);
             Pen gridPen = new Pen(gridColor);
 
@@ -96,6 +98,8 @@ namespace DroneControl
                 Pen baseLinePen = new Pen(baseLineColor);
                 int baseLineValue = ConvertValue(BaseLine);
                 e.Graphics.DrawLine(baseLinePen, 0, baseLineValue, Width, baseLineValue);
+
+                DrawValue(e.Graphics, valueFont, BaseLine, true);
             }
 
             if (!DesignMode && History != null)
@@ -112,12 +116,31 @@ namespace DroneControl
 
                     lastY = y;
                 }
+
+                DrawHistoryValue(e.Graphics, valueFont, 0);
+                DrawHistoryValue(e.Graphics, valueFont, 0.25);
+                DrawHistoryValue(e.Graphics, valueFont, 0.75);
+                DrawHistoryValue(e.Graphics, valueFont, 1);
             }
 
             
             if (!string.IsNullOrWhiteSpace(Titel))
-                e.Graphics.DrawString(Titel, new Font(FontFamily.GenericSansSerif, 14), new SolidBrush(Color.DarkGray), 8, 8);
+                e.Graphics.DrawString(Titel, font, new SolidBrush(Color.DarkGray), 8, 8);
             base.OnPaint(e);
+        }
+
+        private void DrawHistoryValue(Graphics graphics, Font font, double value, bool center = false)
+        {
+            double realValue = History.FullMin + (History.FullMax - History.FullMin) * value;
+            DrawValue(graphics, font, realValue, center);
+        }
+
+        private void DrawValue(Graphics graphics, Font font, double value, bool center = false)
+        {
+            float offsetY = 0;
+            if (center)
+                offsetY = graphics.MeasureString(value.ToString(), font).Height / 2;
+            graphics.DrawString(value.ToString(), font, new SolidBrush(Color.DarkGray), 4, ConvertValue(value) - offsetY);
         }
 
         public void UpdateValue(double value)
