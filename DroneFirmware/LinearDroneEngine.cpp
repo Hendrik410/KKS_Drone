@@ -40,16 +40,18 @@ void LinearDroneEngine::handleInternal() {
 	correctionValues[2] = getTargetRatio(Position_Back | Position_Left, Clockwise, data);
 	correctionValues[3] = getTargetRatio(Position_Back | Position_Right, Counterclockwise, data);
 
+	float interpolationFactor = MathHelper::clampValue(config->InterpolationFactor, 0.01f, 1);
 	for (int i = 0; i < 4; i++) {
 		correctionValues[i] *= config->CorrectionFactor;
 
 		newValues[i] += targetVerticalSpeed;
 		newValues[i] -= correctionValues[i];
 
-		if (config->InterpolationFactor >= 1)
+		float delta = newValues[i] - oldValues[i];
+		if (abs(delta) < 0.05f || config->InterpolationFactor >= 1)
 			oldValues[i] = newValues[i];
 		else
-			oldValues[i] = (newValues[i] - oldValues[i]) * MathHelper::clampValue(config->InterpolationFactor, 0.01f, 1);
+			oldValues[i] += delta * interpolationFactor;
 	}
 
 	servos->setRatio(oldValues[0], oldValues[1], oldValues[2], oldValues[3]);
