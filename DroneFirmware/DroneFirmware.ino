@@ -25,7 +25,7 @@
 #include "Gyro6050.h"
 #include "Gyro9150.h"
 
-#define USE_GYRO9150 false
+#define USE_GYRO9150 true
 
 Config config;
 
