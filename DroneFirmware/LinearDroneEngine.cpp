@@ -46,7 +46,10 @@ void LinearDroneEngine::handleInternal() {
 		newValues[i] += targetVerticalSpeed;
 		newValues[i] -= correctionValues[i];
 
-		oldValues[i] = (newValues[i] - oldValues[i]) * config->InterpolationFactor;
+		if (config->InterpolationFactor >= 1)
+			oldValues[i] = newValues[i];
+		else
+			oldValues[i] = (newValues[i] - oldValues[i]) * MathHelper::clampValue(config->InterpolationFactor, 0.01f, 1);
 	}
 
 	servos->setRatio(oldValues[0], oldValues[1], oldValues[2], oldValues[3]);
