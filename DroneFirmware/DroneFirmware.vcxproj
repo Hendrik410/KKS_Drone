@@ -91,6 +91,7 @@
     <ClInclude Include="Gyro.h" />
     <ClInclude Include="Gyro6050.h" />
     <ClInclude Include="Gyro9150.h" />
+    <ClInclude Include="hardware.h" />
     <ClInclude Include="LED.h" />
     <ClInclude Include="LinearDroneEngine.h" />
     <ClInclude Include="mpu9150.h" />

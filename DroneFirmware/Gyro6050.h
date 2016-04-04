@@ -7,7 +7,7 @@
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev/I2Cdev.h>
 
-#define USE_DMP true
+#define USE_DMP false
 
 class Gyro6050 : public Gyro
 {
@@ -17,6 +17,9 @@ protected:
 	MPU6050 mpu;
 	byte* fifoBuffer;
 	int fifoOffset;
+
+	float accRes;
+	float gyroRes;
 
 	// orientation/motion vars
 	Quaternion q;           // [w, x, y, z]         quaternion container

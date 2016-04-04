@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Log.h"
 #include "Profiler.h"
+#include "hardware.h"
 
 class Gyro
 {

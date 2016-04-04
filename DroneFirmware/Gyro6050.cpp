@@ -6,7 +6,11 @@ Gyro6050::Gyro6050(Config* config) : Gyro(config) {
 bool Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 
+#if SWAP_SDA_SCL
+	Wire.begin(SCL, SDA);
+#else
 	Wire.begin(SDA, SCL);
+#endif
 
 	Log::debug("Gyro6050", "mpu.reset()");
 	mpu.reset();
@@ -35,7 +39,14 @@ bool Gyro6050::init() {
 
 	mpu.setDMPEnabled(true);
 	mpu.resetFIFO();
+#else
+	float accRange[4] = { 2, 4, 8, 16 }; // g
+	float gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
+
+	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0f;
+	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0f;
 #endif
+
 	Log::info("Gyro6050", "done with init");
 
 	mpuOK = true;
@@ -86,17 +97,18 @@ void Gyro6050::update() {
 	int16_t values[6];
 	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
 
-	accX = (float)values[0];
-	accY = (float)values[1];
-	accZ = (float)values[2];
+	accX = values[0] * accRes;
+	accY = values[1] * accRes;
+	accZ = values[2] * accRes;
 
-	gyroX = (float)values[3];
-	gyroY = (float)values[4];
-	gyroZ = (float)values[5];
+	gyroX = values[3] * gyroRes;
+	gyroY = values[4] * gyroRes;
+	gyroZ = values[5] * gyroRes;
 #endif
 
 	_dirty = true;
 	Profiler::end();
+	
 }
 
 void Gyro6050::reset() {

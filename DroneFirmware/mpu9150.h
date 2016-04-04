@@ -186,9 +186,6 @@ We are also using the 400 kHz fast I2C mode by setting the TWI_FREQ  to 400000L 
 #define AK8975A_ADDRESS 0x0C //  Address of magnetometer
 #endif  
 
-#define AHRS  true          // set to false for basic data read
-#define SerialDebug false  // set to true to print serial output for debugging
-
 // Set initial input parameters
 enum Ascale {
 	AFS_2G = 0,

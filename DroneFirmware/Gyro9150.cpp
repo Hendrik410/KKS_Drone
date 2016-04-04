@@ -6,7 +6,11 @@ Gyro9150::Gyro9150(Config* config) : Gyro(config) {
 bool Gyro9150::init() {
 	Log::info("Gyro9150", "init()");
 
+#if SWAP_SDA_SCL
 	Wire.begin(SCL, SDA);
+#else
+	Wire.begin(SDA, SCL);
+#endif
 	mpuOK = mpu.init() == IError_None;
 
 	if (mpuOK)

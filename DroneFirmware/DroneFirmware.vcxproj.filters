@@ -114,6 +114,9 @@
     <ClInclude Include="mpu9150.h">
       <Filter>Header Files\mpu9150</Filter>
     </ClInclude>
+    <ClInclude Include="hardware.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyro.cpp">
