@@ -72,9 +72,22 @@ namespace DroneControl.Input
             target.RotationalSpeed = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
             target.Thurst = DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
 
+            float x = GetButtonValue(GamepadButtonFlags.DPadRight) - GetButtonValue(GamepadButtonFlags.DPadLeft);
+            float y = GetButtonValue(GamepadButtonFlags.DPadDown) - GetButtonValue(GamepadButtonFlags.DPadUp);
+            target.Roll += x * 0.1f;
+            target.Pitch += y * 0.1f;
+
+
             manager.SendTargetData(target);
 
             lastState = currentState;
+        }
+
+        private float GetButtonValue(GamepadButtonFlags button)
+        {
+            if (currentState.Gamepad.Buttons.HasFlag(button))
+                return 1;
+            return 0;
         }
 
         private bool CheckButtonPressed(GamepadButtonFlags button)
