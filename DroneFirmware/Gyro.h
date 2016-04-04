@@ -40,6 +40,10 @@ class Gyro
 
 	 bool _dirty;
 
+	 float getPitchRad() const;
+	 float getRollRad() const;
+	 float getYawRad() const;
+
  public:
 	explicit Gyro(Config* config);
 
@@ -55,10 +59,6 @@ class Gyro
 	float getPitch() const;
 	float getRoll() const;
 	float getYaw() const;
-
-	float getPitchRad() const;
-	float getRollRad() const;
-	float getYawRad() const;
 
 	float getGyroX() const;
 	float getGyroY() const;
