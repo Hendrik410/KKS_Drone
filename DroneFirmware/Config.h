@@ -83,6 +83,8 @@ struct Config {
 	int SafeServoValue;
 
 	float RotationalCorrectionMax;
+
+	bool EnableRatioSubtracting;
 };
 
 #endif

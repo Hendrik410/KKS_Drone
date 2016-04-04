@@ -133,6 +133,8 @@ Config ConfigManager::getDefault() {
 	
 	config.RotationalCorrectionMax = 5;
 
+	config.EnableRatioSubtracting = true;
+
 	Log::info("Config", "Using default config");
 	return config;
 }

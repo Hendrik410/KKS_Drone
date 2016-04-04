@@ -62,12 +62,12 @@ void PidDroneEngine::handleInternal() {
 	pidRoll->Compute();
 	pidYaw->Compute();
 
-		frontLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise);
-		frontRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise);
-		backLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise);
-		backRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise);
+	frontLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Left, Counterclockwise, config->EnableRatioSubtracting);
+	frontRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Front | Position_Right, Clockwise, config->EnableRatioSubtracting);
+	backLeftRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Left, Clockwise, config->EnableRatioSubtracting);
+	backRightRatio = MathHelper::mixMotor(config, outputPitch, outputRoll, outputYaw, targetVerticalSpeed, Position_Back | Position_Right, Counterclockwise, config->EnableRatioSubtracting);
 
-		servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
+	servos->setRatio(frontLeftRatio, frontRightRatio, backLeftRatio, backRightRatio);
 }
 
 

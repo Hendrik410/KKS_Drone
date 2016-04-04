@@ -142,6 +142,11 @@ namespace DroneLibrary
         [Category("Linear Flying")]
         public float RotationalCorrectionMax;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Linear Flying")]
+        [Description("Enables or disables the ratio subtracting")]
+        public bool EnableRatioSubtracting;
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));

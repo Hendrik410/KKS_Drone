@@ -38,35 +38,32 @@ float MathHelper::fixValue(float value, float begin, float end) {
 	return value;
 }
 
-float MathHelper::mixMotor(Config* config, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation) {
+float MathHelper::mixMotor(Config* config, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation, bool subtract) {
 	float targetMotorRatio = verticalRatio;
 
 	if (abs(pitchDelta) >= 0.02) {
-		if (position & Position_Front) {
+		if (position & Position_Front)
 			targetMotorRatio += pitchDelta * config->Degree2Ratio;
-		}
-		else {
+		else
 			targetMotorRatio -= pitchDelta * config->Degree2Ratio;
-		}
 	}
 
 	if (abs(rollDelta) >= 0.02) {
-		if (position & Position_Left) {
+		if (position & Position_Left) 
 			targetMotorRatio -= rollDelta * config->Degree2Ratio;
-		}
-		else {
+		else 
 			targetMotorRatio += rollDelta * config->Degree2Ratio;
-		}
 	}
 
 	if (abs(yawDelta) >= 0.02) {
-		if (rotation == Clockwise) {
+		if (rotation == Clockwise)
 			targetMotorRatio -= yawDelta * config->RotationalDegree2Ratio;
-		}
-		else {
+		else 
 			targetMotorRatio += yawDelta * config->RotationalDegree2Ratio;
-		}
 	}
+
+	if (!subtract && targetMotorRatio < verticalRatio)
+		return verticalRatio;
 
 	return targetMotorRatio;
 }

@@ -67,5 +67,5 @@ void LinearDroneEngine::handleInternal() {
 
 float LinearDroneEngine::getTargetRatio(MotorPosition position, MotorRotation rotation, float* values)
 {
-	return MathHelper::mixMotor(config, values[0], values[1], values[2], 0, position, rotation);
+	return MathHelper::mixMotor(config, values[0], values[1], values[2], 0, position, rotation, config->EnableRatioSubtracting);
 }
