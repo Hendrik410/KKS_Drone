@@ -6,11 +6,12 @@ Gyro6050::Gyro6050(Config* config) : Gyro(config) {
 bool Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 
-#if SWAP_SDA_SCL
-	Wire.begin(SCL, SDA);
-#else
 	Wire.begin(SDA, SCL);
-#endif
+	if (!mpu.testConnection()) {
+		Log::error("Gyro6050", "Connection failed");
+		mpuOK = false;
+		return false;
+	}
 
 	Log::debug("Gyro6050", "mpu.reset()");
 	mpu.reset();
@@ -18,16 +19,8 @@ bool Gyro6050::init() {
 	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
 
-	Log::debug("Gyro6050", "mpu.testConnection()");
-	if (!mpu.testConnection()) {
-		Log::error("Gyro6050", "testConnection() failed!");
-		mpuOK = false;
-		return false;
-	}
-
-	Log::info("Gyro6050", "dmpInitialize()");
-
 #if USE_DMP
+	Log::info("Gyro6050", "dmpInitialize()");
 	int result = mpu.dmpInitialize();
 	if (result != 0) {
 		Log::error("Gyro6050", "failure: %d", result);

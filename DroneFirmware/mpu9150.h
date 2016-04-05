@@ -266,6 +266,14 @@ public:
 		if (c != 0x68) // WHO_AM_I should always be 0x68
 			return IError_WrongID;
 
+		// Read the WHO_AM_I register of the magnetometer, this is a good test of communication
+		c = readByte(AK8975A_ADDRESS, WHO_AM_I_AK8975A);  // Read WHO_AM_I register for AK8975A
+
+		Log::debug("AK8975A", "who am i: 0x%x", c);
+
+		if (c != 0x48)
+			return IError_WrongID_Magnetometer;
+
 		Log::debug("MPU9150", "doing self test");
 		MPU6050SelfTest(SelfTest); // Start by performing self test and reporting values
 
@@ -283,15 +291,6 @@ public:
 
 		Log::debug("MPU9150", "init");
 		initMPU9150(); // Inititalize and configure accelerometer and gyroscope
-		// Initialize device for active mode read of acclerometer, gyroscope, and temperature
-
-		// Read the WHO_AM_I register of the magnetometer, this is a good test of communication
-		c = readByte(AK8975A_ADDRESS, WHO_AM_I_AK8975A);  // Read WHO_AM_I register for AK8975A
-
-		Log::debug("AK8975A", "who am i: 0x%x", c);
-
-		if (c != 0x48)
-			return IError_WrongID_Magnetometer;
 
 		// Get magnetometer calibration from AK8975A ROM
 		initAK8975A(magCalibration);
