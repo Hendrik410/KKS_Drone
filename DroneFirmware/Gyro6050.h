@@ -7,7 +7,7 @@
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev/I2Cdev.h>
 
-#define USE_DMP false
+#define USE_DMP true
 
 class Gyro6050 : public Gyro
 {
@@ -28,6 +28,7 @@ protected:
 	VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements
 	VectorFloat gravity;    // [x, y, z]            gravity vector
 	float ypr[3];
+
 public:
 	explicit Gyro6050(Config* config);
 

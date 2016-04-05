@@ -32,13 +32,13 @@ bool Gyro6050::init() {
 
 	mpu.setDMPEnabled(true);
 	mpu.resetFIFO();
-#else
+#endif
+
 	float accRange[4] = { 2, 4, 8, 16 }; // g
 	float gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
 
 	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0f;
 	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0f;
-#endif
 
 	Log::info("Gyro6050", "done with init");
 
@@ -70,23 +70,32 @@ void Gyro6050::update() {
 	mpu.getFIFOBytes(fifoBuffer, mpu.dmpGetFIFOPacketSize());
 	Profiler::end();
 
-	// Gyro Werte
+	// Yaw Pitch Roll
 	mpu.dmpGetQuaternion(&q, fifoBuffer);
 	mpu.dmpGetGravity(&gravity, &q);
 	mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-	// Beschleunigung
-	mpu.dmpGetAccel(&aa, fifoBuffer);
-	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
 
 	yaw = ypr[0];
 	roll = ypr[1];
 	pitch = ypr[2];
 
-	accX = aaReal.x;
-	accY = aaReal.y;
-	accZ = aaReal.z;
+	// Beschleunigung
+	mpu.dmpGetAccel(&aa, fifoBuffer);
+	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+
+	accX = aaReal.x * accRes;
+	accY = aaReal.y * accRes;
+	accZ = aaReal.z * accRes;
+
+	// Gyro Werte
+	int16_t values[3];
+	mpu.dmpGetGyro(values, fifoBuffer);
+
+	gyroX = values[0] * gyroRes;
+	gyroY = values[1] * gyroRes;
+	gyroZ = values[2] * gyroRes;
 #else
+
 	int16_t values[6];
 	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
 
