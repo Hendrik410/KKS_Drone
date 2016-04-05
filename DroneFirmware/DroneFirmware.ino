@@ -47,6 +47,8 @@ void setup() {
 	Log::info("Boot", "Model: %s", MODEL_NAME);
 	Log::info("Boot", "Build: %s", BUILD_NAME);
 
+	ESP.eraseConfig();
+
 	// Serialnummer schreiben
 	char serialCode[32];
 	getBuildSerialCode(serialCode, sizeof(serialCode));
@@ -73,10 +75,9 @@ void setup() {
 	strncat(name, serialCode, sizeof(name));
 
 	// WiFi Einstellungen setzen
-	WiFi.persistent(false);
-	WiFi.hostname(name);
-	WiFi.setOutputPower(20.5f);
-	WiFi.setPhyMode(WIFI_PHY_MODE_11N); 
+	WiFi.hostname(name); 
+	WiFi.setOutputPower(20.5f); 
+	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
 
 	// versuchen mit dem in der Config gespeicherten AP zu verbinden
 	if (strlen(config.NetworkSSID) > 0) {
@@ -89,11 +90,7 @@ void setup() {
 			WiFi.begin(); // daher erneut probieren
 
 		// auf Verbindung warten
-		int connectStartTime = millis();
-		while (WiFi.status() != WL_CONNECTED && millis() - connectStartTime < 5000) {
-			delay(20);
-		}
-		openOwnNetwork = WiFi.status() != WL_CONNECTED;
+		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED; 
 
 		if (openOwnNetwork) {
 			Log::error("Boot", "Could not connect to the access point!");
