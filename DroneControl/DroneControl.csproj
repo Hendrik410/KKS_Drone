@@ -173,6 +173,12 @@
     <Compile Include="SensorControl.Designer.cs">
       <DependentUpon>SensorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Avionics\AvionicsInstrumentsControlsRessources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AvionicsInstrumentsControlsRessources1.Designer.cs</LastGenOutput>
@@ -222,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SensorControl.resx">
       <DependentUpon>SensorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

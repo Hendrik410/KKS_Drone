@@ -42,13 +42,14 @@
             this.ipInfoLabel = new System.Windows.Forms.Label();
             this.mainViewTabs = new System.Windows.Forms.TabControl();
             this.manualControlPage = new System.Windows.Forms.TabPage();
+            this.motorControl1 = new DroneControl.MotorControl();
             this.flightControlPage = new System.Windows.Forms.TabPage();
+            this.flightControl1 = new DroneControl.FlightControl();
+            this.sensorControl1 = new DroneControl.SensorControl();
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.motorControl1 = new DroneControl.MotorControl();
-            this.flightControl1 = new DroneControl.FlightControl();
-            this.sensorControl1 = new DroneControl.SensorControl();
+            this.settingsButton = new System.Windows.Forms.Button();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -86,6 +87,7 @@
             // 
             // dronePingSplitContainer.Panel1
             // 
+            dronePingSplitContainer.Panel1.Controls.Add(this.settingsButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.wifiRssiLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.graphsButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.debugButton);
@@ -254,6 +256,13 @@
             this.manualControlPage.Text = "Manual Control";
             this.manualControlPage.UseVisualStyleBackColor = true;
             // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(6, 3);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(364, 132);
+            this.motorControl1.TabIndex = 3;
+            // 
             // flightControlPage
             // 
             this.flightControlPage.Controls.Add(this.flightControl1);
@@ -264,6 +273,23 @@
             this.flightControlPage.TabIndex = 1;
             this.flightControlPage.Text = "Flight Control";
             this.flightControlPage.UseVisualStyleBackColor = true;
+            // 
+            // flightControl1
+            // 
+            this.flightControl1.AutoScroll = true;
+            this.flightControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flightControl1.Location = new System.Drawing.Point(3, 3);
+            this.flightControl1.Name = "flightControl1";
+            this.flightControl1.Size = new System.Drawing.Size(643, 241);
+            this.flightControl1.TabIndex = 0;
+            // 
+            // sensorControl1
+            // 
+            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
+            this.sensorControl1.Name = "sensorControl1";
+            this.sensorControl1.Size = new System.Drawing.Size(657, 405);
+            this.sensorControl1.TabIndex = 17;
             // 
             // infoTabControl
             // 
@@ -323,29 +349,15 @@
             // 
             this.timer.Enabled = true;
             // 
-            // motorControl1
+            // settingsButton
             // 
-            this.motorControl1.Location = new System.Drawing.Point(6, 3);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(364, 132);
-            this.motorControl1.TabIndex = 3;
-            // 
-            // flightControl1
-            // 
-            this.flightControl1.AutoScroll = true;
-            this.flightControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flightControl1.Location = new System.Drawing.Point(3, 3);
-            this.flightControl1.Name = "flightControl1";
-            this.flightControl1.Size = new System.Drawing.Size(643, 241);
-            this.flightControl1.TabIndex = 0;
-            // 
-            // sensorControl1
-            // 
-            this.sensorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sensorControl1.Location = new System.Drawing.Point(0, 0);
-            this.sensorControl1.Name = "sensorControl1";
-            this.sensorControl1.Size = new System.Drawing.Size(657, 405);
-            this.sensorControl1.TabIndex = 17;
+            this.settingsButton.Location = new System.Drawing.Point(360, 4);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(60, 23);
+            this.settingsButton.TabIndex = 21;
+            this.settingsButton.Text = "Settings";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // MainForm
             // 
@@ -399,5 +411,6 @@
         private System.Windows.Forms.Button debugButton;
         private System.Windows.Forms.Button graphsButton;
         private System.Windows.Forms.Label wifiRssiLabel;
+        private System.Windows.Forms.Button settingsButton;
     }
 }

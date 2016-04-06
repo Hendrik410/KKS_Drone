@@ -10,7 +10,7 @@ namespace DroneLibrary
 {
     [StructLayout(LayoutKind.Sequential, Size = 12, Pack = 0, CharSet = CharSet.Ansi)]
     [TypeConverter(typeof(DroneSettingsTypeConverter))]
-    public struct PidSettings 
+    public class PidSettings 
     {
         public float Kp;
         public float Ki;
