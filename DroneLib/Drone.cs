@@ -253,9 +253,14 @@ namespace DroneLibrary
         private Dictionary<int, long> packetSendTime = new Dictionary<int, long>();
 
         /// <summary>
-        /// Packete die noch vom Drone bestätigt werden müssen.
+        /// Pakete die noch vom Drone bestätigt werden müssen.
         /// </summary>
         private Dictionary<int, IPacket> packetsToAcknowledge = new Dictionary<int, IPacket>();
+
+        /// <summary>
+        /// EventHandler der aufgerufen werden soll, wenn ein Paket bestätigt wird.
+        /// </summary>
+        private Dictionary<int, EventHandler<IPacket>> packetAcknowlegdeEvents = new Dictionary<int, EventHandler<IPacket>>();
 
         /// <summary>
         /// Gibt zurück ob Pakete noch warten vom Drone bestätigt zu werden.
@@ -501,9 +506,9 @@ namespace DroneLibrary
         /// </summary>
         /// <param name="packet"></param>
         /// <param name="guaranteed">Ob vom Drone eine Antwort gefordert wird.</param>
-        public bool SendPacket(IPacket packet, bool guaranteed)
+        public bool SendPacket(IPacket packet, bool guaranteed, EventHandler<IPacket> handler = null)
         {
-            return SendPacket(packet, guaranteed, currentRevision++);
+            return SendPacket(packet, guaranteed, currentRevision++, handler);
         }
 
         #endregion SendShortcuts
@@ -519,7 +524,7 @@ namespace DroneLibrary
 
 #region ControlUdp
 
-        private bool SendPacket(IPacket packet, bool guaranteed, int revision)
+        private bool SendPacket(IPacket packet, bool guaranteed, int revision, EventHandler<IPacket> handler = null)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -549,6 +554,9 @@ namespace DroneLibrary
                             stopwatch.Start();
                         packetsToAcknowledge[revision] = packet;
                         packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
+
+                        if (handler != null)
+                            packetAcknowlegdeEvents[revision] = handler;
                     }
                 }
 
@@ -800,6 +808,13 @@ namespace DroneLibrary
         {
             lock(packetsToAcknowledge)
             {
+                EventHandler<IPacket> handler;
+                if (packetAcknowlegdeEvents.TryGetValue(packetID, out handler))
+                {
+                    handler(this, packetsToAcknowledge[packetID]);
+                    packetAcknowlegdeEvents.Remove(packetID);
+                }
+
                 packetsToAcknowledge.Remove(packetID);
                 packetSendTime.Remove(packetID);
             }
