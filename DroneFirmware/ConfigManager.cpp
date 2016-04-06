@@ -106,34 +106,21 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.Degree2Ratio = 0.1f;
-	config.RotationalDegree2Ratio = 0.01f;
-	config.PhysicsCalculationInterval = 20;
+	config.PitchPid.Kp = 15;
+	config.PitchPid.Ki = 10;
+	config.PitchPid.Kd = 3;
 
-	config.EngineType = EngineLinear;
+	config.RollPid.Kp = 15;
+	config.RollPid.Ki = 10;
+	config.RollPid.Kd = 3;
 
-	config.PitchPidSettings.Kp = 1;
-	config.PitchPidSettings.Ki = 0.05;
-	config.PitchPidSettings.Kd = 0.25;
-
-	config.RollPidSettings.Kp = 1;
-	config.RollPidSettings.Ki = 0.05;
-	config.RollPidSettings.Kd = 0.25;
-
-	config.YawPidSettings.Kp = 1;
-	config.YawPidSettings.Ki = 0.05;
-	config.YawPidSettings.Kd = 0.25;
-
-	config.InterpolationFactor = 0.5f;
-	config.CorrectionFactor = 0.005f;
+	config.YawPid.Kp = 10;
+	config.YawPid.Ki = 0;
+	config.YawPid.Kd = 0;
 
 	config.SafePitch = 60;
 	config.SafeRoll = 60;
 	config.SafeServoValue = 1500;
-	
-	config.RotationalCorrectionMax = 5;
-
-	config.EnableRatioSubtracting = true;
 
 	Log::info("Config", "Using default config");
 	return config;

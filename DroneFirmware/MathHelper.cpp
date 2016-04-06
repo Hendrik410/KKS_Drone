@@ -12,19 +12,6 @@ float MathHelper::clampValue(float value, float min, float max) {
 	return value;
 }
 
-float MathHelper::mapRatio(float ratio, float min, float max, float center) {
-	ratio = clampValue(ratio, -1, 1);
-
-	if(ratio == 0)
-		return center;
-
-	if(ratio > 0) {
-		return (ratio) * (max - center) + center;
-	} else {
-		return center + (center - min) * ratio;
-	}
-}
-
 float MathHelper::angleDifference(float a, float b) {
 	return (float)fmod(fmod(a - b, 360) + 540, 360) - 180;
 }
@@ -38,32 +25,14 @@ float MathHelper::fixValue(float value, float begin, float end) {
 	return value;
 }
 
-float MathHelper::mixMotor(Config* config, float pitchDelta, float rollDelta, float yawDelta, float verticalRatio, MotorPosition position, MotorRotation rotation, bool subtract) {
-	float targetMotorRatio = verticalRatio;
+float motorsPitch[] = { -1, -1, 1, 1 };
+float motorsRoll[] = { 1, -1, 1, -1 };
+float motorsYaw[] = { -1, 1, 1, -1 };
 
-	if (abs(pitchDelta) >= 0.02) {
-		if (position & Position_Front)
-			targetMotorRatio += pitchDelta * config->Degree2Ratio;
-		else
-			targetMotorRatio -= pitchDelta * config->Degree2Ratio;
-	}
-
-	if (abs(rollDelta) >= 0.02) {
-		if (position & Position_Left) 
-			targetMotorRatio -= rollDelta * config->Degree2Ratio;
-		else 
-			targetMotorRatio += rollDelta * config->Degree2Ratio;
-	}
-
-	if (abs(yawDelta) >= 0.02) {
-		if (rotation == Clockwise)
-			targetMotorRatio -= yawDelta * config->RotationalDegree2Ratio;
-		else 
-			targetMotorRatio += yawDelta * config->RotationalDegree2Ratio;
-	}
-
-	if (!subtract && targetMotorRatio < verticalRatio)
-		return verticalRatio;
-
-	return targetMotorRatio;
+float MathHelper::mixMotor(int motorIndex, float pitch, float roll, float yaw, float thrust) {
+	float value = thrust;
+	value += max(0, motorsPitch[motorIndex] * pitch);
+	value += max(0, motorsRoll[motorIndex] * roll);
+	value += max(0, motorsYaw[motorIndex] * yaw);
+	return value;
 }

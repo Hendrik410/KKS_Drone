@@ -72,16 +72,3 @@ void ServoManager::setServos(int fl, int fr, int bl, int br) {
 void ServoManager::setAllServos(int val) {
 	setServos(val, val, val, val);
 }
-
-void ServoManager::setRatio(float fl, float fr, float bl, float br) {
-	int targetFL = MathHelper::mapRatio(fl, config->ServoMin, config->ServoMax, config->ServoHover);
-	int targetFR = MathHelper::mapRatio(fr, config->ServoMin, config->ServoMax, config->ServoHover);
-	int targetBL = MathHelper::mapRatio(bl, config->ServoMin, config->ServoMax, config->ServoHover);
-	int targetBR = MathHelper::mapRatio(br, config->ServoMin, config->ServoMax, config->ServoHover);
-
-	setServos(targetFL, targetFR, targetBL, targetBR);
-}
-
-void ServoManager::setRationAll(float ratio) {
-	setRatio(ratio, ratio, ratio, ratio);
-}

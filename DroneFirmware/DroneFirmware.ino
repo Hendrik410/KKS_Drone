@@ -12,18 +12,16 @@
 #include "ConfigManager.h"
 #include "EEPROM_MemoryAdapter.h"
 #include "MemoryAdapter.h"
-#include "MotorEnums.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
 #include "ServoManager.h"
 #include "BinaryHelper.h"
 #include "LED.h"
-#include "PidDroneEngine.h"
-#include "LinearDroneEngine.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
 #include "Gyro6050.h"
 #include "Gyro9150.h"
+#include "PID.h"
 
 #define USE_GYRO9150 true
 
@@ -131,17 +129,7 @@ void setup() {
 	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);
 
-	// DroneEngine laden
-	switch(config.EngineType) {
-		case EnginePID:
-			engine = new PidDroneEngine(gyro, servos, &config);
-			break;
-		case EngineLinear:
-			engine = new LinearDroneEngine(gyro, servos, &config);
-			break;
-		default:
-			return;
-	}
+	engine = new DroneEngine(gyro, servos, &config);
 
 	// Netzwerkmanager starten
 	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);

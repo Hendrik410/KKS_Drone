@@ -1,11 +1,9 @@
-// PID.h
+// copied from https://github.com/br3ttb/Arduino-PID-Library/blob/master/PID_v1.h
+#ifndef PID_h
+#define PID_h
 
-#ifndef _PID_h
-#define _PID_h
-
-#include "Arduino.h"
-
-class PID {
+class PID
+{
 
 
 public:
@@ -35,8 +33,8 @@ public:
 
 										  //available but not commonly used functions ********************************************************
 	void SetTunings(double, double,       // * While most users will set the tunings once in the 
-					double);         	  //   constructor, this function gives the user the option
-										  //   of changing tunings during runtime for Adaptive control
+		double);         	  //   constructor, this function gives the user the option
+							  //   of changing tunings during runtime for Adaptive control
 	void SetControllerDirection(int);	  // * Sets the Direction, or "Action" of the controller. DIRECT
 										  //   means the output will increase when error is positive. REVERSE
 										  //   means the opposite.  it's very unlikely that this will be needed
@@ -78,6 +76,5 @@ private:
 	double outMin, outMax;
 	bool inAuto;
 };
-
 #endif
 

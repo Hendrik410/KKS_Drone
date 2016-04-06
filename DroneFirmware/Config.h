@@ -4,11 +4,11 @@
 #define _CONFIG_h
 
 #include "arduino.h"
-#include "PID_Settings.h"
 
-enum DroneEngineType : byte {
-	EngineLinear,
-	EnginePID
+struct PIDSettings {
+	float Kp;
+	float Ki;
+	float Kd;
 };
 
 struct Config {
@@ -64,25 +64,15 @@ struct Config {
 	//The pin of the LED
 	byte PinLed;
 
-	float Degree2Ratio;
-	float RotationalDegree2Ratio;
-
 	uint16_t PhysicsCalculationInterval;
 
-	DroneEngineType EngineType;
-
-	PID_Settings PitchPidSettings;
-	PID_Settings RollPidSettings;
-	PID_Settings YawPidSettings;
-
-	float InterpolationFactor;
-	float CorrectionFactor;
+	PIDSettings PitchPid;
+	PIDSettings RollPid;
+	PIDSettings YawPid;
 
 	float SafePitch;
 	float SafeRoll;
 	int SafeServoValue;
-
-	float RotationalCorrectionMax;
 
 	bool EnableRatioSubtracting;
 };

@@ -37,8 +37,6 @@ class ServoManager
 	void init(int pinFL, int pinFR, int pinBL, int pinBR);
 	void setServos(int fl, int fr, int bl, int br);
 	void setAllServos(int val);
-	void setRatio(float fl, float fr, float bl, float br);
-	void setRationAll(float ratio);
 
 	void handleTick();
 

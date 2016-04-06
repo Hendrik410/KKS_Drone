@@ -13,15 +13,9 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->lastMovementUpdate = 0;
 	this->lastPhysicsCalc = 0;
 
-	this->frontLeftRatio = 0;
-	this->frontRightRatio = 0;
-	this->backLeftRatio = 0;
-	this->backRightRatio = 0;
-
-	this->frontLeftCorrection = 0;
-	this->frontRightCorrection = 0;
-	this->backLeftCorrection = 0;
-	this->backRightCorrection = 0;
+	this->pitchPID = createPID(config->PitchPid, &pitchOutput);
+	this->rollPID = createPID(config->RollPid, &rollOutput);
+	this->yawPID = createPID(config->YawPid, &yawOutput);
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
@@ -29,6 +23,13 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	_state = StateReset;
 	_stopReason = None;
 	servos->setAllServos(config->ServoMin);
+}
+
+PID* DroneEngine::createPID(PIDSettings settings, double* output) {
+	PID* pid = new PID(&pidInput, output, &pidSetpoint, settings.Kp, settings.Ki, settings.Kd, DIRECT);
+	pid->SetMode(AUTOMATIC);
+	pid->SetOutputLimits(-300, 300);
+	return pid;
 }
 
 
@@ -57,11 +58,6 @@ void DroneEngine::fly() {
 	// oder nicht Armed
 	if (_state != StateArmed)
 		return;
-
-	frontLeftRatio = 0;
-	frontRightRatio = 0;
-	backLeftRatio = 0;
-	backRightRatio = 0;
 
 	_state = StateFlying;
 	Log::info("Engine", "Flying");
@@ -109,14 +105,33 @@ void DroneEngine::handle() {
 				return;
 			}
 
-			if (millis() - lastPhysicsCalc >= config->PhysicsCalculationInterval) {
-				handleInternal();
-				lastPhysicsCalc = millis();
-			}
+			handleInternal();
 		}
 	}
 	Profiler::end();
 }
+
+void DroneEngine::handleInternal() {
+	float values[4];
+
+	calculatePID(pitchPID, gyro->getPitch(), targetPitch);
+	calculatePID(rollPID, gyro->getRoll(), targetRoll);
+	calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
+
+	float thrust = targetVerticalSpeed * 100;
+
+	for (int i = 0; i < 4; i++)
+		values[i] = MathHelper::clampValue(config->ServoHover + MathHelper::mixMotor(i, pitchOutput, rollOutput, yawOutput, thrust), config->ServoMin, config->ServoMax);
+
+	servos->setServos(values[0], values[1], values[2], values[3]);
+}
+
+void DroneEngine::calculatePID(PID* pid, float input, float setpoint) {
+	this->pidInput = input;
+	this->pidSetpoint = setpoint;
+	pid->Compute();
+}
+
 
 void DroneEngine::setRawServoValues(int fl, int fr, int bl, int br) const {
 	if(_state == StateArmed)
@@ -130,8 +145,6 @@ void DroneEngine::setRawServoValues(int all) const {
 void DroneEngine::heartbeat() {
 	lastHeartbeat = millis();
 }
-
-/*################## Getter and Setter ####################*/
 
 DroneState DroneEngine::state() const {
 	return _state;
@@ -163,10 +176,10 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpe
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen
-	targetPitch = MathHelper::fixValue(MathHelper::clampValue(pitch, -maxTilt, maxTilt), -90, 90);
-	targetRoll = MathHelper::fixValue(MathHelper::clampValue(roll, -maxTilt, maxTilt), -90, 90);
+	targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
+	targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
 	targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
-	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 1);
+	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 20);
 
 	// in den Fliegen Modus gehen
 	fly();
@@ -187,36 +200,4 @@ float DroneEngine::getTargetRotationalSpeed() const {
 
 float DroneEngine::getTargetVerticalSpeed() const {
 	return targetVerticalSpeed;
-}
-
-float DroneEngine::getFrontLeftRatio() const {
-	return frontLeftRatio;
-}
-
-float DroneEngine::getFrontRightRatio() const {
-	return frontRightRatio;
-}
-
-float DroneEngine::getBackLeftRatio() const {
-	return backLeftRatio;
-}
-
-float DroneEngine::getBackRightRatio() const {
-	return backRightRatio;
-}
-
-float DroneEngine::getFrontLeftCorrection() const {
-	return frontLeftCorrection;
-}
-
-float DroneEngine::getFrontRightCorrection() const {
-	return frontRightCorrection;
-}
-
-float DroneEngine::getBackLeftCorrection() const {
-	return backLeftCorrection;
-}
-
-float DroneEngine::getBackRightCorrection() const {
-	return backRightCorrection;
 }

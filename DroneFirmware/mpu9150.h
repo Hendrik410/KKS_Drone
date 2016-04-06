@@ -240,8 +240,8 @@ protected:
 	// In any case, this is the free parameter in the Madgwick filtering and fusion scheme.
 	float beta = sqrt(3.0f / 4.0f) * GyroMeasError;   // compute beta
 	float zeta = sqrt(3.0f / 4.0f) * GyroMeasDrift;   // compute zeta, the other free parameter in the Madgwick scheme usually set to a small or zero value
-	#define Kp 2.0f * 5.0f // these are the free parameters in the Mahony filter and fusion scheme, Kp for proportional feedback, Ki for integral
-	#define Ki 0.0f
+	#define MPU_Kp 2.0f * 5.0f // these are the free parameters in the Mahony filter and fusion scheme, Kp for proportional feedback, Ki for integral
+	#define MPU_Ki 0.0f
 
 	uint32_t mcount = 0; // used to control magnetometer read rate
 	uint32_t MagRate;    // read rate for magnetometer data
@@ -1013,7 +1013,7 @@ public:
 		ex = (ay * vz - az * vy) + (my * wz - mz * wy);
 		ey = (az * vx - ax * vz) + (mz * wx - mx * wz);
 		ez = (ax * vy - ay * vx) + (mx * wy - my * wx);
-		if (Ki > 0.0f)
+		if (MPU_Ki > 0.0f)
 		{
 			eInt[0] += ex;      // accumulate integral error
 			eInt[1] += ey;
@@ -1027,9 +1027,9 @@ public:
 		}
 
 		// Apply feedback terms
-		gx = gx + Kp * ex + Ki * eInt[0];
-		gy = gy + Kp * ey + Ki * eInt[1];
-		gz = gz + Kp * ez + Ki * eInt[2];
+		gx = gx + MPU_Kp * ex + MPU_Ki * eInt[0];
+		gy = gy + MPU_Kp * ey + MPU_Ki * eInt[1];
+		gz = gz + MPU_Kp * ez + MPU_Ki * eInt[2];
 
 		// Integrate rate of change of quaternion
 		pa = q2;

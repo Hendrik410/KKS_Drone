@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Diagnostics;
 using DroneLibrary;
 
 namespace DroneControl
@@ -80,6 +74,7 @@ namespace DroneControl
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.Clear(Color.White);
 
             Font font = new Font(FontFamily.GenericSansSerif, 14);
@@ -105,10 +100,12 @@ namespace DroneControl
             if (!DesignMode && History != null)
             {
                 Pen pen = new Pen(Color.Black);
+
                 int lastY = 0;
                 for (int i = 0; i < History.ValueCount; i++)
                 {
                     int y = ConvertValue(History[i]);
+
                     if (i == 0)
                         e.Graphics.DrawLine(pen, 0, y, 0, y);
                     else

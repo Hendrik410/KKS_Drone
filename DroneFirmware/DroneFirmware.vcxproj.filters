@@ -42,9 +42,6 @@
     <ClInclude Include="ServoManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MotorEnums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,26 +72,14 @@
     <ClInclude Include="MathHelper.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="PID.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="BinaryHelper.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="DroneEngine.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="PidDroneEngine.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="PID_Settings.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="VoltageInputReader.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearDroneEngine.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="LED.h">
       <Filter>Header Files</Filter>
@@ -113,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="mpu9150.h">
       <Filter>Header Files\mpu9150</Filter>
+    </ClInclude>
+    <ClInclude Include="PID.h">
+      <Filter>Header Files\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,16 +125,10 @@
     <ClCompile Include="MathHelper.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="PID.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="DroneEngine.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="BinaryHelper.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="PidDroneEngine.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="VoltageInputReader.cpp">
@@ -161,12 +143,6 @@
     <ClCompile Include="EEPROM_MemoryAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinearDroneEngine.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="PID_Settings.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -175,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Gyro9150.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PID.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

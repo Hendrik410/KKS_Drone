@@ -3,8 +3,6 @@
 #ifndef _DRONEENGINE_h
 #define _DRONEENGINE_h
 
-
-#ifdef _VSARDUINO_H_ //Kompatibilität mit visual micro
 #include "arduino.h"
 #include "ServoManager.h"
 #include "Gyro.h"
@@ -13,18 +11,7 @@
 #include "LED.h"
 #include "StopReason.h"
 #include "Profiler.h"
-
-#define byte unsigned char
-#else
-#include "arduino.h"
-#include "ServoManager.h"
-#include "Gyro.h"
-#include "MathHelper.h"
-#include "Log.h"
-#include "LED.h"
-#include "StopReason.h"
-#include "Profiler.h"
-#endif
+#include "PID.h"
 
 enum DroneState {
 	StateUnkown,
@@ -47,7 +34,6 @@ class DroneEngine
 
  protected:
 	 Config* config;
-	 
 
 	 DroneState _state;
 	 StopReason _stopReason;
@@ -60,15 +46,21 @@ class DroneEngine
 	 float targetRotationalSpeed;
 	 float targetVerticalSpeed;
 
-	 float frontLeftRatio;
-	 float frontRightRatio;
-	 float backLeftRatio;
-	 float backRightRatio;
+	 double pidInput;
+	 double pidSetpoint;
+	 
+	 double pitchOutput;
+	 double rollOutput;
+	 double yawOutput;
+	 
+	 PID* pitchPID;
+	 PID* rollPID;
+	 PID* yawPID;
 
-	 float frontLeftCorrection;
-	 float frontRightCorrection;
-	 float backLeftCorrection;
-	 float backRightCorrection;
+	 PID* createPID(PIDSettings settings, double* output);
+
+	 void calculatePID(PID* pid, float input, float setpoint);
+	 float getMotor(int motorIndex, float* values);
 
  public:
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
@@ -83,7 +75,7 @@ class DroneEngine
 	StopReason getStopReason() const;
 	
 	void handle();
-	virtual void handleInternal() = 0;
+	void handleInternal();
 
 	void heartbeat();
 
@@ -102,16 +94,6 @@ class DroneEngine
 	float getTargetRoll() const;
 	float getTargetRotationalSpeed() const;
 	float getTargetVerticalSpeed() const;
-
-	float getFrontLeftRatio() const;
-	float getFrontRightRatio() const;
-	float getBackLeftRatio() const;
-	float getBackRightRatio() const;
-
-	float getFrontLeftCorrection() const;
-	float getFrontRightCorrection() const;
-	float getBackLeftCorrection() const;
-	float getBackRightCorrection() const;
 };
 
 #endif

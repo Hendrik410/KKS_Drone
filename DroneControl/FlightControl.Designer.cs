@@ -281,7 +281,7 @@
             131072});
             this.thrustPositiveNumeric.Location = new System.Drawing.Point(307, 79);
             this.thrustPositiveNumeric.Maximum = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -289,10 +289,10 @@
             this.thrustPositiveNumeric.Size = new System.Drawing.Size(47, 20);
             this.thrustPositiveNumeric.TabIndex = 37;
             this.thrustPositiveNumeric.Value = new decimal(new int[] {
-            5,
+            4,
             0,
             0,
-            65536});
+            0});
             this.thrustPositiveNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
             // deadZoneCheckBox

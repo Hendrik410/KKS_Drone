@@ -372,16 +372,6 @@ void NetworkManager::sendLog(WiFiUDP udp) {
 void NetworkManager::sendDebugData(WiFiUDP udp) {
 	writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
-	writeBuffer->write(engine->getFrontLeftRatio());
-	writeBuffer->write(engine->getFrontRightRatio());
-	writeBuffer->write(engine->getBackLeftRatio());
-	writeBuffer->write(engine->getBackRightRatio());
-
-	writeBuffer->write(engine->getFrontLeftCorrection());
-	writeBuffer->write(engine->getFrontRightCorrection());
-	writeBuffer->write(engine->getBackLeftCorrection());
-	writeBuffer->write(engine->getBackRightCorrection());
-
 	Profiler::write(writeBuffer);
 
 	sendData(udp);

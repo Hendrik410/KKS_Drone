@@ -98,37 +98,14 @@ namespace DroneLibrary
         [Description("The pin of the LED")]
         public byte PinLed;
 
-        [Category("Flying")]
-        [Description("Value for the conversion between degree and ratio")]
-        public float Degree2Ratio;
-
-        [Category("Flying")]
-        [Description("Value for the conversion between rotational degree and ratio")]
-        public float RotationalDegree2Ratio;
-
-        [Category("Flying")]
-        [Description("Interval between the physics calculations")]
-        public ushort PhysicsCalculationInterval;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Flying")]
-        [Description("Type of the drone engine to use")]
-        public EngineType EngineType;
+        [Category("PID Flying")]
+        public PidSettings PitchPid;
 
         [Category("PID Flying")]
-        public PidSettings PitchPidSettings;
+        public PidSettings RollPid;
 
         [Category("PID Flying")]
-        public PidSettings RollPidSettings;
-
-        [Category("PID Flying")]
-        public PidSettings YawPidSettings;
-
-        [Category("Linear Flying")]
-        public float InterpolationFactor;
-
-        [Category("Linear Flying")]
-        public float CorrectionFactor;
+        public PidSettings YawPid;
 
         [Category("Flying")]
         public float SafePitch;
@@ -138,14 +115,6 @@ namespace DroneLibrary
 
         [Category("Flying")]
         public int SafeServoValue;
-
-        [Category("Linear Flying")]
-        public float RotationalCorrectionMax;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Linear Flying")]
-        [Description("Enables or disables the ratio subtracting")]
-        public bool EnableRatioSubtracting;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

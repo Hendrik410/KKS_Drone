@@ -61,12 +61,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="DroneSettingsTypeConverter.cs" />
     <Compile Include="DroneState.cs" />
-    <Compile Include="EngineType.cs" />
     <Compile Include="GyroData.cs" />
     <Compile Include="InfoChangedEventArgs.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogLevel.cs" />
-    <Compile Include="MotorRatios.cs" />
     <Compile Include="NetworkHelper.cs" />
     <Compile Include="NetworkStatistics.cs" />
     <Compile Include="PacketBuffer.cs" />

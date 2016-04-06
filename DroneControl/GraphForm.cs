@@ -23,14 +23,10 @@ namespace DroneControl
             this.Drone = drone;
             this.Drone.OnSettingsChange += Drone_OnSettingsChange;
             this.Drone.OnDataChange += Drone_OnDataChange;
-            this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
 
             this.FlightControl = flightControl;
 
             UpdateSettings(Drone.Settings);
-
-            ratiosGraph.ValueMin = -1;
-            ratiosGraph.ValueMax = 1;
 
             orientationGraphList.ValueMinimums = new double[] { -90, -90, 0 };
             orientationGraphList.ValueMaximums = new double[] { 90, 90, 360 };
@@ -48,7 +44,6 @@ namespace DroneControl
             {
                 this.Drone.OnSettingsChange -= Drone_OnSettingsChange;
                 this.Drone.OnDataChange -= Drone_OnDataChange;
-                this.Drone.OnDebugDataChange -= Drone_OnDebugDataChange;
             }
             base.OnFormClosed(e);
         }
@@ -86,50 +81,9 @@ namespace DroneControl
             accelerationGraphList.UpdateValue(e.Data.Gyro.AccelerationX, e.Data.Gyro.AccelerationY, e.Data.Gyro.AccelerationZ);
         }
 
-        private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
-                return;
-            }
-
-            if (Drone.Data.State == DroneState.Armed || Drone.Data.State == DroneState.Flying)
-            {
-                UpdateGraph(ratiosGraph, e.DebugData.Real);
-                UpdateGraph(correctionGraph, e.DebugData.Correction);
-            }
-        }
-
-        private void FlightControl_OnRatioChanged(object sender, MotorRatios e)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<MotorRatios>(FlightControl_OnRatioChanged), sender, e);
-                return;
-            }
-
-            // nur Werte zeigen, wenn die Drohne keinen echten Werte berechnet und ausführt
-            if (Drone.Data.State != DroneState.Armed && Drone.Data.State != DroneState.Flying)
-            {
-                UpdateGraph(ratiosGraph, e);
-                UpdateGraph(correctionGraph, new MotorRatios());
-            }
-        }
-
-        private void UpdateGraph(QuadGraphControl graph, MotorRatios values)
-        {
-            graph.UpdateValues(values.FrontLeft, values.FrontRight, values.BackLeft, values.BackRight);
-        }
-
         private void UpdateGraph(QuadGraphControl graph, QuadMotorValues values)
         {
             graph.UpdateValues(values.FrontLeft, values.FrontRight, values.BackLeft, values.BackRight);
-        }
-
-        private void motorTabPage_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

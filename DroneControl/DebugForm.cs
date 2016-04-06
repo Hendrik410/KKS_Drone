@@ -37,18 +37,6 @@ namespace DroneControl
 
         private void UpdateDebugData(DebugData data)
         {
-            ratioDataLabel.Text = string.Format("FL: {0}\nFR: {1}\nBL: {2}\nBR: {3}",
-                Formatting.FormatRatio(data.Real.FrontLeft),
-                Formatting.FormatRatio(data.Real.FrontRight),
-                Formatting.FormatRatio(data.Real.BackLeft),
-                Formatting.FormatRatio(data.Real.BackRight));
-
-            correctionDataLabel.Text = string.Format("FL: {0:0.00}\nFR: {1:0.00}\nBL: {2:0.00}\nBR: {3:0.00}",
-                Formatting.FormatRatio(data.Correction.FrontLeft),
-                Formatting.FormatRatio(data.Correction.FrontRight),
-                Formatting.FormatRatio(data.Correction.BackLeft),
-                Formatting.FormatRatio(data.Correction.BackRight));
-
             StringBuilder profilerString = new StringBuilder();
 
             for (int i = 0; i < data.Profiler.Entries.Length; i++)
