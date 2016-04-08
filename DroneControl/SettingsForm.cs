@@ -139,5 +139,10 @@ namespace DroneControl
                 ignoreChange = false;
             }
         }
+
+        private void updateFirmwareButton_Click(object sender, EventArgs e)
+        {
+            new UpdateOTAForm(drone).Show(this);
+        }
     }
 }

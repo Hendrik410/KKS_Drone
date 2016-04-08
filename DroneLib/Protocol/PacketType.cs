@@ -20,6 +20,10 @@
         Reset = 13,
 
         SetConfig = 14,
-        ClearStatus = 15
+        ClearStatus = 15,
+
+        BeginOTA = 16,
+        DataOTA = 17,
+        EndOTA = 18
     }
 }

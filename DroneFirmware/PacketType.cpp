@@ -41,6 +41,12 @@ const char* getControlPacketName(ControlPacketType type) {
 		return "SetConfig";
 	case ClearStatus:
 		return "ClearStatus";
+	case BeginOTA:
+		return "BeginOTA";
+	case DataOTA:
+		return "DataOTA";
+	case EndOTA:
+		return "EndOTA";
 	}
 }
 

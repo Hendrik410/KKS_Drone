@@ -16,6 +16,7 @@
 enum DroneState {
 	StateUnkown,
 	StateReset,
+	StateOTA,
 	StateStopped,
 	StateIdle,
 	StateArmed,
@@ -70,6 +71,9 @@ class DroneEngine
 	void fly();
 	void stop(StopReason reason);
 	void clearStatus();
+	
+	bool beginOTA();
+	void endOTA();
 
 	DroneState state() const;
 	StopReason getStopReason() const;

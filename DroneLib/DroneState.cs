@@ -10,6 +10,7 @@ namespace DroneLibrary
     {
         Unkown,
         Reset,
+        OTA,
         Stopped,
         Idle,
         Armed,

@@ -64,6 +64,9 @@ void DroneEngine::fly() {
 }
 
 void DroneEngine::stop(StopReason reason) {
+	if (_state == StateOTA)
+		return;
+
 	disarm();
 
 	_stopReason = reason;
@@ -80,6 +83,24 @@ void DroneEngine::clearStatus() {
 	if (_state == StateReset || _state == StateStopped) {
 		_state = StateIdle;
 		Log::info("Engine", "Status cleared");
+	}
+}
+
+bool DroneEngine::beginOTA() {
+	if (_state != StateFlying) {
+		disarm();
+
+		_state = StateOTA;
+		Log::info("Engine", "Now in OTA state");
+		return true;
+	}
+	return false;
+}
+
+void DroneEngine::endOTA() {
+	if (_state == StateOTA) {
+		_state = StateIdle;
+		Log::info("Engine", "Stopped OTA state");
 	}
 }
 

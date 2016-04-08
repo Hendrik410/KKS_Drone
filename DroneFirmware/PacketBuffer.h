@@ -60,6 +60,8 @@ public:
 	void read(uint8_t* buffer, int length, int offset);
 	void read(char* buffer, int length, int offset);
 
+	uint8_t* getBufferRegion(int size);
+
 	char* readString();
 
 	void write(bool value);

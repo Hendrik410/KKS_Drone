@@ -152,7 +152,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
 
 	
-	if (ackRequested)
+	if (ackRequested && type != DataOTA) // DataOTA sendet selber Ack
 		sendAck(udp, revision);
 
 
@@ -166,8 +166,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		float thrust = readBuffer->readFloat();
 
 		engine->setTargetMovement(pitch, roll, rotationalSpeed, thrust);
+		break;
 	}
-	break;
+						 
 	case RawSetPacket: {
 		uint16_t fl = readBuffer->readUint16();
 		uint16_t fr = readBuffer->readUint16();
@@ -251,7 +252,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		sendPacket(udp);
 		break;
 	}
-						
+
 	case SubscribeDataFeed:
 		_dataFeedSubscriptor = udp.remoteIP();
 		_dataFeedSubscribed = true;
@@ -284,10 +285,64 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::setPrintToSerial(config->VerboseSerialLog);
 
 		ConfigManager::saveConfig(*config);
-		}
 		break;
+	}
 	case ClearStatus:
 		engine->clearStatus();
+		break;
+
+	case BeginOTA: {
+		char* md5 = readBuffer->readString();
+		int32_t size = readBuffer->readInt32();
+
+		if (!engine->beginOTA())
+			return;
+
+		Log::info("Network", "OTA begin with size %d and md5 %s", size, md5);
+
+		if (!Update.begin(size, U_FLASH)) {
+			Log::error("Network", "OTA begin failed (not enough space)");
+			engine->endOTA();
+			return;
+		}
+
+		//Update.setMD5(md5);
+		break;
+	}
+	case DataOTA: {
+		if (engine->state() != StateOTA) {
+			sendAck(udp, revision);
+			return;
+		}
+		int32_t chunkSize = readBuffer->readInt32();
+		uint8_t dataHash = readBuffer->readUint8();
+
+		uint8_t* data = readBuffer->getBufferRegion(chunkSize);
+
+		uint8_t hash = 0;
+		for (int32_t i = 0; i < chunkSize; i++)
+			hash ^= data[i];
+
+		if (hash != dataHash) {
+			Log::error("Network", "OTA data failed (wrong hash");
+			return;
+		}
+
+		Update.write(data, chunkSize);
+		sendAck(udp, revision);
+		break;
+	}
+	case EndOTA:
+		if (engine->state() == StateOTA) {
+			engine->endOTA();
+			if (Update.end(!readBuffer->readBoolean())) {
+				Log::info("Network", "OTA update done");
+				ESP.restart();
+				return;
+			}
+
+			Log::error("Network", "OTA update failed (%d)", Update.getError());
+		}
 		break;
 	}
 }
@@ -299,7 +354,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	Profiler::begin("handleData()");
 	sendDroneData(udp);
 
-	if (tickCount % 4 == 0)
+    if (tickCount % 4 == 0)
 		sendLog(udp);
 
 	Profiler::end();
@@ -350,6 +405,9 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 }
 
 void NetworkManager::sendLog(WiFiUDP udp) {
+	if (Log::getBuffer() == NULL)
+		return;
+
 	while (Log::getBufferLines() > 0) {
 		writeDataHeader(dataUDP, dataRevision++, DataLog);
 

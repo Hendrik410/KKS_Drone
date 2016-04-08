@@ -145,6 +145,10 @@ void PacketBuffer::read(char* buffer, int length, int offset) {
 	memcpy(dest, source, length);
 }
 
+uint8_t* PacketBuffer::getBufferRegion(int size) {
+	return this->data + addAndAssertPosition(size);
+}
+
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
 

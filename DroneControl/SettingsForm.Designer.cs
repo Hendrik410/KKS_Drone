@@ -193,6 +193,7 @@
             this.updateFirmwareButton.TabIndex = 10;
             this.updateFirmwareButton.Text = "Update Firmware";
             this.updateFirmwareButton.UseVisualStyleBackColor = true;
+            this.updateFirmwareButton.Click += new System.EventHandler(this.updateFirmwareButton_Click);
             // 
             // firmwareVersionLabel
             // 

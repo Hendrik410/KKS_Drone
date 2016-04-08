@@ -143,8 +143,11 @@ void setup() {
 void loop() {
 	Profiler::begin("loop()");
 	
-	gyro->update();
-	engine->handle();
+	if (engine->state() != StateOTA)
+	{
+		gyro->update();
+		engine->handle();
+	}
 	handleBlink();
 
 	if (engine->state() == StateArmed)

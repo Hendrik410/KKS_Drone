@@ -32,6 +32,10 @@ enum ControlPacketType : byte {
 
 	SetConfig = 14,
 	ClearStatus = 15,
+
+	BeginOTA = 16,
+	DataOTA = 17,
+	EndOTA = 18
 };
 
 enum DataPacketType : byte {

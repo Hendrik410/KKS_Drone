@@ -56,6 +56,7 @@
     <Compile Include="DroneEntry.cs" />
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneListChangedEventArgs.cs" />
+    <Compile Include="DroneOTA.cs" />
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
     <Compile Include="Config.cs" />
@@ -75,7 +76,10 @@
     <Compile Include="Protocol\HelloPacketType.cs" />
     <Compile Include="Protocol\IPacket.cs" />
     <Compile Include="Protocol\PacketArm.cs" />
+    <Compile Include="Protocol\PacketEndOTA.cs" />
+    <Compile Include="Protocol\PacketDataOTA.cs" />
     <Compile Include="Protocol\PacketCalibrateGyro.cs" />
+    <Compile Include="Protocol\PacketBeginOTA.cs" />
     <Compile Include="Protocol\PacketSetConfig.cs" />
     <Compile Include="Protocol\PacketInfo.cs" />
     <Compile Include="Protocol\PacketPing.cs" />

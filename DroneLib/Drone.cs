@@ -13,7 +13,7 @@ using DroneLibrary.Protocol;
 namespace DroneLibrary
 {
     /// <summary>
-    /// Stellt eine Drone dar.
+    /// Stellt eine Drohne dar.
     /// </summary>
     public class Drone : IDisposable
     {
@@ -24,7 +24,7 @@ namespace DroneLibrary
         private Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
-        /// Gibt die letzte Paketumlaufzeit an die von der Drone erfasst zurück. 
+        /// Gibt die letzte Paketumlaufzeit an die von der Drohne erfasst zurück. 
         /// Der Wert ist -1 wenn noch kein Ping-Wert emfangen wurde.
         /// </summary>
         public int Ping
@@ -49,9 +49,14 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Wird aufgerufen wenn die Drone verbunden ist.
+        /// Wird aufgerufen wenn die Drohne verbunden ist.
         /// </summary>
         public event EventHandler OnConnected;
+
+        /// <summary>
+        /// Wird aufgerufen wenn die Verbindung zur Drohne verloren gehen.
+        /// </summary>
+        public event EventHandler OnDisconnect;
 
         /// <summary>
         /// Wird aufgerufen wenn sich der Ping-Wert ändert.
@@ -59,32 +64,32 @@ namespace DroneLibrary
         public event EventHandler<PingChangedEventArgs> OnPingChange;
 
         /// <summary>
-        /// Wird aufgerufen wenn die Drone eine Log Nachricht schickt.
+        /// Wird aufgerufen wenn die Drohne eine Log Nachricht schickt.
         /// </summary>
         public event Action<String> OnLogMessage;
 
         /// <summary>
-        /// Gibt die aktuelle Revision der Daten an die zu der Drone geschickt wurden.
+        /// Gibt die aktuelle Revision der Daten an die zu der Drohne geschickt wurden.
         /// </summary>
         private int currentRevision = 1;
 
         /// <summary>
-        /// Gibt die letzte Revision der Daten an die von der Drone geschickt wurden.
+        /// Gibt die letzte Revision der Daten an die von der Drohne geschickt wurden.
         /// </summary>
         private int lastDataDroneRevision = 0;
 
         /// <summary>
-        /// Gibt die letzte Revision der Daten an die von der Drone mit Log Daten geschickt wurden.
+        /// Gibt die letzte Revision der Daten an die von der Drohne mit Log Daten geschickt wurden.
         /// </summary>
         private int lastDataLogRevision = 0;
 
         /// <summary>
-        /// Gibt die letzte Revision der Daten an die von der Drone mit Debug Daten geschickt wurden.
+        /// Gibt die letzte Revision der Daten an die von der Drohne mit Debug Daten geschickt wurden.
         /// </summary>
         private int lastDataDebugRevision = 0;
 
         /// <summary>
-        /// Gibt die IPAdress der Drone zurück.
+        /// Gibt die IPAdress der Drohne zurück.
         /// </summary>
         public IPAddress Address { get; private set; }
 
@@ -97,7 +102,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Wrid aufgerufen, wenn sich die aktuellen Daten der Drone ändern.
+        /// Wrid aufgerufen, wenn sich die aktuellen Daten der Drohne ändern.
         /// </summary>
         public event EventHandler<DataChangedEventArgs> OnDataChange;
 
@@ -106,7 +111,7 @@ namespace DroneLibrary
         private DroneData data;
 
         /// <summary>
-        /// Gibt aktuelle Daten über das Verhalten der Drone zurück.
+        /// Gibt aktuelle Daten über das Verhalten der Drohne zurück.
         /// </summary>
         public DroneData Data
         {
@@ -308,8 +313,12 @@ namespace DroneLibrary
                 lastDataDebugRevision = 0;
 
                 // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
-                packetsToAcknowledge.Clear();
-                packetSendTime.Clear();
+                lock (packetsToAcknowledge)
+                {
+                    packetsToAcknowledge.Clear();
+                    packetSendTime.Clear();
+                    packetAcknowlegdeEvents.Clear();
+                }
 
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
@@ -363,14 +372,17 @@ namespace DroneLibrary
         /// <returns>Gibt true zurück, wenn Pakete gesendet wurden.</returns>
         public bool ResendPendingPackets()
         {
-            lock (packetsToAcknowledge)
+            lock (controlSocket)
             {
-                bool anyDataSent = false;
-                KeyValuePair<int, IPacket>[] packets = packetsToAcknowledge.ToArray();
-                foreach (KeyValuePair<int, IPacket> packet in packets)
-                    if (stopwatch.ElapsedMilliseconds - packetSendTime[packet.Key] > Math.Max(Ping, Config.AcknowlegdeTime)) // ist das Paket alt genug zum neusenden?
-                        anyDataSent |= SendPacket(packet.Value, true, packet.Key);
-                return anyDataSent;
+                lock (packetsToAcknowledge)
+                {
+                    bool anyDataSent = false;
+                    KeyValuePair<int, IPacket>[] packets = packetsToAcknowledge.ToArray();
+                    foreach (KeyValuePair<int, IPacket> packet in packets)
+                        if (stopwatch.ElapsedMilliseconds - packetSendTime[packet.Key] > Math.Max(Ping, Config.AcknowlegdeTime)) // ist das Paket alt genug zum neusenden?
+                            anyDataSent |= SendPacket(packet.Value, true, packet.Key);
+                    return anyDataSent;
+                }
             }
         }
 
@@ -389,6 +401,9 @@ namespace DroneLibrary
                 Log.Warning("Lost connection, no data receied");
                 Ping = -1;
             }
+            if (!IsConnected)
+                OnDisconnect?.Invoke(this, EventArgs.Empty);
+
             return IsConnected;
         }
 
@@ -402,10 +417,10 @@ namespace DroneLibrary
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            CheckConnection();
-
             if (!stopwatch.IsRunning)
                 stopwatch.Start();
+
+            CheckConnection();
 
             SendPacket(new PacketPing(stopwatch.ElapsedMilliseconds), false);
         }
@@ -806,18 +821,23 @@ namespace DroneLibrary
         /// <param name="packetID"></param>
         private void RemovePacketToAcknowlegde(int packetID)
         {
-            lock(packetsToAcknowledge)
+            EventHandler<IPacket> handler = null;
+            IPacket packet = null;
+            lock (controlSocket)
             {
-                EventHandler<IPacket> handler;
-                if (packetAcknowlegdeEvents.TryGetValue(packetID, out handler))
+                lock (packetsToAcknowledge)
                 {
-                    handler(this, packetsToAcknowledge[packetID]);
-                    packetAcknowlegdeEvents.Remove(packetID);
+                    if (packetAcknowlegdeEvents.TryGetValue(packetID, out handler))
+                    {
+                        packet = packetsToAcknowledge[packetID];
+                        packetAcknowlegdeEvents.Remove(packetID);
+                    }
+                    packetsToAcknowledge.Remove(packetID);
+                    packetSendTime.Remove(packetID);
                 }
-
-                packetsToAcknowledge.Remove(packetID);
-                packetSendTime.Remove(packetID);
             }
+            if (handler != null)
+                handler(this, packet);
         }
     }
 }
