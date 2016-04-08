@@ -247,6 +247,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 
+		writeBuffer->writeString(gyro->name());
+		writeBuffer->writeString(gyro->magnetometerName());
+
 		writeBuffer->write((uint8_t*)config, sizeof(Config));
 
 		sendPacket(udp);

@@ -23,8 +23,6 @@
 #include "Gyro9150.h"
 #include "PID.h"
 
-#define USE_GYRO9150 true
-
 Config config;
 
 VoltageInputReader* voltageReader;
@@ -113,18 +111,17 @@ void setup() {
 
 
 	// Gyro Sensor initialisieren
-#if USE_GYRO9150
 	gyro = new Gyro9150(&config);
 	if (!gyro->init()) { // Gyro9150 Init fehlgeschlagen
 		delete gyro;
-#endif
 
 		// versuchen Gyro6050 zu initalisieren
 		gyro = new Gyro6050(&config);
 		gyro->init();
-#if USE_GYRO9150
 	}
-#endif
+
+	Log::info("Boot", "Gyro sensor: \"%s\"", gyro->name());
+	Log::info("Boot", "Magnetometer: \"%s\"", gyro->magnetometerName());
 
 	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);

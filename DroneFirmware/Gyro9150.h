@@ -15,6 +15,9 @@ protected:
 public:
 	explicit Gyro9150(Config* config);
 
+	char* name();
+	char* magnetometerName();
+
 	bool init();
 	void update();
 	void reset();

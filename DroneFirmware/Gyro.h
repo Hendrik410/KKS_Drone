@@ -47,6 +47,9 @@ class Gyro
  public:
 	explicit Gyro(Config* config);
 
+	virtual char* name() = 0;
+	virtual char* magnetometerName() = 0;
+
 	virtual bool init() = 0;
 	virtual void update() = 0;
 	virtual void reset() = 0;

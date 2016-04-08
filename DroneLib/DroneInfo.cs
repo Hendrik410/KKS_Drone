@@ -57,6 +57,12 @@ namespace DroneLibrary
         [Category("Debug")]
         public StopReason StopReason { get; private set; }
 
+        [Category("Drone")]
+        public string GyroSensor { get; private set; }
+
+        [Category("Drone")]
+        public string Magnetometer { get; private set; }
+
         public DroneInfo(PacketBuffer buffer)
         {
             Name = buffer.ReadString();
@@ -74,6 +80,9 @@ namespace DroneLibrary
                 ResetException = ResetException.None;
 
             StopReason = (StopReason)buffer.ReadByte();
+
+            GyroSensor = buffer.ReadString();
+            Magnetometer = buffer.ReadString();
         }
 
         public static bool operator ==(DroneInfo a, DroneInfo b)

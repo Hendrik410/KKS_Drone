@@ -3,6 +3,16 @@
 Gyro6050::Gyro6050(Config* config) : Gyro(config) {
 }
 
+char* Gyro6050::name() {
+	if (mpuOK)
+		return "InvenSense MPU-6050";
+	return "";
+}
+
+char* Gyro6050::magnetometerName() {
+	return "";
+}
+
 bool Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 

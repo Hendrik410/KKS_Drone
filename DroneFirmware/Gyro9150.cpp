@@ -3,6 +3,18 @@
 Gyro9150::Gyro9150(Config* config) : Gyro(config) {
 }
 
+char* Gyro9150::name() {
+	if (mpuOK)
+		return "InvenSense MPU-9150";
+	return "";
+}
+
+char* Gyro9150::magnetometerName() {
+	if (mpuOK) 
+		return "AKM AK8975A";
+	return "";
+}
+
 bool Gyro9150::init() {
 	Log::info("Gyro9150", "init()");
 
