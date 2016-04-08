@@ -34,6 +34,8 @@ protected:
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
 
+	bool saveConfig;
+
 	uint64_t tickCount;
 
 	DroneState lastState;

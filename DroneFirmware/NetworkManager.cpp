@@ -17,6 +17,8 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 
 	tickCount = 0;
 
+	saveConfig = false;
+
 	lastState = StateUnkown;
 
 	Log::info("Network", "Starting network manager...");
@@ -34,6 +36,11 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 }
 
 void NetworkManager::handlePackets() {
+	if (saveConfig && (engine->state() != StateFlying && engine->state() != StateArmed)) {
+		ConfigManager::saveConfig(*config);
+		saveConfig = false;
+	}
+
 	Profiler::begin("readPackets()");
 	int helloPackets = 0;
 	while (beginParse(helloUDP) && helloPackets++ < 2)
@@ -287,7 +294,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::info("Network", "Config set.");
 		Log::setPrintToSerial(config->VerboseSerialLog);
 
-		ConfigManager::saveConfig(*config);
+		saveConfig = true;
 		break;
 	}
 	case ClearStatus:
