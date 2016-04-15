@@ -63,7 +63,7 @@ void setup() {
 
 	// ServoManager initialisieren
 	servos = new ServoManager(&config);
-	servos->init(config.PinFrontLeft, config.PinFrontRight, config.PinBackLeft, config.PinBackRight);
+	servos->attach();
 
 	setupLED(&config);
 

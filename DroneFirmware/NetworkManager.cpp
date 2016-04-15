@@ -37,7 +37,9 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 
 void NetworkManager::handlePackets() {
 	if (saveConfig && (engine->state() != StateFlying && engine->state() != StateArmed)) {
+		servos->detach();
 		ConfigManager::saveConfig(*config);
+		servos->attach();
 		saveConfig = false;
 	}
 

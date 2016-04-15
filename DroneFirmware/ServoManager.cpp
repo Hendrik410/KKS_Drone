@@ -7,6 +7,7 @@
 ServoManager::ServoManager(Config* config) {
 	this->config = config;
 
+	this->attached = false;
 	servoFLValue = config->ServoMin;
 	servoFRValue = config->ServoMin;
 	servoBLValue = config->ServoMin;
@@ -15,16 +16,36 @@ ServoManager::ServoManager(Config* config) {
 }
 
 
-void ServoManager::init(int pinFL, int pinFR, int pinBL, int pinBR) {
-	frontLeft.attach(pinFL);
-	frontRight.attach(pinFR);
-	backLeft.attach(pinBL);
-	backRight.attach(pinBR);
+void ServoManager::attach() {
+	if (attached)
+		return;
 
 	setAllServos(config->ServoMin);
+
+	frontLeft.attach(config->PinFrontLeft);
+	frontRight.attach(config->PinFrontRight);
+	backLeft.attach(config->PinBackLeft);
+	backRight.attach(config->PinBackRight);
+
+	attached = true;
+}
+
+void ServoManager::detach() {
+	if (!attached)
+		return;
+
+	frontLeft.detach();
+	frontRight.detach();
+	backLeft.detach();
+	backRight.detach();
+
+	attached = false;
 }
 
 void ServoManager::handleTick() {
+	if (!attached)
+		return;
+
 	int value = config->ServoMin;
 	
 	// alle 1000 Millisekunden für 150 Millisekunden kurz Motor drehen

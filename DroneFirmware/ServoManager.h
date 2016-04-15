@@ -12,29 +12,33 @@
 
 class ServoManager
 {
- protected:
-	 Config* config;
+protected:
+	Config* config;
 
-	 // The values for the Servos
-	 int servoFLValue;
-	 int servoFRValue;
-	 int servoBLValue;
-	 int servoBRValue;
+	bool attached;
 
-	 // The objects to control the Servos (ESCs)
-	 Servo frontLeft;
-	 Servo frontRight;
-	 Servo backLeft;
-	 Servo backRight;
+	// The values for the Servos
+	int servoFLValue;
+	int servoFRValue;
+	int servoBLValue;
+	int servoBRValue;
 
-	 bool _dirty;
+	// The objects to control the Servos (ESCs)
+	Servo frontLeft;
+	Servo frontRight;
+	Servo backLeft;
+	Servo backRight;
+
+	bool _dirty;
 
 	 int getValue(int servoValue);
 
- public:
-	 explicit ServoManager(Config* config);
+public:
+	explicit ServoManager(Config* config);
 
-	void init(int pinFL, int pinFR, int pinBL, int pinBR);
+	void attach();
+	void detach();
+
 	void setServos(int fl, int fr, int bl, int br);
 	void setAllServos(int val);
 
