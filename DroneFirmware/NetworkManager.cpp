@@ -67,6 +67,7 @@ bool NetworkManager::beginParse(WiFiUDP udp) {
 		return false;
 
 	// setSize vor readBytes sorgt dafür, dass wenn Paket länger als interner Buffer ist eine Exception geworfen wird
+	readBuffer->getError(); // Fehler löschen
 	readBuffer->resetPosition();
 	readBuffer->setSize(size);
 	udp.readBytes(readBuffer->getBuffer(), size);
@@ -81,9 +82,11 @@ bool NetworkManager::beginParse(WiFiUDP udp) {
 }
 
 void NetworkManager::sendPacket(WiFiUDP udp) {
-	udp.beginPacket(udp.remoteIP(), udp.remotePort());
-	udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
-	udp.endPacket();
+	if (!writeBuffer->getError()) {
+		udp.beginPacket(udp.remoteIP(), udp.remotePort());
+		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
+		udp.endPacket();
+	}
 
 	writeBuffer->resetPosition();
 }
@@ -143,7 +146,6 @@ void NetworkManager::handleHello(WiFiUDP udp) {
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	writeBuffer->writeString(serialCode);
 
-
 	writeBuffer->write(uint8_t(BUILD_VERSION));
 
 	sendPacket(udp);
@@ -174,6 +176,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		float rotationalSpeed = readBuffer->readFloat();
 		float thrust = readBuffer->readFloat();
 
+		if (readBuffer->getError())
+			return;
+
 		engine->setTargetMovement(pitch, roll, rotationalSpeed, thrust);
 		break;
 	}
@@ -183,6 +188,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint16_t fr = readBuffer->readUint16();
 		uint16_t bl = readBuffer->readUint16();
 		uint16_t br = readBuffer->readUint16();
+
+		if (readBuffer->getError())
+			return;
 
 		if (fl > config->ServoMax) {
 			Log::error("Network", "[RawSetPacket] Invalid value for fl");
@@ -213,13 +221,15 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		engine->stop(User);
 		break;
 	case ArmPacket:
-		if (readBuffer->getSize() == 13) {
-			if (readBuffer->readUint8() == 'A' && readBuffer->readUint8() == 'R' && readBuffer->readUint8() == 'M') {
-				if (readBuffer->readBoolean())
-					engine->arm();
-				else
-					engine->disarm();
-			}
+		if (readBuffer->readUint8() == 'A' && readBuffer->readUint8() == 'R' && readBuffer->readUint8() == 'M') {
+			boolean arm = readBuffer->readBoolean();
+			if (readBuffer->getError())
+				return;
+
+			if (arm)
+				engine->arm();
+			else
+				engine->disarm();
 		}
 		break;
 	case PingPacket:
@@ -293,7 +303,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		}
 		readBuffer->read((byte*)config, sizeof(Config));
 
-		Log::info("Network", "Config set.");
+		if (readBuffer->getError()) 
+			return;
+
+		Log::info("Network", "Config set");
 		Log::setPrintToSerial(config->VerboseSerialLog);
 
 		saveConfig = config->SaveConfig;
@@ -306,6 +319,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case BeginOTA: {
 		char* md5 = readBuffer->readString();
 		int32_t size = readBuffer->readInt32();
+
+		if (readBuffer->getError())
+			return;
 
 		if (!engine->beginOTA())
 			return;
@@ -330,6 +346,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		uint8_t dataHash = readBuffer->readUint8();
 
 		uint8_t* data = readBuffer->getBufferRegion(chunkSize);
+
+		if (readBuffer->getError())
+			return;
 
 		uint8_t hash = 0;
 		for (int32_t i = 0; i < chunkSize; i++)

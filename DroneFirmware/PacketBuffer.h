@@ -20,12 +20,21 @@ private:
 	uint32_t position; // aktuelle Position
 	uint32_t size; // Länge des Pakets
 
+	bool error;
+	bool allowRead;
+
+	bool assertRead(); // überprüft ob das Lesen zulässig ist
 	bool assertPosition(uint32_t length); // überprüft die Position
 	uint32_t addAndAssertPosition(uint32_t length); // addiert einen Wert zur Position, überprüft die Position und gibt die alte Position zurück
 
 public:
 	explicit PacketBuffer(uint32_t size);
+	explicit PacketBuffer(uint8_t* data, uint32_t size);
 	~PacketBuffer();
+
+	bool getError();
+
+	void setBuffer(uint8_t* data, uint32_t size);
 
 	uint8_t* getBuffer() const;
 	uint32_t getBufferSize() const;
