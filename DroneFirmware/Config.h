@@ -64,17 +64,17 @@ struct Config {
 	//The pin of the LED
 	byte PinLed;
 
-	uint16_t PhysicsCalculationInterval;
-
 	PIDSettings PitchPid;
 	PIDSettings RollPid;
 	PIDSettings YawPid;
+
+	int ServoThrust;
 
 	float SafePitch;
 	float SafeRoll;
 	int SafeServoValue;
 
-	bool EnableRatioSubtracting;
+	boolean EnableGyro;
 };
 
 #endif

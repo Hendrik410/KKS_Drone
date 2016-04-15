@@ -1,7 +1,11 @@
+#define DEBUG_SSDP  Serial
+
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <ESP8266SSDP.h>
 #include <MPU6050/MPU6050_6Axis_MotionApps20.h>
 #include <Servo.h>
 #include <EEPROM.h>
@@ -30,6 +34,8 @@ Gyro* gyro;
 ServoManager* servos;
 DroneEngine* engine;
 NetworkManager* network;
+
+ESP8266WebServer HTTP(80);
 
 int lastLoopTime = 0;
 short delayTime = 10;
@@ -134,15 +140,39 @@ void setup() {
 	// Profiler laden
 	Profiler::init();
 
+	// SSDP laden
+	/*Log::info("Boot", "Starting SSDP...");
+	HTTP.on("/index.html", HTTP_GET, []() {
+		HTTP.send(200, "text/plain", MODEL_NAME);
+	});
+	HTTP.on("/description.xml", HTTP_GET, []() {
+		SSDP.schema(HTTP.client());
+	});
+	HTTP.begin();
+
+	SSDP.setSchemaURL("description.xml");
+	SSDP.setHTTPPort(80);
+	SSDP.setName("koalaDrone");
+	SSDP.setSerialNumber(serialCode);
+	SSDP.setURL("index.html");
+	SSDP.setModelName(MODEL_NAME);
+	if (SSDP.begin())
+		Log::info("Boot", "SSDP working...");
+	else
+		Log::info("Boot", "SSDP init failed");*/
+
 	Log::info("Boot", "done booting. ready.");
 }
 
 void loop() {
 	Profiler::begin("loop()");
 	
+	//HTTP.handleClient();
+
 	if (engine->state() != StateOTA)
 	{
-		gyro->update();
+		if (config.EnableGyro)
+			gyro->update();
 		engine->handle();
 	}
 	handleBlink();

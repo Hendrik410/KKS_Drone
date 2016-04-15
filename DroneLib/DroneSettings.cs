@@ -108,6 +108,9 @@ namespace DroneLibrary
         public PidSettings YawPid;
 
         [Category("Flying")]
+        public int ServoThrust;
+
+        [Category("Flying")]
         public float SafePitch;
 
         [Category("Flying")]
@@ -115,6 +118,9 @@ namespace DroneLibrary
 
         [Category("Flying")]
         public int SafeServoValue;
+
+        [Category("Flying")]
+        public bool EnableGyro;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

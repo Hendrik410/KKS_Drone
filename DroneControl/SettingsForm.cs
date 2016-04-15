@@ -18,6 +18,8 @@ namespace DroneControl
         private DroneInfo info;
         private DroneSettings data;
 
+        private List<Binding> bindings = new List<Binding>();
+
         public SettingsForm(Drone drone)
         {
             InitializeComponent();
@@ -57,11 +59,13 @@ namespace DroneControl
             Bind(yawKpTextBox, data.YawPid, nameof(data.YawPid.Kp));
             Bind(yawKiTextBox, data.YawPid, nameof(data.YawPid.Ki));
             Bind(yawKdTextBox, data.YawPid, nameof(data.YawPid.Kd));
+
+            Bind(thrustValue, data, nameof(data.ServoThrust));
         }
 
         private void Bind(Control control, object data, string member)
         {
-            new Binding(control, data, member);
+            bindings.Add(new Binding(control, data, member));
         }
 
         private class Binding
@@ -145,6 +149,11 @@ namespace DroneControl
         private void updateFirmwareButton_Click(object sender, EventArgs e)
         {
             new UpdateOTAForm(drone).Show(this);
+        }
+
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            drone.SendReset();
         }
     }
 }

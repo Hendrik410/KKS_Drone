@@ -60,6 +60,7 @@
             System.Windows.Forms.Label label4;
             System.Windows.Forms.Label label5;
             System.Windows.Forms.Label label6;
+            System.Windows.Forms.Label thrust;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
@@ -90,6 +91,7 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
+            this.thrustValue = new System.Windows.Forms.NumericUpDown();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -122,6 +124,7 @@
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
+            thrust = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -141,6 +144,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.yawKpTextBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -267,6 +271,7 @@
             this.restartButton.TabIndex = 11;
             this.restartButton.Text = "Restart";
             this.restartButton.UseVisualStyleBackColor = true;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
             // modelTextBox
             // 
@@ -696,6 +701,8 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.thrustValue);
+            this.flyingPage.Controls.Add(thrust);
             this.flyingPage.Controls.Add(pidYawGroupBox);
             this.flyingPage.Controls.Add(pidRollGroupBox);
             this.flyingPage.Controls.Add(pidPitchGroupBox);
@@ -707,6 +714,22 @@
             this.flyingPage.Size = new System.Drawing.Size(698, 412);
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
+            // 
+            // thrustValue
+            // 
+            this.thrustValue.Location = new System.Drawing.Point(349, 115);
+            this.thrustValue.Name = "thrustValue";
+            this.thrustValue.Size = new System.Drawing.Size(70, 20);
+            this.thrustValue.TabIndex = 17;
+            // 
+            // thrust
+            // 
+            thrust.AutoSize = true;
+            thrust.Location = new System.Drawing.Point(280, 117);
+            thrust.Name = "thrust";
+            thrust.Size = new System.Drawing.Size(37, 13);
+            thrust.TabIndex = 16;
+            thrust.Text = "Thrust";
             // 
             // SettingsForm
             // 
@@ -744,6 +767,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.yawKpTextBox)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.flyingPage.ResumeLayout(false);
+            this.flyingPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -779,5 +804,6 @@
         private System.Windows.Forms.NumericUpDown rollKdTextBox;
         private System.Windows.Forms.NumericUpDown rollKiTextBox;
         private System.Windows.Forms.NumericUpDown rollKpTextBox;
+        private System.Windows.Forms.NumericUpDown thrustValue;
     }
 }

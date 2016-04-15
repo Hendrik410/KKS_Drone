@@ -98,7 +98,7 @@ Config ConfigManager::getDefault() {
 	config.ServoMin = 900;
 	config.ServoMax = 2000;
 	config.ServoIdle = 975;
-	config.ServoHover = 1100;
+	config.ServoHover = 975;
 
 	config.PinFrontLeft = 12;
 	config.PinFrontRight = 13;
@@ -106,21 +106,25 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 15;
-	config.PitchPid.Ki = 10;
-	config.PitchPid.Kd = 3;
+	config.PitchPid.Kp = 0.25f;
+	config.PitchPid.Ki = 0;
+	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 15;
-	config.RollPid.Ki = 10;
-	config.RollPid.Kd = 3;
+	config.RollPid.Kp = 0.25f;
+	config.RollPid.Ki = 0;
+	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 10;
+	config.YawPid.Kp = 0.25f;
 	config.YawPid.Ki = 0;
 	config.YawPid.Kd = 0;
 
+	config.ServoThrust = 1;
+
 	config.SafePitch = 60;
 	config.SafeRoll = 60;
-	config.SafeServoValue = 1500;
+	config.SafeServoValue = 1050;
+
+	config.EnableGyro = true;
 
 	Log::info("Config", "Using default config");
 	return config;
