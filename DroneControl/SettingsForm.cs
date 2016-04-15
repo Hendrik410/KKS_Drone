@@ -28,71 +28,64 @@ namespace DroneControl
             this.info = drone.Info;
             this.data = drone.Settings;
 
-            Bind(nameTextBox, data, nameof(data.DroneName));
+            Bind(nameTextBox, "data.DroneName");
+            Bind(saveConfigCheckBox, "data.SaveConfig");
 
-            Bind(firmwareVersionTextBox, info, nameof(info.BuildVersion));
-            Bind(buildDateTextBox, info, nameof(info.BuildName));
+            Bind(firmwareVersionTextBox, "info.BuildVersion");
+            Bind(buildDateTextBox, "info.BuildName");
 
-            Bind(modelTextBox, info, nameof(info.ModelName));
-            Bind(idTextBox, info, nameof(info.SerialCode));
-            Bind(gyroSensorTextBox, info, nameof(info.GyroSensor));
-            Bind(magnetometerTextBox, info, nameof(info.Magnetometer));
+            Bind(modelTextBox, "info.ModelName");
+            Bind(idTextBox, "info.SerialCode");
+            Bind(gyroSensorTextBox, "info.GyroSensor");
+            Bind(magnetometerTextBox, "info.Magnetometer");
+            Bind(enableGyroCheckBox, "data.EnableGyro");
 
-            Bind(minValueTextBox, data, nameof(data.ServoMin));
-            Bind(idleValueTextBox, data, nameof(data.ServoIdle));
-            Bind(hoverValueTextBox, data, nameof(data.ServoHover));
-            Bind(maxValueTextBox, data, nameof(data.ServoMax));
+            Bind(minValueTextBox, "data.ServoMin");
+            Bind(idleValueTextBox, "data.ServoIdle");
+            Bind(hoverValueTextBox, "data.ServoHover");
+            Bind(maxValueTextBox, "data.ServoMax");
 
-            Bind(safeMotorValueTextBox, data, nameof(data.SafeServoValue));
-            Bind(safeTemperatureTextBox, data, nameof(data.MaxTemperature));
-            Bind(safePitchTextBox, data, nameof(data.SafePitch));
-            Bind(safeRollTextBox, data, nameof(data.SafeRoll));
+            Bind(safeMotorValueTextBox, "data.SafeServoValue");
+            Bind(safeTemperatureTextBox, "data.MaxTemperature");
+            Bind(safePitchTextBox, "data.SafePitch");
+            Bind(safeRollTextBox, "data.SafeRoll");
 
-            Bind(pitchKpTextBox, data.PitchPid, nameof(data.PitchPid.Kp));
-            Bind(pitchKiTextBox, data.PitchPid, nameof(data.PitchPid.Ki));
-            Bind(pitchKdTextBox, data.PitchPid, nameof(data.PitchPid.Kd));
+            Bind(pitchKpTextBox, "data.PitchPid.Kp");
+            Bind(pitchKiTextBox, "data.PitchPid.Ki");
+            Bind(pitchKdTextBox, "data.PitchPid.Kd");
 
-            Bind(rollKpTextBox, data.RollPid, nameof(data.RollPid.Kp));
-            Bind(rollKiTextBox, data.RollPid, nameof(data.RollPid.Ki));
-            Bind(rollKdTextBox, data.RollPid, nameof(data.RollPid.Kd));
+            Bind(rollKpTextBox, "data.RollPid.Kp");
+            Bind(rollKiTextBox, "data.RollPid.Ki");
+            Bind(rollKdTextBox, "data.RollPid.Kd");
 
-            Bind(yawKpTextBox, data.YawPid, nameof(data.YawPid.Kp));
-            Bind(yawKiTextBox, data.YawPid, nameof(data.YawPid.Ki));
-            Bind(yawKdTextBox, data.YawPid, nameof(data.YawPid.Kd));
+            Bind(yawKpTextBox, "data.YawPid.Kp");
+            Bind(yawKiTextBox, "data.YawPid.Ki");
+            Bind(yawKdTextBox, "data.YawPid.Kd");
 
-            Bind(thrustValue, data, nameof(data.ServoThrust));
+            Bind(thrustValue, "data.ServoThrust");
         }
 
-        private void Bind(Control control, object data, string member)
+        private void Bind(Control control, string member)
         {
-            bindings.Add(new Binding(control, data, member));
+            bindings.Add(new Binding(this, control, member));
         }
 
         private class Binding
         {
+            public SettingsForm Settings { get; private set; }
             public Control Control { get; private set; }
-            public object Data { get; private set; }
             public string DataMember { get; private set; }
 
-            private PropertyInfo property;
-            private FieldInfo field;
-
+            private string[] memberParts;
             private PropertyInfo controlProperty;
-
             private bool ignoreChange;
 
-            public Binding(Control control, object data, string dataMember)
+            public Binding(SettingsForm settings, Control control, string dataMember)
             {
+                this.Settings = settings;
                 this.Control = control;
-                this.Data = data;
                 this.DataMember = dataMember;
-
-                property = data.GetType().GetProperty(dataMember);
-                if (property == null)
-                    field = data.GetType().GetField(dataMember);
-
-                if (property != null)
-                    Control.Enabled = (property.SetMethod?.IsPublic).GetValueOrDefault();
+                this.memberParts = dataMember.Split('.');
 
                 if (control is TextBox)
                 {
@@ -104,10 +97,46 @@ namespace DroneControl
                     controlProperty = control.GetType().GetProperty("Value");
                     (control as NumericUpDown).ValueChanged += (s, e) => UpdateData();
                 }
+                else if (control is CheckBox)
+                {
+                    controlProperty = control.GetType().GetProperty("Checked");
+                    (control as CheckBox).CheckedChanged += (s, e) => UpdateData();
+                }
                 else
                     throw new NotSupportedException("Control type not supported");
 
                 NotifyValueChanged();
+            }
+
+            private object GetDataValue()
+            {
+                object current = Settings;
+                bool isPublic = false;
+
+                foreach(string member in memberParts)
+                    current = GetValue(current, member, out isPublic);
+
+                Control.Enabled = isPublic;
+                return current;
+            }
+
+            private object GetValue(object data, string member, out bool isPublic)
+            {
+                Type type = data.GetType();
+                BindingFlags flags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic;
+                FieldInfo field = type.GetField(member, flags);
+                if (field != null)
+                {
+                    isPublic = field.IsPublic;
+                    return field.GetValue(data);
+                }
+                PropertyInfo property = type.GetProperty(member, flags);
+                if (property != null)
+                {
+                    isPublic = property.SetMethod != null && property.SetMethod.IsPublic;
+                    return property.GetValue(data);
+                }
+                throw new ArgumentException("Member not found", "member");
             }
 
             public void UpdateData()
@@ -115,33 +144,50 @@ namespace DroneControl
                 if (ignoreChange)
                     return;
 
-
                 object value = controlProperty.GetValue(Control);
-                if (property != null)
-                    property.SetValue(Data, value);
+
+                Stack<object> objects = new Stack<object>();
+                objects.Push(Settings);
+                foreach (string member in memberParts)
+                {
+                    bool isPublic;
+                    objects.Push(GetValue(objects.Peek(), member, out isPublic));
+                }
+
+                objects.Pop();
+                while(objects.Count > 0)
+                {
+                    object obj = objects.Pop();
+                    SetValue(obj, memberParts[objects.Count], value);
+                    value = obj;
+                }
+            }
+
+            private void SetValue(object data, string member, object value)
+            {
+                Type type = data.GetType();
+                BindingFlags flags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.NonPublic;
+                FieldInfo field = type.GetField(member, flags);
                 if (field != null)
-                    field.SetValue(Data, value);
+                {
+                    field.SetValue(data, Convert.ChangeType(value, field.FieldType));
+                    return;
+                }
+                PropertyInfo property = type.GetProperty(member, flags);
+                if (property != null)
+                {
+                    property.SetValue(data, Convert.ChangeType(value, property.PropertyType));
+                    return;
+                }
+                throw new ArgumentException("Member not found", "member");
             }
 
             public void NotifyValueChanged()
             {
                 ignoreChange = true;
 
-                object value;
-                if (property != null)
-                    value = property.GetValue(Data);
-                else if (field != null)
-                    value = field.GetValue(Data);
-                else
-                    return;
-
-
-                if (controlProperty.PropertyType == typeof(string))
-                    controlProperty.SetValue(Control, value.ToString());
-                else if (controlProperty.PropertyType == typeof(decimal))
-                    controlProperty.SetValue(Control, Convert.ToDecimal(value));
-                else
-                    controlProperty.SetValue(Control, value);
+                object value = GetDataValue();
+                controlProperty.SetValue(Control, Convert.ChangeType(value, controlProperty.PropertyType));
                 ignoreChange = false;
             }
         }
@@ -154,6 +200,11 @@ namespace DroneControl
         private void restartButton_Click(object sender, EventArgs e)
         {
             drone.SendReset();
+        }
+
+        private void applyButton_Click(object sender, EventArgs e)
+        {
+            drone.SendConfig(data);
         }
     }
 }

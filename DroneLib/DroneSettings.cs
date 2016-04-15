@@ -17,6 +17,10 @@ namespace DroneLibrary
         [Description("User-friendly name for the drone")]
         public string DroneName;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Drone")]
+        public bool SaveConfig;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
         [Category("Network")]
         [Description("The SIID of the WiFi network")]
@@ -119,6 +123,7 @@ namespace DroneLibrary
         [Category("Flying")]
         public int SafeServoValue;
 
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
         public bool EnableGyro;
 

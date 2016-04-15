@@ -15,6 +15,8 @@ struct Config {
 	//A user-friendly name for the drone
 	char DroneName[20];
 
+	boolean SaveConfig;
+
 	// Name des WiFi Netzwerks
 	// leerer String bedeutet es wird keine Verbindung zu einem Netzwerk aufgebaut
 	char NetworkSSID[30];

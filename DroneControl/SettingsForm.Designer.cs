@@ -92,6 +92,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
             this.thrustValue = new System.Windows.Forms.NumericUpDown();
+            this.enableGyroCheckBox = new System.Windows.Forms.CheckBox();
+            this.saveConfigCheckBox = new System.Windows.Forms.CheckBox();
+            this.applyButton = new System.Windows.Forms.Button();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -233,6 +236,7 @@
             // 
             // quadrocopterPage
             // 
+            quadrocopterPage.Controls.Add(this.saveConfigCheckBox);
             quadrocopterPage.Controls.Add(hardwareGroupBox);
             quadrocopterPage.Controls.Add(firmwareGroupBox);
             quadrocopterPage.Controls.Add(this.nameTextBox);
@@ -246,6 +250,7 @@
             // 
             // hardwareGroupBox
             // 
+            hardwareGroupBox.Controls.Add(this.enableGyroCheckBox);
             hardwareGroupBox.Controls.Add(this.restartButton);
             hardwareGroupBox.Controls.Add(this.modelTextBox);
             hardwareGroupBox.Controls.Add(this.magnetometerTextBox);
@@ -257,7 +262,7 @@
             hardwareGroupBox.Controls.Add(gyroSensorLabel);
             hardwareGroupBox.Location = new System.Drawing.Point(11, 156);
             hardwareGroupBox.Name = "hardwareGroupBox";
-            hardwareGroupBox.Size = new System.Drawing.Size(258, 162);
+            hardwareGroupBox.Size = new System.Drawing.Size(258, 180);
             hardwareGroupBox.TabIndex = 16;
             hardwareGroupBox.TabStop = false;
             hardwareGroupBox.Text = "Hardware";
@@ -265,7 +270,7 @@
             // restartButton
             // 
             this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.restartButton.Location = new System.Drawing.Point(144, 136);
+            this.restartButton.Location = new System.Drawing.Point(144, 154);
             this.restartButton.Name = "restartButton";
             this.restartButton.Size = new System.Drawing.Size(108, 20);
             this.restartButton.TabIndex = 11;
@@ -516,6 +521,7 @@
             // 
             // pitchKdTextBox
             // 
+            this.pitchKdTextBox.DecimalPlaces = 2;
             this.pitchKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.pitchKdTextBox.Name = "pitchKdTextBox";
             this.pitchKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -523,6 +529,7 @@
             // 
             // pitchKiTextBox
             // 
+            this.pitchKiTextBox.DecimalPlaces = 2;
             this.pitchKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.pitchKiTextBox.Name = "pitchKiTextBox";
             this.pitchKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -530,6 +537,7 @@
             // 
             // pitchKpTextBox
             // 
+            this.pitchKpTextBox.DecimalPlaces = 2;
             this.pitchKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.pitchKpTextBox.Name = "pitchKpTextBox";
             this.pitchKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -579,6 +587,7 @@
             // 
             // rollKdTextBox
             // 
+            this.rollKdTextBox.DecimalPlaces = 2;
             this.rollKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.rollKdTextBox.Name = "rollKdTextBox";
             this.rollKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -586,6 +595,7 @@
             // 
             // rollKiTextBox
             // 
+            this.rollKiTextBox.DecimalPlaces = 2;
             this.rollKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.rollKiTextBox.Name = "rollKiTextBox";
             this.rollKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -593,6 +603,7 @@
             // 
             // rollKpTextBox
             // 
+            this.rollKpTextBox.DecimalPlaces = 2;
             this.rollKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.rollKpTextBox.Name = "rollKpTextBox";
             this.rollKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -642,6 +653,7 @@
             // 
             // yawKdTextBox
             // 
+            this.yawKdTextBox.DecimalPlaces = 2;
             this.yawKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.yawKdTextBox.Name = "yawKdTextBox";
             this.yawKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -649,6 +661,7 @@
             // 
             // yawKiTextBox
             // 
+            this.yawKiTextBox.DecimalPlaces = 2;
             this.yawKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.yawKiTextBox.Name = "yawKiTextBox";
             this.yawKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -656,6 +669,7 @@
             // 
             // yawKpTextBox
             // 
+            this.yawKpTextBox.DecimalPlaces = 2;
             this.yawKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.yawKpTextBox.Name = "yawKpTextBox";
             this.yawKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -731,11 +745,42 @@
             thrust.TabIndex = 16;
             thrust.Text = "Thrust";
             // 
+            // enableGyroCheckBox
+            // 
+            this.enableGyroCheckBox.AutoSize = true;
+            this.enableGyroCheckBox.Location = new System.Drawing.Point(16, 132);
+            this.enableGyroCheckBox.Name = "enableGyroCheckBox";
+            this.enableGyroCheckBox.Size = new System.Drawing.Size(84, 17);
+            this.enableGyroCheckBox.TabIndex = 17;
+            this.enableGyroCheckBox.Text = "Enable Gyro";
+            this.enableGyroCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // saveConfigCheckBox
+            // 
+            this.saveConfigCheckBox.AutoSize = true;
+            this.saveConfigCheckBox.Location = new System.Drawing.Point(302, 10);
+            this.saveConfigCheckBox.Name = "saveConfigCheckBox";
+            this.saveConfigCheckBox.Size = new System.Drawing.Size(84, 17);
+            this.saveConfigCheckBox.TabIndex = 17;
+            this.saveConfigCheckBox.Text = "Save Config";
+            this.saveConfigCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // applyButton
+            // 
+            this.applyButton.Location = new System.Drawing.Point(645, -1);
+            this.applyButton.Name = "applyButton";
+            this.applyButton.Size = new System.Drawing.Size(62, 25);
+            this.applyButton.TabIndex = 1;
+            this.applyButton.Text = "Apply";
+            this.applyButton.UseVisualStyleBackColor = true;
+            this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 438);
+            this.Controls.Add(this.applyButton);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsForm";
@@ -805,5 +850,8 @@
         private System.Windows.Forms.NumericUpDown rollKiTextBox;
         private System.Windows.Forms.NumericUpDown rollKpTextBox;
         private System.Windows.Forms.NumericUpDown thrustValue;
+        private System.Windows.Forms.CheckBox saveConfigCheckBox;
+        private System.Windows.Forms.CheckBox enableGyroCheckBox;
+        private System.Windows.Forms.Button applyButton;
     }
 }
