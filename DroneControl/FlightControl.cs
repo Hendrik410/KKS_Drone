@@ -32,10 +32,29 @@ namespace DroneControl
             this.inputManager.OnDeviceInfoChanged += InputManager_OnDeviceInfoChanged;
             this.inputManager.OnTargetDataChanged += InputManager_OnTargetDataChanged;
 
+            this.drone.OnDebugDataChange += Drone_OnDebugDataChange;
+
             SearchInputDevices();
             UpdateTargetData();
             UpdateDeviceInfo();
             UpdateInputConfig();
+        }
+
+        private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
+                return;
+            }
+            StringBuilder pidData = new StringBuilder();
+            pidData.AppendFormat("Pitch: {0}", e.DebugData.PitchOutput.ToString().PadLeft(5));
+            pidData.AppendLine();
+            pidData.AppendFormat("Roll:  {0}", e.DebugData.RollOutput.ToString().PadLeft(5));
+            pidData.AppendLine();
+            pidData.AppendFormat("Yaw:   {0}", e.DebugData.YawOutput.ToString().PadLeft(5));
+
+            pidDataLabel.Text = pidData.ToString();
         }
 
         private void InputManager_OnTargetDataChanged(object sender, EventArgs e)

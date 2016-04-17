@@ -13,9 +13,7 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->lastMovementUpdate = 0;
 	this->lastPhysicsCalc = 0;
 
-	this->pitchPID = createPID(config->PitchPid, &pitchOutput);
-	this->rollPID = createPID(config->RollPid, &rollOutput);
-	this->yawPID = createPID(config->YawPid, &yawOutput);
+	createPID();
 
 	setMaxTilt(30);
 	setMaxRotationSpeed(60);
@@ -23,6 +21,19 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	_state = StateReset;
 	_stopReason = None;
 	servos->setAllServos(config->ServoMin);
+}
+
+void DroneEngine::createPID() {
+	if (pitchPID)
+		delete pitchPID;
+	if (rollPID)
+		delete rollPID;
+	if (yawPID)
+		delete yawPID;
+
+	pitchPID = createPID(config->PitchPid, &pitchOutput);
+	rollPID = createPID(config->RollPid, &rollOutput);
+	yawPID = createPID(config->YawPid, &yawOutput);
 }
 
 PID* DroneEngine::createPID(PIDSettings settings, double* output) {
@@ -35,7 +46,6 @@ PID* DroneEngine::createPID(PIDSettings settings, double* output) {
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
-		gyro->setAsZero();
 		servos->setAllServos(config->ServoIdle);
 
 		_state = StateArmed;
@@ -58,6 +68,12 @@ void DroneEngine::fly() {
 	// oder nicht Armed
 	if (_state != StateArmed)
 		return;
+
+	pitchOutput = 0;
+	rollOutput = 0;
+	yawOutput = 0;
+
+	createPID();
 
 	_state = StateFlying;
 	Log::info("Engine", "Flying");
@@ -141,9 +157,9 @@ void DroneEngine::handleInternal() {
 		calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
 	}
 	else {
-		calculatePID(pitchPID, 0, targetPitch);
-		calculatePID(rollPID, 0, targetRoll);
-		calculatePID(yawPID, 0, targetRotationalSpeed);
+		calculatePID(pitchPID, -targetPitch, 0);
+		calculatePID(rollPID, -targetRoll, 0);
+		calculatePID(yawPID, -targetRotationalSpeed, 0);
 	}
 
 	float thrust = targetVerticalSpeed * config->ServoThrust;
@@ -152,6 +168,12 @@ void DroneEngine::handleInternal() {
 		values[i] = MathHelper::clampValue(config->ServoHover + MathHelper::mixMotor(i, pitchOutput, rollOutput, yawOutput, thrust), config->ServoMin, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
+}
+
+void DroneEngine::updateTunings() {
+	pitchPID->SetTunings(config->PitchPid.Kp, config->PitchPid.Ki, config->PitchPid.Kd);
+	rollPID->SetTunings(config->RollPid.Kp, config->RollPid.Ki, config->RollPid.Kd);
+	yawPID->SetTunings(config->YawPid.Kp, config->YawPid.Ki, config->YawPid.Kd);
 }
 
 void DroneEngine::calculatePID(PID* pid, float input, float setpoint) {
@@ -228,4 +250,16 @@ float DroneEngine::getTargetRotationalSpeed() const {
 
 float DroneEngine::getTargetVerticalSpeed() const {
 	return targetVerticalSpeed;
+}
+
+float DroneEngine::getPitchOutput() const {
+	return pitchOutput;
+}
+
+float DroneEngine::getRollOutput() const {
+	return rollOutput;
+}
+
+float DroneEngine::getYawOutput() const {
+	return yawOutput;
 }

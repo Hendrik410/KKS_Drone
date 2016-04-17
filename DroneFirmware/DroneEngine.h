@@ -58,10 +58,10 @@ class DroneEngine
 	 PID* rollPID;
 	 PID* yawPID;
 
+	 void createPID();
 	 PID* createPID(PIDSettings settings, double* output);
 
 	 void calculatePID(PID* pid, float input, float setpoint);
-	 float getMotor(int motorIndex, float* values);
 
  public:
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
@@ -81,6 +81,8 @@ class DroneEngine
 	void handle();
 	void handleInternal();
 
+	void updateTunings();
+
 	void heartbeat();
 
 	void setRawServoValues(int fl, int fr, int bl, int br) const;
@@ -98,6 +100,10 @@ class DroneEngine
 	float getTargetRoll() const;
 	float getTargetRotationalSpeed() const;
 	float getTargetVerticalSpeed() const;
+
+	float getPitchOutput() const;
+	float getRollOutput() const;
+	float getYawOutput() const;
 };
 
 #endif

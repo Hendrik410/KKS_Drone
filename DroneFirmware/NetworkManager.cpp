@@ -134,6 +134,8 @@ void NetworkManager::handleHello(WiFiUDP udp) {
 	if (readBuffer->getSize() < 4 || readBuffer->readUint8() != HelloQuestion)
 		return;
 
+	Log::debug("Network", "Received hello question");
+
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
@@ -307,7 +309,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			return;
 
 		Log::info("Network", "Config set");
+		
 		Log::setPrintToSerial(config->VerboseSerialLog);
+		engine->updateTunings();
 
 		saveConfig = config->SaveConfig;
 		break;
@@ -462,6 +466,10 @@ void NetworkManager::sendDebugData(WiFiUDP udp) {
 	writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
 	Profiler::write(writeBuffer);
+
+	writeBuffer->write(engine->getPitchOutput());
+	writeBuffer->write(engine->getRollOutput());
+	writeBuffer->write(engine->getYawOutput());
 
 	sendData(udp);
 }

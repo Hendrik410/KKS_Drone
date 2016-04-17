@@ -43,7 +43,7 @@
             this.pitchLabel = new System.Windows.Forms.Label();
             this.rotationalSpeedLabel = new System.Windows.Forms.Label();
             this.thrustLabel = new System.Windows.Forms.Label();
-            this.ratioDataLabel = new System.Windows.Forms.Label();
+            this.pidDataLabel = new System.Windows.Forms.Label();
             this.thrustNegativeNumeric = new System.Windows.Forms.NumericUpDown();
             this.thrustPositiveNumeric = new System.Windows.Forms.NumericUpDown();
             this.deadZoneCheckBox = new System.Windows.Forms.CheckBox();
@@ -140,7 +140,7 @@
             dataGroupBox.Controls.Add(this.pitchLabel);
             dataGroupBox.Controls.Add(this.rotationalSpeedLabel);
             dataGroupBox.Controls.Add(this.thrustLabel);
-            dataGroupBox.Controls.Add(this.ratioDataLabel);
+            dataGroupBox.Controls.Add(this.pidDataLabel);
             dataGroupBox.Location = new System.Drawing.Point(231, 14);
             dataGroupBox.Name = "dataGroupBox";
             dataGroupBox.Size = new System.Drawing.Size(223, 154);
@@ -192,16 +192,16 @@
             this.thrustLabel.TabIndex = 20;
             this.thrustLabel.Text = "Thrust: {0}";
             // 
-            // ratioDataLabel
+            // pidDataLabel
             // 
-            this.ratioDataLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ratioDataLabel.AutoSize = true;
-            this.ratioDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ratioDataLabel.Location = new System.Drawing.Point(6, 87);
-            this.ratioDataLabel.Name = "ratioDataLabel";
-            this.ratioDataLabel.Size = new System.Drawing.Size(67, 13);
-            this.ratioDataLabel.TabIndex = 21;
-            this.ratioDataLabel.Text = "Ratio data";
+            this.pidDataLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pidDataLabel.AutoSize = true;
+            this.pidDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pidDataLabel.Location = new System.Drawing.Point(6, 87);
+            this.pidDataLabel.Name = "pidDataLabel";
+            this.pidDataLabel.Size = new System.Drawing.Size(55, 13);
+            this.pidDataLabel.TabIndex = 21;
+            this.pidDataLabel.Text = "PID data";
             // 
             // inputConfigGroupBox
             // 
@@ -538,7 +538,7 @@
         private System.Windows.Forms.Label rollLabel;
         private System.Windows.Forms.Label rotationalSpeedLabel;
         private System.Windows.Forms.Label thrustLabel;
-        private System.Windows.Forms.Label ratioDataLabel;
+        private System.Windows.Forms.Label pidDataLabel;
         private System.Windows.Forms.Button searchDeviceButton;
         private System.Windows.Forms.Label deviceBatteryLabel;
         private System.Windows.Forms.Label deviceConnectionLabel;
