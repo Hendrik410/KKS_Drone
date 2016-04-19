@@ -136,7 +136,7 @@ namespace DroneControl
             {
                 statusArmedLabel.ForeColor = Color.Red;
                 statusArmedLabel.Text = "Status: not connected";
-                if (data.State != DroneState.Unkown)
+                if (data.State != DroneState.Unknown)
                     statusArmedLabel.Text += string.Format(" (last: {0})", data.State);
 
                 statusButton.Enabled = false;
@@ -147,10 +147,10 @@ namespace DroneControl
 
                 switch (drone.Data.State)
                 {
-                    case DroneState.Unkown:
+                    case DroneState.Unknown:
                         statusButton.Enabled = false;
                         statusArmedLabel.ForeColor = Color.DarkRed;
-                        statusButton.Text = "Unkown";
+                        statusButton.Text = "Unknown";
                         break;
                     case DroneState.Stopped:
                     case DroneState.Reset:

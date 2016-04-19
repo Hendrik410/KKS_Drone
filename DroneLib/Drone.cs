@@ -691,7 +691,7 @@ namespace DroneLibrary
                         if (!packetsToAcknowledge.TryGetValue(revision, out acknowlegdedPacket))
                         {
                             if (Config.VerbosePacketReceive)
-                                Log.Verbose("[{0}] Unkown acknowlegde: [{1}]", Address.ToString(), revision);
+                                Log.Verbose("[{0}] Unknown acknowlegde: [{1}]", Address.ToString(), revision);
                             break;
                         }
 

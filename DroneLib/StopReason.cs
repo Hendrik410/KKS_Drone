@@ -8,7 +8,7 @@ namespace DroneLibrary
 {
     public enum StopReason
     {
-        Unkown,
+        Unknown,
         None,
         User,
         NoData,

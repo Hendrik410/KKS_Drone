@@ -2,7 +2,7 @@
 #define _STOPREASON_h
 
 enum StopReason : byte {
-	Unkown,
+	Unknown,
 	None, 
 	User,
 	NoData,

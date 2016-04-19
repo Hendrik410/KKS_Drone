@@ -19,7 +19,7 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 
 	saveConfig = false;
 
-	lastState = StateUnkown;
+	lastState = StateUnknown;
 
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
@@ -370,12 +370,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	case EndOTA:
 		if (engine->state() == StateOTA) {
 			engine->endOTA();
+
 			if (Update.end(!readBuffer->readBoolean())) {
 				Log::info("Network", "OTA update done");
 				ESP.restart();
 				return;
 			}
 
+			Log::info("Network", "OTA md5: %s", Update.md5String().c_str());
 			Log::error("Network", "OTA update failed (%d)", Update.getError());
 		}
 		break;

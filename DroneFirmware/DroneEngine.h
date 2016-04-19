@@ -14,7 +14,7 @@
 #include "PID.h"
 
 enum DroneState {
-	StateUnkown,
+	StateUnknown,
 	StateReset,
 	StateOTA,
 	StateStopped,

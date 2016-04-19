@@ -8,7 +8,7 @@ namespace DroneLibrary
 {
     public enum DroneState
     {
-        Unkown,
+        Unknown,
         Reset,
         OTA,
         Stopped,
