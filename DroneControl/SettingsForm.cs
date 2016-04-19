@@ -63,6 +63,40 @@ namespace DroneControl
             Bind(yawKdTextBox, "data.YawPid.Kd");
 
             Bind(thrustValue, "data.ServoThrust");
+
+            drone.OnSettingsChange += Drone_OnSettingsChange;
+            drone.OnInfoChange += Drone_OnInfoChange;
+        }
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            drone.OnSettingsChange -= Drone_OnSettingsChange;
+            drone.OnInfoChange -= Drone_OnInfoChange;
+            base.OnHandleDestroyed(e);
+        }
+
+        private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
+        {
+            data = e.Settings;
+            UpdateValues();
+        }
+
+        private void Drone_OnInfoChange(object sender, InfoChangedEventArgs e)
+        {
+            info = e.Info;
+            UpdateValues();
+        }
+
+        private void UpdateValues()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateValues));
+                return;
+            }
+
+            foreach (Binding binding in bindings)
+                binding.NotifyValueChanged();
         }
 
         private void Bind(Control control, string member)
@@ -79,6 +113,8 @@ namespace DroneControl
             private string[] memberParts;
             private PropertyInfo controlProperty;
             private bool ignoreChange;
+
+            public bool ChangedByUser { get; private set; }
 
             public Binding(SettingsForm settings, Control control, string dataMember)
             {
@@ -106,6 +142,12 @@ namespace DroneControl
                     throw new NotSupportedException("Control type not supported");
 
                 NotifyValueChanged();
+            }
+
+            public void ClearChangedByUser()
+            {
+                ChangedByUser = false;
+                Control.ForeColor = SystemColors.WindowText;
             }
 
             private object GetDataValue()
@@ -144,22 +186,33 @@ namespace DroneControl
                 if (ignoreChange)
                     return;
 
-                object value = controlProperty.GetValue(Control);
-
-                Stack<object> objects = new Stack<object>();
-                objects.Push(Settings);
-                foreach (string member in memberParts)
+                try
                 {
-                    bool isPublic;
-                    objects.Push(GetValue(objects.Peek(), member, out isPublic));
+                    object value = controlProperty.GetValue(Control);
+
+                    Stack<object> objects = new Stack<object>();
+                    objects.Push(Settings);
+                    foreach (string member in memberParts)
+                    {
+                        bool isPublic;
+                        objects.Push(GetValue(objects.Peek(), member, out isPublic));
+                    }
+
+                    objects.Pop();
+                    while (objects.Count > 0)
+                    {
+                        object obj = objects.Pop();
+                        SetValue(obj, memberParts[objects.Count], value);
+                        value = obj;
+                    }
+
+                    ChangedByUser = true;
+                    Control.ForeColor = Color.DarkGreen;
                 }
-
-                objects.Pop();
-                while(objects.Count > 0)
+                catch(Exception e)
                 {
-                    object obj = objects.Pop();
-                    SetValue(obj, memberParts[objects.Count], value);
-                    value = obj;
+                    Log.Error(e);
+                    ForceValue();
                 }
             }
 
@@ -184,6 +237,18 @@ namespace DroneControl
 
             public void NotifyValueChanged()
             {
+                if (ChangedByUser)
+                {
+                    UpdateData();
+                    return;
+                }
+                if (Control.Focused)
+                    return;
+                ForceValue();
+            }
+
+            private void ForceValue()
+            { 
                 ignoreChange = true;
 
                 object value = GetDataValue();
@@ -205,6 +270,8 @@ namespace DroneControl
         private void applyButton_Click(object sender, EventArgs e)
         {
             drone.SendConfig(data);
+            foreach (Binding binding in bindings)
+                binding.ClearChangedByUser();
         }
     }
 }
