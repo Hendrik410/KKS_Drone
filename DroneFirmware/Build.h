@@ -9,7 +9,7 @@
 #include <Esp.h>
 
 inline void getBuildSerialCode(char* buffer, int length) {
-	snprintf(buffer, length, "%X%X", ESP.getChipId(), ESP.getFlashChipId());
+	snprintf(buffer, length, "%X", ESP.getChipId());
 }
 
 #endif
