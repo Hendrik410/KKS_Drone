@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DroneLibrary;
 using DroneLibrary.Protocol;
+using DroneControl.Input;
 
 namespace DroneControl
 {
     public partial class DebugForm : Form
     {
         public Drone Drone { get; private set; }
+        public InputManager InputManager { get; private set; }
 
-        public DebugForm(Drone drone)
+        public DebugForm(Drone drone, InputManager inputManager)
         {
             if (drone == null)
                 throw new ArgumentNullException(nameof(drone));
@@ -25,6 +27,7 @@ namespace DroneControl
 
             this.Drone = drone;
             this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
+            this.InputManager = inputManager;
 
             UpdateDebugData(drone.DebugData);
         }
@@ -69,6 +72,11 @@ namespace DroneControl
         private void blinkButton_Click(object sender, EventArgs e)
         {
             Drone.SendBlink();
+        }
+
+        private void recorderButton_Click(object sender, EventArgs e)
+        {
+            new RecordForm(Drone, InputManager).Show();
         }
     }
 }

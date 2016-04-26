@@ -15,7 +15,7 @@ namespace DroneControl
     public partial class FlightControl : UserControl
     {
         private Drone drone;
-        private InputManager inputManager;
+        public InputManager InputManager { get; private set; }
 
         public FlightControl()
         {
@@ -28,9 +28,9 @@ namespace DroneControl
                 throw new ArgumentNullException(nameof(drone));
 
             this.drone = drone;
-            this.inputManager = new InputManager(drone);
-            this.inputManager.OnDeviceInfoChanged += InputManager_OnDeviceInfoChanged;
-            this.inputManager.OnTargetDataChanged += InputManager_OnTargetDataChanged;
+            this.InputManager = new InputManager(drone);
+            this.InputManager.OnDeviceInfoChanged += InputManager_OnDeviceInfoChanged;
+            this.InputManager.OnTargetDataChanged += InputManager_OnTargetDataChanged;
 
             this.drone.OnDebugDataChange += Drone_OnDebugDataChange;
 
@@ -69,8 +69,8 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            if (inputManager != null)
-                inputManager.Dispose();
+            if (InputManager != null)
+                InputManager.Dispose();
             base.OnHandleDestroyed(e);
         }
 
@@ -86,8 +86,8 @@ namespace DroneControl
 			if (DesignMode)
 				return;
 			
-			if (inputManager != null)
-				inputManager.Update();
+			if (InputManager != null)
+				InputManager.Update();
         }
 
         private void searchDeviceButton_Click(object sender, EventArgs e)
@@ -98,7 +98,7 @@ namespace DroneControl
         private void inputDeviceComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // "None" ist String, daher gibt "as" bei "None" null zurück
-            inputManager.CurrentDevice = inputDeviceComboBox.SelectedItem as IInputDevice;
+            InputManager.CurrentDevice = inputDeviceComboBox.SelectedItem as IInputDevice;
             UpdateDeviceInfo();
         }
 
@@ -111,7 +111,7 @@ namespace DroneControl
         private void SearchInputDevices()
         {
             bool changed;
-            IInputDevice[] devices = inputManager.FindDevices(out changed);
+            IInputDevice[] devices = InputManager.FindDevices(out changed);
 
             // schauen ob die Geräte sich nicht verändert haben und die Liste schon erstellt wurde
             if (!changed && inputDeviceComboBox.Items.Count > 0)
@@ -123,16 +123,16 @@ namespace DroneControl
             inputDeviceComboBox.Items.AddRange(devices);
 
             // Gerät auswählen
-            if (inputManager.CurrentDevice == null)
+            if (InputManager.CurrentDevice == null)
                 inputDeviceComboBox.SelectedIndex = 0;
             else
-                inputDeviceComboBox.SelectedItem = inputManager.CurrentDevice;
+                inputDeviceComboBox.SelectedItem = InputManager.CurrentDevice;
         }
 
 
         private void UpdateDeviceInfo()
         {
-            if(inputManager.CurrentDevice == null)
+            if(InputManager.CurrentDevice == null)
             {
                 deviceConnectionLabel.Text = "No device selected";
                 deviceConnectionLabel.ForeColor = SystemColors.ControlText;
@@ -140,17 +140,17 @@ namespace DroneControl
                 return;
             }
 
-            if (inputManager.CurrentDevice.IsConnected)
+            if (InputManager.CurrentDevice.IsConnected)
             {
                 deviceConnectionLabel.Text = "Device connected";
                 deviceConnectionLabel.ForeColor = Color.Green;
 
-                if (inputManager.CurrentDevice.Battery.HasBattery)
+                if (InputManager.CurrentDevice.Battery.HasBattery)
                 {
                     deviceBatteryLabel.Visible = true;
-                    deviceBatteryLabel.Text = string.Format("Battery: {0}", inputManager.CurrentDevice.Battery.Level);
+                    deviceBatteryLabel.Text = string.Format("Battery: {0}", InputManager.CurrentDevice.Battery.Level);
 
-                    switch(inputManager.CurrentDevice.Battery.Level)
+                    switch(InputManager.CurrentDevice.Battery.Level)
                     {
                         case BatteryLevel.Empty:
                             deviceBatteryLabel.ForeColor = Color.DarkRed;
@@ -181,7 +181,7 @@ namespace DroneControl
 
         private void UpdateTargetData()
         {
-            bool deviceConnected = inputManager.CurrentDevice != null && inputManager.CurrentDevice.IsConnected;
+            bool deviceConnected = InputManager.CurrentDevice != null && InputManager.CurrentDevice.IsConnected;
             pitchLabel.Visible = deviceConnected;
             rollLabel.Visible = deviceConnected;
             rotationalSpeedLabel.Visible = deviceConnected;
@@ -190,38 +190,38 @@ namespace DroneControl
             if (deviceConnected)
             {
                 pitchLabel.Text = string.Format("Pitch: {0}",
-                    Formatting.FormatDecimal(inputManager.TargetData.Pitch, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.Pitch, 2, 2));
                 rollLabel.Text = string.Format("Roll: {0}",
-                    Formatting.FormatDecimal(inputManager.TargetData.Roll, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.Roll, 2, 2));
                 rotationalSpeedLabel.Text = string.Format("Rotational Speed: {0}",
-                    Formatting.FormatDecimal(inputManager.TargetData.RotationalSpeed, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.RotationalSpeed, 2, 2));
                 thrustLabel.Text = string.Format("Thrust: {0}",
-                    Formatting.FormatDecimal(inputManager.TargetData.Thurst, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.Thurst, 2, 2));
             }
         }
 
         private void UpdateInputConfig()
         {
-            inputManager.MaxPitch = (float)maxPitchNumeric.Value;
-            inputManager.MaxRoll = (float)maxRollNumeric.Value;
-            inputManager.MaxRotationalSpeed = (float)maxRotationalSpeedNumeric.Value;
+            InputManager.MaxPitch = (float)maxPitchNumeric.Value;
+            InputManager.MaxRoll = (float)maxRollNumeric.Value;
+            InputManager.MaxRotationalSpeed = (float)maxRotationalSpeedNumeric.Value;
 
-            inputManager.PitchOffset = (float)pitchOffsetNumeric.Value;
-            inputManager.RollOffset = (float)rollOffsetNumeric.Value;
-            inputManager.RotationalOffset = (float)rotationalOffsetNumeric.Value;
+            InputManager.PitchOffset = (float)pitchOffsetNumeric.Value;
+            InputManager.RollOffset = (float)rollOffsetNumeric.Value;
+            InputManager.RotationalOffset = (float)rotationalOffsetNumeric.Value;
 
-            inputManager.MaxThrustPositive = (float)thrustPositiveNumeric.Value;
-            inputManager.MaxThrustNegative = (float)thrustNegativeNumeric.Value;
+            InputManager.MaxThrustPositive = (float)thrustPositiveNumeric.Value;
+            InputManager.MaxThrustNegative = (float)thrustNegativeNumeric.Value;
 
-            inputManager.DeadZone = deadZoneCheckBox.Checked;
+            InputManager.DeadZone = deadZoneCheckBox.Checked;
 
             if (invertPitchCheckBox.Checked)
-                inputManager.MaxPitch *= -1;
+                InputManager.MaxPitch *= -1;
             if (invertRollCheckBox.Checked)
-                inputManager.MaxRoll *= -1;
+                InputManager.MaxRoll *= -1;
             if (invertRotationalCheckBox.Checked)
-                inputManager.MaxRotationalSpeed *= -1;
-            inputManager.InvertThrust = invertThrustCheckBox.Checked;
+                InputManager.MaxRotationalSpeed *= -1;
+            InputManager.InvertThrust = invertThrustCheckBox.Checked;
         }
     }
 }

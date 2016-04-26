@@ -167,6 +167,12 @@
     <Compile Include="QuadGraphControl.Designer.cs">
       <DependentUpon>QuadGraphControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RecordForm.Designer.cs">
+      <DependentUpon>RecordForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SensorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="QuadGraphControl.resx">
       <DependentUpon>QuadGraphControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecordForm.resx">
+      <DependentUpon>RecordForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SensorControl.resx">
       <DependentUpon>SensorControl.cs</DependentUpon>

@@ -32,6 +32,7 @@
             this.resetButton = new System.Windows.Forms.Button();
             this.blinkButton = new System.Windows.Forms.Button();
             this.profilerData = new System.Windows.Forms.Label();
+            this.recorderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // resetButton
@@ -65,11 +66,22 @@
             this.profilerData.TabIndex = 4;
             this.profilerData.Text = "Profiler data";
             // 
+            // recorderButton
+            // 
+            this.recorderButton.Location = new System.Drawing.Point(176, 13);
+            this.recorderButton.Name = "recorderButton";
+            this.recorderButton.Size = new System.Drawing.Size(75, 23);
+            this.recorderButton.TabIndex = 5;
+            this.recorderButton.Text = "Recorder";
+            this.recorderButton.UseVisualStyleBackColor = true;
+            this.recorderButton.Click += new System.EventHandler(this.recorderButton_Click);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 315);
+            this.Controls.Add(this.recorderButton);
             this.Controls.Add(this.profilerData);
             this.Controls.Add(this.blinkButton);
             this.Controls.Add(this.resetButton);
@@ -86,5 +98,6 @@
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Button blinkButton;
         private System.Windows.Forms.Label profilerData;
+        private System.Windows.Forms.Button recorderButton;
     }
 }

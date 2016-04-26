@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Net;
 using DroneLibrary;
 using DroneLibrary.Protocol;
+using DroneControl.Input;
 
 namespace DroneControl
 {
@@ -22,6 +23,11 @@ namespace DroneControl
         private DebugForm debugForm;
         private GraphForm graphForm;
         private SettingsForm settingsForm;
+
+        public InputManager InputManager
+        {
+            get { return flightControl1.InputManager; }
+        }
 
         private long tickCount;
 
@@ -290,7 +296,7 @@ namespace DroneControl
 
         private void debugButton_Click(object sender, EventArgs e)
         {
-            ShowForm(debugForm, () => (debugForm = new DebugForm(drone)));
+            ShowForm(debugForm, () => (debugForm = new DebugForm(drone, InputManager)));
         }
 
         private void graphButton_Click(object sender, EventArgs e)
