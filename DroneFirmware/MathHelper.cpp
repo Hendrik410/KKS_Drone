@@ -27,7 +27,7 @@ float MathHelper::fixValue(float value, float begin, float end) {
 
 float motorsPitch[] = { -1, -1, 1, 1 };
 float motorsRoll[] = { 1, -1, 1, -1 };
-float motorsYaw[] = { -1, 1, 1, -1 };
+float motorsYaw[] = { 1, -1, -1, 1 };
 
 float MathHelper::mixMotor(int motorIndex, float pitch, float roll, float yaw, float thrust) {
 	float value = thrust;
