@@ -80,6 +80,7 @@ Config ConfigManager::getDefault() {
 	Config config;
 
 	strncpy(config.DroneName, "koalaDrone", sizeof(config.DroneName));
+	config.SaveConfig = false;
 
 	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID));
 	strncpy(config.NetworkPassword, "", sizeof(config.NetworkPassword));
@@ -98,7 +99,7 @@ Config ConfigManager::getDefault() {
 	config.ServoMin = 900;
 	config.ServoMax = 2000;
 	config.ServoIdle = 975;
-	config.ServoHover = 975;
+	config.ServoHover = 1100;
 
 	config.PinFrontLeft = 12;
 	config.PinFrontRight = 13;
@@ -107,22 +108,22 @@ Config ConfigManager::getDefault() {
 	config.PinLed = 0;
 
 	config.PitchPid.Kp = 0.25f;
-	config.PitchPid.Ki = 0;
+	config.PitchPid.Ki = 0.1f;
 	config.PitchPid.Kd = 0;
 
 	config.RollPid.Kp = 0.25f;
-	config.RollPid.Ki = 0;
+	config.RollPid.Ki = 0.1f;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 0.25f;
-	config.YawPid.Ki = 0;
+	config.YawPid.Kp = 2.25f;
+	config.YawPid.Ki = 0.4f;
 	config.YawPid.Kd = 0;
 
-	config.ServoThrust = 1;
+	config.ServoThrust = 100;
 
-	config.SafePitch = 60;
-	config.SafeRoll = 60;
-	config.SafeServoValue = 1050;
+	config.SafePitch = 100;
+	config.SafeRoll = 100;
+	config.SafeServoValue = 1500;
 
 	config.EnableGyro = true;
 
