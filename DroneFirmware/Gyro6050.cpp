@@ -75,9 +75,13 @@ void Gyro6050::update() {
 		return;
 	}
 
-	
 	Profiler::begin("Gyro6050::getFIFOBytes()");
-	mpu.getFIFOBytes(fifoBuffer, mpu.dmpGetFIFOPacketSize());
+	int fifoCount = mpu.getFIFOCount();
+	int size = mpu.dmpGetFIFOPacketSize();
+	while (fifoCount >= size) {
+		mpu.getFIFOBytes(fifoBuffer, size);
+		fifoCount -= size;
+	}
 	Profiler::end();
 
 	// Yaw Pitch Roll
