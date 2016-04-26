@@ -38,6 +38,8 @@ namespace DroneControl.Input
 
         public bool DeadZone { get; set; } = true;
 
+        public bool InvertThrust { get; set; } = false;
+
         public event EventHandler OnDeviceInfoChanged;
         public event EventHandler OnTargetDataChanged;
 
@@ -114,6 +116,9 @@ namespace DroneControl.Input
             data.Pitch *= MaxPitch;
             data.Roll *= MaxRoll;
             data.RotationalSpeed *= MaxRotationalSpeed;
+
+            if (InvertThrust)
+                data.Thurst *= -1;
 
             if (data.Thurst >= 0)
                 data.Thurst *= MaxThrustPositive;

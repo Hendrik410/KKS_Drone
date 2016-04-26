@@ -35,6 +35,7 @@
             System.Windows.Forms.Label maxRollLabel;
             System.Windows.Forms.Label maxRotationalSpeedLabel;
             System.Windows.Forms.Label maxPitchLabel;
+            System.Windows.Forms.Label invertLabel;
             this.searchDeviceButton = new System.Windows.Forms.Button();
             this.deviceBatteryLabel = new System.Windows.Forms.Label();
             this.deviceConnectionLabel = new System.Windows.Forms.Label();
@@ -55,6 +56,10 @@
             this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.invertPitchCheckBox = new System.Windows.Forms.CheckBox();
+            this.invertRollCheckBox = new System.Windows.Forms.CheckBox();
+            this.invertRotationalCheckBox = new System.Windows.Forms.CheckBox();
+            this.invertThrustCheckBox = new System.Windows.Forms.CheckBox();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
@@ -66,6 +71,7 @@
             maxRollLabel = new System.Windows.Forms.Label();
             maxRotationalSpeedLabel = new System.Windows.Forms.Label();
             maxPitchLabel = new System.Windows.Forms.Label();
+            invertLabel = new System.Windows.Forms.Label();
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
@@ -205,6 +211,11 @@
             // 
             // inputConfigGroupBox
             // 
+            inputConfigGroupBox.Controls.Add(this.invertThrustCheckBox);
+            inputConfigGroupBox.Controls.Add(this.invertRotationalCheckBox);
+            inputConfigGroupBox.Controls.Add(this.invertRollCheckBox);
+            inputConfigGroupBox.Controls.Add(this.invertPitchCheckBox);
+            inputConfigGroupBox.Controls.Add(invertLabel);
             inputConfigGroupBox.Controls.Add(maxThrustPositiveLabel);
             inputConfigGroupBox.Controls.Add(maxThrustNegativeLabel);
             inputConfigGroupBox.Controls.Add(this.thrustNegativeNumeric);
@@ -224,7 +235,7 @@
             inputConfigGroupBox.Controls.Add(this.maxPitchNumeric);
             inputConfigGroupBox.Location = new System.Drawing.Point(10, 174);
             inputConfigGroupBox.Name = "inputConfigGroupBox";
-            inputConfigGroupBox.Size = new System.Drawing.Size(444, 152);
+            inputConfigGroupBox.Size = new System.Drawing.Size(444, 169);
             inputConfigGroupBox.TabIndex = 27;
             inputConfigGroupBox.TabStop = false;
             inputConfigGroupBox.Text = "Input Config";
@@ -394,7 +405,6 @@
             // 
             // maxRollLabel
             // 
-            maxRollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             maxRollLabel.AutoSize = true;
             maxRollLabel.Location = new System.Drawing.Point(8, 64);
             maxRollLabel.Name = "maxRollLabel";
@@ -504,6 +514,59 @@
             this.updateTimer.Interval = 16;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // invertLabel
+            // 
+            invertLabel.AutoSize = true;
+            invertLabel.Location = new System.Drawing.Point(11, 145);
+            invertLabel.Name = "invertLabel";
+            invertLabel.Size = new System.Drawing.Size(34, 13);
+            invertLabel.TabIndex = 41;
+            invertLabel.Text = "Invert";
+            // 
+            // invertPitchCheckBox
+            // 
+            this.invertPitchCheckBox.AutoSize = true;
+            this.invertPitchCheckBox.Location = new System.Drawing.Point(51, 145);
+            this.invertPitchCheckBox.Name = "invertPitchCheckBox";
+            this.invertPitchCheckBox.Size = new System.Drawing.Size(50, 17);
+            this.invertPitchCheckBox.TabIndex = 42;
+            this.invertPitchCheckBox.Text = "Pitch";
+            this.invertPitchCheckBox.UseVisualStyleBackColor = true;
+            this.invertPitchCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // invertRollCheckBox
+            // 
+            this.invertRollCheckBox.AutoSize = true;
+            this.invertRollCheckBox.Location = new System.Drawing.Point(107, 145);
+            this.invertRollCheckBox.Name = "invertRollCheckBox";
+            this.invertRollCheckBox.Size = new System.Drawing.Size(44, 17);
+            this.invertRollCheckBox.TabIndex = 43;
+            this.invertRollCheckBox.Text = "Roll";
+            this.invertRollCheckBox.UseVisualStyleBackColor = true;
+            this.invertRollCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // invertRotationalCheckBox
+            // 
+            this.invertRotationalCheckBox.AutoSize = true;
+            this.invertRotationalCheckBox.Location = new System.Drawing.Point(156, 145);
+            this.invertRotationalCheckBox.Name = "invertRotationalCheckBox";
+            this.invertRotationalCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.invertRotationalCheckBox.TabIndex = 44;
+            this.invertRotationalCheckBox.Text = "Rotational";
+            this.invertRotationalCheckBox.UseVisualStyleBackColor = true;
+            this.invertRotationalCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // invertThrustCheckBox
+            // 
+            this.invertThrustCheckBox.AutoSize = true;
+            this.invertThrustCheckBox.Location = new System.Drawing.Point(236, 144);
+            this.invertThrustCheckBox.Name = "invertThrustCheckBox";
+            this.invertThrustCheckBox.Size = new System.Drawing.Size(56, 17);
+            this.invertThrustCheckBox.TabIndex = 45;
+            this.invertThrustCheckBox.Text = "Thrust";
+            this.invertThrustCheckBox.UseVisualStyleBackColor = true;
+            this.invertThrustCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -553,5 +616,9 @@
         private System.Windows.Forms.CheckBox deadZoneCheckBox;
         private System.Windows.Forms.NumericUpDown thrustNegativeNumeric;
         private System.Windows.Forms.NumericUpDown thrustPositiveNumeric;
+        private System.Windows.Forms.CheckBox invertThrustCheckBox;
+        private System.Windows.Forms.CheckBox invertRotationalCheckBox;
+        private System.Windows.Forms.CheckBox invertRollCheckBox;
+        private System.Windows.Forms.CheckBox invertPitchCheckBox;
     }
 }

@@ -214,6 +214,14 @@ namespace DroneControl
             inputManager.MaxThrustNegative = (float)thrustNegativeNumeric.Value;
 
             inputManager.DeadZone = deadZoneCheckBox.Checked;
+
+            if (invertPitchCheckBox.Checked)
+                inputManager.MaxPitch *= -1;
+            if (invertRollCheckBox.Checked)
+                inputManager.MaxRoll *= -1;
+            if (invertRotationalCheckBox.Checked)
+                inputManager.MaxRotationalSpeed *= -1;
+            inputManager.InvertThrust = invertThrustCheckBox.Checked;
         }
     }
 }
