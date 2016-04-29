@@ -12,6 +12,7 @@ PacketBuffer::PacketBuffer(uint32_t size) {
 
 PacketBuffer::PacketBuffer(uint8_t* data, uint32_t size) {
 	setBuffer(data, size);
+	this->error = false;
 }
 
 void PacketBuffer::setBuffer(uint8_t* data, uint32_t size) {
