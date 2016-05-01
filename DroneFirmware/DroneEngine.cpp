@@ -13,6 +13,10 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->lastMovementUpdate = 0;
 	this->lastPhysicsCalc = 0;
 
+	this->pitchPID = NULL;
+	this->rollPID = NULL;
+	this->yawPID = NULL;
+
 	createPID();
 
 	setMaxTilt(30);
