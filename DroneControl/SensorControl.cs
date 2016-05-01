@@ -52,9 +52,9 @@ namespace DroneControl
 
             calibrateGyroButton.Enabled = e.Data.State != DroneState.Armed && e.Data.State != DroneState.Flying;
 
-            orientationLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
-                Formatting.FormatDecimal(e.Data.Gyro.Roll, 2),
+            orientationLabel.Text = string.Format("Pitch: {0} Roll: {1} Yaw: {2}",
                 Formatting.FormatDecimal(e.Data.Gyro.Pitch, 2),
+                Formatting.FormatDecimal(e.Data.Gyro.Roll, 2),
                 Formatting.FormatDecimal(e.Data.Gyro.Yaw, 2));
 
             rotationLabel.Text = string.Format("Rotation x: {0} y: {1} z: {2}",
