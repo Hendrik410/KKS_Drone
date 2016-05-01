@@ -25,7 +25,7 @@ float MathHelper::fixValue(float value, float begin, float end) {
 	return value;
 }
 
-float motorsPitch[] = { -1, -1, 1, 1 };
+float motorsPitch[] = { 1, 1, -1, -1 };
 float motorsRoll[] = { 1, -1, 1, -1 };
 float motorsYaw[] = { 1, -1, -1, 1 };
 

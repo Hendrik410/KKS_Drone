@@ -108,6 +108,10 @@ void Gyro6050::update() {
 	gyroX = values[0] * gyroRes;
 	gyroY = values[1] * gyroRes;
 	gyroZ = values[2] * gyroRes;
+
+	// Richtung anpassen
+	pitch *= -1;
+	gyroZ *= -1;
 #else
 
 	int16_t values[6];

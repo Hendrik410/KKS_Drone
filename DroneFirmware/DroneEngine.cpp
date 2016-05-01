@@ -152,7 +152,7 @@ void DroneEngine::handleInternal() {
 	float values[4];
 
 	if (config->EnableGyro) {
-		calculatePID(pitchPID, -gyro->getPitch(), targetPitch);
+		calculatePID(pitchPID, gyro->getPitch(), targetPitch);
 		calculatePID(rollPID, gyro->getRoll(), targetRoll);
 		calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
 	}
