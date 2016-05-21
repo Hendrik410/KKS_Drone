@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Security.Cryptography;
 using DroneLibrary.Protocol;
 
 namespace DroneLibrary
@@ -21,7 +22,7 @@ namespace DroneLibrary
         public int Position { get; private set; }
         public int Size { get { return data == null ? 0 : data.Length; } }
 
-        public string MD5 { get; private set; }
+        public string Hash { get; private set; }
 
         public event EventHandler OnProgress;
 
@@ -45,12 +46,12 @@ namespace DroneLibrary
             Position = 0;
 
             data = File.ReadAllBytes(file);
-            using (var md5 = System.Security.Cryptography.MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                MD5 = BitConverter.ToString(md5.ComputeHash(data)).Replace("-", "").ToLower();
+                Hash = BitConverter.ToString(md5.ComputeHash(data)).Replace("-", "").ToLower();
             }
 
-            Drone.SendPacket(new PacketBeginOTA(MD5, Size), true, (s, p) =>
+            Drone.SendPacket(new PacketBeginOTA(Hash, Size), true, (s, p) =>
             {
                 if (IsRunning)
                     SendData();

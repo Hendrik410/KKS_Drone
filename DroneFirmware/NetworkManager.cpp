@@ -35,6 +35,12 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	writeBuffer = new PacketBuffer(config->NetworkPacketBufferSize);
 }
 
+bool NetworkManager::checkRevision(int a, int b) {
+	if (a >= 0 && b < 0)
+		return true;
+	return b > a;
+}
+
 void NetworkManager::handlePackets() {
 	if (saveConfig && (engine->state() != StateFlying && engine->state() != StateArmed)) {
 		servos->detach();
@@ -163,7 +169,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
 	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
-
 	
 	if (ackRequested && type != DataOTA) // DataOTA sendet selber Ack
 		sendAck(udp, revision);
@@ -243,7 +248,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		blinkLED();
 		break;
 	case ResetRevisionPacket:
-		//lastRevision = 0;
+		lastOtaRevision = 0;
 		break;
 
 	case GetInfoPacket: {
@@ -321,6 +326,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 
 	case BeginOTA: {
+		if (!checkRevision(lastOtaRevision, revision))
+			return;
+
+		lastOtaRevision = revision;
+
 		char* md5 = readBuffer->readString();
 		int32_t size = readBuffer->readInt32();
 
@@ -338,10 +348,17 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			return;
 		}
 
-		//Update.setMD5(md5);
+		Update.setMD5(md5);
 		break;
 	}
 	case DataOTA: {
+		if (!checkRevision(lastOtaRevision, revision)) {
+			sendAck(udp, revision);
+			return;
+		}
+
+		lastOtaRevision = revision;
+
 		if (engine->state() != StateOTA) {
 			sendAck(udp, revision);
 			return;
@@ -355,11 +372,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			return;
 
 		uint8_t hash = 0;
-		for (int32_t i = 0; i < chunkSize; i++)
+		for (int32_t i = 0; i < chunkSize; i++) 
 			hash ^= data[i];
 
 		if (hash != dataHash) {
-			Log::error("Network", "OTA data failed (wrong hash");
+			Log::error("Network", "OTA data failed (wrong hash)");
 			return;
 		}
 
@@ -368,6 +385,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	}
 	case EndOTA:
+		if (!checkRevision(lastOtaRevision, revision))
+			return;
+
+		lastOtaRevision = revision;
+
 		if (engine->state() == StateOTA) {
 			engine->endOTA();
 

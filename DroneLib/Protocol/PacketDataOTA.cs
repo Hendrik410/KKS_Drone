@@ -25,8 +25,7 @@ namespace DroneLibrary.Protocol
 
             packet.Write(ChunkSize);
             packet.Write(DataHash);
-            foreach (byte b in Data)
-                packet.Write(b);
+            packet.Write(Data, 0, Data.Length);
         }
     }
 }
