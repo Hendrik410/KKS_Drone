@@ -2,7 +2,7 @@
 #include <I2Cdev.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
+#include <MPU6050_6Axis_MotionApps20.h>
 #include <Servo.h>
 #include <EEPROM.h>
 #include "Build.h"
@@ -35,7 +35,7 @@ int lastLoopTime = 0;
 short delayTime = 10;
 
 void setup() {
-	Serial.begin(74880);
+	Serial.begin(115200);
 	Serial.println();
 
 	Log::info("Boot", "=====================");
@@ -140,6 +140,7 @@ void setup() {
 void loop() {
 	Profiler::begin("loop()");
 
+	network->handlePackets();
 
 	if (engine->state() != StateOTA)
 	{
@@ -151,8 +152,6 @@ void loop() {
 
 	if (engine->state() == StateArmed)
 		servos->handleTick();
-
-	network->handlePackets();
 
 	Profiler::end();
 
