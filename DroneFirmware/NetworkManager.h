@@ -20,6 +20,7 @@
 #include "VoltageInputReader.h"
 #include <user_interface.h>
 
+#define VERBOSE_PACKET_LOG false
 
 class NetworkManager
 {
@@ -41,12 +42,16 @@ protected:
 	DroneState lastState;
 	int dataRevision;
 
+	int lastOtaRevision;
+
 	WiFiUDP helloUDP;
 	WiFiUDP controlUDP;
 	WiFiUDP dataUDP;
 
 	PacketBuffer* readBuffer;
 	PacketBuffer* writeBuffer;
+
+	bool checkRevision(int a, int b);
 
 	bool beginParse(WiFiUDP udp);
 	void handleHello(WiFiUDP udp);

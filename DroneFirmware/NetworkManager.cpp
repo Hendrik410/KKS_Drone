@@ -168,7 +168,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
+#if VERBOSE_PACKET_LOG
 	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
+#endif
 	
 	if (ackRequested && type != DataOTA) // DataOTA sendet selber Ack
 		sendAck(udp, revision);
