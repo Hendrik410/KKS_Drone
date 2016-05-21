@@ -70,14 +70,16 @@ void Gyro6050::update() {
 		return;
 	}
 
-	if (!mpu.dmpPacketAvailable()) {
+	Profiler::begin("Gyro6050::getFIFOBytes()");
+	
+	int fifoCount = mpu.getFIFOCount();
+	int size = mpu.dmpGetFIFOPacketSize();
+	if (fifoCount < size) {
+		Profiler::end();
 		Profiler::end();
 		return;
 	}
 
-	Profiler::begin("Gyro6050::getFIFOBytes()");
-	int fifoCount = mpu.getFIFOCount();
-	int size = mpu.dmpGetFIFOPacketSize();
 	while (fifoCount >= size) {
 		mpu.getFIFOBytes(fifoBuffer, size);
 		fifoCount -= size;
@@ -109,9 +111,6 @@ void Gyro6050::update() {
 	gyroY = values[1] * gyroRes;
 	gyroZ = values[2] * gyroRes;
 
-	// Richtung anpassen
-	pitch *= -1;
-	gyroZ *= -1;
 #else
 
 	int16_t values[6];
@@ -125,6 +124,10 @@ void Gyro6050::update() {
 	gyroY = values[4] * gyroRes;
 	gyroZ = values[5] * gyroRes;
 #endif
+
+	// Richtung anpassen
+	pitch *= -1;
+	gyroZ *= -1;
 
 	_dirty = true;
 	Profiler::end();

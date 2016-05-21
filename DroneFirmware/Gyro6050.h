@@ -3,9 +3,9 @@
 #include "Build.h"
 #include "Gyro.h"
 
-#include <Wire/Wire.h>
-#include <MPU6050/MPU6050_6Axis_MotionApps20.h>
-#include <I2Cdev/I2Cdev.h>
+#include <Wire.h>
+#include <MPU6050_6Axis_MotionApps20.h>
+#include <I2Cdev.h>
 
 #define USE_DMP true
 
