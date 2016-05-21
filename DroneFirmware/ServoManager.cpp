@@ -77,6 +77,11 @@ void ServoManager::setServos(int fl, int fr, int bl, int br) {
 	servoBLValue = getValue(bl);
 	servoBRValue = getValue(br);
 
+	_dirty = true;
+
+	if (!attached)
+		return;
+
 	if (servoFLValue != 1)
 		frontLeft.writeMicroseconds(servoFLValue);
 	if (servoFRValue != 1)
@@ -85,8 +90,6 @@ void ServoManager::setServos(int fl, int fr, int bl, int br) {
 		backLeft.writeMicroseconds(servoBLValue);
 	if (servoBRValue != 1)
 		backRight.writeMicroseconds(servoBRValue);
-
-	_dirty = true;
 }
 
 
