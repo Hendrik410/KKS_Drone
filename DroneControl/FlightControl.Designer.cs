@@ -516,7 +516,7 @@
             this.maxRotationalSpeedNumeric.Size = new System.Drawing.Size(54, 20);
             this.maxRotationalSpeedNumeric.TabIndex = 27;
             this.maxRotationalSpeedNumeric.Value = new decimal(new int[] {
-            30,
+            5,
             0,
             0,
             0});

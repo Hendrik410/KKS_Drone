@@ -65,6 +65,8 @@
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
             this.buildDateTextBox = new System.Windows.Forms.TextBox();
+            this.saveConfigCheckBox = new System.Windows.Forms.CheckBox();
+            this.enableGyroCheckBox = new System.Windows.Forms.CheckBox();
             this.restartButton = new System.Windows.Forms.Button();
             this.modelTextBox = new System.Windows.Forms.TextBox();
             this.magnetometerTextBox = new System.Windows.Forms.TextBox();
@@ -92,8 +94,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
             this.thrustValue = new System.Windows.Forms.NumericUpDown();
-            this.enableGyroCheckBox = new System.Windows.Forms.CheckBox();
-            this.saveConfigCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
@@ -248,6 +248,16 @@
             quadrocopterPage.TabIndex = 0;
             quadrocopterPage.Text = "Quadrocopter";
             // 
+            // saveConfigCheckBox
+            // 
+            this.saveConfigCheckBox.AutoSize = true;
+            this.saveConfigCheckBox.Location = new System.Drawing.Point(302, 10);
+            this.saveConfigCheckBox.Name = "saveConfigCheckBox";
+            this.saveConfigCheckBox.Size = new System.Drawing.Size(84, 17);
+            this.saveConfigCheckBox.TabIndex = 17;
+            this.saveConfigCheckBox.Text = "Save Config";
+            this.saveConfigCheckBox.UseVisualStyleBackColor = true;
+            // 
             // hardwareGroupBox
             // 
             hardwareGroupBox.Controls.Add(this.enableGyroCheckBox);
@@ -266,6 +276,16 @@
             hardwareGroupBox.TabIndex = 16;
             hardwareGroupBox.TabStop = false;
             hardwareGroupBox.Text = "Hardware";
+            // 
+            // enableGyroCheckBox
+            // 
+            this.enableGyroCheckBox.AutoSize = true;
+            this.enableGyroCheckBox.Location = new System.Drawing.Point(16, 132);
+            this.enableGyroCheckBox.Name = "enableGyroCheckBox";
+            this.enableGyroCheckBox.Size = new System.Drawing.Size(84, 17);
+            this.enableGyroCheckBox.TabIndex = 17;
+            this.enableGyroCheckBox.Text = "Enable Gyro";
+            this.enableGyroCheckBox.UseVisualStyleBackColor = true;
             // 
             // restartButton
             // 
@@ -702,6 +722,15 @@
             label6.TabIndex = 12;
             label6.Text = "Kd";
             // 
+            // thrust
+            // 
+            thrust.AutoSize = true;
+            thrust.Location = new System.Drawing.Point(280, 117);
+            thrust.Name = "thrust";
+            thrust.Size = new System.Drawing.Size(37, 13);
+            thrust.TabIndex = 16;
+            thrust.Text = "Thrust";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(quadrocopterPage);
@@ -732,38 +761,14 @@
             // thrustValue
             // 
             this.thrustValue.Location = new System.Drawing.Point(349, 115);
+            this.thrustValue.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.thrustValue.Name = "thrustValue";
             this.thrustValue.Size = new System.Drawing.Size(70, 20);
             this.thrustValue.TabIndex = 17;
-            // 
-            // thrust
-            // 
-            thrust.AutoSize = true;
-            thrust.Location = new System.Drawing.Point(280, 117);
-            thrust.Name = "thrust";
-            thrust.Size = new System.Drawing.Size(37, 13);
-            thrust.TabIndex = 16;
-            thrust.Text = "Thrust";
-            // 
-            // enableGyroCheckBox
-            // 
-            this.enableGyroCheckBox.AutoSize = true;
-            this.enableGyroCheckBox.Location = new System.Drawing.Point(16, 132);
-            this.enableGyroCheckBox.Name = "enableGyroCheckBox";
-            this.enableGyroCheckBox.Size = new System.Drawing.Size(84, 17);
-            this.enableGyroCheckBox.TabIndex = 17;
-            this.enableGyroCheckBox.Text = "Enable Gyro";
-            this.enableGyroCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // saveConfigCheckBox
-            // 
-            this.saveConfigCheckBox.AutoSize = true;
-            this.saveConfigCheckBox.Location = new System.Drawing.Point(302, 10);
-            this.saveConfigCheckBox.Name = "saveConfigCheckBox";
-            this.saveConfigCheckBox.Size = new System.Drawing.Size(84, 17);
-            this.saveConfigCheckBox.TabIndex = 17;
-            this.saveConfigCheckBox.Text = "Save Config";
-            this.saveConfigCheckBox.UseVisualStyleBackColor = true;
             // 
             // applyButton
             // 
