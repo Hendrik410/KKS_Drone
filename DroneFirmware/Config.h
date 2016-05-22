@@ -76,7 +76,9 @@ struct Config {
 	float SafeRoll;
 	int SafeServoValue;
 
-	boolean EnableGyro;
+	boolean EnableStabilization;
+	boolean NegativeMixing;
+	boolean KeepMotorsOn;
 };
 
 #endif

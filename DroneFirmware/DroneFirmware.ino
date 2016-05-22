@@ -144,8 +144,7 @@ void loop() {
 
 	if (engine->state() != StateOTA)
 	{
-		if (config.EnableGyro)
-			gyro->update();
+		gyro->update();
 		engine->handle();
 	}
 	handleBlink();

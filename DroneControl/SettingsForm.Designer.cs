@@ -66,7 +66,6 @@
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
             this.buildDateTextBox = new System.Windows.Forms.TextBox();
             this.saveConfigCheckBox = new System.Windows.Forms.CheckBox();
-            this.enableGyroCheckBox = new System.Windows.Forms.CheckBox();
             this.restartButton = new System.Windows.Forms.Button();
             this.modelTextBox = new System.Windows.Forms.TextBox();
             this.magnetometerTextBox = new System.Windows.Forms.TextBox();
@@ -95,6 +94,9 @@
             this.flyingPage = new System.Windows.Forms.TabPage();
             this.thrustValue = new System.Windows.Forms.NumericUpDown();
             this.applyButton = new System.Windows.Forms.Button();
+            this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
+            this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
+            this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -260,7 +262,6 @@
             // 
             // hardwareGroupBox
             // 
-            hardwareGroupBox.Controls.Add(this.enableGyroCheckBox);
             hardwareGroupBox.Controls.Add(this.restartButton);
             hardwareGroupBox.Controls.Add(this.modelTextBox);
             hardwareGroupBox.Controls.Add(this.magnetometerTextBox);
@@ -272,25 +273,15 @@
             hardwareGroupBox.Controls.Add(gyroSensorLabel);
             hardwareGroupBox.Location = new System.Drawing.Point(11, 156);
             hardwareGroupBox.Name = "hardwareGroupBox";
-            hardwareGroupBox.Size = new System.Drawing.Size(258, 180);
+            hardwareGroupBox.Size = new System.Drawing.Size(258, 161);
             hardwareGroupBox.TabIndex = 16;
             hardwareGroupBox.TabStop = false;
             hardwareGroupBox.Text = "Hardware";
             // 
-            // enableGyroCheckBox
-            // 
-            this.enableGyroCheckBox.AutoSize = true;
-            this.enableGyroCheckBox.Location = new System.Drawing.Point(16, 132);
-            this.enableGyroCheckBox.Name = "enableGyroCheckBox";
-            this.enableGyroCheckBox.Size = new System.Drawing.Size(84, 17);
-            this.enableGyroCheckBox.TabIndex = 17;
-            this.enableGyroCheckBox.Text = "Enable Gyro";
-            this.enableGyroCheckBox.UseVisualStyleBackColor = true;
-            // 
             // restartButton
             // 
             this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.restartButton.Location = new System.Drawing.Point(144, 154);
+            this.restartButton.Location = new System.Drawing.Point(144, 135);
             this.restartButton.Name = "restartButton";
             this.restartButton.Size = new System.Drawing.Size(108, 20);
             this.restartButton.TabIndex = 11;
@@ -744,6 +735,9 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
+            this.flyingPage.Controls.Add(this.negativeMixingCheckBox);
+            this.flyingPage.Controls.Add(this.enableStabilizationCheckBox);
             this.flyingPage.Controls.Add(this.thrustValue);
             this.flyingPage.Controls.Add(thrust);
             this.flyingPage.Controls.Add(pidYawGroupBox);
@@ -779,6 +773,36 @@
             this.applyButton.Text = "Apply";
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+            // 
+            // enableStabilizationCheckBox
+            // 
+            this.enableStabilizationCheckBox.AutoSize = true;
+            this.enableStabilizationCheckBox.Location = new System.Drawing.Point(283, 141);
+            this.enableStabilizationCheckBox.Name = "enableStabilizationCheckBox";
+            this.enableStabilizationCheckBox.Size = new System.Drawing.Size(116, 17);
+            this.enableStabilizationCheckBox.TabIndex = 22;
+            this.enableStabilizationCheckBox.Text = "Enable stabilization";
+            this.enableStabilizationCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // negativeMixingCheckBox
+            // 
+            this.negativeMixingCheckBox.AutoSize = true;
+            this.negativeMixingCheckBox.Location = new System.Drawing.Point(283, 164);
+            this.negativeMixingCheckBox.Name = "negativeMixingCheckBox";
+            this.negativeMixingCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.negativeMixingCheckBox.TabIndex = 23;
+            this.negativeMixingCheckBox.Text = "Negative mixing";
+            this.negativeMixingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // keepMotorsOnCheckBox
+            // 
+            this.keepMotorsOnCheckBox.AutoSize = true;
+            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 187);
+            this.keepMotorsOnCheckBox.Name = "keepMotorsOnCheckBox";
+            this.keepMotorsOnCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.keepMotorsOnCheckBox.TabIndex = 24;
+            this.keepMotorsOnCheckBox.Text = "Keep motors on";
+            this.keepMotorsOnCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -856,7 +880,9 @@
         private System.Windows.Forms.NumericUpDown rollKpTextBox;
         private System.Windows.Forms.NumericUpDown thrustValue;
         private System.Windows.Forms.CheckBox saveConfigCheckBox;
-        private System.Windows.Forms.CheckBox enableGyroCheckBox;
         private System.Windows.Forms.Button applyButton;
+        private System.Windows.Forms.CheckBox keepMotorsOnCheckBox;
+        private System.Windows.Forms.CheckBox negativeMixingCheckBox;
+        private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
     }
 }

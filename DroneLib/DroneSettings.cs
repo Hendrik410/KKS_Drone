@@ -125,7 +125,15 @@ namespace DroneLibrary
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
-        public bool EnableGyro;
+        public bool EnableStabilization;
+
+	    [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool NegativeMixing;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool KeepMotorsOn;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

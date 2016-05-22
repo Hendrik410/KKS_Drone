@@ -38,7 +38,6 @@ namespace DroneControl
             Bind(idTextBox, "info.SerialCode");
             Bind(gyroSensorTextBox, "info.GyroSensor");
             Bind(magnetometerTextBox, "info.Magnetometer");
-            Bind(enableGyroCheckBox, "data.EnableGyro");
 
             Bind(minValueTextBox, "data.ServoMin");
             Bind(idleValueTextBox, "data.ServoIdle");
@@ -63,6 +62,10 @@ namespace DroneControl
             Bind(yawKdTextBox, "data.YawPid.Kd");
 
             Bind(thrustValue, "data.ServoThrust");
+
+            Bind(enableStabilizationCheckBox, "data.EnableStabilization");
+            Bind(negativeMixingCheckBox, "data.NegativeMixing");
+            Bind(keepMotorsOnCheckBox, "data.KeepMotorsOn");
 
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;

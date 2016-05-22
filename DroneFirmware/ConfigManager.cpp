@@ -125,7 +125,9 @@ Config ConfigManager::getDefault() {
 	config.SafeRoll = 100;
 	config.SafeServoValue = 1500;
 
-	config.EnableGyro = true;
+	config.EnableStabilization = true;
+	config.NegativeMixing = true;
+	config.KeepMotorsOn = false;
 
 	Log::info("Config", "Using default config");
 	return config;

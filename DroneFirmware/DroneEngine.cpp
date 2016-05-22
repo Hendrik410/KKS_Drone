@@ -155,7 +155,7 @@ void DroneEngine::handle() {
 void DroneEngine::handleInternal() {
 	float values[4];
 
-	if (config->EnableGyro) {
+	if (config->EnableStabilization) {
 		calculatePID(pitchPID, gyro->getPitch(), targetPitch);
 		calculatePID(rollPID, gyro->getRoll(), targetRoll);
 		calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
@@ -168,8 +168,12 @@ void DroneEngine::handleInternal() {
 
 	float thrust = targetVerticalSpeed * config->ServoThrust;
 
+	uint16_t minServo = config->ServoMin;
+	if (config->KeepMotorsOn)
+		minServo = config->ServoIdle;
+
 	for (int i = 0; i < 4; i++)
-		values[i] = MathHelper::clampValue(config->ServoHover + MathHelper::mixMotor(i, pitchOutput, rollOutput, yawOutput, thrust), config->ServoMin, config->ServoMax);
+		values[i] = MathHelper::clampValue(config->ServoHover + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput, thrust), minServo, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
 }

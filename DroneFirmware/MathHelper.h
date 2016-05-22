@@ -11,7 +11,7 @@ class MathHelper
 	 static float fixValue(float value, float begin, float end);
 
 	 static float angleDifference(float a, float b);
-	 static float mixMotor(int motorIndex, float pitch, float roll, float yaw, float thrust);
+	 static float mixMotor(Config* config, int motorIndex, float pitch, float roll, float yaw, float thrust);
 };
 
 #endif
