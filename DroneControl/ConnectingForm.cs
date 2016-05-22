@@ -48,8 +48,12 @@ namespace DroneControl
             {
                 Drone.SendPing();
             };
+        }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
             Connect();
+            base.OnHandleCreated(e);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
