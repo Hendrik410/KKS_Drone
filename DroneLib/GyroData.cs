@@ -8,8 +8,8 @@ namespace DroneLibrary
 {
     public struct GyroData
     {
-        public float Pitch { get; }
         public float Roll { get; }
+        public float Pitch { get; }
         public float Yaw { get; }
 
         public float GyroX { get; }
@@ -28,8 +28,8 @@ namespace DroneLibrary
 
         public GyroData(PacketBuffer buffer)
         {
-            this.Pitch = buffer.ReadFloat();
             this.Roll = buffer.ReadFloat();
+            this.Pitch = buffer.ReadFloat();
             this.Yaw = buffer.ReadFloat();
 
             this.GyroX = buffer.ReadFloat();

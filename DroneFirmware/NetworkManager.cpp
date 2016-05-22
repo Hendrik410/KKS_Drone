@@ -438,8 +438,8 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(uint16_t(servos->BL()));
 		writeBuffer->write(uint16_t(servos->BR()));
 
-		writeBuffer->write(gyro->getPitch());
 		writeBuffer->write(gyro->getRoll());
+		writeBuffer->write(gyro->getPitch());
 		writeBuffer->write(gyro->getYaw());
 
 		writeBuffer->write(gyro->getGyroX());

@@ -11,18 +11,20 @@ Gyro::Gyro(Config* config) {
 
 void Gyro::setAsZero() {
 	if (!hasMagnetometer()) {
-		pitchOffset = pitch;
 		rollOffset = roll;
+		pitchOffset = pitch;
 	}
-	if (!hasCompass()) {
+	if (!hasCompass()) 
 		yawOffset = yaw;
-	}
 
 	accelerationXOffset = accX;
 	accelerationYOffset = accY;
 	accelerationZOffset = accZ;
 }
 
+float Gyro::getRoll() const {
+	return getRollRad() * 180 / M_PI;
+}
 
 float Gyro::getPitch() const {
 	return getPitchRad() * 180 / M_PI;
@@ -33,8 +35,9 @@ float Gyro::getYaw() const {
 }
 
 
-float Gyro::getRoll() const {
-	return getRollRad() * 180 / M_PI;
+float Gyro::getRollRad() const {
+	float roll = this->roll - rollOffset;
+	return MathHelper::fixValue(roll, -M_PI_2, M_PI_2);
 }
 
 float Gyro::getPitchRad() const {
@@ -45,11 +48,6 @@ float Gyro::getPitchRad() const {
 float Gyro::getYawRad() const {
 	float yaw = this->yaw - yawOffset;
 	return MathHelper::fixValue(yaw, 0, M_TWOPI);
-}
-
-float Gyro::getRollRad() const {
-	float roll = this->roll - rollOffset;
-	return MathHelper::fixValue(roll, -M_PI_2, M_PI_2);
 }
 
 

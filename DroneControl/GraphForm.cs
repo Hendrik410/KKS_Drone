@@ -31,11 +31,13 @@ namespace DroneControl
             orientationGraphList.ValueMinimums = new double[] { -90, -90, 0 };
             orientationGraphList.ValueMaximums = new double[] { 90, 90, 360 };
 
-            rotationGraphList.ValueMinimums = new double[] { -100, -100, -100 };
-            rotationGraphList.ValueMaximums = new double[] { 100, 100, 100 };
+            const double rotationRange = 25;
+            rotationGraphList.ValueMinimums = new double[] { -rotationRange, -rotationRange, -rotationRange };
+            rotationGraphList.ValueMaximums = new double[] { rotationRange, rotationRange, rotationRange };
 
-            accelerationGraphList.ValueMinimums = new double[] { -5, -5, -5 };
-            accelerationGraphList.ValueMaximums = new double[] { 5, 5, 5 };
+            const double accelerationRange = 2;
+            accelerationGraphList.ValueMinimums = new double[] { -accelerationRange, -accelerationRange, -accelerationRange };
+            accelerationGraphList.ValueMaximums = new double[] { accelerationRange, accelerationRange, accelerationRange };
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

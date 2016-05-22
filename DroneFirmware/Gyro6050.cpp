@@ -17,6 +17,8 @@ bool Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 
 	Wire.begin(SDA, SCL);
+	Wire.setClock(400000L); // gotta go fast
+
 	if (!mpu.testConnection()) {
 		Log::error("Gyro6050", "Connection failed");
 		mpuOK = false;
@@ -61,6 +63,8 @@ void Gyro6050::update() {
 		return;
 
 	Profiler::begin("Gyro6050::update()");
+
+	float gyroValues[9];
 #if USE_DMP
 	if (mpu.getIntFIFOBufferOverflowStatus() || mpu.getFIFOCount() == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
 		mpu.resetFIFO();
@@ -91,43 +95,56 @@ void Gyro6050::update() {
 	mpu.dmpGetGravity(&gravity, &q);
 	mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
 
-	yaw = ypr[0];
-	roll = ypr[1];
-	pitch = ypr[2];
+	gyroValues[0] = ypr[2];
+	gyroValues[1] = ypr[1];
+	gyroValues[2] = ypr[0];
 
 	// Beschleunigung
 	mpu.dmpGetAccel(&aa, fifoBuffer);
 	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
 
-	accX = aaReal.x * accRes;
-	accY = aaReal.y * accRes;
-	accZ = aaReal.z * accRes;
+	gyroValues[3] = aaReal.x * accRes;
+	gyroValues[4] = aaReal.y * accRes;
+	gyroValues[5] = aaReal.z * accRes;
 
 	// Gyro Werte
 	int16_t values[3];
 	mpu.dmpGetGyro(values, fifoBuffer);
 
-	gyroX = values[0] * gyroRes;
-	gyroY = values[1] * gyroRes;
-	gyroZ = values[2] * gyroRes;
+	gyroValues[6] = values[0] * gyroRes;
+	gyroValues[7] = values[1] * gyroRes;
+	gyroValues[8] = values[2] * gyroRes;
 
 #else
 
 	int16_t values[6];
 	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
 
-	accX = values[0] * accRes;
-	accY = values[1] * accRes;
-	accZ = values[2] * accRes;
+	gyroValues[0] = 0;
+	gyroValues[1] = 0;
+	gyroValues[2] = 0;
 
-	gyroX = values[3] * gyroRes;
-	gyroY = values[4] * gyroRes;
-	gyroZ = values[5] * gyroRes;
+	gyroValues[3] = values[0] * accRes;
+	gyroValues[4] = values[1] * accRes;
+	gyroValues[5] = values[2] * accRes;
+
+	gyroValues[6] = values[3] * gyroRes;
+	gyroValues[7] = values[4] * gyroRes;
+	gyroValues[8] = values[5] * gyroRes;
 #endif
 
-	// Richtung anpassen
-	pitch *= -1;
-	gyroZ *= -1;
+	roll = gyroValues[1];
+	pitch = -gyroValues[0];
+	yaw = gyroValues[2];
+
+	accX = -gyroValues[3];
+	accY = -gyroValues[4];
+	accZ = -gyroValues[5];
+
+	gyroX = -gyroValues[7];
+	gyroY = -gyroValues[6];
+	gyroZ = -gyroValues[8];
+
 
 	_dirty = true;
 	Profiler::end();

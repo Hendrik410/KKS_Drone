@@ -14,12 +14,12 @@ class Gyro
  protected:
 	 Config* config;
 	 
-	 float pitch = 0;
 	 float roll = 0;
+	 float pitch = 0;
 	 float yaw = 0;
 
-	 float pitchOffset = 0;
 	 float rollOffset = 0;
+	 float pitchOffset = 0;
 	 float yawOffset = 0;
 
 	 float gyroX = 0;
@@ -59,8 +59,8 @@ class Gyro
 
 	void setAsZero();
 
-	float getPitch() const;
 	float getRoll() const;
+	float getPitch() const;
 	float getYaw() const;
 
 	float getGyroX() const;
