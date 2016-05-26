@@ -45,6 +45,9 @@ namespace DroneControl
                 return;
             }
 
+
+            SuspendLayout();
+
             if (!float.IsNaN(e.Data.Gyro.Pitch) && !float.IsNaN(e.Data.Gyro.Roll))
                 artificialHorizon.SetAttitudeIndicatorParameters(e.Data.Gyro.Pitch, -e.Data.Gyro.Roll);
             if (!float.IsNaN(e.Data.Gyro.Yaw))
@@ -77,6 +80,8 @@ namespace DroneControl
 
             batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V",
                 Formatting.FormatDecimal(e.Data.BatteryVoltage, 2));
+
+            ResumeLayout();
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)

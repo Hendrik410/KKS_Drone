@@ -138,6 +138,8 @@ namespace DroneControl
 
         private void UpdateData(DroneData data)
         {
+            SuspendLayout();
+
             if (!drone.IsConnected)
             {
                 statusArmedLabel.ForeColor = Color.Red;
@@ -146,6 +148,7 @@ namespace DroneControl
                     statusArmedLabel.Text += string.Format(" (last: {0})", data.State);
 
                 statusButton.Enabled = false;
+                wifiRssiLabel.Visible = false;
             }
             else
             {
@@ -202,6 +205,8 @@ namespace DroneControl
 
                 wifiRssiLabel.Text = wifiText.ToString();
             }
+
+            ResumeLayout();
         }
 
         private void UpdateSettings(DroneSettings settings)

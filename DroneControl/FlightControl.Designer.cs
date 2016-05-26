@@ -500,7 +500,7 @@
             // searchTimer
             // 
             this.searchTimer.Enabled = true;
-            this.searchTimer.Interval = 1000;
+            this.searchTimer.Interval = 2500;
             this.searchTimer.Tick += new System.EventHandler(this.searchTimer_Tick);
             // 
             // updateTimer

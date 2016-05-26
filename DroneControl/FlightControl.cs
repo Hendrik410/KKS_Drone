@@ -134,16 +134,24 @@ namespace DroneControl
                 inputDeviceComboBox.SelectedIndex = 0;
             else
                 inputDeviceComboBox.SelectedItem = InputManager.CurrentDevice;
+
+            if (InputManager.CurrentDevice == null || !InputManager.CurrentDevice.IsConnected)
+                searchTimer.Interval = 2500;
+            else
+                searchTimer.Interval = 5000;
         }
 
 
         private void UpdateDeviceInfo()
         {
-            if(InputManager.CurrentDevice == null)
+            SuspendLayout();
+
+            if (InputManager.CurrentDevice == null)
             {
                 deviceConnectionLabel.Text = "No device selected";
                 deviceConnectionLabel.ForeColor = SystemColors.ControlText;
                 deviceBatteryLabel.Visible = false;
+                ResumeLayout();
                 return;
             }
 
@@ -184,10 +192,13 @@ namespace DroneControl
 
                 deviceBatteryLabel.Visible = false;
             }
+            ResumeLayout();
         }
 
         private void UpdateTargetData()
         {
+            SuspendLayout();
+
             bool deviceConnected = InputManager.CurrentDevice != null && InputManager.CurrentDevice.IsConnected;
             rollLabel.Visible = deviceConnected;
             pitchLabel.Visible = deviceConnected;
@@ -205,6 +216,8 @@ namespace DroneControl
                 thrustLabel.Text = string.Format("Thrust: {0}", 
                     Formatting.FormatDecimal(InputManager.TargetData.Thrust, 0, 4));
             }
+
+            ResumeLayout();
         }
 
         private void UpdateInputConfig()
