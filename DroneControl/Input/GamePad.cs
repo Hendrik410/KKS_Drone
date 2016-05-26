@@ -19,7 +19,7 @@ namespace DroneControl.Input
         {
             get
             {
-                return true;
+                return currentState != null;
             }
         }
 
@@ -44,11 +44,28 @@ namespace DroneControl.Input
             this.directInput = directInput;
             this.device = new Joystick(directInput, deviceInstance.InstanceGuid);
             this.device.Acquire();
+            UpdateState();
+        }
+
+        private bool UpdateState()
+        {
+            try
+            {
+                if (!IsConnected)
+                    device.Acquire();
+                currentState = device.GetCurrentState();
+            }
+            catch (SharpDX.SharpDXException)
+            {
+                currentState = null;
+            }
+            return currentState != null;
         }
 
         public void Update(InputManager manager)
         {
-            currentState = device.GetCurrentState();
+            if (!UpdateState())
+                return;
 
             if (CheckButtonPressed(2))
                 manager.SendClear();
@@ -68,7 +85,7 @@ namespace DroneControl.Input
             target.Roll = DeadZone.Compute(currentState.X - maxValue, maxValue, deadZone);
             target.Pitch = DeadZone.Compute(currentState.Y - maxValue, maxValue, deadZone);
             target.RotationalSpeed = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
-            target.Thurst = -DeadZone.Compute(currentState.Z - maxValue, maxValue, deadZone);
+            target.Thrust = DeadZone.Compute(UInt16.MaxValue - currentState.Z, UInt16.MaxValue, deadZone);
 
             manager.SendTargetData(target);
 

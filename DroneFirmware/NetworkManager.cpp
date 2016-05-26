@@ -178,12 +178,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	switch (type) {
 	case MovementPacket: {
-		bool hover = readBuffer->readBoolean();
-
 		float pitch = readBuffer->readFloat();
 		float roll = readBuffer->readFloat();
 		float rotationalSpeed = readBuffer->readFloat();
-		float thrust = readBuffer->readFloat();
+		int thrust = readBuffer->readInt32();
 
 		if (readBuffer->getError())
 			return;

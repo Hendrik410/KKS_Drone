@@ -11,14 +11,14 @@ namespace DroneControl.Input
         public float Pitch;
         public float Roll;
         public float RotationalSpeed;
-        public float Thurst;
+        public float Thrust;
 
-        public TargetData(float pitch, float roll, float rotationalSpeed, float thurst)
+        public TargetData(float pitch, float roll, float rotationalSpeed, float thrust)
         {
             this.Pitch = pitch;
             this.Roll = roll;
             this.RotationalSpeed = rotationalSpeed;
-            this.Thurst = thurst;
+            this.Thrust = thrust;
         }
     }
 }

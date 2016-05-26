@@ -47,14 +47,21 @@ namespace DroneControl
                 Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
                 return;
             }
-            StringBuilder pidData = new StringBuilder();
-            pidData.AppendFormat("Pitch: {0}", e.DebugData.PitchOutput.ToString().PadLeft(5));
-            pidData.AppendLine();
-            pidData.AppendFormat("Roll:  {0}", e.DebugData.RollOutput.ToString().PadLeft(5));
-            pidData.AppendLine();
-            pidData.AppendFormat("Yaw:   {0}", e.DebugData.YawOutput.ToString().PadLeft(5));
 
-            pidDataLabel.Text = pidData.ToString();
+            if (drone.Data.State == DroneState.Flying)
+            {
+                StringBuilder pidData = new StringBuilder();
+                pidData.AppendFormat("Roll:  {0}", Formatting.FormatDecimal(e.DebugData.RollOutput, 2, 3));
+                pidData.AppendLine();
+                pidData.AppendFormat("Pitch: {0}", Formatting.FormatDecimal(e.DebugData.PitchOutput, 2, 3));
+                pidData.AppendLine();
+                pidData.AppendFormat("Yaw:   {0}", Formatting.FormatDecimal(e.DebugData.YawOutput, 2, 3));
+
+                pidDataLabel.Text = pidData.ToString();
+                pidDataLabel.Visible = true;
+            }
+            else
+                pidDataLabel.Visible = false;
         }
 
         private void InputManager_OnTargetDataChanged(object sender, EventArgs e)
@@ -182,21 +189,21 @@ namespace DroneControl
         private void UpdateTargetData()
         {
             bool deviceConnected = InputManager.CurrentDevice != null && InputManager.CurrentDevice.IsConnected;
-            pitchLabel.Visible = deviceConnected;
             rollLabel.Visible = deviceConnected;
+            pitchLabel.Visible = deviceConnected;
             rotationalSpeedLabel.Visible = deviceConnected;
             thrustLabel.Visible = deviceConnected;
 
             if (deviceConnected)
             {
-                pitchLabel.Text = string.Format("Pitch: {0}",
-                    Formatting.FormatDecimal(InputManager.TargetData.Pitch, 2, 2));
                 rollLabel.Text = string.Format("Roll: {0}",
                     Formatting.FormatDecimal(InputManager.TargetData.Roll, 2, 2));
+                pitchLabel.Text = string.Format("Pitch: {0}",
+                    Formatting.FormatDecimal(InputManager.TargetData.Pitch, 2, 2));
                 rotationalSpeedLabel.Text = string.Format("Rotational Speed: {0}",
                     Formatting.FormatDecimal(InputManager.TargetData.RotationalSpeed, 2, 2));
-                thrustLabel.Text = string.Format("Thrust: {0}",
-                    Formatting.FormatDecimal(InputManager.TargetData.Thurst, 2, 2));
+                thrustLabel.Text = string.Format("Thrust: {0}", 
+                    Formatting.FormatDecimal(InputManager.TargetData.Thrust, 0, 4));
             }
         }
 
@@ -210,10 +217,9 @@ namespace DroneControl
             InputManager.RollOffset = (float)rollOffsetNumeric.Value;
             InputManager.RotationalOffset = (float)rotationalOffsetNumeric.Value;
 
-            InputManager.MaxThrustPositive = (float)thrustPositiveNumeric.Value;
-            InputManager.MaxThrustNegative = (float)thrustNegativeNumeric.Value;
-
             InputManager.DeadZone = deadZoneCheckBox.Checked;
+
+            InputManager.MaxThrust = (int)thrustTextBox.Value;
 
             if (invertPitchCheckBox.Checked)
                 InputManager.MaxPitch *= -1;
@@ -221,7 +227,6 @@ namespace DroneControl
                 InputManager.MaxRoll *= -1;
             if (invertRotationalCheckBox.Checked)
                 InputManager.MaxRotationalSpeed *= -1;
-            InputManager.InvertThrust = invertThrustCheckBox.Checked;
         }
     }
 }

@@ -112,9 +112,6 @@ namespace DroneLibrary
         public PidSettings YawPid;
 
         [Category("Flying")]
-        public int ServoThrust;
-
-        [Category("Flying")]
         public float SafePitch;
 
         [Category("Flying")]

@@ -11,9 +11,8 @@ namespace DroneLibrary.Protocol
 {
     public struct PacketSetMovement : IPacket
     {
-
-        public readonly bool Hover;
-        public readonly float Pitch, Roll, RotationalSpeed, Thrust;
+        public readonly float Pitch, Roll, RotationalSpeed;
+        public readonly int Thrust;
 
         public PacketType Type => PacketType.Movement;
 
@@ -23,15 +22,13 @@ namespace DroneLibrary.Protocol
         /// <param name="pitch">Die Neigung an der X-Achse in Grad</param>
         /// <param name="roll">Die Neigung an der Y-Achse in Grad</param>
         /// <param name="yaw">Die Drehung um die Z-Achse in Grad/Sekunde</param>
-        /// <param name="thrust">Der Schub entlang der Z-Achse in von -1 bis 1</param>
-        /// <param name="hover">Gibt an, ob alle anderen Werte ignoriert werden sollen und die Drohne ihre Position halten soll.</param>
-        public PacketSetMovement(float pitch, float roll, float rotationalSpeed, float thrust, bool hover)
+        /// <param name="thrust">Der Schub</param>
+        public PacketSetMovement(float pitch, float roll, float rotationalSpeed, int thrust)
         {
             Pitch = pitch;
             Roll = roll;
             RotationalSpeed = rotationalSpeed;
             Thrust = thrust;
-            Hover = hover;
         }
 
         public void Write(PacketBuffer packet)
@@ -39,7 +36,6 @@ namespace DroneLibrary.Protocol
             if (packet == null)
                 throw new ArgumentNullException(nameof(packet));
 
-            packet.Write(Hover);
             packet.Write(Pitch);
             packet.Write(Roll);
             packet.Write(RotationalSpeed);

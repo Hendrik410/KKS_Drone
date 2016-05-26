@@ -74,7 +74,7 @@ void DroneEngine::fly() {
 	if (_state != StateArmed)
 		return;
 
-	if (targetVerticalSpeed > config->MaxThrustForFlying)
+	if (thrust > config->MaxThrustForFlying)
 		return;
 
 
@@ -171,14 +171,12 @@ void DroneEngine::handleInternal() {
 		calculatePID(yawPID, -targetRotationalSpeed, 0);
 	}
 
-	float thrust = targetVerticalSpeed * config->ServoThrust;
-
 	uint16_t minServo = config->ServoMin;
 	if (config->KeepMotorsOn)
 		minServo = config->ServoIdle;
 
 	for (int i = 0; i < 4; i++)
-		values[i] = MathHelper::clampValue(config->ServoHover + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput, thrust), minServo, config->ServoMax);
+		values[i] = MathHelper::clampValue(config->ServoIdle + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), minServo, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
 }
@@ -234,15 +232,15 @@ float DroneEngine::getMaxRotationSpeed() const {
 }
 
 
-void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpeed, float verticalSpeed) {
+void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpeed, int thrust) {
 	if (_state != StateArmed && _state != StateFlying)
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen
-	targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
-	targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
-	targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
-	targetVerticalSpeed = MathHelper::clampValue(verticalSpeed, -1, 20);
+	this->targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
+	this->targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
+	this->targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
+	this->thrust = MathHelper::clampValue(thrust, 0, config->ServoMax - config->ServoMin);
 
 	// in den Fliegen Modus gehen
 	fly();
@@ -261,8 +259,8 @@ float DroneEngine::getTargetRotationalSpeed() const {
 	return targetRotationalSpeed;
 }
 
-float DroneEngine::getTargetVerticalSpeed() const {
-	return targetVerticalSpeed;
+int DroneEngine::getThrust() const {
+	return thrust;
 }
 
 float DroneEngine::getPitchOutput() const {

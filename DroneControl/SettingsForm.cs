@@ -61,8 +61,6 @@ namespace DroneControl
             Bind(yawKiTextBox, "data.YawPid.Ki");
             Bind(yawKdTextBox, "data.YawPid.Kd");
 
-            Bind(thrustValue, "data.ServoThrust");
-
             Bind(enableStabilizationCheckBox, "data.EnableStabilization");
             Bind(negativeMixingCheckBox, "data.NegativeMixing");
             Bind(keepMotorsOnCheckBox, "data.KeepMotorsOn");

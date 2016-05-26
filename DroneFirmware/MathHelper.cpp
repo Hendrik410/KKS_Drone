@@ -29,8 +29,8 @@ float motorsPitch[] = { 1, 1, -1, -1 };
 float motorsRoll[] = { 1, -1, 1, -1 };
 float motorsYaw[] = { -1, 1, 1, -1 };
 
-float MathHelper::mixMotor(Config* config, int motorIndex, float pitch, float roll, float yaw, float thrust) {
-	float value = thrust;
+float MathHelper::mixMotor(Config* config, int motorIndex, float pitch, float roll, float yaw) {
+	float value = 0;
 
 	if (config->NegativeMixing) {
 		value += motorsPitch[motorIndex] * pitch;

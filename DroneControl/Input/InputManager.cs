@@ -29,16 +29,14 @@ namespace DroneControl.Input
         public float MaxPitch { get; set; } = 10;
         public float MaxRoll { get; set; } = 10;
         public float MaxRotationalSpeed { get; set; } = 30;
-        public float MaxThrustPositive { get; set; } = 0.5f;
-        public float MaxThrustNegative { get; set; } = 1f;
 
         public float PitchOffset { get; set; } = 0;
         public float RollOffset { get; set; } = 0;
         public float RotationalOffset { get; set; } = 0;
 
-        public bool DeadZone { get; set; } = true;
+        public int MaxThrust { get; set; } = 500;
 
-        public bool InvertThrust { get; set; } = false;
+        public bool DeadZone { get; set; } = true;
 
         public event EventHandler OnDeviceInfoChanged;
         public event EventHandler OnTargetDataChanged;
@@ -88,9 +86,8 @@ namespace DroneControl.Input
         {
             if (CurrentDevice != null)
             {
-                if (CurrentDevice.IsConnected)
-                    CurrentDevice.Update(this);
-                else
+                CurrentDevice.Update(this);
+                if (!CurrentDevice.IsConnected)
                     SendTargetData(new TargetData(0, 0, 0, 0));
 
                 // schauen ob sich Informationen vom Gerät geändert haben
@@ -117,18 +114,12 @@ namespace DroneControl.Input
             data.Roll *= MaxRoll;
             data.RotationalSpeed *= MaxRotationalSpeed;
 
-            if (InvertThrust)
-                data.Thurst *= -1;
-
-            if (data.Thurst >= 0)
-                data.Thurst *= MaxThrustPositive;
-            else
-                data.Thurst *= MaxThrustNegative;
-
             // Offset hinzufügen
             data.Pitch += PitchOffset;
             data.Roll += RollOffset;
             data.RotationalSpeed += RotationalOffset;
+
+            data.Thrust *= MaxThrust;
 
             // Daten setzen und senden
             TargetData = data;
@@ -136,7 +127,7 @@ namespace DroneControl.Input
                 OnTargetDataChanged(this, EventArgs.Empty);
 
             if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
-                drone.SendMovementData(data.Pitch, data.Roll, data.RotationalSpeed, data.Thurst, false);
+                drone.SendMovementData(data.Pitch, data.Roll, data.RotationalSpeed, (int)data.Thrust);
         }
 
         public void ToogleArmStatus()

@@ -112,7 +112,7 @@ namespace DroneControl
                     inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,
                     inputManager.TargetData.RotationalSpeed,
-                    inputManager.TargetData.Thurst,
+                    inputManager.TargetData.Thrust,
 
                     drone.DebugData.PitchOutput,
                     drone.DebugData.RollOutput,

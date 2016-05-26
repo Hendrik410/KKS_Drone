@@ -28,7 +28,7 @@ namespace DroneLibrary
         /// Der Wert ist -1 wenn noch kein Ping-Wert emfangen wurde.
         /// </summary>
         public int Ping
-        { 
+        {
             get
             {
                 return ping;
@@ -96,7 +96,8 @@ namespace DroneLibrary
         /// <summary>
         /// Gibt die Einstellungen der Drohne zurück
         /// </summary>
-        public Config Config {
+        public Config Config
+        {
             get;
             private set;
         }
@@ -327,7 +328,7 @@ namespace DroneLibrary
             };
         }
 
-#region Dispose
+        #region Dispose
 
         ~Drone()
         {
@@ -407,7 +408,7 @@ namespace DroneLibrary
             return IsConnected;
         }
 
-#region SendShortcuts
+        #region SendShortcuts
 
         /// <summary>
         /// Schickt einen Ping-Befehl an das Drone. 
@@ -428,8 +429,9 @@ namespace DroneLibrary
         /// <summary>
         /// Schickt der Drone den Befehl neuzustarten.
         /// </summary>
-        public void SendReset() {
-            if(IsDisposed)
+        public void SendReset()
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
@@ -441,8 +443,9 @@ namespace DroneLibrary
         /// <summary>
         /// Fordert die Statusinformationen der Drone an.
         /// </summary>
-        public void SendGetInfo() {
-            if(IsDisposed)
+        public void SendGetInfo()
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             SendPacket(new PacketInfo(), false);
@@ -451,8 +454,9 @@ namespace DroneLibrary
         /// <summary>
         /// Schickt einen Arm-Befehl an die Drohne
         /// </summary>
-        public void SendArm() {
-            if(IsDisposed)
+        public void SendArm()
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             SendPacket(new PacketArm(true), true);
@@ -461,27 +465,30 @@ namespace DroneLibrary
         /// <summary>
         /// Schickt einen Disarm-Befehl an die Drohne
         /// </summary>
-        public void SendDisarm() {
-            if(IsDisposed)
+        public void SendDisarm()
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             SendPacket(new PacketArm(false), true);
         }
 
-        public void SendMovementData(float pitch, float roll, float rotationalSpeed, float thrust, bool hover) {
-            if(IsDisposed)
+        public void SendMovementData(float pitch, float roll, float rotationalSpeed, int thrust)
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketSetMovement(pitch, roll, rotationalSpeed, thrust, hover), false);
+            SendPacket(new PacketSetMovement(pitch, roll, rotationalSpeed, thrust), false);
         }
 
-        public void SendBlink() {
-            if(IsDisposed)
+        public void SendBlink()
+        {
+            if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             SendPacket(new PacketBlink(), true);
         }
-        
+
         /// <summary>
         /// Schickt einen Settings-Befehl an die Drohne.
         /// </summary>
@@ -537,7 +544,7 @@ namespace DroneLibrary
             return false;
         }
 
-#region ControlUdp
+        #region ControlUdp
 
         private bool SendPacket(IPacket packet, bool guaranteed, int revision, EventHandler<IPacket> handler = null)
         {
@@ -605,7 +612,7 @@ namespace DroneLibrary
             {
                 controlSocket.EndSend(result);
             }
-            catch(SocketException)
+            catch (SocketException)
             {
                 // Drohne ist möglicherweiße nicht verfügbar
             }
@@ -629,6 +636,10 @@ namespace DroneLibrary
                 }
 
                 HandlePacket(packet);
+            }
+            catch (SocketException)
+            {
+                Ping = -1;
             }
             catch (ObjectDisposedException e)
             {
@@ -736,7 +747,7 @@ namespace DroneLibrary
 
                 HandleDataPacket(packet);
             }
-            catch(ObjectDisposedException e)
+            catch (ObjectDisposedException e)
             {
                 Log.Error(e);
             }
@@ -754,8 +765,10 @@ namespace DroneLibrary
 
         private const int DataDronePacketSize = 25;
 
-        private void HandleDataPacket(byte[] packet) {
-            using (MemoryStream stream = new MemoryStream(packet)) {
+        private void HandleDataPacket(byte[] packet)
+        {
+            using (MemoryStream stream = new MemoryStream(packet))
+            {
                 PacketBuffer buffer = new PacketBuffer(stream);
                 if (buffer.Size < 3 || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
                     return;
@@ -786,7 +799,7 @@ namespace DroneLibrary
                         break;
                     case DataPacketType.Log:
                         if (!CheckRevision(lastDataLogRevision, revision))
-                           return;
+                            return;
 
                         int lines = buffer.ReadInt();
 
@@ -813,7 +826,7 @@ namespace DroneLibrary
             }
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Entfernt ein Paket von der Liste der noch zu bestätigen Pakete.

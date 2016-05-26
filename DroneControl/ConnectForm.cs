@@ -63,12 +63,17 @@ namespace DroneControl
             {
                 searchTimer.Stop();
 
-                new MainForm(form.Drone).Show();
-                Hide();
+                OpenMainForm(form.Drone);
             }
             form.Dispose();
 
             connectButton.Enabled = true;
+        }
+
+        private void OpenMainForm(Drone drone)
+        {
+            new MainForm(drone).Show();
+            Hide();
         }
 
         private void DroneList_OnListChanged(object sender, DroneListChangedEventArgs e)
@@ -112,11 +117,16 @@ namespace DroneControl
 
         private void ipAddressTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter)
-                return;
-
-            e.SuppressKeyPress = true;
-            TryToConnect();
+            if (e.KeyCode == Keys.F2)
+            {
+                e.SuppressKeyPress = true;
+                OpenMainForm(new Drone(IPAddress.Loopback, new Config()));
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                TryToConnect();
+            }
         }
     }
 }

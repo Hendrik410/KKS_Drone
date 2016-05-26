@@ -93,12 +93,12 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
+            this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
             this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.thrustValue = new System.Windows.Forms.NumericUpDown();
             this.applyButton = new System.Windows.Forms.Button();
-            this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -152,8 +152,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.yawKpTextBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -771,6 +771,15 @@
             thrust.TabIndex = 16;
             thrust.Text = "Thrust";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(280, 217);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(90, 13);
+            label1.TabIndex = 25;
+            label1.Text = "Max Thrust Flying";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(quadrocopterPage);
@@ -802,6 +811,23 @@
             this.flyingPage.Size = new System.Drawing.Size(698, 412);
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
+            // 
+            // maxThrustForFlyingTextBox
+            // 
+            this.maxThrustForFlyingTextBox.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 215);
+            this.maxThrustForFlyingTextBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.maxThrustForFlyingTextBox.Name = "maxThrustForFlyingTextBox";
+            this.maxThrustForFlyingTextBox.Size = new System.Drawing.Size(70, 20);
+            this.maxThrustForFlyingTextBox.TabIndex = 26;
             // 
             // keepMotorsOnCheckBox
             // 
@@ -855,38 +881,6 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
-            // maxThrustForFlyingTextBox
-            // 
-            this.maxThrustForFlyingTextBox.DecimalPlaces = 2;
-            this.maxThrustForFlyingTextBox.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
-            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 215);
-            this.maxThrustForFlyingTextBox.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.maxThrustForFlyingTextBox.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.maxThrustForFlyingTextBox.Name = "maxThrustForFlyingTextBox";
-            this.maxThrustForFlyingTextBox.Size = new System.Drawing.Size(70, 20);
-            this.maxThrustForFlyingTextBox.TabIndex = 26;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(280, 217);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(90, 13);
-            label1.TabIndex = 25;
-            label1.Text = "Max Thrust Flying";
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -925,8 +919,8 @@
             this.tabControl1.ResumeLayout(false);
             this.flyingPage.ResumeLayout(false);
             this.flyingPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).EndInit();
             this.ResumeLayout(false);
 
         }

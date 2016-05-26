@@ -119,8 +119,6 @@ Config ConfigManager::getDefault() {
 	config.YawPid.Ki = 0.4f;
 	config.YawPid.Kd = 0;
 
-	config.ServoThrust = 100;
-
 	config.SafePitch = 100;
 	config.SafeRoll = 100;
 	config.SafeServoValue = 1500;
@@ -129,7 +127,7 @@ Config ConfigManager::getDefault() {
 	config.NegativeMixing = true;
 	config.KeepMotorsOn = false;
 
-	config.MaxThrustForFlying = -0.8f;
+	config.MaxThrustForFlying = 50;
 
 	Log::info("Config", "Using default config");
 	return config;

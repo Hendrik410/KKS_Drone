@@ -45,7 +45,7 @@ class DroneEngine
 	 double targetPitch;
 	 double targetRoll;
 	 float targetRotationalSpeed;
-	 float targetVerticalSpeed;
+	 int thrust;
 
 	 double pidInput;
 	 double pidSetpoint;
@@ -94,12 +94,12 @@ class DroneEngine
 	float getMaxTilt() const;
 	float getMaxRotationSpeed() const;
 
-	void setTargetMovement(float pitch, float roll, float rotationalSpeed, float verticalSpeed);
+	void setTargetMovement(float pitch, float roll, float rotationalSpeed, int thrust);
 
 	float getTargetPitch() const;
 	float getTargetRoll() const;
 	float getTargetRotationalSpeed() const;
-	float getTargetVerticalSpeed() const;
+	int getThrust() const;
 
 	float getPitchOutput() const;
 	float getRollOutput() const;

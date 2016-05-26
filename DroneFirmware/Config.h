@@ -46,7 +46,7 @@ struct Config {
 	//The temperature, at which the drone starts to decent on turn off
 	float MaxTemperature;
 
-	//The minumum output value for the ESC's
+	//The minimum output value for the ESC's
 	uint16_t ServoMin;
 	//The maximum output value for the ESC's
 	uint16_t ServoMax;
@@ -70,8 +70,6 @@ struct Config {
 	PIDSettings RollPid;
 	PIDSettings YawPid;
 
-	int ServoThrust;
-
 	float SafePitch;
 	float SafeRoll;
 	int SafeServoValue;
@@ -80,7 +78,7 @@ struct Config {
 	boolean NegativeMixing;
 	boolean KeepMotorsOn;
 
-	float MaxThrustForFlying;
+	int MaxThrustForFlying;
 };
 
 #endif

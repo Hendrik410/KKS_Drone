@@ -27,9 +27,8 @@
             System.Windows.Forms.GroupBox deviceGroupBox;
             System.Windows.Forms.GroupBox dataGroupBox;
             System.Windows.Forms.GroupBox inputConfigGroupBox;
+            System.Windows.Forms.Label label1;
             System.Windows.Forms.Label invertLabel;
-            System.Windows.Forms.Label maxThrustPositiveLabel;
-            System.Windows.Forms.Label maxThrustNegativeLabel;
             System.Windows.Forms.Label rotationalOffsetLabel;
             System.Windows.Forms.Label rollOffsetLabel;
             System.Windows.Forms.Label pitchOffsetLabel;
@@ -45,12 +44,10 @@
             this.rotationalSpeedLabel = new System.Windows.Forms.Label();
             this.thrustLabel = new System.Windows.Forms.Label();
             this.pidDataLabel = new System.Windows.Forms.Label();
-            this.invertThrustCheckBox = new System.Windows.Forms.CheckBox();
+            this.thrustTextBox = new System.Windows.Forms.NumericUpDown();
             this.invertRotationalCheckBox = new System.Windows.Forms.CheckBox();
             this.invertRollCheckBox = new System.Windows.Forms.CheckBox();
             this.invertPitchCheckBox = new System.Windows.Forms.CheckBox();
-            this.thrustNegativeNumeric = new System.Windows.Forms.NumericUpDown();
-            this.thrustPositiveNumeric = new System.Windows.Forms.NumericUpDown();
             this.deadZoneCheckBox = new System.Windows.Forms.CheckBox();
             this.pitchOffsetNumeric = new System.Windows.Forms.NumericUpDown();
             this.rollOffsetNumeric = new System.Windows.Forms.NumericUpDown();
@@ -63,9 +60,8 @@
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
+            label1 = new System.Windows.Forms.Label();
             invertLabel = new System.Windows.Forms.Label();
-            maxThrustPositiveLabel = new System.Windows.Forms.Label();
-            maxThrustNegativeLabel = new System.Windows.Forms.Label();
             rotationalOffsetLabel = new System.Windows.Forms.Label();
             rollOffsetLabel = new System.Windows.Forms.Label();
             pitchOffsetLabel = new System.Windows.Forms.Label();
@@ -75,8 +71,7 @@
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).BeginInit();
@@ -159,7 +154,7 @@
             this.rollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rollLabel.AutoSize = true;
             this.rollLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.rollLabel.Location = new System.Drawing.Point(90, 33);
+            this.rollLabel.Location = new System.Drawing.Point(90, 19);
             this.rollLabel.Name = "rollLabel";
             this.rollLabel.Size = new System.Drawing.Size(70, 14);
             this.rollLabel.TabIndex = 18;
@@ -170,7 +165,7 @@
             this.pitchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pitchLabel.AutoSize = true;
             this.pitchLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.pitchLabel.Location = new System.Drawing.Point(83, 21);
+            this.pitchLabel.Location = new System.Drawing.Point(83, 33);
             this.pitchLabel.Name = "pitchLabel";
             this.pitchLabel.Size = new System.Drawing.Size(77, 14);
             this.pitchLabel.TabIndex = 17;
@@ -202,24 +197,21 @@
             // 
             this.pidDataLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pidDataLabel.AutoSize = true;
-            this.pidDataLabel.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pidDataLabel.Font = new System.Drawing.Font("Consolas", 9F);
             this.pidDataLabel.Location = new System.Drawing.Point(6, 87);
             this.pidDataLabel.Name = "pidDataLabel";
-            this.pidDataLabel.Size = new System.Drawing.Size(55, 13);
+            this.pidDataLabel.Size = new System.Drawing.Size(63, 14);
             this.pidDataLabel.TabIndex = 21;
             this.pidDataLabel.Text = "PID data";
             // 
             // inputConfigGroupBox
             // 
-            inputConfigGroupBox.Controls.Add(this.invertThrustCheckBox);
+            inputConfigGroupBox.Controls.Add(label1);
+            inputConfigGroupBox.Controls.Add(this.thrustTextBox);
             inputConfigGroupBox.Controls.Add(this.invertRotationalCheckBox);
             inputConfigGroupBox.Controls.Add(this.invertRollCheckBox);
             inputConfigGroupBox.Controls.Add(this.invertPitchCheckBox);
             inputConfigGroupBox.Controls.Add(invertLabel);
-            inputConfigGroupBox.Controls.Add(maxThrustPositiveLabel);
-            inputConfigGroupBox.Controls.Add(maxThrustNegativeLabel);
-            inputConfigGroupBox.Controls.Add(this.thrustNegativeNumeric);
-            inputConfigGroupBox.Controls.Add(this.thrustPositiveNumeric);
             inputConfigGroupBox.Controls.Add(this.deadZoneCheckBox);
             inputConfigGroupBox.Controls.Add(rotationalOffsetLabel);
             inputConfigGroupBox.Controls.Add(rollOffsetLabel);
@@ -240,16 +232,32 @@
             inputConfigGroupBox.TabStop = false;
             inputConfigGroupBox.Text = "Input Config";
             // 
-            // invertThrustCheckBox
+            // label1
             // 
-            this.invertThrustCheckBox.AutoSize = true;
-            this.invertThrustCheckBox.Location = new System.Drawing.Point(236, 144);
-            this.invertThrustCheckBox.Name = "invertThrustCheckBox";
-            this.invertThrustCheckBox.Size = new System.Drawing.Size(56, 17);
-            this.invertThrustCheckBox.TabIndex = 45;
-            this.invertThrustCheckBox.Text = "Thrust";
-            this.invertThrustCheckBox.UseVisualStyleBackColor = true;
-            this.invertThrustCheckBox.CheckedChanged += new System.EventHandler(this.OnInputConfigChange);
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(285, 102);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(37, 13);
+            label1.TabIndex = 46;
+            label1.Text = "Thrust";
+            // 
+            // thrustTextBox
+            // 
+            this.thrustTextBox.Location = new System.Drawing.Point(288, 118);
+            this.thrustTextBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.thrustTextBox.Name = "thrustTextBox";
+            this.thrustTextBox.Size = new System.Drawing.Size(59, 20);
+            this.thrustTextBox.TabIndex = 45;
+            this.thrustTextBox.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.thrustTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
             // invertRotationalCheckBox
             // 
@@ -292,72 +300,6 @@
             invertLabel.Size = new System.Drawing.Size(34, 13);
             invertLabel.TabIndex = 41;
             invertLabel.Text = "Invert";
-            // 
-            // maxThrustPositiveLabel
-            // 
-            maxThrustPositiveLabel.AutoSize = true;
-            maxThrustPositiveLabel.Location = new System.Drawing.Point(304, 63);
-            maxThrustPositiveLabel.Name = "maxThrustPositiveLabel";
-            maxThrustPositiveLabel.Size = new System.Drawing.Size(69, 13);
-            maxThrustPositiveLabel.TabIndex = 40;
-            maxThrustPositiveLabel.Text = "Max Thrust +";
-            // 
-            // maxThrustNegativeLabel
-            // 
-            maxThrustNegativeLabel.AutoSize = true;
-            maxThrustNegativeLabel.Location = new System.Drawing.Point(304, 102);
-            maxThrustNegativeLabel.Name = "maxThrustNegativeLabel";
-            maxThrustNegativeLabel.Size = new System.Drawing.Size(66, 13);
-            maxThrustNegativeLabel.TabIndex = 39;
-            maxThrustNegativeLabel.Text = "Max Thrust -";
-            // 
-            // thrustNegativeNumeric
-            // 
-            this.thrustNegativeNumeric.DecimalPlaces = 2;
-            this.thrustNegativeNumeric.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.thrustNegativeNumeric.Location = new System.Drawing.Point(307, 118);
-            this.thrustNegativeNumeric.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustNegativeNumeric.Name = "thrustNegativeNumeric";
-            this.thrustNegativeNumeric.Size = new System.Drawing.Size(47, 20);
-            this.thrustNegativeNumeric.TabIndex = 38;
-            this.thrustNegativeNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustNegativeNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
-            // 
-            // thrustPositiveNumeric
-            // 
-            this.thrustPositiveNumeric.DecimalPlaces = 2;
-            this.thrustPositiveNumeric.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.thrustPositiveNumeric.Location = new System.Drawing.Point(307, 79);
-            this.thrustPositiveNumeric.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.thrustPositiveNumeric.Name = "thrustPositiveNumeric";
-            this.thrustPositiveNumeric.Size = new System.Drawing.Size(47, 20);
-            this.thrustPositiveNumeric.TabIndex = 37;
-            this.thrustPositiveNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.thrustPositiveNumeric.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
             // 
             // deadZoneCheckBox
             // 
@@ -583,8 +525,7 @@
             dataGroupBox.PerformLayout();
             inputConfigGroupBox.ResumeLayout(false);
             inputConfigGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustNegativeNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustPositiveNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollOffsetNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotationalOffsetNumeric)).EndInit();
@@ -614,11 +555,9 @@
         private System.Windows.Forms.Timer searchTimer;
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.CheckBox deadZoneCheckBox;
-        private System.Windows.Forms.NumericUpDown thrustNegativeNumeric;
-        private System.Windows.Forms.NumericUpDown thrustPositiveNumeric;
-        private System.Windows.Forms.CheckBox invertThrustCheckBox;
         private System.Windows.Forms.CheckBox invertRotationalCheckBox;
         private System.Windows.Forms.CheckBox invertRollCheckBox;
         private System.Windows.Forms.CheckBox invertPitchCheckBox;
+        private System.Windows.Forms.NumericUpDown thrustTextBox;
     }
 }
