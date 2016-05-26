@@ -43,6 +43,7 @@ void DroneEngine::createPID() {
 PID* DroneEngine::createPID(PIDSettings settings, double* output) {
 	PID* pid = new PID(&pidInput, output, &pidSetpoint, settings.Kp, settings.Ki, settings.Kd, DIRECT);
 	pid->SetMode(AUTOMATIC);
+	pid->SetSampleTime(10);
 	pid->SetOutputLimits(-300, 300);
 	return pid;
 }
