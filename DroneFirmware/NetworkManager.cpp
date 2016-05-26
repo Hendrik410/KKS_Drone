@@ -15,6 +15,9 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	_lastDataSend = 0;
 	dataRevision = 1;
 
+	lastMovementRevision = 0;
+	lastOtaRevision = 0;
+
 	tickCount = 0;
 
 	saveConfig = false;
@@ -178,6 +181,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 	switch (type) {
 	case MovementPacket: {
+		if (!checkRevision(lastMovementRevision, revision))
+			return;
+
+		lastMovementRevision = revision;
+
 		float pitch = readBuffer->readFloat();
 		float roll = readBuffer->readFloat();
 		float rotationalSpeed = readBuffer->readFloat();
@@ -248,6 +256,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		blinkLED();
 		break;
 	case ResetRevisionPacket:
+		lastMovementRevision = 0;
 		lastOtaRevision = 0;
 		break;
 
@@ -424,7 +433,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 void NetworkManager::sendDroneData(WiFiUDP udp) {
 	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = lastState != engine->state() | servos->dirty() | gyro->dirty() | voltageReader->dirty();
+	bool droneDataDirty = (lastState != engine->state()) | servos->dirty() | gyro->dirty() | voltageReader->dirty();
 
 	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);

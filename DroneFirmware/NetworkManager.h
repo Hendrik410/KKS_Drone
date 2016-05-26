@@ -42,6 +42,7 @@ protected:
 	DroneState lastState;
 	int dataRevision;
 
+	int lastMovementRevision;
 	int lastOtaRevision;
 
 	WiFiUDP helloUDP;
