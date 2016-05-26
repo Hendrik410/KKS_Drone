@@ -313,6 +313,9 @@ namespace DroneLibrary
                 lastDataLogRevision = 0;
                 lastDataDebugRevision = 0;
 
+                lastPing = Environment.TickCount;
+                lastDataTime = Environment.TickCount;
+
                 // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
                 lock (packetsToAcknowledge)
                 {
