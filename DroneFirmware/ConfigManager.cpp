@@ -129,6 +129,8 @@ Config ConfigManager::getDefault() {
 	config.NegativeMixing = true;
 	config.KeepMotorsOn = false;
 
+	config.MaxThrustForFlying = -0.8f;
+
 	Log::info("Config", "Using default config");
 	return config;
 }

@@ -135,6 +135,9 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool KeepMotorsOn;
 
+        [Category("Flying")]
+        public float MaxThrustForFlying;
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));

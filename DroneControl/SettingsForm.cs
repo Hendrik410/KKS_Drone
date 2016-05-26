@@ -67,6 +67,8 @@ namespace DroneControl
             Bind(negativeMixingCheckBox, "data.NegativeMixing");
             Bind(keepMotorsOnCheckBox, "data.KeepMotorsOn");
 
+            Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
+
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;
         }

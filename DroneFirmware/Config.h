@@ -79,6 +79,8 @@ struct Config {
 	boolean EnableStabilization;
 	boolean NegativeMixing;
 	boolean KeepMotorsOn;
+
+	float MaxThrustForFlying;
 };
 
 #endif

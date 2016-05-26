@@ -74,6 +74,10 @@ void DroneEngine::fly() {
 	if (_state != StateArmed)
 		return;
 
+	if (targetVerticalSpeed > config->MaxThrustForFlying)
+		return;
+
+
 	pitchOutput = 0;
 	rollOutput = 0;
 	yawOutput = 0;

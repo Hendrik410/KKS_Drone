@@ -61,6 +61,7 @@
             System.Windows.Forms.Label label5;
             System.Windows.Forms.Label label6;
             System.Windows.Forms.Label thrust;
+            System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
@@ -92,11 +93,12 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
+            this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
+            this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
+            this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.thrustValue = new System.Windows.Forms.NumericUpDown();
             this.applyButton = new System.Windows.Forms.Button();
-            this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
-            this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
-            this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
+            this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -130,6 +132,7 @@
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             thrust = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -150,6 +153,7 @@
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -533,6 +537,11 @@
             // pitchKdTextBox
             // 
             this.pitchKdTextBox.DecimalPlaces = 2;
+            this.pitchKdTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.pitchKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.pitchKdTextBox.Name = "pitchKdTextBox";
             this.pitchKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -541,6 +550,11 @@
             // pitchKiTextBox
             // 
             this.pitchKiTextBox.DecimalPlaces = 2;
+            this.pitchKiTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.pitchKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.pitchKiTextBox.Name = "pitchKiTextBox";
             this.pitchKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -549,6 +563,11 @@
             // pitchKpTextBox
             // 
             this.pitchKpTextBox.DecimalPlaces = 2;
+            this.pitchKpTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.pitchKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.pitchKpTextBox.Name = "pitchKpTextBox";
             this.pitchKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -599,6 +618,11 @@
             // rollKdTextBox
             // 
             this.rollKdTextBox.DecimalPlaces = 2;
+            this.rollKdTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.rollKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.rollKdTextBox.Name = "rollKdTextBox";
             this.rollKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -607,6 +631,11 @@
             // rollKiTextBox
             // 
             this.rollKiTextBox.DecimalPlaces = 2;
+            this.rollKiTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.rollKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.rollKiTextBox.Name = "rollKiTextBox";
             this.rollKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -615,6 +644,11 @@
             // rollKpTextBox
             // 
             this.rollKpTextBox.DecimalPlaces = 2;
+            this.rollKpTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.rollKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.rollKpTextBox.Name = "rollKpTextBox";
             this.rollKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -665,6 +699,11 @@
             // yawKdTextBox
             // 
             this.yawKdTextBox.DecimalPlaces = 2;
+            this.yawKdTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.yawKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.yawKdTextBox.Name = "yawKdTextBox";
             this.yawKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -673,6 +712,11 @@
             // yawKiTextBox
             // 
             this.yawKiTextBox.DecimalPlaces = 2;
+            this.yawKiTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.yawKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.yawKiTextBox.Name = "yawKiTextBox";
             this.yawKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -681,6 +725,11 @@
             // yawKpTextBox
             // 
             this.yawKpTextBox.DecimalPlaces = 2;
+            this.yawKpTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.yawKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.yawKpTextBox.Name = "yawKpTextBox";
             this.yawKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -735,6 +784,8 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
+            this.flyingPage.Controls.Add(label1);
             this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
             this.flyingPage.Controls.Add(this.negativeMixingCheckBox);
             this.flyingPage.Controls.Add(this.enableStabilizationCheckBox);
@@ -752,9 +803,39 @@
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
             // 
+            // keepMotorsOnCheckBox
+            // 
+            this.keepMotorsOnCheckBox.AutoSize = true;
+            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 187);
+            this.keepMotorsOnCheckBox.Name = "keepMotorsOnCheckBox";
+            this.keepMotorsOnCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.keepMotorsOnCheckBox.TabIndex = 24;
+            this.keepMotorsOnCheckBox.Text = "Keep motors on";
+            this.keepMotorsOnCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // negativeMixingCheckBox
+            // 
+            this.negativeMixingCheckBox.AutoSize = true;
+            this.negativeMixingCheckBox.Location = new System.Drawing.Point(283, 164);
+            this.negativeMixingCheckBox.Name = "negativeMixingCheckBox";
+            this.negativeMixingCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.negativeMixingCheckBox.TabIndex = 23;
+            this.negativeMixingCheckBox.Text = "Negative mixing";
+            this.negativeMixingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // enableStabilizationCheckBox
+            // 
+            this.enableStabilizationCheckBox.AutoSize = true;
+            this.enableStabilizationCheckBox.Location = new System.Drawing.Point(283, 141);
+            this.enableStabilizationCheckBox.Name = "enableStabilizationCheckBox";
+            this.enableStabilizationCheckBox.Size = new System.Drawing.Size(116, 17);
+            this.enableStabilizationCheckBox.TabIndex = 22;
+            this.enableStabilizationCheckBox.Text = "Enable stabilization";
+            this.enableStabilizationCheckBox.UseVisualStyleBackColor = true;
+            // 
             // thrustValue
             // 
-            this.thrustValue.Location = new System.Drawing.Point(349, 115);
+            this.thrustValue.Location = new System.Drawing.Point(376, 115);
             this.thrustValue.Maximum = new decimal(new int[] {
             500,
             0,
@@ -774,35 +855,37 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
-            // enableStabilizationCheckBox
+            // maxThrustForFlyingTextBox
             // 
-            this.enableStabilizationCheckBox.AutoSize = true;
-            this.enableStabilizationCheckBox.Location = new System.Drawing.Point(283, 141);
-            this.enableStabilizationCheckBox.Name = "enableStabilizationCheckBox";
-            this.enableStabilizationCheckBox.Size = new System.Drawing.Size(116, 17);
-            this.enableStabilizationCheckBox.TabIndex = 22;
-            this.enableStabilizationCheckBox.Text = "Enable stabilization";
-            this.enableStabilizationCheckBox.UseVisualStyleBackColor = true;
+            this.maxThrustForFlyingTextBox.DecimalPlaces = 2;
+            this.maxThrustForFlyingTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 215);
+            this.maxThrustForFlyingTextBox.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.maxThrustForFlyingTextBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.maxThrustForFlyingTextBox.Name = "maxThrustForFlyingTextBox";
+            this.maxThrustForFlyingTextBox.Size = new System.Drawing.Size(70, 20);
+            this.maxThrustForFlyingTextBox.TabIndex = 26;
             // 
-            // negativeMixingCheckBox
+            // label1
             // 
-            this.negativeMixingCheckBox.AutoSize = true;
-            this.negativeMixingCheckBox.Location = new System.Drawing.Point(283, 164);
-            this.negativeMixingCheckBox.Name = "negativeMixingCheckBox";
-            this.negativeMixingCheckBox.Size = new System.Drawing.Size(101, 17);
-            this.negativeMixingCheckBox.TabIndex = 23;
-            this.negativeMixingCheckBox.Text = "Negative mixing";
-            this.negativeMixingCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // keepMotorsOnCheckBox
-            // 
-            this.keepMotorsOnCheckBox.AutoSize = true;
-            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 187);
-            this.keepMotorsOnCheckBox.Name = "keepMotorsOnCheckBox";
-            this.keepMotorsOnCheckBox.Size = new System.Drawing.Size(100, 17);
-            this.keepMotorsOnCheckBox.TabIndex = 24;
-            this.keepMotorsOnCheckBox.Text = "Keep motors on";
-            this.keepMotorsOnCheckBox.UseVisualStyleBackColor = true;
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(280, 217);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(90, 13);
+            label1.TabIndex = 25;
+            label1.Text = "Max Thrust Flying";
             // 
             // SettingsForm
             // 
@@ -843,6 +926,7 @@
             this.flyingPage.ResumeLayout(false);
             this.flyingPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -884,5 +968,6 @@
         private System.Windows.Forms.CheckBox keepMotorsOnCheckBox;
         private System.Windows.Forms.CheckBox negativeMixingCheckBox;
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
+        private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
     }
 }
