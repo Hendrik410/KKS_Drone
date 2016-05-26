@@ -50,13 +50,13 @@ namespace DroneControl.Input
         {
             currentState = device.GetCurrentState();
 
-            if (CheckButtonPressed(3))
+            if (CheckButtonPressed(2))
                 manager.SendClear();
 
-            if (CheckButtonPressed(0))
+            if (CheckButtonPressed(1))
                 manager.StopDrone();
 
-            if (CheckButtonPressed(9))
+            if (CheckButtonPressed(0))
                 manager.ToogleArmStatus();
 
             float deadZone = 0.075f;
@@ -65,10 +65,10 @@ namespace DroneControl.Input
 
             const int maxValue = UInt16.MaxValue / 2;
             TargetData target = new TargetData();
-            target.Roll = DeadZone.Compute(currentState.Y, maxValue, deadZone);
-            target.Pitch = DeadZone.Compute(currentState.X, maxValue, deadZone);
-            target.RotationalSpeed = DeadZone.Compute(currentState.Z, maxValue, deadZone);
-            target.Thurst = DeadZone.Compute(currentState.RotationZ, maxValue, deadZone);
+            target.Roll = DeadZone.Compute(currentState.X - maxValue, maxValue, deadZone);
+            target.Pitch = DeadZone.Compute(currentState.Y - maxValue, maxValue, deadZone);
+            target.RotationalSpeed = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
+            target.Thurst = -DeadZone.Compute(currentState.Z - maxValue, maxValue, deadZone);
 
             manager.SendTargetData(target);
 
