@@ -29,6 +29,8 @@ protected:
 	VectorFloat gravity;    // [x, y, z]            gravity vector
 	float ypr[3];
 
+	float filter(float value);
+
 public:
 	explicit Gyro6050(Config* config);
 

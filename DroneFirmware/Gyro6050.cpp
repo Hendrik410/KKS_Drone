@@ -58,6 +58,12 @@ bool Gyro6050::init() {
 	return mpuOK;
 }
 
+float Gyro6050::filter(float value) {
+	if (abs(value) < 0.1f)
+		return 0;
+	return value;
+}
+
 void Gyro6050::update() {
 	if (!mpuOK)
 		return;
@@ -133,6 +139,9 @@ void Gyro6050::update() {
 	gyroValues[8] = values[5] * gyroRes;
 #endif
 
+	for (int i = 3; i < 9; i++)
+		gyroValues[i] = filter(gyroValues[i]);
+
 	roll = gyroValues[1];
 	pitch = -gyroValues[0];
 	yaw = gyroValues[2];
@@ -148,7 +157,6 @@ void Gyro6050::update() {
 
 	_dirty = true;
 	Profiler::end();
-	
 }
 
 void Gyro6050::reset() {
