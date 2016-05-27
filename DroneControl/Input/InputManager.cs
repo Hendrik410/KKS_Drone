@@ -133,8 +133,20 @@ namespace DroneControl.Input
         public void ToogleArmStatus()
         {
             if (drone.Data.State == DroneState.Idle)
-                drone.SendArm();
+                ArmDrone();
             else if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+                drone.SendDisarm();
+        }
+
+        public void ArmDrone()
+        {
+            if (drone.Data.State == DroneState.Idle)
+                drone.SendArm();
+        }
+
+        public void DisarmDrone()
+        {
+            if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
                 drone.SendDisarm();
         }
 

@@ -74,7 +74,10 @@ namespace DroneControl.Input
                 manager.StopDrone();
 
             if (CheckButtonPressed(0))
-                manager.ToogleArmStatus();
+                manager.ArmDrone();
+
+            if (CheckButtonReleased(0))
+                manager.DisarmDrone();
 
             float deadZone = 0.075f;
             if (!manager.DeadZone)
@@ -90,6 +93,16 @@ namespace DroneControl.Input
             manager.SendTargetData(target);
 
             lastState = currentState;
+        }
+
+        private bool CheckButtonReleased(int button)
+        {
+            if (button >= currentState.Buttons.Length)
+                return false;
+
+            bool current = currentState.Buttons[button];
+            bool last = lastState != null && lastState.Buttons[button];
+            return !current && last;
         }
 
         private bool CheckButtonPressed(int button)
