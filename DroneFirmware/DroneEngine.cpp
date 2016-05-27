@@ -176,7 +176,7 @@ void DroneEngine::handleInternal() {
 		minServo = config->ServoIdle;
 
 	for (int i = 0; i < 4; i++)
-		values[i] = MathHelper::clampValue(config->ServoIdle + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), minServo, config->ServoMax);
+		values[i] = MathHelper::clampValue(minServo + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), config->ServoMin, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
 }
