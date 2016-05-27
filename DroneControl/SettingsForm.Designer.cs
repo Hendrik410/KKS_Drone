@@ -60,7 +60,6 @@
             System.Windows.Forms.Label label4;
             System.Windows.Forms.Label label5;
             System.Windows.Forms.Label label6;
-            System.Windows.Forms.Label thrust;
             System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
@@ -97,7 +96,6 @@
             this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
-            this.thrustValue = new System.Windows.Forms.NumericUpDown();
             this.applyButton = new System.Windows.Forms.Button();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
@@ -131,7 +129,6 @@
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
-            thrust = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
@@ -153,7 +150,6 @@
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -762,19 +758,10 @@
             label6.TabIndex = 12;
             label6.Text = "Kd";
             // 
-            // thrust
-            // 
-            thrust.AutoSize = true;
-            thrust.Location = new System.Drawing.Point(280, 117);
-            thrust.Name = "thrust";
-            thrust.Size = new System.Drawing.Size(37, 13);
-            thrust.TabIndex = 16;
-            thrust.Text = "Thrust";
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(280, 217);
+            label1.Location = new System.Drawing.Point(280, 189);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(90, 13);
             label1.TabIndex = 25;
@@ -798,8 +785,6 @@
             this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
             this.flyingPage.Controls.Add(this.negativeMixingCheckBox);
             this.flyingPage.Controls.Add(this.enableStabilizationCheckBox);
-            this.flyingPage.Controls.Add(this.thrustValue);
-            this.flyingPage.Controls.Add(thrust);
             this.flyingPage.Controls.Add(pidYawGroupBox);
             this.flyingPage.Controls.Add(pidRollGroupBox);
             this.flyingPage.Controls.Add(pidPitchGroupBox);
@@ -819,7 +804,7 @@
             0,
             0,
             0});
-            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 215);
+            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 187);
             this.maxThrustForFlyingTextBox.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -832,7 +817,7 @@
             // keepMotorsOnCheckBox
             // 
             this.keepMotorsOnCheckBox.AutoSize = true;
-            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 187);
+            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 159);
             this.keepMotorsOnCheckBox.Name = "keepMotorsOnCheckBox";
             this.keepMotorsOnCheckBox.Size = new System.Drawing.Size(100, 17);
             this.keepMotorsOnCheckBox.TabIndex = 24;
@@ -842,7 +827,7 @@
             // negativeMixingCheckBox
             // 
             this.negativeMixingCheckBox.AutoSize = true;
-            this.negativeMixingCheckBox.Location = new System.Drawing.Point(283, 164);
+            this.negativeMixingCheckBox.Location = new System.Drawing.Point(283, 136);
             this.negativeMixingCheckBox.Name = "negativeMixingCheckBox";
             this.negativeMixingCheckBox.Size = new System.Drawing.Size(101, 17);
             this.negativeMixingCheckBox.TabIndex = 23;
@@ -852,24 +837,12 @@
             // enableStabilizationCheckBox
             // 
             this.enableStabilizationCheckBox.AutoSize = true;
-            this.enableStabilizationCheckBox.Location = new System.Drawing.Point(283, 141);
+            this.enableStabilizationCheckBox.Location = new System.Drawing.Point(283, 113);
             this.enableStabilizationCheckBox.Name = "enableStabilizationCheckBox";
             this.enableStabilizationCheckBox.Size = new System.Drawing.Size(116, 17);
             this.enableStabilizationCheckBox.TabIndex = 22;
             this.enableStabilizationCheckBox.Text = "Enable stabilization";
             this.enableStabilizationCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // thrustValue
-            // 
-            this.thrustValue.Location = new System.Drawing.Point(376, 115);
-            this.thrustValue.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.thrustValue.Name = "thrustValue";
-            this.thrustValue.Size = new System.Drawing.Size(70, 20);
-            this.thrustValue.TabIndex = 17;
             // 
             // applyButton
             // 
@@ -920,7 +893,6 @@
             this.flyingPage.ResumeLayout(false);
             this.flyingPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.thrustValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -956,7 +928,6 @@
         private System.Windows.Forms.NumericUpDown rollKdTextBox;
         private System.Windows.Forms.NumericUpDown rollKiTextBox;
         private System.Windows.Forms.NumericUpDown rollKpTextBox;
-        private System.Windows.Forms.NumericUpDown thrustValue;
         private System.Windows.Forms.CheckBox saveConfigCheckBox;
         private System.Windows.Forms.Button applyButton;
         private System.Windows.Forms.CheckBox keepMotorsOnCheckBox;
