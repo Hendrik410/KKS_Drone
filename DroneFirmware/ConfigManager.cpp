@@ -128,6 +128,7 @@ Config ConfigManager::getDefault() {
 	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
+	config.OnlyFlyWhenStill = true;
 
 	Log::info("Config", "Using default config");
 	return config;

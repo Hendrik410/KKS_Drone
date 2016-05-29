@@ -97,6 +97,7 @@
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
+            this.onlyFlyWhenStillCheckBox = new System.Windows.Forms.CheckBox();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -780,6 +781,7 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.onlyFlyWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
             this.flyingPage.Controls.Add(label1);
             this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
@@ -853,6 +855,16 @@
             this.applyButton.Text = "Apply";
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+            // 
+            // onlyFlyWhenStillCheckBox
+            // 
+            this.onlyFlyWhenStillCheckBox.AutoSize = true;
+            this.onlyFlyWhenStillCheckBox.Location = new System.Drawing.Point(283, 213);
+            this.onlyFlyWhenStillCheckBox.Name = "onlyFlyWhenStillCheckBox";
+            this.onlyFlyWhenStillCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.onlyFlyWhenStillCheckBox.TabIndex = 27;
+            this.onlyFlyWhenStillCheckBox.Text = "Only fly when still";
+            this.onlyFlyWhenStillCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -934,5 +946,6 @@
         private System.Windows.Forms.CheckBox negativeMixingCheckBox;
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
+        private System.Windows.Forms.CheckBox onlyFlyWhenStillCheckBox;
     }
 }

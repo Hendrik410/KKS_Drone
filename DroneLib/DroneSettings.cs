@@ -133,7 +133,11 @@ namespace DroneLibrary
         public bool KeepMotorsOn;
 
         [Category("Flying")]
-        public float MaxThrustForFlying;
+        public int MaxThrustForFlying;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool OnlyFlyWhenStill;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {

@@ -75,6 +75,9 @@ class Gyro
 	float getMagnetY() const;
 	float getMagnetZ() const;
 
+	boolean isMoving() const;
+	boolean isFlat() const;
+
 	// Gibt zurück ob die Daten sich geändert haben und setzt dann dirty wieder zurück
 	bool dirty() {
 		bool d = _dirty;

@@ -77,6 +77,8 @@ void DroneEngine::fly() {
 	if (thrust > config->MaxThrustForFlying)
 		return;
 
+	if (config->OnlyFlyWhenStill && (gyro->isMoving() || !gyro->isFlat()))
+		return;
 
 	pitchOutput = 0;
 	rollOutput = 0;

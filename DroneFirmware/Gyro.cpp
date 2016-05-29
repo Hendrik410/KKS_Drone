@@ -86,3 +86,17 @@ float Gyro::getMagnetY() const {
 float Gyro::getMagnetZ() const {
 	return magnetZ;
 }
+
+#define GYRO_MOVING(x) (abs(x) > 0.1f)
+
+boolean Gyro::isMoving() const {
+	boolean accMoving = GYRO_MOVING(getAccelerationX()) || GYRO_MOVING(getAccelerationY()) || GYRO_MOVING(getAccelerationZ());
+	boolean gyroMoving = GYRO_MOVING(getGyroX()) || GYRO_MOVING(getGyroY()) || GYRO_MOVING(getGyroZ());
+	return accMoving || gyroMoving;
+}
+
+#define GYRO_FLAT(x) (abs(x) < 1.0f)
+
+boolean Gyro::isFlat() const {
+	return GYRO_FLAT(getRoll()) && GYRO_FLAT(getPitch());
+}
