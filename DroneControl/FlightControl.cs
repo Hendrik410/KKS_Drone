@@ -129,6 +129,11 @@ namespace DroneControl
             inputDeviceComboBox.Items.Add("\nNone"); // \n damit der Eintrag ganz am Anfang kommt
             inputDeviceComboBox.Items.AddRange(devices);
 
+            // wenn nur ein Gerät gefunden und keins ausgewählt, dann neues auswählen
+            if (devices.Length == 1 && InputManager.CurrentDevice == null)
+                InputManager.CurrentDevice = devices[0];
+
+
             // Gerät auswählen
             if (InputManager.CurrentDevice == null)
                 inputDeviceComboBox.SelectedIndex = 0;
