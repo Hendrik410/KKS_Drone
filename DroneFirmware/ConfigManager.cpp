@@ -107,16 +107,16 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 0.25f;
-	config.PitchPid.Ki = 0.1f;
+	config.PitchPid.Kp = 1.7f;
+	config.PitchPid.Ki = 0.2f;
 	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 0.25f;
-	config.RollPid.Ki = 0.1f;
+	config.RollPid.Kp = 1.7f;
+	config.RollPid.Ki = 0.2f;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 2.25f;
-	config.YawPid.Ki = 0.4f;
+	config.YawPid.Kp = 15.5f;
+	config.YawPid.Ki = 0.1f;
 	config.YawPid.Kd = 0;
 
 	config.SafePitch = 100;
@@ -124,7 +124,7 @@ Config ConfigManager::getDefault() {
 	config.SafeServoValue = 1500;
 
 	config.EnableStabilization = true;
-	config.NegativeMixing = true;
+	config.NegativeMixing = false;
 	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
