@@ -9,25 +9,14 @@ VoltageInputReader::VoltageInputReader(int pin, float maxVoltage, float maxInput
 	_inputPin = pin;
 	_maxVoltage = maxVoltage;
 	_maxInputVoltage = maxInputVoltage;
-	_lastVoltage = _maxVoltage;
-	_dirty = true;
+	_voltage = _maxVoltage;
 }
 
 float VoltageInputReader::readVoltage() {
-	float newVoltage = _lastVoltage * 0.92 + readRawVoltage() * 0.08;
-	if (_lastVoltage != newVoltage)
-		_dirty = true;
-
-	_lastVoltage = newVoltage;
-	return newVoltage;
+	_voltage = _voltage * 0.92 + readRawVoltage() * 0.08;
+	return _voltage;
 }
 
 float VoltageInputReader::readRawVoltage() {
 	return ((analogRead(_inputPin) / 1024.0f) / _maxInputVoltage) * _maxVoltage;
-}
-
-bool VoltageInputReader::dirty() {
-	bool wasDirty = _dirty;
-	_dirty = false;
-	return wasDirty;
 }

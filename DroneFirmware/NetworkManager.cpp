@@ -13,16 +13,14 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 
 	_dataFeedSubscribed = false;
 	_lastDataSend = 0;
+	_lastLogSend = 0;
+	_lastDebugDataSend = 0;
 	dataRevision = 1;
 
 	lastMovementRevision = 0;
 	lastOtaRevision = 0;
 
-	tickCount = 0;
-
 	saveConfig = false;
-
-	lastState = StateUnknown;
 
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
@@ -101,6 +99,7 @@ bool NetworkManager::beginParse(WiFiUDP udp) {
 }
 
 void NetworkManager::sendPacket(WiFiUDP udp) {
+	Profiler::begin("sendPacket()");
 	if (!writeBuffer->getError()) {
 		udp.beginPacket(udp.remoteIP(), udp.remotePort());
 		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
@@ -108,6 +107,7 @@ void NetworkManager::sendPacket(WiFiUDP udp) {
 	}
 
 	writeBuffer->resetPosition();
+	Profiler::end();
 }
 
 void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType) {
@@ -431,21 +431,13 @@ void NetworkManager::handleData(WiFiUDP udp) {
 
 	Profiler::begin("handleData()");
 	sendDroneData(udp);
-
-    if (tickCount % 4 == 0)
-		sendLog(udp);
-
+	sendLog(udp);
+	sendDebugData(udp);
 	Profiler::end();
-
-	if (tickCount % 8 == 0)
-		sendDebugData(udp);
 }
 
 void NetworkManager::sendDroneData(WiFiUDP udp) {
-	// binary OR wird verwendet, damit alle dirty Methoden aufgerufen werden
-	bool droneDataDirty = (lastState != engine->state()) | servos->dirty() | gyro->dirty() | voltageReader->dirty();
-
-	if (droneDataDirty || millis() - _lastDataSend >= 2000) { // 2 Sekunden
+	if (millis() - _lastDataSend >= CYCLE_DATA) {
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
@@ -477,42 +469,47 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 
 		sendData(udp);
 		_lastDataSend = millis();
-
-		lastState = engine->state();
 	}
 }
 
 void NetworkManager::sendLog(WiFiUDP udp) {
-	if (Log::getBuffer() == NULL)
-		return;
+	if (millis() - _lastLogSend > CYCLE_LOG) {
+		if (Log::getBuffer() == NULL)
+			return;
 
-	while (Log::getBufferLines() > 0) {
-		writeDataHeader(dataUDP, dataRevision++, DataLog);
+		while (Log::getBufferLines() > 0) {
+			writeDataHeader(dataUDP, dataRevision++, DataLog);
 
-		int messagesToSend = Log::getBufferLines();
-		if (messagesToSend > 5)
-			messagesToSend = 5;
+			int messagesToSend = Log::getBufferLines();
+			if (messagesToSend > 5)
+				messagesToSend = 5;
 
-		writeBuffer->write(messagesToSend);
+			writeBuffer->write(messagesToSend);
 
-		for (int i = 0; i < messagesToSend; i++) {
-			char* msg = Log::popMessage();
-			writeBuffer->writeString(msg);
-			free(msg);
+			for (int i = 0; i < messagesToSend; i++) {
+				char* msg = Log::popMessage();
+				writeBuffer->writeString(msg);
+				free(msg);
+			}
+
+			sendData(udp);
 		}
 
-		sendData(udp);
+		_lastLogSend = millis();
 	}
 }
 
 void NetworkManager::sendDebugData(WiFiUDP udp) {
-	writeDataHeader(dataUDP, dataRevision++, DataDebug);
+	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
+		writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
-	Profiler::write(writeBuffer);
+		Profiler::write(writeBuffer);
 
-	writeBuffer->write(engine->getPitchOutput());
-	writeBuffer->write(engine->getRollOutput());
-	writeBuffer->write(engine->getYawOutput());
+		writeBuffer->write(engine->getPitchOutput());
+		writeBuffer->write(engine->getRollOutput());
+		writeBuffer->write(engine->getYawOutput());
 
-	sendData(udp);
+		sendData(udp);
+		_lastDebugDataSend = millis();
+	}
 }

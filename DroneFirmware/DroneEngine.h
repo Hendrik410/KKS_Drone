@@ -4,6 +4,7 @@
 #define _DRONEENGINE_h
 
 #include "arduino.h"
+#include "CycleTimes.h"
 #include "ServoManager.h"
 #include "Gyro.h"
 #include "MathHelper.h"

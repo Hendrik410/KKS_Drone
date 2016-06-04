@@ -78,7 +78,7 @@ void Gyro6050::update() {
 	}
 
 	// nur alle 10 Millisekunden Daten einlesen
-	if (millis() - lastSample < 10)
+	if (millis() - lastSample < CYCLE_GYRO)
 		return;
 	lastSample = millis();
 

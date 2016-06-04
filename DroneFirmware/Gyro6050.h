@@ -2,6 +2,7 @@
 #define _GYRO6050_h
 #include "Build.h"
 #include "Gyro.h"
+#include "CycleTimes.h"
 
 #include <Wire.h>
 #include <MPU6050_6Axis_MotionApps20.h>

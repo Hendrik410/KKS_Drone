@@ -22,6 +22,7 @@
 #include "Gyro6050.h"
 #include "Gyro9150.h"
 #include "PID.h"
+#include "CycleTimes.h"
 
 Config config;
 
@@ -30,9 +31,6 @@ Gyro* gyro;
 ServoManager* servos;
 DroneEngine* engine;
 NetworkManager* network;
-
-int lastLoopTime = 0;
-short delayTime = 10;
 
 void setup() {
 	Serial.begin(115200);
@@ -104,7 +102,7 @@ void setup() {
 		Log::info("Boot", "Network SSID: %s", name);
 
 		WiFi.mode(WIFI_AP);
-		WiFi.softAP(name, config.AccessPointPassword);
+		WiFi.softAP(name, config.AccessPointPassword, 8);
 
 		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
 	}
@@ -152,12 +150,8 @@ void loop() {
 	if (engine->state() == StateArmed)
 		servos->handleTick();
 
+	network->handleData();
 	Profiler::end();
-
-	if(millis() - lastLoopTime >= delayTime) {
-		network->handleData();
-		
-		lastLoopTime = millis();
-	}
+	Profiler::finishFrame();
 }
 

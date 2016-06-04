@@ -14,6 +14,7 @@
 #include "Build.h"
 #include "ConfigManager.h"
 #include "LED.h"
+#include "CycleTimes.h"
 
 #include <ESP8266WiFi/src/ESP8266WiFi.h>
 #include <ESP8266WiFi/src/WiFiUdp.h>
@@ -34,12 +35,11 @@ protected:
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
+	long _lastLogSend;
+	long _lastDebugDataSend;
 
 	bool saveConfig;
 
-	uint64_t tickCount;
-
-	DroneState lastState;
 	int dataRevision;
 
 	int lastMovementRevision;

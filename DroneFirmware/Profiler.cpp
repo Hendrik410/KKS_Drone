@@ -6,6 +6,8 @@ uint32_t Profiler::length = 0;
 uint32_t* Profiler::stack = NULL;
 uint32_t Profiler::stackCurrent = 0;
 
+long Profiler::lastMaxReset = 0;
+
 void Profiler::init() {
 	functions = new ProfilerFunction[PROFILE_SIZE];
 	length = 0;
@@ -39,6 +41,7 @@ void Profiler::begin(const char* name) {
 
 		ProfilerFunction* function = &functions[index];
 		function->name = (char*)name;
+		function->lastTime = 0;
 		function->time = 0;
 		function->maxTime = 0;
 		length++;
@@ -64,26 +67,42 @@ void Profiler::end() {
 
 	ProfilerFunction* function = &functions[index];
 	function->time += micros() - function->currentTime;
-	if (function->time > function->maxTime)
-		function->maxTime = function->time;
+}
+
+void Profiler::finishFrame() {
+	if (functions == NULL)
+		init();
+
+	if (stackCurrent > 0) {
+		Log::error("Profiler", "Frame not correctly ended");
+		while (stackCurrent > 0)
+			end();
+	}
+
+	boolean resetMax = millis() - lastMaxReset > CYCLE_PROFILER_MAX;
+	if (resetMax)
+		lastMaxReset = millis();
+
+	for (int i = 0; i < length; i++) {
+		ProfilerFunction* function = &functions[i];
+		function->lastTime = function->time;
+		function->currentTime = 0;	// anfangen mit Zeit zurücksetzen
+
+		if (resetMax || function->time > function->maxTime)
+			function->maxTime = function->time;
+	}
 }
 
 void Profiler::write(PacketBuffer* buffer) {
 	if (functions == NULL)
 		init();
 
-	while (stackCurrent > 0)
-		end();
-
 	buffer->write(length);
 	for (int i = 0; i < length; i++) {
 		ProfilerFunction* function = &functions[i];
 
 		buffer->writeString(function->name);
-		buffer->write(function->time);
-		buffer->write(function->maxTime);
-
-		// anfangen mit Zeit zurücksetzen
-		function->currentTime = 0;
+		buffer->write(function->lastTime);
+		buffer->write(function->maxTime);	
 	}
 }
