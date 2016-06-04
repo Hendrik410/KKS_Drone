@@ -57,14 +57,14 @@
             // 
             // profilerData
             // 
-            this.profilerData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.profilerData.AutoSize = true;
             this.profilerData.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.profilerData.Location = new System.Drawing.Point(12, 39);
+            this.profilerData.Location = new System.Drawing.Point(10, 39);
             this.profilerData.Name = "profilerData";
             this.profilerData.Size = new System.Drawing.Size(85, 13);
             this.profilerData.TabIndex = 4;
             this.profilerData.Text = "Profiler data";
+            this.profilerData.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // recorderButton
             // 

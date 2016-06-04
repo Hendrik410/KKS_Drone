@@ -1,32 +1,28 @@
 #include "Profiler.h"
 
-char** Profiler::names = NULL;
-uint32_t* Profiler::times = NULL;
-uint32_t* Profiler::currentTimes = NULL;
+ProfilerFunction* Profiler::functions = NULL;
 uint32_t Profiler::length = 0;
 
 uint32_t* Profiler::stack = NULL;
 uint32_t Profiler::stackCurrent = 0;
 
 void Profiler::init() {
-	names = (char**)malloc(sizeof(char*) * PROFILE_SIZE);
-	times = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
-	currentTimes = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
+	functions = new ProfilerFunction[PROFILE_SIZE];
 	length = 0;
 
-	stack = (uint32_t*)malloc(sizeof(uint32_t) * PROFILE_SIZE);
+	stack = new uint32_t[PROFILE_SIZE];
 	stackCurrent = 0;
 }
 
 void Profiler::begin(const char* name) {
-	if (names == NULL)
+	if (functions == NULL)
 		init();
 
 	uint32_t index = UINT32_MAX;
 
 	// Eintrag suchen
 	for (int i = 0; i < length; i++) {
-		if (strcmp(names[i], name) == 0) {
+		if (strcmp(functions[i].name, name) == 0) {
 			index = i;
 			break;
 		}
@@ -40,19 +36,22 @@ void Profiler::begin(const char* name) {
 		}
 
 		index = length;
-		names[index] = (char*)name;
-		times[index] = 0;
+
+		ProfilerFunction* function = &functions[index];
+		function->name = (char*)name;
+		function->time = 0;
+		function->maxTime = 0;
 		length++;
 	}
-	else if (currentTimes[index] == 0) 
-		times[index] = 0;  // Zeit zurücksetzen
+	else if (functions[index].currentTime == 0) 
+		functions[index].time = 0;  // Zeit zurücksetzen
 
-	currentTimes[index] = micros();
+	functions[index].currentTime = micros();
 	stack[stackCurrent++] = index;
 }
 
 void Profiler::end() {
-	if (names == NULL) {
+	if (functions == NULL) {
 		Log::error("Profiler", "init() not called");
 		return;
 	}
@@ -62,11 +61,15 @@ void Profiler::end() {
 	}
 
 	uint32_t index = stack[--stackCurrent];
-	times[index] += micros() - currentTimes[index];
+
+	ProfilerFunction* function = &functions[index];
+	function->time += micros() - function->currentTime;
+	if (function->time > function->maxTime)
+		function->maxTime = function->time;
 }
 
 void Profiler::write(PacketBuffer* buffer) {
-	if (names == NULL)
+	if (functions == NULL)
 		init();
 
 	while (stackCurrent > 0)
@@ -74,10 +77,13 @@ void Profiler::write(PacketBuffer* buffer) {
 
 	buffer->write(length);
 	for (int i = 0; i < length; i++) {
-		buffer->writeString(names[i]);
-		buffer->write((uint32_t)times[i]);
+		ProfilerFunction* function = &functions[i];
+
+		buffer->writeString(function->name);
+		buffer->write(function->time);
+		buffer->write(function->maxTime);
 
 		// anfangen mit Zeit zurücksetzen
-		currentTimes[i] = 0;
+		function->currentTime = 0;
 	}
 }

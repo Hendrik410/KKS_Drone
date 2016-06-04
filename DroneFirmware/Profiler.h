@@ -6,12 +6,18 @@
 
 #define PROFILE_SIZE 16
 
+struct ProfilerFunction {
+	char* name;
+	uint32_t time;
+	uint32_t maxTime;
+
+	uint32_t currentTime;
+};
+
 class Profiler 
 {
 private:
-	static char** names;
-	static uint32_t* times;
-	static uint32_t* currentTimes;
+	static ProfilerFunction* functions;
 	static uint32_t length;
 
 	static uint32_t* stack;

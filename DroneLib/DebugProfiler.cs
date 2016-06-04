@@ -23,16 +23,23 @@ namespace DroneLibrary
         {
             public readonly string Name;
             public readonly uint TimeMicros;
+            public readonly uint TimeMaxMicros;
 
             public TimeSpan Time
             {
                 get { return new TimeSpan(TimeMicros * 10); }
             }
 
+            public TimeSpan TimeMax
+            {
+                get { return new TimeSpan(TimeMaxMicros * 10); }
+            }
+
             public Entry(PacketBuffer buffer)
             {
                 Name = buffer.ReadString();
                 TimeMicros = buffer.ReadUInt();
+                TimeMaxMicros = buffer.ReadUInt();
             }
         }
     }
