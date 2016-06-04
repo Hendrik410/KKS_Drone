@@ -34,6 +34,8 @@ void ServoManager::detach() {
 	if (!attached)
 		return;
 
+	setAllServos(config->ServoMin);
+
 	frontLeft.detach();
 	frontRight.detach();
 	backLeft.detach();
@@ -78,9 +80,6 @@ void ServoManager::setServos(int fl, int fr, int bl, int br) {
 	servoBRValue = getValue(br);
 
 	_dirty = true;
-
-	if (!attached)
-		return;
 
 	if (servoFLValue != 1)
 		frontLeft.writeMicroseconds(servoFLValue);
