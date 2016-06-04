@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Log.h"
 #include "MathHelper.h"
+#include "Profiler.h"
 
 
 class ServoManager
@@ -38,6 +39,7 @@ public:
 
 	void attach();
 	void detach();
+	void waitForDetach();
 
 	void setServos(int fl, int fr, int bl, int br);
 	void setAllServos(int val);

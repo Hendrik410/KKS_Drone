@@ -54,6 +54,8 @@ protected:
 
 	bool checkRevision(int a, int b);
 
+	void checkSaveConfig();
+
 	bool beginParse(WiFiUDP udp);
 	void handleHello(WiFiUDP udp);
 	void handleControl(WiFiUDP udp);

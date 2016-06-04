@@ -44,13 +44,23 @@ bool NetworkManager::checkRevision(int a, int b) {
 	return b > a;
 }
 
-void NetworkManager::handlePackets() {
+void NetworkManager::checkSaveConfig() {
 	if (saveConfig && (engine->state() != StateFlying && engine->state() != StateArmed)) {
-		servos->detach();
+
+		ESP.wdtDisable();
+		servos->waitForDetach();
+
 		ConfigManager::saveConfig(*config);
+
 		servos->attach();
+		ESP.wdtEnable(WDTO_0MS);
+
 		saveConfig = false;
 	}
+}
+
+void NetworkManager::handlePackets() {
+	checkSaveConfig();
 
 	Profiler::begin("readPackets()");
 	int helloPackets = 0;

@@ -20,6 +20,8 @@ void ServoManager::attach() {
 	if (attached)
 		return;
 
+	Log::info("Servo", "attach()");
+
 	setAllServos(config->ServoMin);
 
 	frontLeft.attach(config->PinFrontLeft);
@@ -34,6 +36,8 @@ void ServoManager::detach() {
 	if (!attached)
 		return;
 
+	Log::info("Servo", "detach()");
+
 	setAllServos(config->ServoMin);
 
 	frontLeft.detach();
@@ -42,6 +46,18 @@ void ServoManager::detach() {
 	backRight.detach();
 
 	attached = false;
+}
+
+void ServoManager::waitForDetach() {
+	Profiler::begin("ServoManager::waitForDetach()");
+	if (attached)
+		detach();
+
+	while (frontLeft.attached());
+	while (frontRight.attached());
+	while (backLeft.attached());
+	while (backRight.attached());
+	Profiler::end();
 }
 
 void ServoManager::handleTick() {
