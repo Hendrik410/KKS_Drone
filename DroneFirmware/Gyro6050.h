@@ -18,6 +18,9 @@ protected:
 	byte* fifoBuffer;
 	int fifoOffset;
 
+	uint32_t lastSample;
+	bool firstUpdate;
+
 	float accRes;
 	float gyroRes;
 

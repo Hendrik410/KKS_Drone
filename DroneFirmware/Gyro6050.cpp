@@ -55,6 +55,7 @@ bool Gyro6050::init() {
 	Log::info("Gyro6050", "done with init");
 
 	mpuOK = true;
+	firstUpdate = true;
 	return mpuOK;
 }
 
@@ -68,11 +69,25 @@ void Gyro6050::update() {
 	if (!mpuOK)
 		return;
 
+	// erstes Aufruf überspringen
+	if (firstUpdate) {
+		mpu.resetFIFO();
+		firstUpdate = false;
+		lastSample = millis();
+		return;
+	}
+
+	// nur alle 10 Millisekunden Daten einlesen
+	if (millis() - lastSample < 10)
+		return;
+	lastSample = millis();
+
 	Profiler::begin("Gyro6050::update()");
 
 	float gyroValues[9];
 #if USE_DMP
-	if (mpu.getIntFIFOBufferOverflowStatus() || mpu.getFIFOCount() == 1024) { // 1024 Bytes ist der FIFO Buffer groß auf dem MPU6050
+	int fifoCount = mpu.getFIFOCount();
+	if (fifoCount == 1024) { // 1024 Bytes ist der FIFO Buffer groß auf dem MPU6050
 		mpu.resetFIFO();
 
 		Log::error("Gyro6050", "FIFO overflow!");
@@ -81,15 +96,14 @@ void Gyro6050::update() {
 	}
 
 	Profiler::begin("Gyro6050::getFIFOBytes()");
-	
-	int fifoCount = mpu.getFIFOCount();
 	int size = mpu.dmpGetFIFOPacketSize();
-	if (fifoCount < size) {
+	if (fifoCount < size) { // nicht genug Daten
 		Profiler::end();
 		Profiler::end();
 		return;
 	}
 
+	// FIFO vollständig einlesen
 	while (fifoCount >= size) {
 		mpu.getFIFOBytes(fifoBuffer, size);
 		fifoCount -= size;
@@ -153,7 +167,7 @@ void Gyro6050::update() {
 	gyroX = -gyroValues[7];
 	gyroY = -gyroValues[6];
 	gyroZ = -gyroValues[8];
-
+	
 
 	_dirty = true;
 	Profiler::end();
