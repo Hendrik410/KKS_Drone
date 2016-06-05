@@ -237,9 +237,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			return;
 		}
 
-		if (engine->state() == StateArmed)
-			engine->setRawServoValues(fl, fr, bl, br);
-
+		engine->setRawServoValues(fl, fr, bl, br);
 		break;
 	}
 	case StopPacket:
@@ -441,7 +439,6 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
-
 		writeBuffer->write(uint16_t(servos->FL()));
 		writeBuffer->write(uint16_t(servos->FR()));
 		writeBuffer->write(uint16_t(servos->BL()));

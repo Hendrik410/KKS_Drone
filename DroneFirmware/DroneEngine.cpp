@@ -147,17 +147,20 @@ void DroneEngine::handle() {
 
 		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
 			stop(NoPing);
+			Profiler::end();
 			return;
 		}
 
 		if (!isGyroSafe()) {
 			stop(InvalidGyro);
+			Profiler::end();
 			return;
 		}
 
 		if (_state == StateFlying) {
 			if (millis() - lastMovementUpdate >= config->MaximumNetworkTimeout) {
 				stop(NoData);
+				Profiler::end();
 				return;
 			}
 
@@ -168,7 +171,7 @@ void DroneEngine::handle() {
 }
 
 void DroneEngine::handleInternal() {
-	float values[4];
+	int values[4];
 
 	if (config->EnableStabilization) {
 		calculatePID(pitchPID, gyro->getPitch(), targetPitch);
@@ -186,7 +189,7 @@ void DroneEngine::handleInternal() {
 		minServo = config->ServoIdle;
 
 	for (int i = 0; i < 4; i++)
-		values[i] = MathHelper::clampValue(minServo + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), config->ServoMin, config->ServoMax);
+		values[i] = (int)MathHelper::clampValue(minServo + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), config->ServoMin, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
 }
