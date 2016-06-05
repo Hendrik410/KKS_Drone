@@ -78,8 +78,10 @@ void Gyro6050::update() {
 	}
 
 	// nur alle 10 Millisekunden Daten einlesen
-	if (millis() - lastSample < CYCLE_GYRO)
+	uint32_t interval = millis() - lastSample;
+	if (interval < CYCLE_GYRO)
 		return;
+	Profiler::pushData("Jitter::Gyro6050()", interval - CYCLE_GYRO);
 	lastSample = millis();
 
 	Profiler::begin("Gyro6050::update()");

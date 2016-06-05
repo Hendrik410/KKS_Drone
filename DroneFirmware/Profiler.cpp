@@ -16,7 +16,7 @@ void Profiler::init() {
 	stackCurrent = 0;
 }
 
-void Profiler::begin(const char* name) {
+ProfilerFunction* Profiler::findFunction(const char* name) {
 	if (functions == NULL)
 		init();
 
@@ -34,23 +34,33 @@ void Profiler::begin(const char* name) {
 	if (index == UINT32_MAX) {
 		if (length >= PROFILE_SIZE) {
 			Log::error("Profiler", "Profiler buffer full");
-			return;
+			return NULL;
 		}
 
 		index = length;
 
 		ProfilerFunction* function = &functions[index];
+		function->index = index;
 		function->name = (char*)name;
 		function->lastTime = 0;
 		function->time = 0;
 		function->maxTime = 0;
 		length++;
+		return function;
 	}
-	else if (functions[index].currentTime == 0) 
-		functions[index].time = 0;  // Zeit zurücksetzen
+	return &functions[index];
+}
 
-	functions[index].currentTime = micros();
-	stack[stackCurrent++] = index;
+void Profiler::begin(const char* name) {
+	ProfilerFunction* function = findFunction(name);
+	if (function == NULL)
+		return;
+
+	if (function->currentTime == 0) 
+		function->time = 0;  // Zeit zurücksetzen
+
+	function->currentTime = micros();
+	stack[stackCurrent++] = function->index;
 }
 
 void Profiler::end() {
@@ -91,6 +101,14 @@ void Profiler::finishFrame() {
 		if (resetMax || function->time > function->maxTime)
 			function->maxTime = function->time;
 	}
+}
+
+void Profiler::pushData(const char* name, uint32_t value) {
+	ProfilerFunction* function = findFunction(name);
+	if (function == NULL)
+		return;
+
+	function->time = value;
 }
 
 void Profiler::write(PacketBuffer* buffer) {

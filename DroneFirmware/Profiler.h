@@ -8,6 +8,7 @@
 #define PROFILE_SIZE 16
 
 struct ProfilerFunction {
+	uint32_t index;
 	char* name;
 	uint32_t lastTime;
 	uint32_t time;
@@ -27,11 +28,14 @@ private:
 
 	static long lastMaxReset;
 
+	static ProfilerFunction* findFunction(const char* name);
+
 public:
 	static void init();
 	static void begin(const char* name);
 	static void end();
 	static void finishFrame();
+	static void pushData(const char* name, uint32_t value);
 	static void write(PacketBuffer* buffer);
 };
 #endif
