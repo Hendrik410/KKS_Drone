@@ -48,9 +48,21 @@ PID* DroneEngine::createPID(PIDSettings settings, double* output) {
 	return pid;
 }
 
+bool DroneEngine::isGyroSafe() {
+	return abs(gyro->getRoll()) <= config->SafeRoll && abs(gyro->getPitch()) <= config->SafePitch;
+}
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
+		if (!isGyroSafe()) {
+			Log::info("Engine", "Can not arm motors, gyro is not safe");
+			return;
+		}
+		if (config->OnlyArmWhenStill && (gyro->isMoving() || !gyro->isFlat())) {
+			Log::info("Engine", "Can not arm motors, not still");
+			return;
+		}
+
 		servos->setAllServos(config->ServoIdle);
 
 		_state = StateArmed;
@@ -75,9 +87,6 @@ void DroneEngine::fly() {
 		return;
 
 	if (thrust > config->MaxThrustForFlying)
-		return;
-
-	if (config->OnlyFlyWhenStill && (gyro->isMoving() || !gyro->isFlat()))
 		return;
 
 	pitchOutput = 0;
@@ -136,13 +145,12 @@ void DroneEngine::handle() {
 	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED();
 
-
 		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
 			stop(NoPing);
 			return;
 		}
 
-		if (abs(gyro->getRoll()) > config->SafeRoll || abs(gyro->getPitch()) > config->SafePitch) {
+		if (!isGyroSafe()) {
 			stop(InvalidGyro);
 			return;
 		}

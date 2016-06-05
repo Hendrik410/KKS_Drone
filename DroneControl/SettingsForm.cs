@@ -66,7 +66,7 @@ namespace DroneControl
             Bind(keepMotorsOnCheckBox, "data.KeepMotorsOn");
 
             Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
-            Bind(onlyFlyWhenStillCheckBox, "data.OnlyFlyWhenStill");
+            Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
 
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;

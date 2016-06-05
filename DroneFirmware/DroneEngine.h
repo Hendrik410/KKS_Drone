@@ -64,6 +64,8 @@ class DroneEngine
 
 	 void calculatePID(PID* pid, float input, float setpoint);
 
+	 bool isGyroSafe();
+
  public:
 	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
 

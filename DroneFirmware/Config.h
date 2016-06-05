@@ -79,7 +79,7 @@ struct Config {
 	boolean KeepMotorsOn;
 
 	int MaxThrustForFlying;
-	boolean OnlyFlyWhenStill;
+	boolean OnlyArmWhenStill;
 };
 
 #endif

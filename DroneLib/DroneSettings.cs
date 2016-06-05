@@ -137,7 +137,7 @@ namespace DroneLibrary
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
-        public bool OnlyFlyWhenStill;
+        public bool OnlyArmWhenStill;
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
@@ -158,7 +158,6 @@ namespace DroneLibrary
             int size = Marshal.SizeOf(typeof(DroneSettings));
 
             byte[] buffer = new byte[size];
-
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             Marshal.StructureToPtr(this, handle.AddrOfPinnedObject(), false);
             handle.Free();

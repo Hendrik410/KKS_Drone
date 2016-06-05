@@ -107,12 +107,12 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 1.7f;
-	config.PitchPid.Ki = 0.2f;
+	config.PitchPid.Kp = 0.7f;
+	config.PitchPid.Ki = 0.3f;
 	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 1.7f;
-	config.RollPid.Ki = 0.2f;
+	config.RollPid.Kp = 0.7f;
+	config.RollPid.Ki = 0.3f;
 	config.RollPid.Kd = 0;
 
 	config.YawPid.Kp = 15.5f;
@@ -128,7 +128,7 @@ Config ConfigManager::getDefault() {
 	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
-	config.OnlyFlyWhenStill = true;
+	config.OnlyArmWhenStill = true;
 
 	Log::info("Config", "Using default config");
 	return config;

@@ -92,12 +92,12 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
+            this.onlyArmWhenStillCheckBox = new System.Windows.Forms.CheckBox();
             this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
             this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
-            this.onlyFlyWhenStillCheckBox = new System.Windows.Forms.CheckBox();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -781,7 +781,7 @@
             // 
             // flyingPage
             // 
-            this.flyingPage.Controls.Add(this.onlyFlyWhenStillCheckBox);
+            this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
             this.flyingPage.Controls.Add(label1);
             this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
@@ -798,6 +798,16 @@
             this.flyingPage.Size = new System.Drawing.Size(698, 412);
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
+            // 
+            // onlyArmWhenStillCheckBox
+            // 
+            this.onlyArmWhenStillCheckBox.AutoSize = true;
+            this.onlyArmWhenStillCheckBox.Location = new System.Drawing.Point(283, 213);
+            this.onlyArmWhenStillCheckBox.Name = "onlyArmWhenStillCheckBox";
+            this.onlyArmWhenStillCheckBox.Size = new System.Drawing.Size(113, 17);
+            this.onlyArmWhenStillCheckBox.TabIndex = 27;
+            this.onlyArmWhenStillCheckBox.Text = "Only arm when still";
+            this.onlyArmWhenStillCheckBox.UseVisualStyleBackColor = true;
             // 
             // maxThrustForFlyingTextBox
             // 
@@ -855,16 +865,6 @@
             this.applyButton.Text = "Apply";
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
-            // 
-            // onlyFlyWhenStillCheckBox
-            // 
-            this.onlyFlyWhenStillCheckBox.AutoSize = true;
-            this.onlyFlyWhenStillCheckBox.Location = new System.Drawing.Point(283, 213);
-            this.onlyFlyWhenStillCheckBox.Name = "onlyFlyWhenStillCheckBox";
-            this.onlyFlyWhenStillCheckBox.Size = new System.Drawing.Size(106, 17);
-            this.onlyFlyWhenStillCheckBox.TabIndex = 27;
-            this.onlyFlyWhenStillCheckBox.Text = "Only fly when still";
-            this.onlyFlyWhenStillCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -946,6 +946,6 @@
         private System.Windows.Forms.CheckBox negativeMixingCheckBox;
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
-        private System.Windows.Forms.CheckBox onlyFlyWhenStillCheckBox;
+        private System.Windows.Forms.CheckBox onlyArmWhenStillCheckBox;
     }
 }
