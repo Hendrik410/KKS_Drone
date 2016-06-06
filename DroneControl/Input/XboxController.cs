@@ -11,6 +11,7 @@ namespace DroneControl.Input
     {
         private Controller controller;
 
+        private bool firstUpdate = true;
         private State currentState, lastState;
 
         public bool IsConnected
@@ -84,6 +85,7 @@ namespace DroneControl.Input
             manager.SendTargetData(target);
 
             lastState = currentState;
+            firstUpdate = false;
         }
 
         private float GetButtonValue(GamepadButtonFlags button)
@@ -95,6 +97,9 @@ namespace DroneControl.Input
 
         private bool CheckButtonPressed(GamepadButtonFlags button)
         {
+            if (firstUpdate)
+                return false;
+
             bool current = currentState.Gamepad.Buttons.HasFlag(button);
             bool last = lastState.Gamepad.Buttons.HasFlag(button);
             return current && !last;

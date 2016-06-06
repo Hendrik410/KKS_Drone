@@ -97,21 +97,25 @@ namespace DroneControl.Input
 
         private bool CheckButtonReleased(int button)
         {
+            if (lastState == null)
+                return false;
             if (button >= currentState.Buttons.Length)
                 return false;
 
             bool current = currentState.Buttons[button];
-            bool last = lastState != null && lastState.Buttons[button];
+            bool last = lastState.Buttons[button];
             return !current && last;
         }
 
         private bool CheckButtonPressed(int button)
         {
+            if (lastState == null)
+                return false;
             if (button >= currentState.Buttons.Length)
                 return false;
 
             bool current = currentState.Buttons[button];
-            bool last = lastState != null && lastState.Buttons[button];
+            bool last = lastState.Buttons[button];
             return current && !last;
         }
 
