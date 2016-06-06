@@ -55,10 +55,12 @@ bool DroneEngine::isGyroSafe() {
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
 		if (!isGyroSafe()) {
+			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is not safe");
 			return;
 		}
 		if (config->OnlyArmWhenStill && (gyro->isMoving() || !gyro->isFlat())) {
+			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, not still");
 			return;
 		}
@@ -66,6 +68,7 @@ void DroneEngine::arm() {
 		servos->setAllServos(config->ServoIdle);
 
 		_state = StateArmed;
+		blinkLED(3, 600);
 
 		Log::info("Engine", "Armed motors");
 	}
@@ -96,6 +99,7 @@ void DroneEngine::fly() {
 	createPID();
 
 	_state = StateFlying;
+	blinkLED(3, 550);
 	Log::info("Engine", "Flying");
 }
 
@@ -103,6 +107,7 @@ void DroneEngine::stop(StopReason reason) {
 	if (_state == StateOTA)
 		return;
 
+	blinkLED(5, 250);
 	disarm();
 
 	_stopReason = reason;
@@ -143,7 +148,7 @@ void DroneEngine::endOTA() {
 void DroneEngine::handle() {
 	Profiler::begin("DroneEngine::handle()");
 	if (_state == StateArmed || _state == StateFlying) {
-		blinkLED();
+		blinkLED(1, 800);
 
 		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
 			stop(NoPing);

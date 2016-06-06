@@ -261,7 +261,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		engine->heartbeat();
 		break;
 	case BlinkPacket:
-		blinkLED();
+		blinkLED(1, 1000);
 		break;
 	case ResetRevisionPacket:
 		lastMovementRevision = 0;

@@ -4,14 +4,18 @@
 #include "arduino.h"
 #include "Config.h"
 
+extern int ledPin;
+
 extern bool shouldBlink;
 extern bool blinkCooldown;
+
+extern int blinkCount;
+extern int blinkCooldownTime;
 extern int blinkTimer;
-extern int ledPin;
 
 void setupLED(Config* config);
 void handleBlink();
-void blinkLED();
+void blinkLED(int count, int time);
 void turnLedOn();
 void turnLedOff();
 #endif
