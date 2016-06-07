@@ -40,6 +40,7 @@ public:
 	void attach();
 	void detach();
 	void waitForDetach();
+	void waitForDetach(Servo servo);
 
 	void setServos(int fl, int fr, int bl, int br);
 	void setAllServos(int val);

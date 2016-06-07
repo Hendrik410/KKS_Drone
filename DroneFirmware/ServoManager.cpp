@@ -30,6 +30,7 @@ void ServoManager::attach() {
 	backRight.attach(config->PinBackRight);
 
 	attached = true;
+	yield();
 }
 
 void ServoManager::detach() {
@@ -46,6 +47,7 @@ void ServoManager::detach() {
 	backRight.detach();
 
 	attached = false;
+	yield();
 }
 
 void ServoManager::waitForDetach() {
@@ -53,11 +55,18 @@ void ServoManager::waitForDetach() {
 	if (attached)
 		detach();
 
-	while (frontLeft.attached());
-	while (frontRight.attached());
-	while (backLeft.attached());
-	while (backRight.attached());
+	delayMicroseconds(REFRESH_INTERVAL);
+	waitForDetach(frontLeft);
+	waitForDetach(frontRight);
+	waitForDetach(backLeft);
+	waitForDetach(backRight);
 	Profiler::end();
+}
+
+void ServoManager::waitForDetach(Servo servo) {
+	int start = millis();
+	while (millis() - start < 1000 && servo.attached()) 
+		yield();
 }
 
 void ServoManager::handleTick() {

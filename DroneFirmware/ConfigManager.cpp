@@ -55,6 +55,8 @@ void ConfigManager::saveConfig(const Config config) {
 	saveConfig(adapter, config);
 	adapter->end();
 
+	yield();
+
 	delete adapter;
 	Profiler::end();
 }

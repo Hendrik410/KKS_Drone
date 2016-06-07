@@ -109,6 +109,7 @@ void Gyro6050::update() {
 	while (fifoCount >= size) {
 		mpu.getFIFOBytes(fifoBuffer, size);
 		fifoCount -= size;
+		yield();
 	}
 	Profiler::end();
 
