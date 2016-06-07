@@ -27,9 +27,9 @@ enum DroneState {
 class DroneEngine
 {
  private:
-	long lastPhysicsCalc;
 	long lastMovementUpdate;
 	long lastHeartbeat;
+	long armTime;
 
 	float maxTilt;
 	float maxRotationSpeed;

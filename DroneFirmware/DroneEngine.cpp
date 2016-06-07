@@ -9,9 +9,9 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->servos = servos;
 	this->config = config;
 
+	this->armTime = 0;
 	this->lastHeartbeat = 0;
 	this->lastMovementUpdate = 0;
-	this->lastPhysicsCalc = 0;
 
 	this->pitchPID = NULL;
 	this->rollPID = NULL;
@@ -65,8 +65,7 @@ void DroneEngine::arm() {
 			return;
 		}
 
-		servos->setAllServos(config->ServoIdle);
-
+		armTime = millis();
 		_state = StateArmed;
 		blinkLED(3, 600);
 
@@ -147,6 +146,12 @@ void DroneEngine::endOTA() {
 
 void DroneEngine::handle() {
 	Profiler::begin("DroneEngine::handle()");
+
+	if (_state == StateArmed && armTime > 0 && millis() - armTime > 250) {
+		setRawServoValues(config->ServoIdle);
+		armTime = 0;
+	}
+
 	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED(1, 800);
 
