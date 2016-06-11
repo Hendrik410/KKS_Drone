@@ -5,6 +5,7 @@
 #include <MPU6050_6Axis_MotionApps20.h>
 #include <Servo.h>
 #include <EEPROM.h>
+
 #include "Build.h"
 #include "Log.h"
 #include "NetworkManager.h"
@@ -78,6 +79,7 @@ void setup() {
 		Log::info("Boot", "Trying to connect to %s", config.NetworkSSID);
 
 		WiFi.mode(WIFI_STA);
+		WiFi.setAutoReconnect(true);
 		if (WiFi.begin(config.NetworkSSID, config.NetworkPassword) == WL_CONNECT_FAILED)
 			Log::error("Boot", "WiFi.begin() failed");
 		if (WiFi.status() == WL_IDLE_STATUS) // begin() verbindet nicht wenn die Einstellungen sich nicht geändert haben
@@ -137,6 +139,9 @@ void setup() {
 
 void loop() {
 	Profiler::begin("loop()");
+
+	if (WiFi.getMode() == WIFI_STA && !WiFi.isConnected() && engine->state() != StateStopped)
+		engine->stop(WifiDisconnect);
 
 	network->handlePackets();
 

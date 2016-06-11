@@ -13,6 +13,7 @@ namespace DroneLibrary
         User,
         NoData,
         NoPing,
-        InvalidGyro
+        InvalidGyro,
+        WifiDisconnect
     }
 }

@@ -7,7 +7,8 @@ enum StopReason : byte {
 	User,
 	NoData,
 	NoPing,
-	InvalidGyro
+	InvalidGyro,
+	WifiDisconnect
 };
 
 #endif
