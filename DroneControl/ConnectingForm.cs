@@ -32,7 +32,7 @@ namespace DroneControl
             timeoutTimer.Interval = 10 * 1000; // Timeout von 10 Sekunden
             timeoutTimer.Tick += (object sender, EventArgs args) =>
             {
-                StartTimers();
+                StopTimers();
 
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
@@ -40,7 +40,7 @@ namespace DroneControl
                     Close();
                 }
                 else
-                    StopTimers();
+                    StartTimers();
             };
 
             pingTimer.Interval = 200;
