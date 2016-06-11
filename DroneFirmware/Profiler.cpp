@@ -40,11 +40,9 @@ ProfilerFunction* Profiler::findFunction(const char* name) {
 		index = length;
 
 		ProfilerFunction* function = &functions[index];
+		memset(function, 0, sizeof(ProfilerFunction));
 		function->index = index;
 		function->name = (char*)name;
-		function->lastTime = 0;
-		function->time = 0;
-		function->maxTime = 0;
 		length++;
 		return function;
 	}
