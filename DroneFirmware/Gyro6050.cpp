@@ -158,6 +158,14 @@ void Gyro6050::update() {
 	gyroValues[8] = values[5] * gyroRes;
 #endif
 
+	if (memcmp(gyroValues, lastGyroValues, sizeof(lastGyroValues)) != 0) {
+		Profiler::restart("Gyro6050::data()");
+
+		_dirty = true;
+		memcpy(lastGyroValues, gyroValues, sizeof(lastGyroValues));
+	}
+
+
 	for (int i = 3; i < 9; i++)
 		gyroValues[i] = filter(gyroValues[i]);
 
@@ -172,13 +180,6 @@ void Gyro6050::update() {
 	gyroX = -gyroValues[7];
 	gyroY = -gyroValues[6];
 	gyroZ = -gyroValues[8];
-
-	if (memcmp(gyroValues, lastGyroValues, sizeof(lastGyroValues)) != 0) {
-		Profiler::restart("Gyro6050::data()");
-
-		_dirty = true;
-		memcpy(lastGyroValues, gyroValues, sizeof(lastGyroValues));
-	}
 
 	Profiler::end();
 }
