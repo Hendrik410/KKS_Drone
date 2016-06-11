@@ -34,6 +34,8 @@ class DroneEngine
 	float maxTilt;
 	float maxRotationSpeed;
 
+	int lastValues[4];
+
  protected:
 	 Config* config;
 

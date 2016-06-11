@@ -73,16 +73,18 @@ void Gyro6050::update() {
 	if (firstUpdate) {
 		mpu.resetFIFO();
 		firstUpdate = false;
-		lastSample = millis();
+
+		lastSample = micros();
+		memset(lastGyroValues, 0, sizeof(lastGyroValues));
 		return;
 	}
 
 	// nur alle 10 Millisekunden Daten einlesen
-	uint32_t interval = millis() - lastSample;
-	if (interval < CYCLE_GYRO)
+	uint32_t interval = micros() - lastSample;
+	if (interval < CYCLE_GYRO * 1000)
 		return;
-	Profiler::pushData("Jitter::Gyro6050()", interval - CYCLE_GYRO);
-	lastSample = millis();
+	Profiler::pushData("Gyro6050::jitter()", interval - CYCLE_GYRO * 1000);
+	lastSample = micros();
 
 	Profiler::begin("Gyro6050::update()");
 
@@ -170,9 +172,14 @@ void Gyro6050::update() {
 	gyroX = -gyroValues[7];
 	gyroY = -gyroValues[6];
 	gyroZ = -gyroValues[8];
-	
 
-	_dirty = true;
+	if (memcmp(gyroValues, lastGyroValues, sizeof(lastGyroValues)) != 0) {
+		Profiler::restart("Gyro6050::data()");
+
+		_dirty = true;
+		memcpy(lastGyroValues, gyroValues, sizeof(lastGyroValues));
+	}
+
 	Profiler::end();
 }
 

@@ -51,16 +51,43 @@ ProfilerFunction* Profiler::findFunction(const char* name) {
 	return &functions[index];
 }
 
-void Profiler::begin(const char* name) {
+uint32_t Profiler::start(const char* name) {
+	return start(name, true);
+}
+
+uint32_t Profiler::start(const char* name, boolean reset) {
+	ProfilerFunction* function = findFunction(name);
+	if (function == NULL)
+		return UINT32_MAX;
+
+	if (function->shouldReset && reset)
+		function->time = 0;  // Zeit zurücksetzen
+
+	function->currentTime = micros();
+	return function->index;
+}
+
+void Profiler::stop(ProfilerFunction* function, boolean add) {
+	if (function->currentTime != 0) {
+		if (add)
+			function->time += micros() - function->currentTime;
+		else
+			function->time = micros() - function->currentTime;
+	}
+}
+void Profiler::stop(const char* name) {
 	ProfilerFunction* function = findFunction(name);
 	if (function == NULL)
 		return;
 
-	if (function->currentTime == 0) 
-		function->time = 0;  // Zeit zurücksetzen
+	stop(function, false);
+}
 
-	function->currentTime = micros();
-	stack[stackCurrent++] = function->index;
+
+void Profiler::begin(const char* name) {
+	uint32_t func = start(name);
+	if (func != UINT32_MAX)
+		stack[stackCurrent++] = func;
 }
 
 void Profiler::end() {
@@ -74,9 +101,12 @@ void Profiler::end() {
 	}
 
 	uint32_t index = stack[--stackCurrent];
+	stop(&functions[index], true);
+}
 
-	ProfilerFunction* function = &functions[index];
-	function->time += micros() - function->currentTime;
+void Profiler::restart(const char* name) {
+	stop(name);
+	start(name, false);
 }
 
 void Profiler::finishFrame() {
@@ -96,7 +126,7 @@ void Profiler::finishFrame() {
 	for (int i = 0; i < length; i++) {
 		ProfilerFunction* function = &functions[i];
 		function->lastTime = function->time;
-		function->currentTime = 0;	// anfangen mit Zeit zurücksetzen
+		function->shouldReset = true;	// anfangen mit Zeit zurücksetzen
 
 		if (resetMax || function->time > function->maxTime)
 			function->maxTime = function->time;

@@ -359,8 +359,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		Log::info("Network", "OTA begin with size %d and md5 %s", size, md5);
 
+		if (ESP.getFreeSketchSpace() < size) {
+			Log::error("Network", "OTA begin failed (not enough free space)");
+			engine->endOTA();
+			return;
+		}
+
 		if (!Update.begin(size, U_FLASH)) {
-			Log::error("Network", "OTA begin failed (not enough space)");
+			Log::error("Network", "OTA begin failed");
 			engine->endOTA();
 			return;
 		}
@@ -408,8 +414,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		lastOtaRevision = revision;
 
 		if (engine->state() == StateOTA) {
-			engine->endOTA();
-
 			if (Update.end(!readBuffer->readBoolean())) {
 				Log::info("Network", "OTA update done");
 				ESP.restart();
@@ -418,6 +422,8 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 			Log::info("Network", "OTA md5: %s", Update.md5String().c_str());
 			Log::error("Network", "OTA update failed (%d)", Update.getError());
+
+			engine->endOTA();
 		}
 		break;
 	}

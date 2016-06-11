@@ -106,8 +106,8 @@ void DroneEngine::stop(StopReason reason) {
 	if (_state == StateOTA)
 		return;
 
-	blinkLED(5, 250);
 	disarm();
+	blinkLED(5, 250);
 
 	_stopReason = reason;
 	_state = StateStopped;
@@ -202,6 +202,12 @@ void DroneEngine::handleInternal() {
 		values[i] = (int)MathHelper::clampValue(minServo + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), config->ServoMin, config->ServoMax);
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
+
+	if (memcmp(values, lastValues, sizeof(lastValues)) != 0)
+	{
+		Profiler::restart("DroneEngine::data()");
+		memcpy(lastValues, values, sizeof(lastValues));
+	}
 }
 
 void DroneEngine::updateTunings() {

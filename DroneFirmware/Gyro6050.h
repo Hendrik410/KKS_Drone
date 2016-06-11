@@ -25,6 +25,8 @@ protected:
 	float accRes;
 	float gyroRes;
 
+	float lastGyroValues[9];
+
 	// orientation/motion vars
 	Quaternion q;           // [w, x, y, z]         quaternion container
 	VectorInt16 aa;         // [x, y, z]            accel sensor measurements
