@@ -151,7 +151,7 @@ namespace DroneControl
             }
 
             History.UpdateValue(value);
-            Refresh();
+            Invalidate();
         }
     }
 }

@@ -65,10 +65,16 @@ namespace DroneControl
                 Formatting.FormatDecimal(e.Data.Gyro.GyroY, 2),
                 Formatting.FormatDecimal(e.Data.Gyro.GyroZ, 2));
 
-            accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2}",
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationX, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationY, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.AccelerationZ, 2));
+            float ax = e.Data.Gyro.AccelerationX;
+            float ay = e.Data.Gyro.AccelerationY;
+            float az = e.Data.Gyro.AccelerationZ;
+
+            float len = (float)Math.Sqrt(ax * ax + ay * ay + az * az);
+            accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2} len: {3}",
+                Formatting.FormatDecimal(ax, 2),
+                Formatting.FormatDecimal(ay, 2),
+                Formatting.FormatDecimal(az, 2),
+                Formatting.FormatDecimal(len, 2));
 
             magnetLabel.Text = string.Format("Magnet x: {0} y: {1} z: {2}",
                 Formatting.FormatDecimal(e.Data.Gyro.MagnetX, 2),

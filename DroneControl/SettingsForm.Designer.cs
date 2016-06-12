@@ -538,7 +538,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.pitchKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.pitchKdTextBox.Name = "pitchKdTextBox";
             this.pitchKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -551,7 +551,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.pitchKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.pitchKiTextBox.Name = "pitchKiTextBox";
             this.pitchKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -564,7 +564,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.pitchKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.pitchKpTextBox.Name = "pitchKpTextBox";
             this.pitchKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -619,7 +619,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.rollKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.rollKdTextBox.Name = "rollKdTextBox";
             this.rollKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -632,7 +632,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.rollKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.rollKiTextBox.Name = "rollKiTextBox";
             this.rollKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -645,7 +645,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.rollKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.rollKpTextBox.Name = "rollKpTextBox";
             this.rollKpTextBox.Size = new System.Drawing.Size(70, 20);
@@ -700,7 +700,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.yawKdTextBox.Location = new System.Drawing.Point(34, 72);
             this.yawKdTextBox.Name = "yawKdTextBox";
             this.yawKdTextBox.Size = new System.Drawing.Size(70, 20);
@@ -713,7 +713,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.yawKiTextBox.Location = new System.Drawing.Point(34, 46);
             this.yawKiTextBox.Name = "yawKiTextBox";
             this.yawKiTextBox.Size = new System.Drawing.Size(70, 20);
@@ -726,7 +726,7 @@
             5,
             0,
             0,
-            65536});
+            131072});
             this.yawKpTextBox.Location = new System.Drawing.Point(34, 18);
             this.yawKpTextBox.Name = "yawKpTextBox";
             this.yawKpTextBox.Size = new System.Drawing.Size(70, 20);

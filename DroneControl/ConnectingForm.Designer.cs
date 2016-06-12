@@ -65,14 +65,6 @@
             this.abortButton.UseVisualStyleBackColor = true;
             this.abortButton.Click += new System.EventHandler(this.abortButton_Click);
             // 
-            // pingTimer
-            // 
-            this.pingTimer.Enabled = true;
-            // 
-            // timeoutTimer
-            // 
-            this.timeoutTimer.Enabled = true;
-            // 
             // ConnectingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
