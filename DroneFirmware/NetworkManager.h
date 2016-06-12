@@ -39,6 +39,7 @@ protected:
 	long _lastDebugDataSend;
 
 	bool saveConfig;
+	int lastConfigSave;
 
 	int dataRevision;
 
@@ -55,6 +56,8 @@ protected:
 	bool checkRevision(int a, int b);
 
 	void checkSaveConfig();
+
+	void handlePackets(int num);
 
 	bool beginParse(WiFiUDP udp);
 	void handleHello(WiFiUDP udp);

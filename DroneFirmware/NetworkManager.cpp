@@ -21,6 +21,7 @@ NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* en
 	lastOtaRevision = 0;
 
 	saveConfig = false;
+	lastConfigSave = millis();
 
 	Log::info("Network", "Starting network manager...");
 	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
@@ -43,7 +44,11 @@ bool NetworkManager::checkRevision(int a, int b) {
 }
 
 void NetworkManager::checkSaveConfig() {
-	if (saveConfig && (engine->state() != StateFlying && engine->state() != StateArmed)) {
+	if (saveConfig) {
+		if (engine->state() == StateFlying || engine->state() == StateArmed)
+			return;
+		if (millis() - lastConfigSave  < TIME_CONFIG_SAVE)
+			return;
 
 		ESP.wdtDisable();
 		servos->waitForDetach();
@@ -51,9 +56,13 @@ void NetworkManager::checkSaveConfig() {
 		ConfigManager::saveConfig(*config);
 
 		servos->attach();
+		handlePackets(INT32_MAX);
+
+
 		ESP.wdtEnable(WDTO_0MS);
 
 		saveConfig = false;
+		lastConfigSave = millis();
 	}
 }
 
@@ -61,14 +70,18 @@ void NetworkManager::handlePackets() {
 	checkSaveConfig();
 
 	Profiler::begin("readPackets()");
+	handlePackets(5);
+	Profiler::end();
+}
+
+void NetworkManager::handlePackets(int num) {
 	int helloPackets = 0;
-	while (beginParse(helloUDP) && helloPackets++ < 2)
+	while (beginParse(helloUDP) && helloPackets++ < num)
 		handleHello(helloUDP);
 
 	int controlPackets = 0;
-	while (beginParse(controlUDP) && controlPackets++ < 5)
+	while (beginParse(controlUDP) && controlPackets++ < num)
 		handleControl(controlUDP);
-	Profiler::end();
 }
 
 void NetworkManager::handleData() {

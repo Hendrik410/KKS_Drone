@@ -8,4 +8,6 @@
 #define CYCLE_DEBUG_DATA	100
 #define CYCLE_PROFILER_MAX  20000
 
+#define TIME_CONFIG_SAVE 5000
+
 #endif
