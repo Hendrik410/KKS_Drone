@@ -274,6 +274,8 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpe
 	// in den Fliegen Modus gehen
 	fly();
 	lastMovementUpdate = millis();
+
+	Profiler::restart("DroneEngine::input()");
 }
 
 float DroneEngine::getTargetPitch() const {
