@@ -82,7 +82,7 @@ Config ConfigManager::getDefault() {
 	Config config;
 
 	strncpy(config.DroneName, "koalaDrone", sizeof(config.DroneName));
-	config.SaveConfig = false;
+	config.SaveConfig = true;
 
 	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID));
 	strncpy(config.NetworkPassword, "", sizeof(config.NetworkPassword));
