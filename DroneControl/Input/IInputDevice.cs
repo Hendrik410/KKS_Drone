@@ -23,6 +23,8 @@ namespace DroneControl.Input
         /// </summary>
         BatteryInfo Battery { get; }
 
+        void Calibrate();
+
         void Update(InputManager manager);
     }
 }

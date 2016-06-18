@@ -62,6 +62,12 @@ namespace DroneControl.Input
             return currentState != null;
         }
 
+        public void Calibrate()
+        {
+            if (IsConnected)
+                device.RunControlPanel();
+        }
+
         public void Update(InputManager manager)
         {
             if (!UpdateState())

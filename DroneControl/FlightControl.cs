@@ -153,6 +153,8 @@ namespace DroneControl
 
             if (InputManager.CurrentDevice == null)
             {
+                calibrateButton.Enabled = false;
+
                 deviceConnectionLabel.Text = "No device selected";
                 deviceConnectionLabel.ForeColor = SystemColors.ControlText;
                 deviceBatteryLabel.Visible = false;
@@ -162,6 +164,8 @@ namespace DroneControl
 
             if (InputManager.CurrentDevice.IsConnected)
             {
+                calibrateButton.Enabled = true;
+
                 deviceConnectionLabel.Text = "Device connected";
                 deviceConnectionLabel.ForeColor = Color.Green;
 
@@ -192,6 +196,8 @@ namespace DroneControl
             }
             else
             {
+                calibrateButton.Enabled = false;
+
                 deviceConnectionLabel.Text = "Device disconnected";
                 deviceConnectionLabel.ForeColor = Color.Red;
 
@@ -245,6 +251,12 @@ namespace DroneControl
                 InputManager.MaxRoll *= -1;
             if (invertRotationalCheckBox.Checked)
                 InputManager.MaxRotationalSpeed *= -1;
+        }
+
+        private void calibrateButton_Click(object sender, EventArgs e)
+        {
+            if (InputManager.CurrentDevice != null)
+                InputManager.CurrentDevice.Calibrate();
         }
     }
 }

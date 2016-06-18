@@ -50,6 +50,10 @@ namespace DroneControl.Input
         {
         }
 
+        public void Calibrate()
+        {
+        }
+
         public void Update(InputManager manager)
         {
             if (!IsConnected)

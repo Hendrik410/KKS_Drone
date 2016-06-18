@@ -57,6 +57,7 @@
             this.maxPitchNumeric = new System.Windows.Forms.NumericUpDown();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.calibrateButton = new System.Windows.Forms.Button();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
@@ -82,6 +83,7 @@
             // 
             // deviceGroupBox
             // 
+            deviceGroupBox.Controls.Add(this.calibrateButton);
             deviceGroupBox.Controls.Add(this.searchDeviceButton);
             deviceGroupBox.Controls.Add(this.deviceBatteryLabel);
             deviceGroupBox.Controls.Add(this.deviceConnectionLabel);
@@ -509,6 +511,16 @@
             this.updateTimer.Interval = 16;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // calibrateButton
+            // 
+            this.calibrateButton.Location = new System.Drawing.Point(134, 123);
+            this.calibrateButton.Name = "calibrateButton";
+            this.calibrateButton.Size = new System.Drawing.Size(75, 23);
+            this.calibrateButton.TabIndex = 13;
+            this.calibrateButton.Text = "Calibrate";
+            this.calibrateButton.UseVisualStyleBackColor = true;
+            this.calibrateButton.Click += new System.EventHandler(this.calibrateButton_Click);
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -559,5 +571,6 @@
         private System.Windows.Forms.CheckBox invertRollCheckBox;
         private System.Windows.Forms.CheckBox invertPitchCheckBox;
         private System.Windows.Forms.NumericUpDown thrustTextBox;
+        private System.Windows.Forms.Button calibrateButton;
     }
 }
