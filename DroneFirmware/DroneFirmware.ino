@@ -82,8 +82,6 @@ void setup() {
 		WiFi.setAutoReconnect(true);
 		if (WiFi.begin(config.NetworkSSID, config.NetworkPassword) == WL_CONNECT_FAILED)
 			Log::error("Boot", "WiFi.begin() failed");
-		if (WiFi.status() == WL_IDLE_STATUS) // begin() verbindet nicht wenn die Einstellungen sich nicht geändert haben
-			WiFi.begin(); // daher erneut probieren
 
 		// auf Verbindung warten
 		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED; 
