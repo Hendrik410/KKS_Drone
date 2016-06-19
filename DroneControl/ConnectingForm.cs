@@ -36,6 +36,9 @@ namespace DroneControl
 
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
+                    if (Drone != null)
+                        Drone.Dispose();
+
                     DialogResult = DialogResult.Cancel;
                     Close();
                 }
@@ -59,7 +62,11 @@ namespace DroneControl
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (Drone != null)
+            {
                 Drone.OnConnected -= OnDroneConnected;
+                if (!Drone.IsConnected)
+                    Drone.Dispose();
+            }
 
             StopTimers();
             base.OnFormClosing(e);
