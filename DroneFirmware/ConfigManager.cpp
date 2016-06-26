@@ -98,9 +98,9 @@ Config ConfigManager::getDefault() {
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
 
-	config.ServoMin = 900;
+	config.ServoMin = 1000;
 	config.ServoMax = 2000;
-	config.ServoIdle = 975;
+	config.ServoIdle = 1000;
 	config.ServoHover = 1100;
 
 	config.PinFrontLeft = 12;
@@ -109,21 +109,21 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 0.7f;
-	config.PitchPid.Ki = 0.3f;
+	config.PitchPid.Kp = 2.8f;
+	config.PitchPid.Ki = 0;
 	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 0.7f;
-	config.RollPid.Ki = 0.3f;
+	config.RollPid.Kp = 2.8f;
+	config.RollPid.Ki = 0;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 15.5f;
-	config.YawPid.Ki = 0.1f;
+	config.YawPid.Kp = 5.8f;
+	config.YawPid.Ki = 0;
 	config.YawPid.Kd = 0;
 
 	config.SafePitch = 100;
 	config.SafeRoll = 100;
-	config.SafeServoValue = 1500;
+	config.SafeServoValue = 1850;
 
 	config.EnableStabilization = true;
 	config.NegativeMixing = false;
@@ -131,6 +131,10 @@ Config ConfigManager::getDefault() {
 
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = true;
+
+	config.GyroUseDMP = true;
+	config.GyroUseRaw = true;
+	config.EngineUseGyro = true;
 
 	Log::info("Config", "Using default config");
 	return config;

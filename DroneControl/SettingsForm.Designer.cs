@@ -92,6 +92,9 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
+            this.engineUseGyroCheckBox = new System.Windows.Forms.CheckBox();
+            this.gyroUseRawCheckBox = new System.Windows.Forms.CheckBox();
+            this.gyroUseDmpCheckBox = new System.Windows.Forms.CheckBox();
             this.onlyArmWhenStillCheckBox = new System.Windows.Forms.CheckBox();
             this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
             this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
@@ -781,6 +784,9 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.engineUseGyroCheckBox);
+            this.flyingPage.Controls.Add(this.gyroUseRawCheckBox);
+            this.flyingPage.Controls.Add(this.gyroUseDmpCheckBox);
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
             this.flyingPage.Controls.Add(label1);
@@ -798,6 +804,36 @@
             this.flyingPage.Size = new System.Drawing.Size(698, 412);
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
+            // 
+            // engineUseGyroCheckBox
+            // 
+            this.engineUseGyroCheckBox.AutoSize = true;
+            this.engineUseGyroCheckBox.Location = new System.Drawing.Point(282, 305);
+            this.engineUseGyroCheckBox.Name = "engineUseGyroCheckBox";
+            this.engineUseGyroCheckBox.Size = new System.Drawing.Size(102, 17);
+            this.engineUseGyroCheckBox.TabIndex = 31;
+            this.engineUseGyroCheckBox.Text = "Engine use gyro";
+            this.engineUseGyroCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // gyroUseRawCheckBox
+            // 
+            this.gyroUseRawCheckBox.AutoSize = true;
+            this.gyroUseRawCheckBox.Location = new System.Drawing.Point(283, 282);
+            this.gyroUseRawCheckBox.Name = "gyroUseRawCheckBox";
+            this.gyroUseRawCheckBox.Size = new System.Drawing.Size(88, 17);
+            this.gyroUseRawCheckBox.TabIndex = 30;
+            this.gyroUseRawCheckBox.Text = "Gyro use raw";
+            this.gyroUseRawCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // gyroUseDmpCheckBox
+            // 
+            this.gyroUseDmpCheckBox.AutoSize = true;
+            this.gyroUseDmpCheckBox.Location = new System.Drawing.Point(283, 259);
+            this.gyroUseDmpCheckBox.Name = "gyroUseDmpCheckBox";
+            this.gyroUseDmpCheckBox.Size = new System.Drawing.Size(91, 17);
+            this.gyroUseDmpCheckBox.TabIndex = 29;
+            this.gyroUseDmpCheckBox.Text = "Gyro use dmp";
+            this.gyroUseDmpCheckBox.UseVisualStyleBackColor = true;
             // 
             // onlyArmWhenStillCheckBox
             // 
@@ -947,5 +983,8 @@
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
         private System.Windows.Forms.CheckBox onlyArmWhenStillCheckBox;
+        private System.Windows.Forms.CheckBox engineUseGyroCheckBox;
+        private System.Windows.Forms.CheckBox gyroUseRawCheckBox;
+        private System.Windows.Forms.CheckBox gyroUseDmpCheckBox;
     }
 }

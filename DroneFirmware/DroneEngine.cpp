@@ -44,7 +44,7 @@ PID* DroneEngine::createPID(PIDSettings settings, double* output) {
 	PID* pid = new PID(&pidInput, output, &pidSetpoint, settings.Kp, settings.Ki, settings.Kd, DIRECT);
 	pid->SetMode(AUTOMATIC);
 	pid->SetSampleTime(CYCLE_PID);
-	pid->SetOutputLimits(-100, 100);
+	pid->SetOutputLimits(-300, 300);
 	return pid;
 }
 
@@ -184,8 +184,14 @@ void DroneEngine::handleInternal() {
 	int values[4];
 
 	if (config->EnableStabilization) {
-		calculatePID(pitchPID, gyro->getPitch(), targetPitch);
-		calculatePID(rollPID, gyro->getRoll(), targetRoll);
+		if (config->EngineUseGyro) {
+			calculatePID(rollPID, gyro->getGyroX(), targetRoll);
+			calculatePID(pitchPID, gyro->getGyroY(), targetPitch);
+		}
+		else {
+			calculatePID(pitchPID, gyro->getPitch(), targetPitch);
+			calculatePID(rollPID, gyro->getRoll(), targetRoll);
+		}
 		calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
 	}
 	else {

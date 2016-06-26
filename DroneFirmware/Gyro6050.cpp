@@ -31,20 +31,24 @@ bool Gyro6050::init() {
 	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
 
-#if USE_DMP
-	Log::info("Gyro6050", "dmpInitialize()");
-	int result = mpu.dmpInitialize();
-	if (result != 0) {
-		Log::error("Gyro6050", "failure: %d", result);
-		mpuOK = false;
-		return false;
+	useDMP = config->GyroUseDMP;
+	if (useDMP) {
+		Log::info("Gyro6050", "dmpInitialize()");
+		int result = mpu.dmpInitialize();
+		if (result != 0) {
+			Log::error("Gyro6050", "failure: %d", result);
+			mpuOK = false;
+			return false;
+		}
+
+		fifoBuffer = (byte*)malloc(sizeof(byte) * mpu.dmpGetFIFOPacketSize());
+
+		mpu.setDMPEnabled(true);
+		mpu.resetFIFO();
 	}
 
-	fifoBuffer = (byte*)malloc(sizeof(byte) * mpu.dmpGetFIFOPacketSize());
-
-	mpu.setDMPEnabled(true);
-	mpu.resetFIFO();
-#endif
+	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
+	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
 
 	float accRange[4] = { 2, 4, 8, 16 }; // g
 	float gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
@@ -88,75 +92,79 @@ void Gyro6050::update() {
 
 	Profiler::begin("Gyro6050::update()");
 
+	float accRes = config->GyroUseRaw ? 1 : this->accRes;
+	float gyroRes = config->GyroUseRaw ? 1 : this->gyroRes;
+
 	float gyroValues[9];
-#if USE_DMP
-	int fifoCount = mpu.getFIFOCount();
-	if (fifoCount == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
-		mpu.resetFIFO();
 
-		Log::error("Gyro6050", "FIFO overflow!");
+	if (useDMP) {
+		int fifoCount = mpu.getFIFOCount();
+		if (fifoCount == 1024) { // 1024 Bytes ist der FIFO Buffer groﬂ auf dem MPU6050
+			mpu.resetFIFO();
+
+			Log::error("Gyro6050", "FIFO overflow!");
+			Profiler::end();
+			return;
+		}
+
+		Profiler::begin("Gyro6050::getFIFOBytes()");
+		int size = mpu.dmpGetFIFOPacketSize();
+		if (fifoCount < size) { // nicht genug Daten
+			Profiler::end();
+			Profiler::end();
+			return;
+		}
+
+		// FIFO vollst‰ndig einlesen
+		while (fifoCount >= size) {
+			mpu.getFIFOBytes(fifoBuffer, size);
+			fifoCount -= size;
+			yield();
+		}
 		Profiler::end();
-		return;
+
+		// Yaw Pitch Roll
+		mpu.dmpGetQuaternion(&q, fifoBuffer);
+		mpu.dmpGetGravity(&gravity, &q);
+		mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+
+		gyroValues[0] = ypr[2];
+		gyroValues[1] = ypr[1];
+		gyroValues[2] = ypr[0];
+
+		// Beschleunigung
+		mpu.dmpGetAccel(&aa, fifoBuffer);
+		mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+
+		gyroValues[3] = aaReal.x * accRes;
+		gyroValues[4] = aaReal.y * accRes;
+		gyroValues[5] = aaReal.z * accRes;
+
+		// Gyro Werte
+		int16_t values[3];
+		mpu.dmpGetGyro(values, fifoBuffer);
+
+		gyroValues[6] = values[0] * gyroRes;
+		gyroValues[7] = values[1] * gyroRes;
+		gyroValues[8] = values[2] * gyroRes;
+
 	}
+	else {
+		int16_t values[6];
+		mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
 
-	Profiler::begin("Gyro6050::getFIFOBytes()");
-	int size = mpu.dmpGetFIFOPacketSize();
-	if (fifoCount < size) { // nicht genug Daten
-		Profiler::end();
-		Profiler::end();
-		return;
+		gyroValues[0] = 0;
+		gyroValues[1] = 0;
+		gyroValues[2] = 0;
+
+		gyroValues[3] = values[0] * accRes;
+		gyroValues[4] = values[1] * accRes;
+		gyroValues[5] = values[2] * accRes;
+
+		gyroValues[6] = values[3] * gyroRes;
+		gyroValues[7] = values[4] * gyroRes;
+		gyroValues[8] = values[5] * gyroRes;
 	}
-
-	// FIFO vollst‰ndig einlesen
-	while (fifoCount >= size) {
-		mpu.getFIFOBytes(fifoBuffer, size);
-		fifoCount -= size;
-		yield();
-	}
-	Profiler::end();
-
-	// Yaw Pitch Roll
-	mpu.dmpGetQuaternion(&q, fifoBuffer);
-	mpu.dmpGetGravity(&gravity, &q);
-	mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-	gyroValues[0] = ypr[2];
-	gyroValues[1] = ypr[1];
-	gyroValues[2] = ypr[0];
-
-	// Beschleunigung
-	mpu.dmpGetAccel(&aa, fifoBuffer);
-	mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-
-	gyroValues[3] = aaReal.x * accRes;
-	gyroValues[4] = aaReal.y * accRes;
-	gyroValues[5] = aaReal.z * accRes;
-
-	// Gyro Werte
-	int16_t values[3];
-	mpu.dmpGetGyro(values, fifoBuffer);
-
-	gyroValues[6] = values[0] * gyroRes;
-	gyroValues[7] = values[1] * gyroRes;
-	gyroValues[8] = values[2] * gyroRes;
-
-#else
-
-	int16_t values[6];
-	mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
-
-	gyroValues[0] = 0;
-	gyroValues[1] = 0;
-	gyroValues[2] = 0;
-
-	gyroValues[3] = values[0] * accRes;
-	gyroValues[4] = values[1] * accRes;
-	gyroValues[5] = values[2] * accRes;
-
-	gyroValues[6] = values[3] * gyroRes;
-	gyroValues[7] = values[4] * gyroRes;
-	gyroValues[8] = values[5] * gyroRes;
-#endif
 
 	if (memcmp(gyroValues, lastGyroValues, sizeof(lastGyroValues)) != 0) {
 		Profiler::restart("Gyro6050::data()");

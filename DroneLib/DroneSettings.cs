@@ -139,6 +139,18 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool OnlyArmWhenStill;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flyingg")]
+        public bool GyroUseDMP;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool GyroUseRaw;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool EngineUseGyro;
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));

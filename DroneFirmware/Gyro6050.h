@@ -8,8 +8,6 @@
 #include <MPU6050_6Axis_MotionApps20.h>
 #include <I2Cdev.h>
 
-#define USE_DMP true
-
 class Gyro6050 : public Gyro
 {
 protected:
@@ -24,6 +22,8 @@ protected:
 
 	float accRes;
 	float gyroRes;
+
+	bool useDMP;
 
 	float lastGyroValues[9];
 
