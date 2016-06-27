@@ -42,17 +42,20 @@ namespace DroneControl
         {
             StringBuilder profilerString = new StringBuilder();
 
-            for (int i = 0; i < data.Profiler.Entries.Length; i++)
+            if (data.Profiler.Entries != null)
             {
-                DebugProfiler.Entry entry = data.Profiler.Entries[i];
-                profilerString.AppendFormat("{0} {1}ms ({2}ms)",
-                    entry.Name.PadLeft(25),
-                    Formatting.FormatDecimal(entry.Time.TotalMilliseconds, 1, 4),
-                    Formatting.FormatDecimal(entry.TimeMax.TotalMilliseconds, 1, 4));
-                profilerString.AppendLine();
-            }
+                for (int i = 0; i < data.Profiler.Entries.Length; i++)
+                {
+                    DebugProfiler.Entry entry = data.Profiler.Entries[i];
+                    profilerString.AppendFormat("{0} {1}ms ({2}ms)",
+                        entry.Name.PadLeft(25),
+                        Formatting.FormatDecimal(entry.Time.TotalMilliseconds, 1, 4),
+                        Formatting.FormatDecimal(entry.TimeMax.TotalMilliseconds, 1, 4));
+                    profilerString.AppendLine();
+                }
 
-            profilerData.Text = profilerString.ToString();
+                profilerData.Text = profilerString.ToString();
+            }
         }
 
         private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
