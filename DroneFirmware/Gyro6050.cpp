@@ -47,8 +47,10 @@ bool Gyro6050::init() {
 		mpu.resetFIFO();
 	}
 
+	mpu.setClockSource(MPU6050_CLOCK_PLL_ZGYRO);
 	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
+	mpu.setDLPFMode(0);
 
 	float accRange[4] = { 2, 4, 8, 16 }; // g
 	float gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
@@ -92,10 +94,11 @@ void Gyro6050::update() {
 
 	Profiler::begin("Gyro6050::update()");
 
+	float gyroValues[9];
+
 	float accRes = config->GyroUseRaw ? 1 : this->accRes;
 	float gyroRes = config->GyroUseRaw ? 1 : this->gyroRes;
-
-	float gyroValues[9];
+	int16_t shift = config->GyroUseRaw ? 2 : 0;
 
 	if (useDMP) {
 		int fifoCount = mpu.getFIFOCount();
@@ -136,34 +139,36 @@ void Gyro6050::update() {
 		mpu.dmpGetAccel(&aa, fifoBuffer);
 		mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
 
-		gyroValues[3] = aaReal.x * accRes;
-		gyroValues[4] = aaReal.y * accRes;
-		gyroValues[5] = aaReal.z * accRes;
+		gyroValues[3] = (aaReal.x >> shift) * accRes;
+		gyroValues[4] = (aaReal.y >> shift) * accRes;
+		gyroValues[5] = (aaReal.z >> shift) * accRes;
 
 		// Gyro Werte
 		int16_t values[3];
 		mpu.dmpGetGyro(values, fifoBuffer);
 
-		gyroValues[6] = values[0] * gyroRes;
-		gyroValues[7] = values[1] * gyroRes;
-		gyroValues[8] = values[2] * gyroRes;
+		gyroValues[6] = (values[0] >> shift) * gyroRes;
+		gyroValues[7] = (values[1] >> shift) * gyroRes;
+		gyroValues[8] = (values[2] >> shift) * gyroRes;
 
 	}
 	else {
-		int16_t values[6];
-		mpu.getMotion6(values, values + 1, values + 2, values + 3, values + 4, values + 5);
-
 		gyroValues[0] = 0;
 		gyroValues[1] = 0;
 		gyroValues[2] = 0;
 
-		gyroValues[3] = values[0] * accRes;
-		gyroValues[4] = values[1] * accRes;
-		gyroValues[5] = values[2] * accRes;
+		int16_t x, y, z;
+		mpu.getAcceleration(&x, &y, &z);
 
-		gyroValues[6] = values[3] * gyroRes;
-		gyroValues[7] = values[4] * gyroRes;
-		gyroValues[8] = values[5] * gyroRes;
+		gyroValues[3] = (x >> shift) * accRes;
+		gyroValues[4] = (y >> shift) * accRes;
+		gyroValues[5] = (z >> shift) * accRes;
+
+		mpu.getRotation(&x, &y, &z);
+
+		gyroValues[6] = (x >> shift) * gyroRes;
+		gyroValues[7] = (y >> shift) * gyroRes;
+		gyroValues[8] = (z >> shift) * gyroRes;
 	}
 
 	if (memcmp(gyroValues, lastGyroValues, sizeof(lastGyroValues)) != 0) {

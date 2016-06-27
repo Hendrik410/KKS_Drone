@@ -109,15 +109,15 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 2.8f;
+	config.PitchPid.Kp = 0.5f;
 	config.PitchPid.Ki = 0;
 	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 2.8f;
+	config.RollPid.Kp = 0.5f;
 	config.RollPid.Ki = 0;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 5.8f;
+	config.YawPid.Kp = 1;
 	config.YawPid.Ki = 0;
 	config.YawPid.Kd = 0;
 
@@ -130,9 +130,9 @@ Config ConfigManager::getDefault() {
 	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
-	config.OnlyArmWhenStill = true;
+	config.OnlyArmWhenStill = false;
 
-	config.GyroUseDMP = true;
+	config.GyroUseDMP = false;
 	config.GyroUseRaw = true;
 	config.EngineUseGyro = true;
 
