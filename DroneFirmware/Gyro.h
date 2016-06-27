@@ -30,6 +30,10 @@ class Gyro
 	 float accY = 0;
 	 float accZ = 0;
 
+	 float gyroXOffset = 0;
+	 float gyroYOffset = 0;
+	 float gyroZOffset = 0;
+
 	 float accelerationXOffset = 0;
 	 float accelerationYOffset = 0;
 	 float accelerationZOffset = 0;

@@ -17,6 +17,10 @@ void Gyro::setAsZero() {
 	if (!hasCompass()) 
 		yawOffset = yaw;
 
+	gyroXOffset = gyroX;
+	gyroYOffset = gyroY;
+	gyroZOffset = gyroZ;
+
 	accelerationXOffset = accX;
 	accelerationYOffset = accY;
 	accelerationZOffset = accZ;
@@ -52,15 +56,15 @@ float Gyro::getYawRad() const {
 
 
 float Gyro::getGyroX() const {
-	return gyroX;
+	return gyroX - gyroXOffset;
 }
 
 float Gyro::getGyroY() const {
-	return gyroY;
+	return gyroY - gyroYOffset;
 }
 
 float Gyro::getGyroZ() const {
-	return gyroZ;
+	return gyroZ - gyroZOffset;
 }
 
 float Gyro::getAccelerationX() const {
