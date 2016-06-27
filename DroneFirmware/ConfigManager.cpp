@@ -126,7 +126,7 @@ Config ConfigManager::getDefault() {
 	config.SafeServoValue = 1850;
 
 	config.EnableStabilization = true;
-	config.NegativeMixing = false;
+	config.NegativeMixing = true;
 	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
@@ -135,6 +135,8 @@ Config ConfigManager::getDefault() {
 	config.GyroUseDMP = true;
 	config.GyroUseRaw = true;
 	config.EngineUseGyro = true;
+
+	config.CalibrateServos = false;
 
 	Log::info("Config", "Using default config");
 	return config;

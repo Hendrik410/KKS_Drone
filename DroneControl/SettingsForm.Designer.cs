@@ -373,6 +373,7 @@
             this.calibrateButton.TabIndex = 11;
             this.calibrateButton.Text = "Calibrate";
             this.calibrateButton.UseVisualStyleBackColor = true;
+            this.calibrateButton.Click += new System.EventHandler(this.calibrateButton_Click);
             // 
             // minValueTextBox
             // 
@@ -808,7 +809,7 @@
             // engineUseGyroCheckBox
             // 
             this.engineUseGyroCheckBox.AutoSize = true;
-            this.engineUseGyroCheckBox.Location = new System.Drawing.Point(282, 305);
+            this.engineUseGyroCheckBox.Location = new System.Drawing.Point(283, 305);
             this.engineUseGyroCheckBox.Name = "engineUseGyroCheckBox";
             this.engineUseGyroCheckBox.Size = new System.Drawing.Size(102, 17);
             this.engineUseGyroCheckBox.TabIndex = 31;

@@ -34,6 +34,8 @@ protected:
 
 	 int getValue(int servoValue);
 
+	 void internalAttach();
+
 public:
 	explicit ServoManager(Config* config);
 
@@ -46,6 +48,8 @@ public:
 	void setAllServos(int val);
 
 	void handleTick();
+
+	void calibrate();
 
 	int FL() const {
 		return servoFLValue;

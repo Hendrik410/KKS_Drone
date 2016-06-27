@@ -15,22 +15,22 @@ ServoManager::ServoManager(Config* config) {
 	this->_dirty = true;
 }
 
+void ServoManager::internalAttach() {
+	frontLeft.attach(config->PinFrontLeft);
+	frontRight.attach(config->PinFrontRight);
+	backLeft.attach(config->PinBackLeft);
+	backRight.attach(config->PinBackRight);
+	attached = true;
+	yield();
+}
 
 void ServoManager::attach() {
 	if (attached)
 		return;
 
 	Log::info("Servo", "attach()");
-
 	setAllServos(config->ServoMin);
-
-	frontLeft.attach(config->PinFrontLeft);
-	frontRight.attach(config->PinFrontRight);
-	backLeft.attach(config->PinBackLeft);
-	backRight.attach(config->PinBackRight);
-
-	attached = true;
-	yield();
+	internalAttach();
 }
 
 void ServoManager::detach() {
@@ -87,6 +87,21 @@ void ServoManager::handleTick() {
 		backLeft.writeMicroseconds(value);
 	if (servoBRValue == 1)
 		backRight.writeMicroseconds(value);
+}
+
+void ServoManager::calibrate() {
+	if (attached)
+		return;
+
+	frontLeft.writeMicroseconds(config->ServoMax);
+	frontRight.writeMicroseconds(config->ServoMax);
+	backLeft.writeMicroseconds(config->ServoMax);
+	backRight.writeMicroseconds(config->ServoMax);
+	internalAttach();
+
+	delay(6000);
+
+	setAllServos(config->ServoMin);
 }
 
 int ServoManager::getValue(int value) {

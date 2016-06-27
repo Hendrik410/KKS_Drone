@@ -265,6 +265,13 @@ namespace DroneControl
             }
         }
 
+        private void Apply()
+        {
+            drone.SendConfig(data);
+            foreach (Binding binding in bindings)
+                binding.ClearChangedByUser();
+        }
+
         private void updateFirmwareButton_Click(object sender, EventArgs e)
         {
             new UpdateOTAForm(drone).Show(this);
@@ -277,9 +284,14 @@ namespace DroneControl
 
         private void applyButton_Click(object sender, EventArgs e)
         {
-            drone.SendConfig(data);
-            foreach (Binding binding in bindings)
-                binding.ClearChangedByUser();
+            Apply();
+        }
+
+        private void calibrateButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Power off the drone and turn it back on. The motors will then start the calibration.");
+            data.CalibrateServos = true;
+            Apply();
         }
     }
 }

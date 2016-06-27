@@ -81,11 +81,11 @@ struct Config {
 	int MaxThrustForFlying;
 	boolean OnlyArmWhenStill;
 
-	boolean SendRCData;
-
 	boolean GyroUseDMP;
 	boolean GyroUseRaw;
 	boolean EngineUseGyro;
+
+	boolean CalibrateServos;
 };
 
 #endif

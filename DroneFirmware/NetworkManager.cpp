@@ -43,6 +43,10 @@ bool NetworkManager::checkRevision(int a, int b) {
 	return b > a;
 }
 
+void NetworkManager::beginSaveConfig() {
+	saveConfig = true;
+}
+
 void NetworkManager::checkSaveConfig() {
 	if (saveConfig) {
 		if (engine->state() == StateFlying || engine->state() == StateArmed)

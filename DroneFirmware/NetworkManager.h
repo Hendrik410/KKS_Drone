@@ -77,6 +77,8 @@ protected:
 	void sendDebugData(WiFiUDP udp);
 public:
 	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
+	
+	void beginSaveConfig();
 
 	void handlePackets();
 	void handleData();

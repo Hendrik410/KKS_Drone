@@ -56,9 +56,29 @@ void setup() {
 
 	// ServoManager initialisieren
 	servos = new ServoManager(&config);
-	servos->attach();
 
 	setupLED(&config);
+
+	boolean saveConfig = false;
+	// Calibrate servos
+	if (config.CalibrateServos) {
+		Log::info("Boot", "Calibration of servos...");
+		rst_info* resetInfo = ESP.getResetInfoPtr();
+		if (resetInfo->reason == REASON_DEFAULT_RST) {
+			turnLedOn();
+			servos->calibrate();
+			turnLedOff();
+			Log::info("Boot", "Done with calibration");
+		}
+		else
+			Log::error("Boot", "Invalid reset reason: %d", resetInfo->reason);
+
+		config.CalibrateServos = false;
+		saveConfig = true;
+	}
+
+	// Attach servos
+	servos->attach();
 
 	Log::info("Boot", "Init network...");
 	bool openOwnNetwork = true;
@@ -70,6 +90,7 @@ void setup() {
 	strncat(name, serialCode, sizeof(name));
 
 	// WiFi Einstellungen setzen
+	WiFi.persistent(false);
 	WiFi.hostname(name); 
 	WiFi.setOutputPower(20.5f); 
 	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
@@ -128,6 +149,8 @@ void setup() {
 
 	// Netzwerkmanager starten
 	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
+	if (saveConfig)
+		network->beginSaveConfig();
 
 	// Profiler laden
 	Profiler::init();

@@ -151,6 +151,10 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool EngineUseGyro;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Motors")]
+        public bool CalibrateServos;
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));
